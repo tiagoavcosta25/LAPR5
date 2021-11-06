@@ -30,13 +30,13 @@
       ><path d="M0 0 L514 0 L514 104 L0 104 L0 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath9"
-      ><path d="M68 20 L68 35 L24 35 L24 20 ZM337 29 L337 44 L164 44 L164 29 ZM328 76 L328 91 L179 91 L179 76 ZM0 0 L0 104 L514 104 L514 0 Z"
+      ><path d="M68 20 L68 35 L24 35 L24 20 ZM341 29 L341 44 L158 44 L158 29 ZM328 76 L328 91 L179 91 L179 76 ZM0 0 L0 104 L514 104 L514 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath10"
-      ><path d="M328 30 L328 45 L179 45 L179 30 ZM0 0 L0 104 L179 104 L179 90 L325 90 L325 104 L514 104 L514 0 Z"
+      ><path d="M328 30 L328 45 L179 45 L179 30 ZM0 0 L0 104 L170 104 L170 90 L331 90 L331 104 L514 104 L514 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath11"
-      ><path d="M325 30 L325 45 L179 45 L179 30 ZM374 78 L374 93 L136 93 L136 78 ZM0 0 L0 104 L514 104 L514 0 Z"
+      ><path d="M331 30 L331 45 L170 45 L170 30 ZM374 78 L374 93 L136 93 L136 78 ZM0 0 L0 104 L514 104 L514 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath12"
       ><path d="M374 30 L374 45 L136 45 L136 30 ZM0 0 L0 104 L216 104 L216 89 L290 89 L290 104 L514 104 L514 0 Z"
@@ -57,13 +57,13 @@
       ><path d="M-238 -15 L476 -15 L476 30 L-238 30 L-238 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath18"
-      ><path d="M-146 -15 L292 -15 L292 30 L-146 30 L-146 -15 Z"
+      ><path d="M-161 -15 L322 -15 L322 30 L-161 30 L-161 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath19"
       ><path d="M-149 -15 L298 -15 L298 30 L-149 30 L-149 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath20"
-      ><path d="M-173 -15 L346 -15 L346 30 L-173 30 L-173 -15 Z"
+      ><path d="M-183 -15 L366 -15 L366 30 L-183 30 L-183 -15 Z"
       /></clipPath
     ></defs
     ><g fill="white" text-rendering="geometricPrecision" fill-opacity="1" stroke-opacity="1" stroke="white"
@@ -146,10 +146,6 @@
     /></g
     ><g font-size="11px" transform="translate(155,320)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
     ><rect x="0" width="172" height="15" y="0" clip-path="url(#clipPath15)" stroke="none"
-      /><line clip-path="url(#clipPath15)" fill="none" x1="0" x2="171" y1="0" y2="0" stroke="silver"
-      /><line clip-path="url(#clipPath15)" fill="none" x1="171" x2="171" y1="0" y2="14" stroke="silver"
-      /><line clip-path="url(#clipPath15)" fill="none" x1="171" x2="0" y1="14" y2="14" stroke="silver"
-      /><line clip-path="url(#clipPath15)" fill="none" x1="0" x2="0" y1="0" y2="14" stroke="silver"
       /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath15)" stroke="none"
       >3.1: profile updated / data error</text
     ></g
@@ -163,20 +159,20 @@
       /><text fill="black" x="10" xml:space="preserve" y="12" clip-path="url(#clipPath17)" stroke="none"
       >2.1: presents data and requests confirmation</text
     ></g
-    ><g font-size="11px" transform="translate(165,153)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
-    ><rect x="0" width="146" height="15" y="0" clip-path="url(#clipPath18)" stroke="none"
-      /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath18)" stroke="none"
-      >2: edits user's profile data</text
+    ><g font-size="11px" transform="translate(156,153)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
+    ><rect x="0" width="161" height="15" y="0" clip-path="url(#clipPath18)" stroke="none"
+      /><text fill="black" x="10" xml:space="preserve" y="12" clip-path="url(#clipPath18)" stroke="none"
+      >2: updates user's profile data</text
     ></g
     ><g font-size="11px" transform="translate(165,93)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
     ><rect x="0" width="149" height="15" y="0" clip-path="url(#clipPath19)" stroke="none"
       /><text fill="black" x="10" xml:space="preserve" y="12" clip-path="url(#clipPath19)" stroke="none"
       >1.1: presents user's profile</text
     ></g
-    ><g font-size="11px" transform="translate(150,46)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
-    ><rect x="0" width="173" height="15" y="0" clip-path="url(#clipPath20)" stroke="none"
-      /><text fill="black" x="10" xml:space="preserve" y="12" clip-path="url(#clipPath20)" stroke="none"
-      >1: iniciates editing user's profile</text
+    ><g font-size="11px" transform="translate(144,46)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
+    ><rect x="0" width="183" height="15" y="0" clip-path="url(#clipPath20)" stroke="none"
+      /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath20)" stroke="none"
+      >1: iniciates updating user's profile</text
     ></g
     ><g font-size="8px" fill-opacity="1" fill="rgb(120,120,120)" text-rendering="geometricPrecision" image-rendering="optimizeQuality" stroke="rgb(120,120,120)" stroke-opacity="1"
     ><text x="0" xml:space="preserve" y="10" stroke="none"
