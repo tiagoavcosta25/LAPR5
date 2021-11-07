@@ -1,6 +1,6 @@
 using System;
-using System.Data.Metadata.Edm;
 using DDDSample1.Domain.Shared;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DDDSample1.Domain.Profiles
 {

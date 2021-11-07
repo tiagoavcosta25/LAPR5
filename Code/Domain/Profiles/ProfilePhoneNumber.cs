@@ -1,6 +1,6 @@
 using System;
-using System.Data.Metadata.Edm;
 using DDDSample1.Domain.Shared;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DDDSample1.Domain.Profiles
 {
@@ -8,7 +8,7 @@ namespace DDDSample1.Domain.Profiles
     public class ProfilePhoneNumber : IValueObject
     {
     
-        public string phoneNumber { get;  private set; }
+        public double phoneNumber { get;  private set; }
 
         public ProfilePhoneNumber(double phoneNumber)
         {
