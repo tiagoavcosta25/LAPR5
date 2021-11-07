@@ -54,11 +54,10 @@ namespace DDDSample1.Domain.Profiles
             if (Profile == null)
                 return null;   
 
-            // change all fields
-            //TODO: UC5
-            //Profile.ChangeDescription(dto.Description);
-
-            
+            Profile.ChangeName(dto.Name);
+            Profile.ChangeEmail(dto.Email);
+            Profile.ChangePhoneNumber(dto.PhoneNumber);
+            Profile.ChangeDateOfBirth(dto.DateOfBirth.Year, dto.DateOfBirth.Month, dto.DateOfBirth.Day);
             
             await this._unitOfWork.CommitAsync();
 
