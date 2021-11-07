@@ -31,8 +31,30 @@ namespace DDDSample1.Domain.Profiles
         public void ChangeName(string name)
         {
             if (!this.Active)
-                throw new BusinessRuleValidationException("It is not possible to change the description to an inactive Profile.");
+                throw new BusinessRuleValidationException("It is not possible to change the name to an inactive Profile.");
             this.Name = new ProfileName(name);
+        }
+
+        
+        public void ChangeEmail(string email)
+        {
+            if (!this.Active)
+                throw new BusinessRuleValidationException("It is not possible to change the email address to an inactive Profile.");
+            this.Email = new ProfileEmail(email);
+        }
+        
+        public void ChangePhoneNumber(double phoneNumber)
+        {
+            if (!this.Active)
+                throw new BusinessRuleValidationException("It is not possible to change the phone number to an inactive Profile.");
+            this.PhoneNumber = new ProfilePhoneNumber(phoneNumber);
+        }
+        
+        public void ChangeDateOfBirth(int year, int month, int day)
+        {
+            if (!this.Active)
+                throw new BusinessRuleValidationException("It is not possible to change the date of birth to an inactive Profile.");
+            this.DateOfBirth = new ProfileDateOfBirth(year, month, day);
         }
         public void MarkAsInative()
         {
