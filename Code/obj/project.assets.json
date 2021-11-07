@@ -78,7 +78,7 @@
           "lib/netstandard2.1/Microsoft.EntityFrameworkCore.Abstractions.dll": {}
         }
       },
-      "Microsoft.EntityFrameworkCore.Analyzers/5.0.0": {
+      "Microsoft.EntityFrameworkCore.Analyzers/5.0.11": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/_._": {}
@@ -1619,17 +1619,17 @@
         "microsoft.entityframeworkcore.abstractions.nuspec"
       ]
     },
-    "Microsoft.EntityFrameworkCore.Analyzers/5.0.0": {
-      "sha512": "l1c/1ge8ymXgLqtstTyX3PZOLRuFo1jn0FQ9H4ag3Bwz70KTMyEOXwkKBZZ1gDlCibETrooflMis8wvvXFh5YQ==",
+    "Microsoft.EntityFrameworkCore.Analyzers/5.0.11": {
+      "sha512": "6vCGQY0H667qkV5fGuhHzWPveF0dpEwEs9xQyDgamwxkIN7LrPHQGp2eOXj6xVF+i8noTLtTR4sNMizKSnI2JA==",
       "type": "package",
-      "path": "microsoft.entityframeworkcore.analyzers/5.0.0",
+      "path": "microsoft.entityframeworkcore.analyzers/5.0.11",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "analyzers/dotnet/cs/Microsoft.EntityFrameworkCore.Analyzers.dll",
         "lib/netstandard2.0/_._",
-        "microsoft.entityframeworkcore.analyzers.5.0.0.nupkg.sha512",
+        "microsoft.entityframeworkcore.analyzers.5.0.11.nupkg.sha512",
         "microsoft.entityframeworkcore.analyzers.nuspec"
       ]
     },
@@ -5348,25 +5348,26 @@
       "Microsoft.AspNetCore.Mvc.NewtonsoftJson >= 5.0.0",
       "Microsoft.AspNetCore.Razor.Design >= 2.2.0",
       "Microsoft.EntityFrameworkCore >= 5.0.0",
+      "Microsoft.EntityFrameworkCore.Analyzers >= 5.0.11",
       "Microsoft.EntityFrameworkCore.InMemory >= 5.0.0",
       "Microsoft.EntityFrameworkCore.Relational.Design >= 1.1.6",
       "Newtonsoft.Json >= 12.0.3"
     ]
   },
   "packageFolders": {
-    "/Users/paulomaio/.nuget/packages/": {}
+    "/Users/kyber/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/paulomaio/Work/Ensino/2019-20/ARQSI/Projects/DDDNetCore/DDDNetCore.csproj",
+      "projectUniqueName": "/Users/kyber/ISEP/Year_03/PI/Code/DDDNetCore.csproj",
       "projectName": "DDDNetCore",
-      "projectPath": "/Users/paulomaio/Work/Ensino/2019-20/ARQSI/Projects/DDDNetCore/DDDNetCore.csproj",
-      "packagesPath": "/Users/paulomaio/.nuget/packages/",
-      "outputPath": "/Users/paulomaio/Work/Ensino/2019-20/ARQSI/Projects/DDDNetCore/obj/",
+      "projectPath": "/Users/kyber/ISEP/Year_03/PI/Code/DDDNetCore.csproj",
+      "packagesPath": "/Users/kyber/.nuget/packages/",
+      "outputPath": "/Users/kyber/ISEP/Year_03/PI/Code/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/paulomaio/.nuget/NuGet/NuGet.Config"
+        "/Users/kyber/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp5.0"
@@ -5403,6 +5404,10 @@
             "target": "Package",
             "version": "[5.0.0, )"
           },
+          "Microsoft.EntityFrameworkCore.Analyzers": {
+            "target": "Package",
+            "version": "[5.0.11, )"
+          },
           "Microsoft.EntityFrameworkCore.InMemory": {
             "target": "Package",
             "version": "[5.0.0, )"
@@ -5434,7 +5439,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.100/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.401/RuntimeIdentifierGraph.json"
       }
     }
   }

@@ -1,0 +1,6 @@
+/Users/kyber/ISEP/Year_03/PI/Code/obj/Debug/netcoreapp5.0/DDDNetCore.csproj.AssemblyReference.cache
+/Users/kyber/ISEP/Year_03/PI/Code/obj/Debug/netcoreapp5.0/DDDNetCore.GeneratedMSBuildEditorConfig.editorconfig
+/Users/kyber/ISEP/Year_03/PI/Code/obj/Debug/netcoreapp5.0/DDDNetCore.AssemblyInfoInputs.cache
+/Users/kyber/ISEP/Year_03/PI/Code/obj/Debug/netcoreapp5.0/DDDNetCore.AssemblyInfo.cs
+/Users/kyber/ISEP/Year_03/PI/Code/obj/Debug/netcoreapp5.0/DDDNetCore.csproj.CoreCompileInputs.cache
+/Users/kyber/ISEP/Year_03/PI/Code/obj/Debug/netcoreapp5.0/DDDNetCore.MvcApplicationPartsAssemblyInfo.cache
