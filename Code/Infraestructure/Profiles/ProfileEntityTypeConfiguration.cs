@@ -14,6 +14,9 @@ namespace DDDSample1.Infrastructure.Profiles
             builder.OwnsOne(x => x.Email);
             builder.OwnsOne(x => x.PhoneNumber);
             builder.OwnsOne(x => x.Name);
+            builder.OwnsOne(x => x.EmotionalStatus);
+            builder.OwnsOne(x => x.Facebook);
+            builder.OwnsOne(x => x.LinkedIn);
         }
     }
 }
