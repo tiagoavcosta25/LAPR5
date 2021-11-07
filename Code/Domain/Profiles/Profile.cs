@@ -10,7 +10,6 @@ namespace DDDSample1.Domain.Profile
         public ProfilePhoneNumber PhoneNumber { get;  private set; }
         public ProfileEmail Email { get;  private set; }
         public ProfileName Name { get;  private set; }
-        public string Description { get;  private set; }
 
         public bool Active{ get;  private set; }
 
@@ -19,18 +18,21 @@ namespace DDDSample1.Domain.Profile
             this.Active = true;
         }
 
-        public Profile(string description)
+        public Profile(string name, string email, double phoneNumber, int year, int month, int day)
         {
             this.Id = new ProfileId(Guid.NewGuid());
-            this.Description = description;
+            this.Name = new ProfileName(name);
+            this.Email = new ProfileEmail(email);
+            this.PhoneNumber = new ProfilePhoneNumber(phoneNumber);
+            this.DateOfBirth = new ProfileDateOfBirth(year, month, day);
             this.Active = true;
         }
 
-        public void ChangeDescription(string description)
+        public void ChangeName(string name)
         {
             if (!this.Active)
                 throw new BusinessRuleValidationException("It is not possible to change the description to an inactive Profile.");
-            this.Description = description;
+            this.Name = new ProfileName(name);
         }
         public void MarkAsInative()
         {
