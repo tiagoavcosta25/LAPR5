@@ -10,6 +10,10 @@ namespace DDDSample1.Domain.Profiles
     
         public string address { get;  private set; }
 
+        public ProfileEmail()
+        {
+        }
+
         public ProfileEmail(string email)
         {
             this.updateEmail(email);

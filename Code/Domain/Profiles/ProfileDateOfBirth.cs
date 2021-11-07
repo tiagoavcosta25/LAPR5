@@ -10,6 +10,10 @@ namespace DDDSample1.Domain.Profiles
     
         public DateTime date { get;  private set; }
 
+        public ProfileDateOfBirth()
+        {
+        }
+
         public ProfileDateOfBirth(int year, int month, int day)
         {
             this.updateDate(year, month, day);

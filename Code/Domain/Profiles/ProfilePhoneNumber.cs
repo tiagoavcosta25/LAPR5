@@ -10,6 +10,10 @@ namespace DDDSample1.Domain.Profiles
     
         public double phoneNumber { get;  private set; }
 
+        public ProfilePhoneNumber()
+        {
+        }
+
         public ProfilePhoneNumber(double phoneNumber)
         {
             this.updatePhonenNumber(phoneNumber);

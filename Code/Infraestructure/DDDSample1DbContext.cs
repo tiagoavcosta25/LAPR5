@@ -29,6 +29,7 @@ namespace DDDSample1.Infrastructure
             modelBuilder.ApplyConfiguration(new ProductEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new FamilyEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ProfileEntityTypeConfiguration());
+            //modelBuilder.ApplyConfiguration(new ProfileDateOfBirthEntityTypeConfiguration());
         }
     }
 }

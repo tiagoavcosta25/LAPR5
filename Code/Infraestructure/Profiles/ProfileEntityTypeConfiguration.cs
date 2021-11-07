@@ -10,6 +10,10 @@ namespace DDDSample1.Infrastructure.Profiles
         {
             //builder.ToTable("Profiles", SchemaNames.DDDSample1);
             builder.HasKey(b => b.Id);
+            builder.OwnsOne(x => x.DateOfBirth);
+            builder.OwnsOne(x => x.Email);
+            builder.OwnsOne(x => x.PhoneNumber);
+            builder.OwnsOne(x => x.Name);
         }
     }
 }

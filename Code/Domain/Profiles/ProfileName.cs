@@ -10,6 +10,10 @@ namespace DDDSample1.Domain.Profiles
     
         public string name { get;  private set; }
 
+        public ProfileName()
+        {
+        }
+
         public ProfileName(string name)
         {
             this.updateName(name);
