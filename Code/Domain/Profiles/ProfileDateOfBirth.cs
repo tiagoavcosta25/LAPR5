@@ -1,9 +1,9 @@
 using System;
 using DDDSample1.Domain.Shared;
 
-namespace DDDSample1.Domain.Profile
+namespace DDDSample1.Domain.Profiles
 {
-    [ComplexType]
+    //[ComplexType]
     public class ProfileDateOfBirth : IValueObject
     {
     

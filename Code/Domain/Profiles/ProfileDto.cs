@@ -8,7 +8,7 @@ namespace DDDSample1.Domain.Profiles
         public Guid Id { get; set; }
         public string Email { get;  set; }
         public string Name { get;  set; }
-        public string PhoneNumber { get;  set; }
+        public double PhoneNumber { get;  set; }
         public DateTime DateOfBirth { get;  set; }
 
         public ProfileDto(Guid Id, string name, string email, double phoneNumber, int year, int month, int day)
@@ -18,7 +18,6 @@ namespace DDDSample1.Domain.Profiles
             this.Email = email;
             this.PhoneNumber = phoneNumber;
             this.DateOfBirth = new DateTime(year, month, day);
-            this.CategoryId = catId;
         }
     }
 }

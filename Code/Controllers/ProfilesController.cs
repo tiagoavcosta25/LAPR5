@@ -13,9 +13,9 @@ namespace DDDSample1.Controllers
     [ApiController]
     public class ProfilesController : ControllerBase
     {
-        private readonly Profileservice _service;
+        private readonly ProfileService _service;
 
-        public ProfilesController(Profileservice service)
+        public ProfilesController(ProfileService service)
         {
             _service = service;
         }
@@ -38,7 +38,7 @@ namespace DDDSample1.Controllers
                 return NotFound();
             }
 
-            return prod;
+            return prof;
         }
 
         // POST: api/Profiles
@@ -75,7 +75,7 @@ namespace DDDSample1.Controllers
                 {
                     return NotFound();
                 }
-                return Ok(prod);
+                return Ok(prof);
             }
             catch(BusinessRuleValidationException ex)
             {
@@ -94,7 +94,7 @@ namespace DDDSample1.Controllers
                 return NotFound();
             }
 
-            return Ok(prod);
+            return Ok(prof);
         }
         
         // DELETE: api/Profiles/5
@@ -110,7 +110,7 @@ namespace DDDSample1.Controllers
                     return NotFound();
                 }
 
-                return Ok(prod);
+                return Ok(prof);
             }
             catch(BusinessRuleValidationException ex)
             {

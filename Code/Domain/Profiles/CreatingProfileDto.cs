@@ -1,4 +1,5 @@
-using DDDSample1.Domain.Categories;
+using DDDSample1.Domain.Profiles;
+using System;
 
 namespace DDDSample1.Domain.Profiles
 {
@@ -6,7 +7,7 @@ namespace DDDSample1.Domain.Profiles
     {
         public string Email { get;  set; }
         public string Name { get;  set; }
-        public string PhoneNumber { get;  set; }
+        public double PhoneNumber { get;  set; }
         public DateTime DateOfBirth { get;  set; }
 
 
@@ -16,7 +17,6 @@ namespace DDDSample1.Domain.Profiles
             this.Email = email;
             this.PhoneNumber = phoneNumber;
             this.DateOfBirth = new DateTime(year, month, day);
-            this.CategoryId = catId;
         }
     }
 }
