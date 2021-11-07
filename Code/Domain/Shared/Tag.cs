@@ -1,11 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using DDDSample1.Domain.Shared;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DDDNetCore.Domain.Shared
 {
-    public class Tag
+    [ComplexType]
+    public class Tag : IValueObject
     {
+
+        public string tagName { get; private set; }
+
+        public Tag(string tagName) 
+        {
+            this.tagName = tagName;
+        }
     }
 }
