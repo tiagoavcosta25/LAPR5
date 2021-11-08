@@ -30,16 +30,16 @@
       ><path d="M0 0 L514 0 L514 104 L0 104 L0 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath9"
-      ><path d="M68 20 L68 35 L24 35 L24 20 ZM341 29 L341 44 L158 44 L158 29 ZM328 76 L328 91 L179 91 L179 76 ZM0 0 L0 104 L514 104 L514 0 Z"
+      ><path d="M68 20 L68 35 L24 35 L24 20 ZM376 29 L376 44 L121 44 L121 29 ZM328 76 L328 91 L179 91 L179 76 ZM0 0 L0 104 L514 104 L514 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath10"
       ><path d="M328 30 L328 45 L179 45 L179 30 ZM0 0 L0 104 L170 104 L170 90 L331 90 L331 104 L514 104 L514 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath11"
-      ><path d="M331 30 L331 45 L170 45 L170 30 ZM374 78 L374 93 L136 93 L136 78 ZM0 0 L0 104 L514 104 L514 0 Z"
+      ><path d="M331 30 L331 45 L170 45 L170 30 ZM373 78 L373 93 L135 93 L135 78 ZM0 0 L0 104 L514 104 L514 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath12"
-      ><path d="M374 30 L374 45 L136 45 L136 30 ZM0 0 L0 104 L216 104 L216 89 L290 89 L290 104 L514 104 L514 0 Z"
+      ><path d="M373 30 L373 45 L135 45 L135 30 ZM0 0 L0 104 L216 104 L216 89 L290 89 L290 104 L514 104 L514 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath13"
       ><path d="M290 30 L290 45 L216 45 L216 30 ZM0 0 L0 104 L169 104 L169 90 L341 90 L341 104 L514 104 L514 0 Z"
@@ -63,7 +63,7 @@
       ><path d="M-149 -15 L298 -15 L298 30 L-149 30 L-149 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath20"
-      ><path d="M-183 -15 L366 -15 L366 30 L-183 30 L-183 -15 Z"
+      ><path d="M-255 -15 L510 -15 L510 30 L-255 30 L-255 -15 Z"
       /></clipPath
     ></defs
     ><g fill="white" text-rendering="geometricPrecision" fill-opacity="1" stroke-opacity="1" stroke="white"
@@ -154,7 +154,7 @@
       /><text fill="black" x="10" xml:space="preserve" y="12" clip-path="url(#clipPath16)" stroke="none"
       >3: confirms</text
     ></g
-    ><g font-size="11px" transform="translate(122,201)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
+    ><g font-size="11px" transform="translate(121,201)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
     ><rect x="0" width="238" height="15" y="0" clip-path="url(#clipPath17)" stroke="none"
       /><text fill="black" x="10" xml:space="preserve" y="12" clip-path="url(#clipPath17)" stroke="none"
       >2.1: presents data and requests confirmation</text
@@ -169,10 +169,10 @@
       /><text fill="black" x="10" xml:space="preserve" y="12" clip-path="url(#clipPath19)" stroke="none"
       >1.1: presents user's profile</text
     ></g
-    ><g font-size="11px" transform="translate(144,46)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
-    ><rect x="0" width="183" height="15" y="0" clip-path="url(#clipPath20)" stroke="none"
+    ><g font-size="11px" transform="translate(107,46)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
+    ><rect x="0" width="255" height="15" y="0" clip-path="url(#clipPath20)" stroke="none"
       /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath20)" stroke="none"
-      >1: iniciates updating user's profile</text
+      >1: iniciates the process of updating user's profile</text
     ></g
     ><g font-size="8px" fill-opacity="1" fill="rgb(120,120,120)" text-rendering="geometricPrecision" image-rendering="optimizeQuality" stroke="rgb(120,120,120)" stroke-opacity="1"
     ><text x="0" xml:space="preserve" y="10" stroke="none"
