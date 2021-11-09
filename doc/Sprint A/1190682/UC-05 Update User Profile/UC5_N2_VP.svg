@@ -42,7 +42,7 @@
       ><path d="M0 0 L464 0 L464 104 L0 104 L0 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath13"
-      ><path d="M68 23 L68 38 L24 38 L24 23 ZM316 29 L316 44 L133 44 L133 29 ZM0 0 L0 104 L154 104 L154 91 L303 91 L303 104 L464 104 L464 18 L357 18 L357 0 Z"
+      ><path d="M68 23 L68 38 L24 38 L24 23 ZM351 29 L351 44 L96 44 L96 29 ZM0 0 L0 104 L154 104 L154 91 L303 91 L303 104 L464 104 L464 18 L357 18 L357 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath14"
       ><path d="M303 30 L303 45 L154 45 L154 30 ZM306 78 L306 93 L145 93 L145 78 ZM0 0 L0 104 L464 104 L464 0 Z"
@@ -123,7 +123,7 @@
       ><path d="M-149 -15 L298 -15 L298 30 L-149 30 L-149 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath40"
-      ><path d="M-183 -15 L366 -15 L366 30 L-183 30 L-183 -15 Z"
+      ><path d="M-255 -15 L510 -15 L510 30 L-255 30 L-255 -15 Z"
       /></clipPath
     ></defs
     ><g fill="white" text-rendering="geometricPrecision" fill-opacity="1" stroke-opacity="1" stroke="white"
@@ -332,10 +332,10 @@
       /><text fill="black" x="10" xml:space="preserve" y="12" clip-path="url(#clipPath39)" stroke="none"
       >1.3: presents user's profile</text
     ></g
-    ><g font-size="11px" transform="translate(119,43)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
-    ><rect x="0" width="183" height="15" y="0" clip-path="url(#clipPath40)" stroke="none"
+    ><g font-size="11px" transform="translate(82,43)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
+    ><rect x="0" width="255" height="15" y="0" clip-path="url(#clipPath40)" stroke="none"
       /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath40)" stroke="none"
-      >1: iniciates updating user's profile</text
+      >1: iniciates the process of updating user's profile</text
     ></g
     ><g font-size="8px" fill-opacity="1" fill="rgb(120,120,120)" text-rendering="geometricPrecision" image-rendering="optimizeQuality" stroke="rgb(120,120,120)" stroke-opacity="1"
     ><text x="0" xml:space="preserve" y="10" stroke="none"
