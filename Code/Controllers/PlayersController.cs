@@ -3,52 +3,52 @@ using System.Collections.Generic;
 using System;
 using System.Threading.Tasks;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Profiles;
+using DDDSample1.Domain.Players;
 
 
 namespace DDDSample1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProfilesController : ControllerBase
+    public class PlayersController : ControllerBase
     {
-        private readonly ProfileService _service;
+        private readonly PlayerService _service;
 
-        public ProfilesController(ProfileService service)
+        public PlayersController(PlayerService service)
         {
             _service = service;
         }
 
-        // GET: api/Profiles
+        // GET: api/Players
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProfileDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<PlayerDto>>> GetAll()
         {
             return await _service.GetAllAsync();
         }
 
-        // GET: api/Profiles/5
+        // GET: api/Players/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProfileDto>> GetGetById(Guid id)
+        public async Task<ActionResult<PlayerDto>> GetGetById(Guid id)
         {
-            var prof = await _service.GetByIdAsync(new ProfileId(id));
+            var plyr = await _service.GetByIdAsync(new PlayerId(id));
 
-            if (prof == null)
+            if (plyr == null)
             {
                 return NotFound();
             }
 
-            return prof;
+            return plyr;
         }
 
-        // POST: api/Profiles
+        // POST: api/Players
         [HttpPost]
-        public async Task<ActionResult<ProfileDto>> Create(CreatingProfileDto dto)
+        public async Task<ActionResult<PlayerDto>> Create(CreatingPlayerDto dto)
         {
             try
             {
-                var prof = await _service.AddAsync(dto);
+                var plyr = await _service.AddAsync(dto);
 
-                return CreatedAtAction(nameof(GetGetById), new { id = prof.Id }, prof);
+                return CreatedAtAction(nameof(GetGetById), new { id = plyr.Id }, plyr);
             }
             catch(BusinessRuleValidationException ex)
             {
@@ -57,9 +57,9 @@ namespace DDDSample1.Controllers
         }
 
         
-        // PUT: api/Profiles/5
+        // PUT: api/Players/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<ProfileDto>> Update(Guid id, ProfileDto dto)
+        public async Task<ActionResult<PlayerDto>> Update(Guid id, PlayerDto dto)
         {
             if (id != dto.Id)
             {
@@ -68,13 +68,13 @@ namespace DDDSample1.Controllers
 
             try
             {
-                var prof = await _service.UpdateAsync(dto);
+                var plyr = await _service.UpdateAsync(dto);
                 
-                if (prof == null)
+                if (plyr == null)
                 {
                     return NotFound();
                 }
-                return Ok(prof);
+                return Ok(plyr);
             }
             catch(BusinessRuleValidationException ex)
             {
@@ -82,34 +82,34 @@ namespace DDDSample1.Controllers
             }
         }
 
-        // Inactivate: api/Profiles/5
+        // Inactivate: api/Players/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ProfileDto>> SoftDelete(Guid id)
+        public async Task<ActionResult<PlayerDto>> SoftDelete(Guid id)
         {
-            var prof = await _service.InactivateAsync(new ProfileId(id));
+            var plyr = await _service.InactivateAsync(new PlayerId(id));
 
-            if (prof == null)
+            if (plyr == null)
             {
                 return NotFound();
             }
 
-            return Ok(prof);
+            return Ok(plyr);
         }
         
-        // DELETE: api/Profiles/5
+        // DELETE: api/Players/5
         [HttpDelete("{id}/hard")]
-        public async Task<ActionResult<ProfileDto>> HardDelete(Guid id)
+        public async Task<ActionResult<PlayerDto>> HardDelete(Guid id)
         {
             try
             {
-                var prof = await _service.DeleteAsync(new ProfileId(id));
+                var plyr = await _service.DeleteAsync(new PlayerId(id));
 
-                if (prof == null)
+                if (plyr == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(prof);
+                return Ok(plyr);
             }
             catch(BusinessRuleValidationException ex)
             {
