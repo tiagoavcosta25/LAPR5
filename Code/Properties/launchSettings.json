@@ -8,7 +8,7 @@
       "sslPort": 44343
     }
   },
-  "profiles": {
+  "players": {
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,

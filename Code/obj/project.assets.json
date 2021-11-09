@@ -5355,19 +5355,19 @@
     ]
   },
   "packageFolders": {
-    "/Users/kyber/.nuget/packages/": {}
+    "C:\\Users\\Nuno\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/kyber/ISEP/Year_03/PI/Code/DDDNetCore.csproj",
+      "projectUniqueName": "M:\\School\\Uni\\Year_03\\PI\\Code\\DDDNetCore.csproj",
       "projectName": "DDDNetCore",
-      "projectPath": "/Users/kyber/ISEP/Year_03/PI/Code/DDDNetCore.csproj",
-      "packagesPath": "/Users/kyber/.nuget/packages/",
-      "outputPath": "/Users/kyber/ISEP/Year_03/PI/Code/obj/",
+      "projectPath": "M:\\School\\Uni\\Year_03\\PI\\Code\\DDDNetCore.csproj",
+      "packagesPath": "C:\\Users\\Nuno\\.nuget\\packages\\",
+      "outputPath": "M:\\School\\Uni\\Year_03\\PI\\Code\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/kyber/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\Nuno\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp5.0"
@@ -5439,7 +5439,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.401/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.402\\RuntimeIdentifierGraph.json"
       }
     }
   }
