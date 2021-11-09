@@ -1,9 +1,9 @@
-using DDDSample1.Domain.Profiles;
+using DDDSample1.Domain.Players;
 using System;
 
-namespace DDDSample1.Domain.Profiles
+namespace DDDSample1.Domain.Players
 {
-    public class CreatingProfileDto
+    public class CreatingPlayerDto
     {
         public string Email { get;  set; }
         public string Name { get;  set; }
@@ -14,7 +14,7 @@ namespace DDDSample1.Domain.Profiles
         public string LinkedIn { get;  private set; }
 
 
-        public CreatingProfileDto(string name, string email, double phoneNumber, int year, int month, int day, string emotionalStatus, string facebook, string linkedin)
+        public CreatingPlayerDto(string name, string email, double phoneNumber, int year, int month, int day, string emotionalStatus, string facebook, string linkedin)
         {
             this.Name = name;
             this.Email = email;

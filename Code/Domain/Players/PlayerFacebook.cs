@@ -2,19 +2,19 @@ using System;
 using DDDSample1.Domain.Shared;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DDDSample1.Domain.Profiles
+namespace DDDSample1.Domain.Players
 {
     [ComplexType]
-    public class ProfileFacebook : IValueObject
+    public class PlayerFacebook : IValueObject
     {
     
         public string Url { get;  private set; }
 
-        public ProfileFacebook()
+        public PlayerFacebook()
         {
         }
 
-        public ProfileFacebook(string facebook)
+        public PlayerFacebook(string facebook)
         {
             this.updateUrl(facebook);
             
@@ -24,7 +24,7 @@ namespace DDDSample1.Domain.Profiles
             try{
                 this.Url = facebook;
             } catch{
-                throw new BusinessRuleValidationException("The provided facebook profile is not valid.");
+                throw new BusinessRuleValidationException("The provided facebook Player is not valid.");
             }
         }
     }

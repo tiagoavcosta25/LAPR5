@@ -3,17 +3,17 @@ using DDDSample1.Domain.Shared;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DDDSample1.Domain.Profiles
+namespace DDDSample1.Domain.Players
 {
     [ComplexType]
-    public class ProfileId : EntityId
+    public class PlayerId : EntityId
     {
         [JsonConstructor]
-        public ProfileId(Guid value) : base(value)
+        public PlayerId(Guid value) : base(value)
         {
         }
 
-        public ProfileId(String value) : base(value)
+        public PlayerId(String value) : base(value)
         {
         }
 

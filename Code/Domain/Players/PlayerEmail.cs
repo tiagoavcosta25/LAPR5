@@ -2,19 +2,19 @@ using System;
 using DDDSample1.Domain.Shared;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DDDSample1.Domain.Profiles
+namespace DDDSample1.Domain.Players
 {
     [ComplexType]
-    public class ProfileEmail : IValueObject
+    public class PlayerEmail : IValueObject
     {
     
         public string address { get;  private set; }
 
-        public ProfileEmail()
+        public PlayerEmail()
         {
         }
 
-        public ProfileEmail(string email)
+        public PlayerEmail(string email)
         {
             this.updateEmail(email);
             

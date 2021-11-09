@@ -2,19 +2,19 @@ using System;
 using DDDSample1.Domain.Shared;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DDDSample1.Domain.Profiles
+namespace DDDSample1.Domain.Players
 {
     [ComplexType]
-    public class ProfilePhoneNumber : IValueObject
+    public class PlayerPhoneNumber : IValueObject
     {
     
         public double phoneNumber { get;  private set; }
 
-        public ProfilePhoneNumber()
+        public PlayerPhoneNumber()
         {
         }
 
-        public ProfilePhoneNumber(double phoneNumber)
+        public PlayerPhoneNumber(double phoneNumber)
         {
             this.updatePhonenNumber(phoneNumber);
             

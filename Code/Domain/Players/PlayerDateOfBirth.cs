@@ -2,19 +2,19 @@ using System;
 using DDDSample1.Domain.Shared;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DDDSample1.Domain.Profiles
+namespace DDDSample1.Domain.Players
 {
     [ComplexType]
-    public class ProfileDateOfBirth : IValueObject
+    public class PlayerDateOfBirth : IValueObject
     {
     
         public DateTime date { get;  private set; }
 
-        public ProfileDateOfBirth()
+        public PlayerDateOfBirth()
         {
         }
 
-        public ProfileDateOfBirth(int year, int month, int day)
+        public PlayerDateOfBirth(int year, int month, int day)
         {
             this.updateDate(year, month, day);
             

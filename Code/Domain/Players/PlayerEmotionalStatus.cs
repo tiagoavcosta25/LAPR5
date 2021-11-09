@@ -2,19 +2,19 @@ using System;
 using DDDSample1.Domain.Shared;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DDDSample1.Domain.Profiles
+namespace DDDSample1.Domain.Players
 {
     [ComplexType]
-    public class ProfileEmotionalStatus : IValueObject
+    public class PlayerEmotionalStatus : IValueObject
     {
 
         public string Status { get;  private set; }
 
-        public ProfileEmotionalStatus()
+        public PlayerEmotionalStatus()
         {
         }
 
-        public ProfileEmotionalStatus(string status)
+        public PlayerEmotionalStatus(string status)
         {
             this.updateEmotionalStatus(status);
             

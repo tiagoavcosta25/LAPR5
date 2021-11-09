@@ -2,19 +2,19 @@ using System;
 using DDDSample1.Domain.Shared;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DDDSample1.Domain.Profiles
+namespace DDDSample1.Domain.Players
 {
     [ComplexType]
-    public class ProfileLinkedIn : IValueObject
+    public class PlayerLinkedIn : IValueObject
     {
     
         public string Url { get;  private set; }
 
-        public ProfileLinkedIn()
+        public PlayerLinkedIn()
         {
         }
 
-        public ProfileLinkedIn(string linkedin)
+        public PlayerLinkedIn(string linkedin)
         {
             this.updateUrl(linkedin);
             
@@ -24,7 +24,7 @@ namespace DDDSample1.Domain.Profiles
             try{
                 this.Url = linkedin;
             } catch{
-                throw new BusinessRuleValidationException("The provided linkedin profile is not valid.");
+                throw new BusinessRuleValidationException("The provided linkedin Player is not valid.");
             }
         }
     }

@@ -1,9 +1,9 @@
 using System;
 using DDDSample1.Domain.Categories;
 
-namespace DDDSample1.Domain.Profiles
+namespace DDDSample1.Domain.Players
 {
-    public class ProfileDto
+    public class PlayerDto
     {
         public Guid Id { get; set; }
         public string Email { get;  set; }
@@ -14,7 +14,7 @@ namespace DDDSample1.Domain.Profiles
         public string Facebook { get;  private set; }
         public string LinkedIn { get;  private set; }
 
-        public ProfileDto(Guid Id, string name, string email, double phoneNumber, int year, int month, int day, string emotionalStatus, string facebook, string linkedin)
+        public PlayerDto(Guid Id, string name, string email, double phoneNumber, int year, int month, int day, string emotionalStatus, string facebook, string linkedin)
         {
             this.Id = Id;
             this.Name = name;
