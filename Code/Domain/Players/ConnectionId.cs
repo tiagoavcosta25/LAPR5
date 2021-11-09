@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DDDNetCore.Domain.Profiles
+namespace DDDNetCore.Domain.Players
 {
     [ComplexType]
     public class ConnectionId : EntityId

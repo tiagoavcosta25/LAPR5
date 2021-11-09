@@ -1,7 +1,7 @@
 ﻿using DDDSample1.Domain.Shared;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DDDNetCore.Domain.Profiles
+namespace DDDNetCore.Domain.Players
 {
     [ComplexType]
     public class ConnectionStrength : IValueObject

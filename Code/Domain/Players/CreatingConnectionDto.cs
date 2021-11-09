@@ -1,17 +1,17 @@
-﻿using DDDSample1.Domain.Profiles;
+﻿using DDDSample1.Domain.Players;
 using System.Collections.Generic;
 
-namespace DDDNetCore.Domain.Profiles
+namespace DDDNetCore.Domain.Players
 {
     public class CreatingConnectionDto
     {
-        public ProfileId Friend { get; private set; }
+        public PlayerId Friend { get; private set; }
 
         public int ConnectionStrength { get; private set; }
 
         public ICollection<string> Tags { get; private set; }
 
-        public CreatingConnectionDto(ProfileId friend, int connectionStrength, ICollection<string> tags)
+        public CreatingConnectionDto(PlayerId friend, int connectionStrength, ICollection<string> tags)
         {
             Friend = friend;
             ConnectionStrength = connectionStrength;
