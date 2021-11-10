@@ -32,11 +32,12 @@ namespace DDDSample1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DDDSample1DbContext>(opt =>
-                opt.UseInMemoryDatabase("DDDSample1DB")
+                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
                 .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>());
 
+            services.AddDatabaseDeveloperPageExceptionFilter();
+
             ConfigureMyServices(services);
-            
 
             services.AddControllers().AddNewtonsoftJson();
         }
