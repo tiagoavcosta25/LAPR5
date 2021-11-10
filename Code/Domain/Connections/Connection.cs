@@ -1,6 +1,7 @@
 ﻿using DDDNetCore.Domain.Shared;
 using DDDSample1.Domain.Players;
 using DDDSample1.Domain.Shared;
+using System;
 using System.Collections.Generic;
 
 namespace DDDNetCore.Domain.Connections
@@ -16,8 +17,13 @@ namespace DDDNetCore.Domain.Connections
 
         public ICollection<Tag> Tags { get; private set; }
 
+        public Connection()
+        {
+        }
+
         public Connection(PlayerId player, PlayerId friend)
         {
+            Id = new ConnectionId(Guid.NewGuid());
             Player = player;
             Friend = friend;
             Tags = new List<Tag>();

@@ -6,20 +6,27 @@ namespace DDDNetCore.Domain.Connections
 {
     public class ConnectionDto
     {
-        public Guid Id { get; private set; }
+        public Guid Id { get; set; }
 
-        public PlayerId Player { get; private set; }
+        public PlayerId Player { get; set; }
 
-        public PlayerId Friend { get; private set; }
+        public PlayerId Friend { get; set; }
 
-        public int ConnectionStrength { get; private set; }
+        public int ConnectionStrength { get; set; }
 
-        public ICollection<string> Tags { get; private set; }
+        public ICollection<string> Tags { get; set; }
+
+        public ConnectionDto(Guid id, PlayerId player, PlayerId friend)
+        {
+            Id = id;
+            Player = player;
+            Friend = friend;
+        }
 
         public ConnectionDto(Guid id, PlayerId player, PlayerId friend, int connectionStrength, ICollection<string> tags)
         {
             Id = id;
-            Player =
+            Player = player;
             Friend = friend;
             ConnectionStrength = connectionStrength;
             Tags = tags;
