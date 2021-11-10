@@ -16,6 +16,8 @@ using DDDSample1.Domain.Categories;
 using DDDSample1.Domain.Products;
 using DDDSample1.Domain.Players;
 using DDDSample1.Domain.Families;
+using DDDNetCore.Domain.Connections;
+using DDDNetCore.Infraestructure.Connections;
 
 namespace DDDSample1
 {
@@ -82,6 +84,9 @@ namespace DDDSample1
 
             services.AddTransient<IFamilyRepository,FamilyRepository>();
             services.AddTransient<FamilyService>();
+
+            services.AddTransient<IConnectionRepository, ConnectionRepository>();
+            services.AddTransient<ConnectionService>();
         }
     }
 }

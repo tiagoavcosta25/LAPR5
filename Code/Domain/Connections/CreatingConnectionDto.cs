@@ -5,15 +5,15 @@ namespace DDDNetCore.Domain.Connections
 {
     public class CreatingConnectionDto
     {
-        public PlayerId Player { get; private set; }
+        public string Player { get; set; }
 
-        public PlayerId Friend { get; private set; }
+        public string Friend { get; set; }
 
-        public int ConnectionStrength { get; private set; }
+        public int ConnectionStrength { get; set; }
 
-        public ICollection<string> Tags { get; private set; }
+        public ICollection<string> Tags { get; set; }
 
-        public CreatingConnectionDto(PlayerId player, PlayerId friend, int connectionStrength, ICollection<string> tags)
+        public CreatingConnectionDto(string player, string friend, int connectionStrength, ICollection<string> tags)
         {
             Player = player;
             Friend = friend;
