@@ -58,9 +58,9 @@ namespace DDDNetCore.Controllers
 
         // PUT: api/Connections/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<ConnectionDto>> Update(Guid id, ConnectionDto dto)
+        public async Task<ActionResult<ConnectionDto>> Update(string id, ConnectionDto dto)
         {
-            if (id != dto.Id)
+            if (!id.Equals(dto.Id))
             {
                 return BadRequest();
             }
@@ -81,7 +81,6 @@ namespace DDDNetCore.Controllers
             }
         }
 
-        /* TODO: Checkar necessidade
         // Inactivate: api/Connections/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<ConnectionDto>> SoftDelete(Guid id)
@@ -95,7 +94,6 @@ namespace DDDNetCore.Controllers
 
             return Ok(con);
         }
-        */
 
         // DELETE: api/Connections/5
         [HttpDelete("{id}/hard")]
@@ -117,5 +115,34 @@ namespace DDDNetCore.Controllers
                 return BadRequest(new { Message = ex.Message });
             }
         }
+
+
+        // CRUD OVER //
+
+        // PUT: api/Connections/edit/5
+        [HttpPut("edit/{id}")]
+        public async Task<ActionResult<ConnectionDto>> UpdateTagsAndStrength(string id, UpdateTagsAndStrengthConnectionDTO dto)
+        {
+            if (!id.Equals(dto.Id))
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                var con = await _service.UpdateStrengthAndTagsAsync(dto);
+
+                if (con == null)
+                {
+                    return NotFound();
+                }
+                return Ok(con);
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
     }
 }

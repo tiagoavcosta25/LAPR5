@@ -22,8 +22,8 @@ namespace DDDSample1.Domain.Players
 
         public void updateEmail(string email){
             try{
-                var temp = new System.Net.Mail.MailAddress(email);
-                this.address = temp.Address;
+                
+                this.address = email;
             } catch{
                 throw new BusinessRuleValidationException("The provided email address is not valid.");
             }

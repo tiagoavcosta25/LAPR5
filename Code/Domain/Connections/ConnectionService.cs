@@ -25,7 +25,7 @@ namespace DDDNetCore.Domain.Connections
             var list = await this._repo.GetAllAsync();
 
             List<ConnectionDto> listDto = list.ConvertAll<ConnectionDto>(con =>
-                new ConnectionDto(con.Id.AsGuid(), con.Player, con.Friend, con.ConnectionStrength.Strength, con.Tags.Select(t => t.tagName).ToList()));
+                new ConnectionDto(con.Id.AsString(), con.Player.AsString(), con.Friend.AsString(), con.ConnectionStrength.Strength, con.Tags.Select(t => t.tagName).ToList()));
 
             return listDto;
         }
@@ -37,35 +37,53 @@ namespace DDDNetCore.Domain.Connections
             if (con == null)
                 return null;
 
-            return new ConnectionDto(con.Id.AsGuid(), con.Player, con.Friend, con.ConnectionStrength.Strength, con.Tags.Select(t => t.tagName).ToList());
+            return new ConnectionDto(con.Id.AsString(), con.Player.AsString(), con.Friend.AsString(), con.ConnectionStrength.Strength, con.Tags.Select(t => t.tagName).ToList());
         }
 
         public async Task<ConnectionDto> AddAsync(CreatingConnectionDto dto)
         {
-            //await checkPlayerIdAsync(new PlayerId(dto.Player));
-            //await checkPlayerIdAsync(new PlayerId(dto.Friend));
-            var con = new Connection(new PlayerId(dto.Player), new PlayerId(dto.Friend));
+            await checkPlayerIdAsync(new PlayerId(dto.Player));
+            await checkPlayerIdAsync(new PlayerId(dto.Friend));
+            var con = new Connection(dto.Player.ToString(), dto.Friend.ToString());
 
             await this._repo.AddAsync(con);
 
             await this._unitOfWork.CommitAsync();
 
-            return new ConnectionDto(con.Id.AsGuid(), con.Player, con.Friend);
+            return new ConnectionDto(con.Id.AsString(), con.Player.AsString(), con.Friend.AsString(), 0, new List<string>());
         }
 
         public async Task<ConnectionDto> UpdateAsync(ConnectionDto dto)
         {
+            await checkPlayerIdAsync(new PlayerId(dto.Player));
+            await checkPlayerIdAsync(new PlayerId(dto.Friend));
             var con = await this._repo.GetByIdAsync(new ConnectionId(dto.Id));
 
             if (con == null)
                 return null;
 
+            con.ChangePlayer(dto.Player);
+            con.ChangeFriend(dto.Friend);
             con.ChangeConnectionStrength(dto.ConnectionStrength);
             con.ChangeTags(dto.Tags);
 
             await this._unitOfWork.CommitAsync();
 
-            return new ConnectionDto(con.Id.AsGuid(), con.Player, con.Friend, con.ConnectionStrength.Strength, con.Tags.Select(t => t.tagName).ToList());
+            return new ConnectionDto(con.Id.AsString(), con.Player.AsString(), con.Friend.AsString(), con.ConnectionStrength.Strength, con.Tags.Select(t => t.tagName).ToList());
+        }
+
+        public async Task<ConnectionDto> InactivateAsync(ConnectionId id)
+        {
+            var con = await this._repo.GetByIdAsync(id);
+
+            if (con == null)
+                return null;
+
+            con.MarkAsInative();
+
+            await this._unitOfWork.CommitAsync();
+
+            return new ConnectionDto(con.Id.AsString(), con.Player.AsString(), con.Friend.AsString(), con.ConnectionStrength.Strength, con.Tags.Select(t => t.tagName).ToList());
         }
 
         public async Task<ConnectionDto> DeleteAsync(ConnectionId id)
@@ -78,7 +96,7 @@ namespace DDDNetCore.Domain.Connections
             this._repo.Remove(con);
             await this._unitOfWork.CommitAsync();
 
-            return new ConnectionDto(con.Id.AsGuid(), con.Player, con.Friend, con.ConnectionStrength.Strength, con.Tags.Select(t => t.tagName).ToList());
+            return new ConnectionDto(con.Id.AsString(), con.Player.AsString(), con.Friend.AsString(), con.ConnectionStrength.Strength, con.Tags.Select(t => t.tagName).ToList());
         }
 
         private async Task checkPlayerIdAsync(PlayerId playerId)
@@ -86,6 +104,24 @@ namespace DDDNetCore.Domain.Connections
             var pl = await _repoPl.GetByIdAsync(playerId);
             if (pl == null)
                 throw new BusinessRuleValidationException("Invalid Player or Friend Id.");
+        }
+
+
+        // CRUD OVER //
+
+        public async Task<ConnectionDto> UpdateStrengthAndTagsAsync(UpdateTagsAndStrengthConnectionDTO dto)
+        {
+            var con = await this._repo.GetByIdAsync(new ConnectionId(dto.Id));
+
+            if (con == null)
+                return null;
+
+            con.ChangeConnectionStrength(dto.ConnectionStrength);
+            con.ChangeTags(dto.Tags);
+
+            await this._unitOfWork.CommitAsync();
+
+            return new ConnectionDto(con.Id.AsString(), con.Player.AsString(), con.Friend.AsString(), con.ConnectionStrength.Strength, con.Tags.Select(t => t.tagName).ToList());
         }
 
     }
