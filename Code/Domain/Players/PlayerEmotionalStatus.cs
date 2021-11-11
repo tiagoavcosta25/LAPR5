@@ -4,6 +4,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DDDSample1.Domain.Players
 {
+    enum OOC {
+        Joyful,
+        Distressed,
+        Hopeful,
+        Fearful,
+        Relieve,
+        Disappointed,
+        Proud,
+        Remorseful,
+        Gratefuk,
+        Angry
+
+    }
+    
     [ComplexType] 
     public class PlayerEmotionalStatus : IValueObject
     {
