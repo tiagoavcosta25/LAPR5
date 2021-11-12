@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\beamr\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\beamr\\.nuget\\packages"
+    ]
+  }
+}
