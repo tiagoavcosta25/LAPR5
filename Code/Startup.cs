@@ -16,6 +16,12 @@ using DDDSample1.Domain.Categories;
 using DDDSample1.Domain.Products;
 using DDDSample1.Domain.Players;
 using DDDSample1.Domain.Families;
+using DDDNetCore.Domain.Connections;
+using DDDNetCore.Infraestructure.Connections;
+using DDDNetCore.Domain.Missions;
+using DDDNetCore.Infraestructure.Missions;
+using DDDNetCore.Infraestructure.ConnectionRequests;
+using DDDNetCore.Domain.ConnectionRequests;
 
 namespace DDDSample1
 {
@@ -32,11 +38,12 @@ namespace DDDSample1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DDDSample1DbContext>(opt =>
-                opt.UseInMemoryDatabase("DDDSample1DB")
+                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
                 .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>());
 
+            services.AddDatabaseDeveloperPageExceptionFilter();
+
             ConfigureMyServices(services);
-            
 
             services.AddControllers().AddNewtonsoftJson();
         }
@@ -81,6 +88,16 @@ namespace DDDSample1
 
             services.AddTransient<IFamilyRepository,FamilyRepository>();
             services.AddTransient<FamilyService>();
+
+            services.AddTransient<IConnectionRepository, ConnectionRepository>();
+            services.AddTransient<ConnectionService>();
+
+            services.AddTransient<IMissionRepository, MissionRepository>();
+            services.AddTransient<MissionService>();
+
+            services.AddTransient<IIntroductionRequestRepository, IntroductionRequestRepository>();
+            services.AddTransient<IntroductionRequestService>();
+
         }
     }
 }
