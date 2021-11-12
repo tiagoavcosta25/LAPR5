@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/kyber/ISEP/Year_03/PI/Code/DDDNetCore.csproj": {}
+    "C:\\Users\\beamr\\OneDrive\\Ambiente de Trabalho\\LAPR5\\Code\\DDDNetCore.csproj": {}
   },
   "projects": {
-    "/Users/kyber/ISEP/Year_03/PI/Code/DDDNetCore.csproj": {
+    "C:\\Users\\beamr\\OneDrive\\Ambiente de Trabalho\\LAPR5\\Code\\DDDNetCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/kyber/ISEP/Year_03/PI/Code/DDDNetCore.csproj",
+        "projectUniqueName": "C:\\Users\\beamr\\OneDrive\\Ambiente de Trabalho\\LAPR5\\Code\\DDDNetCore.csproj",
         "projectName": "DDDNetCore",
-        "projectPath": "/Users/kyber/ISEP/Year_03/PI/Code/DDDNetCore.csproj",
-        "packagesPath": "/Users/kyber/.nuget/packages/",
-        "outputPath": "/Users/kyber/ISEP/Year_03/PI/Code/obj/",
+        "projectPath": "C:\\Users\\beamr\\OneDrive\\Ambiente de Trabalho\\LAPR5\\Code\\DDDNetCore.csproj",
+        "packagesPath": "C:\\Users\\beamr\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\beamr\\OneDrive\\Ambiente de Trabalho\\LAPR5\\Code\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/kyber/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\beamr\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp5.0"
@@ -38,6 +38,10 @@
         "net5.0": {
           "targetAlias": "netcoreapp5.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
             "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
               "target": "Package",
               "version": "[5.0.0, )"
@@ -63,6 +67,10 @@
               "target": "Package",
               "version": "[1.1.6, )"
             },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[12.0.3, )"
@@ -86,7 +94,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.401/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     }
