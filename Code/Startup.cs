@@ -18,6 +18,10 @@ using DDDSample1.Domain.Players;
 using DDDSample1.Domain.Families;
 using DDDNetCore.Domain.Connections;
 using DDDNetCore.Infraestructure.Connections;
+using DDDNetCore.Domain.Missions;
+using DDDNetCore.Infraestructure.Missions;
+using DDDNetCore.Infraestructure.ConnectionRequests;
+using DDDNetCore.Domain.ConnectionRequests;
 
 namespace DDDSample1
 {
@@ -87,6 +91,13 @@ namespace DDDSample1
 
             services.AddTransient<IConnectionRepository, ConnectionRepository>();
             services.AddTransient<ConnectionService>();
+
+            services.AddTransient<IMissionRepository, MissionRepository>();
+            services.AddTransient<MissionService>();
+
+            services.AddTransient<IIntroductionRequestRepository, IntroductionRequestRepository>();
+            services.AddTransient<IntroductionRequestService>();
+
         }
     }
 }
