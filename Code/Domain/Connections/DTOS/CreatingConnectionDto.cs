@@ -1,7 +1,7 @@
 ﻿using DDDSample1.Domain.Players;
 using System.Collections.Generic;
 
-namespace DDDNetCore.Domain.Connections
+namespace DDDNetCore.Domain.Connections.DTOS
 {
     public class CreatingConnectionDto
     {

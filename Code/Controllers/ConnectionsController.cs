@@ -1,4 +1,6 @@
 ﻿using DDDNetCore.Domain.Connections;
+using DDDNetCore.Domain.Connections.DTOS;
+using DDDSample1.Domain.Players;
 using DDDSample1.Domain.Shared;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -119,18 +121,22 @@ namespace DDDNetCore.Controllers
 
         // CRUD OVER //
 
-        // PUT: api/Connections/edit/5
-        [HttpPut("edit/{id}")]
-        public async Task<ActionResult<ConnectionDto>> UpdateTagsAndStrength(string id, UpdateTagsAndStrengthConnectionDTO dto)
-        {
-            if (!id.Equals(dto.Id))
-            {
-                return BadRequest();
-            }
 
+        // GET: api/Connections/user/5
+        [HttpGet("user/{playerEmail}")]
+        public async Task<ActionResult<IEnumerable<GettingConnectionDto>>> GetAllConnections(string playerEmail)
+        {
+            return await _service.GetAllConnectionsAsync(playerEmail);
+        }
+
+
+        // PUT: api/Connections/edit/
+        [HttpPut("edit")]
+        public async Task<ActionResult<ConnectionDto>> UpdateTagsAndStrength(UpdatingConnectionDto dto)
+        {
             try
             {
-                var con = await _service.UpdateStrengthAndTagsAsync(dto);
+                var con = await _service.UpdateTagsAndStrengthAsync(dto);
 
                 if (con == null)
                 {

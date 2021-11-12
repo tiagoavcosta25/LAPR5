@@ -19,7 +19,7 @@ namespace DDDNetCore.Domain.Connections
 
         public bool Active { get; private set; }
 
-        public Connection()
+        private Connection()
         {
             Active = true;
         }
@@ -76,5 +76,16 @@ namespace DDDNetCore.Domain.Connections
             Active = false;
         }
 
+        public override bool Equals(object obj)
+        {
+            return obj is Connection connection &&
+                   EqualityComparer<PlayerId>.Default.Equals(Player, connection.Player) &&
+                   EqualityComparer<PlayerId>.Default.Equals(Friend, connection.Friend);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Player, Friend);
+        }
     }
 }

@@ -1,8 +1,6 @@
-﻿using DDDSample1.Domain.Players;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace DDDNetCore.Domain.Connections
+namespace DDDNetCore.Domain.Connections.DTOS
 {
     public class ConnectionDto
     {
