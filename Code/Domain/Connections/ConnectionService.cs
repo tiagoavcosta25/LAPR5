@@ -80,7 +80,7 @@ namespace DDDNetCore.Domain.Connections
             if (con == null)
                 return null;
 
-            con.MarkAsInative();
+            con.MarkAsInactive();
 
             await _unitOfWork.CommitAsync();
 

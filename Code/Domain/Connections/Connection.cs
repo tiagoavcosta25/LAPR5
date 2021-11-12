@@ -8,7 +8,6 @@ namespace DDDNetCore.Domain.Connections
 {
     public class Connection : Entity<ConnectionId>, IAggregateRoot
     {
-        //To avoid circular problems that are not ok according DDD principles we avoid having type user and instead use their id
         public PlayerId Player { get; private set; }
         
         public PlayerId Friend { get; private set; }
@@ -71,7 +70,7 @@ namespace DDDNetCore.Domain.Connections
             ConnectionStrength = new ConnectionStrength(connectionStrength);
         }
 
-        public void MarkAsInative() 
+        public void MarkAsInactive() 
         {
             Active = false;
         }

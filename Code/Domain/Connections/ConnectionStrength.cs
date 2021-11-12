@@ -1,4 +1,5 @@
 ﻿using DDDSample1.Domain.Shared;
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DDDNetCore.Domain.Connections
@@ -6,7 +7,6 @@ namespace DDDNetCore.Domain.Connections
     [ComplexType]
     public class ConnectionStrength : IValueObject
     {
-
         public int Strength { get; private set; }
 
         public ConnectionStrength(int strength)
@@ -16,8 +16,18 @@ namespace DDDNetCore.Domain.Connections
 
         public void ChangeStrength(int strength)
         {
-            Strength = strength;
+                Strength = strength;
         }
 
+        public override bool Equals(object obj)
+        {
+            return obj is ConnectionStrength strength &&
+                   Strength == strength.Strength;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Strength);
+        }
     }
 }
