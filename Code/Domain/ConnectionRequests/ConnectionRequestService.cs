@@ -6,30 +6,44 @@ using System.Threading.Tasks;
 
 namespace DDDNetCore.Domain.ConnectionRequests
 {
-    public class IntroductionRequestService
+    public class ConnectionRequestService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IIntroductionRequestRepository _repo;
+        private readonly IDirectRequestRepository _repoDir;
+        private readonly IIntroductionRequestRepository _repoInt;
         private readonly IPlayerRepository _repoPl;
 
-        public IntroductionRequestService(IUnitOfWork unitOfWork, IIntroductionRequestRepository repo, IPlayerRepository repoPl)
+        public ConnectionRequestService(IUnitOfWork unitOfWork, IDirectRequestRepository repoDir ,
+            IIntroductionRequestRepository repoInt, IPlayerRepository repoPl)
         {
             _unitOfWork = unitOfWork;
-            _repo = repo;
+            _repoDir = repoDir;
+            _repoInt = repoInt;
             _repoPl = repoPl;
         }
 
-        public async Task<List<IntroductionRequestDto>> GetAllAsync()
-        {
-            var list = await _repo.GetAllAsync();
 
-            List<IntroductionRequestDto> listDto = list.ConvertAll<IntroductionRequestDto>(intr =>
+
+        public async Task<ConnectionRequestListDto> GetAllAsync()
+        {
+            var listInt = await _repoInt.GetAllAsync();
+            var listDir = await _repoDir.GetAllAsync();
+
+            List<IntroductionRequestDto> listIntDto = listInt.ConvertAll<IntroductionRequestDto>(intr =>
                 new IntroductionRequestDto(intr.Id.AsString(), intr.Player.AsString(), intr.MiddleMan.AsString(), intr.Target.AsString(),
                 intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.ToString()));
 
-            return listDto;
+
+            List<DirectRequestDto> listDirDto = listDir.ConvertAll<DirectRequestDto>(dir =>
+                new DirectRequestDto(dir.Id.AsString(), dir.Player.AsString(), dir.Target.AsString(),
+                dir.PlayerToTargetMessage.Text, dir.CurrentStatus.ToString()));
+
+            ConnectionRequestListDto dto = new(listIntDto, listDirDto);
+
+            return dto;
         }
 
+        /*
         public async Task<IntroductionRequestDto> GetByIdAsync(ConnectionRequestId id)
         {
             var intr = await _repo.GetByIdAsync(id);
@@ -122,7 +136,7 @@ namespace DDDNetCore.Domain.ConnectionRequests
             if (pl == null)
                 throw new BusinessRuleValidationException("Invalid Player or Friend Email.");
         }
-
+        */
 
         // CRUD OVER //
 

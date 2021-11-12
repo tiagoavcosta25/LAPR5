@@ -6,7 +6,6 @@ namespace DDDNetCore.Domain.ConnectionRequests
 {
     public class IntroductionRequest : ConnectionRequest
     {
-
         public PlayerId MiddleMan { get; private set; }
 
         public Message PlayerToMiddleManMessage { get; private set; }

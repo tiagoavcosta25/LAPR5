@@ -96,7 +96,8 @@ namespace DDDSample1
             services.AddTransient<MissionService>();
 
             services.AddTransient<IIntroductionRequestRepository, IntroductionRequestRepository>();
-            services.AddTransient<IntroductionRequestService>();
+            services.AddTransient<IDirectRequestRepository, DirectRequestRepository>();
+            services.AddTransient<ConnectionRequestService>();
 
         }
     }
