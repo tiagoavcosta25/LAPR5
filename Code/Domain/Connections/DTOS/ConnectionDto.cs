@@ -1,10 +1,11 @@
-﻿using DDDSample1.Domain.Players;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace DDDNetCore.Domain.Connections
+namespace DDDNetCore.Domain.Connections.DTOS
 {
-    public class CreatingConnectionDto
+    public class ConnectionDto
     {
+        public string Id { get; set; }
+
         public string Player { get; set; }
 
         public string Friend { get; set; }
@@ -13,8 +14,9 @@ namespace DDDNetCore.Domain.Connections
 
         public ICollection<string> Tags { get; set; }
 
-        public CreatingConnectionDto(string player, string friend, int connectionStrength, ICollection<string> tags)
+        public ConnectionDto(string id, string player, string friend, int connectionStrength, ICollection<string> tags)
         {
+            Id = id;
             Player = player;
             Friend = friend;
             ConnectionStrength = connectionStrength;

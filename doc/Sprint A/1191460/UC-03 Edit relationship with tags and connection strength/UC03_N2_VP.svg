@@ -45,10 +45,10 @@
       ><path d="M0 0 L434 0 L434 104 L0 104 L0 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath14"
-      ><path d="M68 20 L68 35 L24 35 L24 20 ZM333 30 L333 45 L76 45 L76 30 ZM318 82 L318 97 L111 97 L111 82 ZM0 0 L0 104 L434 104 L434 15 L324 15 L324 0 Z"
+      ><path d="M68 20 L68 35 L24 35 L24 20 ZM333 30 L333 45 L76 45 L76 30 ZM318 82 L318 97 L111 97 L111 82 ZM0 0 L0 104 L434 104 L434 59 L410 59 L410 44 L434 44 L434 15 L324 15 L324 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath15"
-      ><path d="M318 30 L318 45 L111 45 L111 30 ZM304 79 L304 94 L125 94 L125 79 ZM0 0 L0 104 L434 104 L434 0 Z"
+      ><path d="M318 30 L318 45 L111 45 L111 30 ZM304 79 L304 94 L125 94 L125 79 ZM0 0 L0 104 L434 104 L434 7 L410 7 L410 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath16"
       ><path d="M304 30 L304 45 L125 45 L125 30 ZM308 68 L308 83 L121 83 L121 68 ZM0 0 L0 104 L434 104 L434 0 Z"
@@ -60,37 +60,37 @@
       ><path d="M303 30 L303 45 L127 45 L127 30 ZM365 77 L365 92 L64 92 L64 77 ZM0 0 L0 104 L434 104 L434 81 L428 81 L428 66 L434 66 L434 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath19"
-      ><path d="M365 30 L365 45 L64 45 L64 30 ZM253 82 L253 97 L176 97 L176 82 ZM0 0 L0 104 L415 104 L415 89 L434 89 L434 34 L428 34 L428 19 L434 19 L434 0 Z"
+      ><path d="M365 30 L365 45 L64 45 L64 30 ZM253 82 L253 97 L176 97 L176 82 ZM0 0 L0 104 L434 104 L434 34 L428 34 L428 19 L434 19 L434 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath20"
-      ><path d="M253 30 L253 45 L176 45 L176 30 ZM0 0 L0 104 L434 104 L434 52 L415 52 L415 37 L434 37 L434 0 Z"
+      ><path d="M253 30 L253 45 L176 45 L176 30 ZM0 0 L0 104 L434 104 L434 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath21"
-      ><path d="M326 30 L326 45 L104 45 L104 30 ZM0 0 L0 104 L434 104 L434 0 Z"
+      ><path d="M296 30 L296 45 L132 45 L132 30 ZM0 0 L0 104 L434 104 L434 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath22"
       ><path d="M0 0 L377 0 L377 104 L0 104 L0 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath23"
-      ><path d="M267 30 L267 45 L105 45 L105 30 ZM263 57 L263 72 L110 72 L110 57 ZM106 0 L106 1 L0 1 L0 104 L377 104 L377 1 L260 1 L260 0 Z"
+      ><path d="M291 30 L291 45 L72 45 L72 30 ZM261 57 L261 72 L111 72 L111 57 ZM106 0 L106 1 L0 1 L0 104 L377 104 L377 1 L260 1 L260 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath24"
-      ><path d="M267 3 L267 18 L105 18 L105 3 ZM263 30 L263 45 L110 45 L110 30 ZM0 0 L0 104 L377 104 L377 0 Z"
+      ><path d="M291 3 L291 18 L72 18 L72 3 ZM261 30 L261 45 L111 45 L111 30 ZM0 0 L0 104 L377 104 L377 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath25"
       ><path d="M0 0 L134 0 L134 124 L0 124 L0 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath26"
-      ><path d="M0 0 L0 64 L27 64 L27 79 L0 79 L0 124 L77 124 L77 123 L134 123 L134 68 L90 68 L90 53 L134 53 L134 0 Z"
+      ><path d="M0 0 L0 64 L27 64 L27 79 L0 79 L0 124 L109 124 L109 123 L134 123 L134 68 L90 68 L90 53 L134 53 L134 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath27"
-      ><path d="M294 30 L294 45 L77 45 L77 30 ZM0 0 L0 104 L376 104 L376 93 L377 93 L377 68 L374 68 L374 53 L377 53 L377 0 Z"
+      ><path d="M253 30 L253 45 L109 45 L109 30 ZM0 0 L0 104 L376 104 L376 93 L377 93 L377 68 L374 68 L374 53 L377 53 L377 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath28"
-      ><path d="M0 0 L0 23 L13 23 L13 38 L0 38 L0 124 L134 124 L134 101 L95 101 L95 86 L134 86 L134 61 L93 61 L93 46 L134 46 L134 0 Z"
+      ><path d="M0 0 L0 124 L134 124 L134 101 L95 101 L95 86 L134 86 L134 61 L93 61 L93 46 L134 46 L134 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath29"
-      ><path d="M13 0 L13 4 L0 4 L0 124 L134 124 L134 67 L95 67 L95 52 L134 52 L134 27 L93 27 L93 12 L134 12 L134 0 Z"
+      ><path d="M0 0 L0 124 L134 124 L134 67 L95 67 L95 52 L134 52 L134 27 L93 27 L93 12 L134 12 L134 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath30"
       ><path d="M230 30 L230 45 L142 45 L142 30 ZM0 0 L0 104 L377 104 L377 33 L376 33 L376 18 L377 18 L377 0 Z"
@@ -105,19 +105,19 @@
       ><path d="M-244 -15 L488 -15 L488 30 L-244 30 L-244 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath34"
-      ><path d="M-217 -15 L434 -15 L434 30 L-217 30 L-217 -15 Z"
+      ><path d="M-144 -15 L288 -15 L288 30 L-144 30 L-144 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath35"
       ><path d="M-227 -15 L454 -15 L454 30 L-227 30 L-227 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath36"
-      ><path d="M-153 -15 L306 -15 L306 30 L-153 30 L-153 -15 Z"
+      ><path d="M-150 -15 L300 -15 L300 30 L-150 30 L-150 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath37"
-      ><path d="M-162 -15 L324 -15 L324 30 L-162 30 L-162 -15 Z"
+      ><path d="M-219 -15 L438 -15 L438 30 L-219 30 L-219 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath38"
-      ><path d="M-222 -15 L444 -15 L444 30 L-222 30 L-222 -15 Z"
+      ><path d="M-164 -15 L328 -15 L328 30 L-164 30 L-164 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath39"
       ><path d="M-77 -15 L154 -15 L154 30 L-77 30 L-77 -15 Z"
@@ -318,30 +318,30 @@
       /><text fill="black" x="10" xml:space="preserve" y="12" clip-path="url(#clipPath33)" stroke="none"
       >4.1.1: serverDataValidation(data, relationship)</text
     ></g
-    ><g font-size="11px" transform="translate(401,348)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
-    ><rect x="0" width="217" height="15" y="0" clip-path="url(#clipPath34)" stroke="none"
+    ><g font-size="11px" transform="translate(433,348)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
+    ><rect x="0" width="144" height="15" y="0" clip-path="url(#clipPath34)" stroke="none"
       /><text fill="black" x="10" xml:space="preserve" y="12" clip-path="url(#clipPath34)" stroke="none"
-      >4.1: PUT relationship /{relationship} data</text
+      >4.1: PUT relationship/edit</text
     ></g
     ><g font-size="11px" transform="translate(414,278)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
     ><rect x="0" width="227" height="15" y="0" clip-path="url(#clipPath35)" stroke="none"
       /><text fill="black" x="10" xml:space="preserve" y="12" clip-path="url(#clipPath35)" stroke="none"
       >3.1: localDataValidation(data, relationship)</text
     ></g
-    ><g font-size="11px" transform="translate(434,88)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
-    ><rect x="0" width="153" height="15" y="0" clip-path="url(#clipPath36)" stroke="none"
+    ><g font-size="11px" transform="translate(435,88)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
+    ><rect x="0" width="150" height="15" y="0" clip-path="url(#clipPath36)" stroke="none"
       /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath36)" stroke="none"
-      >1.1.1: relationships (JSON)</text
+      >1.1.1: connections (JSON)</text
     ></g
-    ><g font-size="11px" transform="translate(429,61)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
-    ><rect x="0" width="162" height="15" y="0" clip-path="url(#clipPath37)" stroke="none"
+    ><g font-size="11px" transform="translate(396,61)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
+    ><rect x="0" width="219" height="15" y="0" clip-path="url(#clipPath37)" stroke="none"
       /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath37)" stroke="none"
-      >1.1: GET relationshps /{user}</text
+      >1.1: GET connections/user/{playerEmail}</text
     ></g
-    ><g font-size="11px" transform="translate(90,441)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
-    ><rect x="0" width="222" height="15" y="0" clip-path="url(#clipPath38)" stroke="none"
-      /><text fill="black" x="10" xml:space="preserve" y="12" clip-path="url(#clipPath38)" stroke="none"
-      >4.1.3.1: Relationship updated / Data error</text
+    ><g font-size="11px" transform="translate(118,441)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
+    ><rect x="0" width="164" height="15" y="0" clip-path="url(#clipPath38)" stroke="none"
+      /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath38)" stroke="none"
+      >4.1.3.1: Relationship updated</text
     ></g
     ><g font-size="11px" transform="translate(162,341)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
     ><rect x="0" width="77" height="15" y="0" clip-path="url(#clipPath39)" stroke="none"
