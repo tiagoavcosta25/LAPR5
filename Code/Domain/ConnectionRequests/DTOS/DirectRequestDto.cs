@@ -5,22 +5,10 @@ using System.Threading.Tasks;
 
 namespace DDDNetCore.Domain.ConnectionRequests.DTOS
 {
-    public class DirectRequestDto
+    public class DirectRequestDto : ConnectionRequestDto
     {
-        public string Id { get; set; }
-        public string Player { get; set; }
-        public string Target { get; set; }
-        public string PlayerToTargetMessage { get; set; }
-        public string CurrentStatus { get; set; }
-
-        public DirectRequestDto(string id, string player, string target, string playerToTargetMessage,
-            string currentStatus)
+        public DirectRequestDto(string id, string player, string target, string playerToTargetMessage, string currentStatus) : base(id, player, target, playerToTargetMessage, currentStatus)
         {
-            Id = id;
-            Player = player;
-            Target = target;
-            PlayerToTargetMessage = playerToTargetMessage;
-            CurrentStatus = currentStatus;
         }
     }
 }

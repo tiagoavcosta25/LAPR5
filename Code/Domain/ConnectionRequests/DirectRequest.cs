@@ -1,4 +1,6 @@
-﻿namespace DDDNetCore.Domain.ConnectionRequests
+﻿using System;
+
+namespace DDDNetCore.Domain.ConnectionRequests
 {
     public class DirectRequest : ConnectionRequest
     {
