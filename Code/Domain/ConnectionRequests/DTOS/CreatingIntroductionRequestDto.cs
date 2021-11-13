@@ -14,9 +14,11 @@ namespace DDDNetCore.Domain.ConnectionRequests.DTOS
         public string PlayerToMiddleManMessage { get; set; }
         public string MiddleManToTargetMessage { get; set; }
         public string CurrentStatus { get; set; }
+        public int Strength { get; set;  }
+        public ICollection<string> Tags { get; set; }
 
         public CreatingIntroductionRequestDto(string player, string middleMan, string target, string playerToTargetMessage,
-            string playerToMiddleManMessage, string middleManToTargetMessage, string currentStatus)
+            string playerToMiddleManMessage, string middleManToTargetMessage, string currentStatus, int strength, ICollection<string> tags)
         {
             Player = player;
             MiddleMan = middleMan;
@@ -25,6 +27,8 @@ namespace DDDNetCore.Domain.ConnectionRequests.DTOS
             PlayerToMiddleManMessage = playerToMiddleManMessage;
             MiddleManToTargetMessage = middleManToTargetMessage;
             CurrentStatus = currentStatus;
+            Strength = strength;
+            Tags = tags;
         }
     }
 }

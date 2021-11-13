@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace DDDNetCore.Domain.ConnectionRequests
 {
@@ -9,7 +10,8 @@ namespace DDDNetCore.Domain.ConnectionRequests
         {
         }
 
-        public DirectRequest(string player, string target, string playerToTargetMessage, string currentStatus) : base(player, target, playerToTargetMessage, currentStatus)
+        public DirectRequest(string player, string target, string playerToTargetMessage, string currentStatus, int strength, ICollection<string> tags) 
+            : base(player, target, playerToTargetMessage, currentStatus, strength, tags)
         {
         }
     }

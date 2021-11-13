@@ -16,6 +16,10 @@ namespace DDDNetCore.Domain.ConnectionRequests
 
         public ConnectionRequestStatus CurrentStatus { get; private set; }
 
+        public ConnectionStrength Strength { get; private set; }
+
+        public ICollection<Tag> Tags { get; private set; }
+
         public bool Active { get; private set; }
 
         public ConnectionRequest()
@@ -23,7 +27,7 @@ namespace DDDNetCore.Domain.ConnectionRequests
             Active = true;
         }
 
-        protected ConnectionRequest(string player, string target, string playerToTargetMessage, string currentStatus)
+        protected ConnectionRequest(string player, string target, string playerToTargetMessage, string currentStatus, int strength, ICollection<string> tags)
         {
             Id = new ConnectionRequestId(Guid.NewGuid());
             Player = new PlayerId(player);
@@ -31,6 +35,15 @@ namespace DDDNetCore.Domain.ConnectionRequests
             PlayerToTargetMessage = new Message(playerToTargetMessage);
             _ = Enum.TryParse(currentStatus, out ConnectionRequestStatusEnum status);
             CurrentStatus = new ConnectionRequestStatus(status);
+            Strength = new ConnectionStrength(strength);
+            ICollection<Tag> tagsList = new List<Tag>();
+            foreach (var tag in tags)
+            {
+                Tag tempTag = new(tag);
+                if(!tagsList.Contains(tempTag))
+                    tagsList.Add(tempTag);
+            }
+            Tags = tagsList;
             Active = true;
         }
 
@@ -65,10 +78,35 @@ namespace DDDNetCore.Domain.ConnectionRequests
         {
             if (!Active)
             {
-                throw new BusinessRuleValidationException("It is not possible to current status of an inactive ConnectionRequest!");
+                throw new BusinessRuleValidationException("It is not possible to change the current status of an inactive ConnectionRequest!");
             }
             _ = Enum.TryParse(currentStatus, out ConnectionRequestStatusEnum status);
             CurrentStatus = new ConnectionRequestStatus(status);
+        }
+
+        public void ChangeStrength(int strength)
+        {
+            if (!Active)
+            {
+                throw new BusinessRuleValidationException("It is not possible to change the strength of an inactive ConnectionRequest!");
+            }
+            Strength = new ConnectionStrength(strength);
+        }
+
+        public void ChangeTags(ICollection<string> tags)
+        {
+            if (!Active)
+            {
+                throw new BusinessRuleValidationException("It is not possible to change the tags of an inactive ConnectionRequest!");
+            }
+            ICollection<Tag> tagsList = new List<Tag>();
+            foreach (var tag in tags)
+            {
+                Tag tempTag = new(tag);
+                if (!tagsList.Contains(tempTag))
+                    tagsList.Add(tempTag);
+            }
+            Tags = tagsList;
         }
 
         public void MarkAsInactive()

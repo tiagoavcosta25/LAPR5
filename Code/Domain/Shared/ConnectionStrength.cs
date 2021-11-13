@@ -2,7 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DDDNetCore.Domain.Connections
+namespace DDDNetCore.Domain.Shared
 {
     [ComplexType]
     public class ConnectionStrength : IValueObject
