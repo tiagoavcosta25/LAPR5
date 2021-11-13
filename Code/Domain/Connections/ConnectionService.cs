@@ -161,7 +161,7 @@ namespace DDDNetCore.Domain.Connections
             return new ConnectionDto(con.Id.AsString(), con.Player.AsString(), con.Friend.AsString(), con.ConnectionStrength.Strength, con.Tags.Select(t => t.tagName).ToList());
         }
 
-        public async Task<List<PlayerDto>> GetReachableUsers(string playerEmail)
+        public async Task<List<PlayerDto>> GetReachablePlayers(string playerEmail)
         {
             var player = await _repoPl.GetByEmailAsync(playerEmail);
 

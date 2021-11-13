@@ -151,10 +151,10 @@ namespace DDDNetCore.Controllers
         }
 
         // GET: api/Connections/reachableUsers/email
-        [HttpGet("reachableUsers/{playerEmail}")]
-        public async Task<ActionResult<IEnumerable<PlayerDto>>> GetReachableUsers(string playerEmail)
+        [HttpGet("reachablePlayers/{playerEmail}")]
+        public async Task<ActionResult<IEnumerable<PlayerDto>>> GetReachablePlayers(string playerEmail)
         {
-            return await _service.GetReachableUsers(playerEmail);
+            return await _service.GetReachablePlayers(playerEmail);
         }
 
         // GET: api/Connections/reachableUsers/email
