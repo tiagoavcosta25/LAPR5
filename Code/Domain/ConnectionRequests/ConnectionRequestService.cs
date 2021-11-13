@@ -235,6 +235,34 @@ namespace DDDNetCore.Domain.ConnectionRequests
             return listDto;
         }
 
+        public async Task<ConnectionRequestDto> GetByEmailsAsync(string playerEmail, string targetEmail)
+        {
+            var player = await _repoPl.GetByEmailAsync(playerEmail);
+            var target = await _repoPl.GetByEmailAsync(targetEmail);
+
+            if (player == null || target == null)
+                throw new BusinessRuleValidationException("Invalid Player or Target Email");
+
+            var dir = await _repoDir.GetPendingDirectRequestByPlayerIds(player.Id, target.Id);
+
+            if (dir != null)
+            {
+                return new DirectRequestDto(dir.Id.AsString(), dir.Player.AsString(), dir.Target.AsString(),
+                    dir.PlayerToTargetMessage.Text, dir.CurrentStatus.CurrentStatus.ToString(), dir.Strength.Strength, dir.Tags.Select(t => t.tagName).ToList());
+
+            }
+
+            var intr = await _repoInt.GetPendingIntroductionRequestByPlayerIds(player.Id, target.Id);
+
+            if (intr == null)
+                return null;
+
+
+            return new IntroductionRequestDto(intr.Id.AsString(), intr.Player.AsString(), intr.MiddleMan.AsString(), intr.Target.AsString(),
+                 intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString(),
+                 intr.Strength.Strength, intr.Tags.Select(t => t.tagName).ToList());
+        }
+
         public async Task<ConnectionRequestDto> AcceptRequest(AcceptRequestDto dto)
         {
 
