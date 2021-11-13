@@ -211,5 +211,12 @@ namespace DDDNetCore.Controllers
                 return BadRequest(new { Message = ex.Message });
             }
         }
+
+        // GET: api/ConnectionRequests/pendingRequests/middleman/email
+        [HttpGet("pendingRequests/middleman/{email}")]
+        public async Task<ActionResult<IEnumerable<ListMidPendingRequestDto>>> GetAllUserPendingMidRequests(string email)
+        {
+            return await _service.GetAllUserPendingMidRequests(email);
+        }
     }
 }

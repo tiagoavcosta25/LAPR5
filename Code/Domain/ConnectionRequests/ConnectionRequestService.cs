@@ -313,5 +313,27 @@ namespace DDDNetCore.Domain.ConnectionRequests
                  intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString(),
                  intr.Strength.Strength, intr.Tags.Select(t => t.tagName).ToList());
         }
+
+        public async Task<List<ListMidPendingRequestDto>> GetAllUserPendingMidRequests(string email)
+        {
+            var player = await _repoPl.GetByEmailAsync(email);
+
+            var listInt = await _repoInt.GetAllUserPendingMidRequestsAsync(player.Id);
+
+            List<IntroductionRequestDto> listDtoInt = listInt.ConvertAll<IntroductionRequestDto>(intr =>
+                new IntroductionRequestDto(intr.Id.AsString(), intr.Player.AsString(), intr.MiddleMan.AsString(), intr.Target.AsString(),
+                 intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString(),
+                 intr.Strength.Strength, intr.Tags.Select(t => t.tagName).ToList()));
+
+            //
+            List<ListMidPendingRequestDto> listDto = new();
+
+            foreach (IntroductionRequestDto dto in listDtoInt)
+            {
+                listDto.Add(new ListMidPendingRequestDto(dto.Player, dto.MiddleMan, dto.Target, dto.PlayerToMiddleManMessage));
+            }
+
+            return listDto;
+        }
     }
 }
