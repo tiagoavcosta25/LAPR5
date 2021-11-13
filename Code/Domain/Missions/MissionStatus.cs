@@ -1,5 +1,6 @@
 ﻿using DDDSample1.Domain.Shared;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DDDNetCore.Domain.Missions
@@ -16,6 +17,7 @@ namespace DDDNetCore.Domain.Missions
     [ComplexType]
     public class MissionStatus : IValueObject
     {
+        [Required]
         public MissionStatusEnum CurrentStatus { get; private set; }
 
         public MissionStatus(MissionStatusEnum currentStatus)
