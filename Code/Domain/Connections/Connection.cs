@@ -23,13 +23,20 @@ namespace DDDNetCore.Domain.Connections
             Active = true;
         }
 
-        public Connection(string player, string friend)
+        public Connection(string player, string friend, int connectionStrength, ICollection<string> tags)
         {
             Id = new ConnectionId(Guid.NewGuid());
             Player = new PlayerId(player);
             Friend = new PlayerId(friend);
-            ConnectionStrength = new ConnectionStrength(0);
-            Tags = new List<Tag>();
+            ConnectionStrength = new ConnectionStrength(connectionStrength);
+            ICollection<Tag> tagsList = new List<Tag>();
+            foreach (var tag in tags)
+            {
+                Tag tempTag = new(tag);
+                if (!tagsList.Contains(tempTag))
+                    tagsList.Add(tempTag);
+            }
+            Tags = tagsList;
             Active = true;
         }
 
