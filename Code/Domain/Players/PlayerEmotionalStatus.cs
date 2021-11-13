@@ -4,17 +4,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DDDSample1.Domain.Players
 {
-    enum OOC {
-        Joyful,
-        Distressed,
-        Hopeful,
-        Fearful,
-        Relieve,
-        Disappointed,
-        Proud,
-        Remorseful,
-        Gratefuk,
-        Angry
+    public enum OOC {
+        joyful,
+        distressed,
+        hopeful,
+        fearful,
+        relieve,
+        disappointed,
+        proud,
+        remorseful,
+        gratefuk,
+        angry
 
     }
     
@@ -22,19 +22,19 @@ namespace DDDSample1.Domain.Players
     public class PlayerEmotionalStatus : IValueObject
     {
 
-        public string Status { get;  private set; }
+        public OOC Status { get;  private set; }
 
         public PlayerEmotionalStatus()
         {
         }
 
-        public PlayerEmotionalStatus(string status)
+        public PlayerEmotionalStatus(OOC status)
         {
-            this.updateEmotionalStatus(status);
+            Status = status;
             
         }
 
-        public void updateEmotionalStatus(string status){
+        public void updateEmotionalStatus(OOC status){
             try{
                 this.Status = status; // verify
             } catch{
