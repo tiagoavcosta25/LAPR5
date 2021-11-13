@@ -161,5 +161,33 @@ namespace DDDNetCore.Domain.Connections
             return new ConnectionDto(con.Id.AsString(), con.Player.AsString(), con.Friend.AsString(), con.ConnectionStrength.Strength, con.Tags.Select(t => t.tagName).ToList());
         }
 
+        public async Task<List<ConnectionDto>> GetNetwork(PlayerId id, int scope){
+            
+            List<Connection> lst = new List<Connection>();
+            lst = await this.GetNetwork(id, scope, lst);
+
+            List<ConnectionDto> lstDto = lst.ConvertAll<ConnectionDto>(con =>
+                new ConnectionDto(con.Id.AsString(), con.Player.AsString(), con.Friend.AsString(), con.ConnectionStrength.Strength, con.Tags.Select(t => t.tagName).ToList()));
+
+            return lstDto;
+        }
+
+        private async Task<List<Connection>> GetNetwork(PlayerId id, int scope, List<Connection> lst){
+            
+            if(scope < 1){
+                return lst;
+            }
+
+            List<Connection> lstFriends = await this._repo.GetAllUserConnectionsAsync(id);
+
+            lst.AddRange(lstFriends);
+            
+            foreach(Connection c in lstFriends){
+                await this.GetNetwork(c.Friend, scope - 1);
+            }
+
+            return lst;
+        }
+
     }
 }
