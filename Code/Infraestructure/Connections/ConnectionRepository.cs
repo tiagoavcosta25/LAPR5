@@ -32,5 +32,25 @@ namespace DDDNetCore.Infraestructure.Connections
                 .Where(x => x.Player.Equals(playerId) && x.Friend.Equals(friendId))
                 .FirstOrDefaultAsync();
         }
+
+        public async Task<List<PlayerId>> GetFriendsList(PlayerId playerId)
+        {
+            var friendsList = await _dbconnection
+                .Where(c => (c.Player.Equals(playerId)) || (c.Friend.Equals(playerId))).ToListAsync();
+
+            return friendsList.Select(c => !c.Player.Equals(playerId) ? c.Player : c.Friend).ToList();
+        }
+
+        public async Task<List<PlayerId>> GetMutualFriends(PlayerId playerId, PlayerId targetId)
+        {
+            var playerFriendsList = await _dbconnection
+                .Where(c => (c.Player.Equals(playerId)) || (c.Friend.Equals(playerId))).ToListAsync();
+            var targetFriendsList = await _dbconnection
+                .Where(c => (c.Player.Equals(targetId))
+                || (c.Friend.Equals(targetId))).ToListAsync();
+            List<PlayerId> playerFriends = playerFriendsList.Select(c => !c.Player.Equals(playerId) ? c.Player : c.Friend).ToList();
+            List<PlayerId> targetFriends = targetFriendsList.Select(c => !c.Player.Equals(targetId) ? c.Player : c.Friend).ToList();
+            return playerFriends.Intersect(targetFriends).ToList();
+        }
     }
 }
