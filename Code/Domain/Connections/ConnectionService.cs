@@ -45,7 +45,7 @@ namespace DDDNetCore.Domain.Connections
         {
             await checkPlayerIdAsync(new PlayerId(dto.Player));
             await checkPlayerIdAsync(new PlayerId(dto.Friend));
-            var con = new Connection(dto.Player.ToString(), dto.Friend.ToString());
+            var con = new Connection(dto.Player.ToString(), dto.Friend.ToString(), dto.ConnectionStrength, dto.Tags);
 
             await _repo.AddAsync(con);
 

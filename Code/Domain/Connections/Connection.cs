@@ -3,19 +3,25 @@ using DDDSample1.Domain.Players;
 using DDDSample1.Domain.Shared;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DDDNetCore.Domain.Connections
 {
     public class Connection : Entity<ConnectionId>, IAggregateRoot
     {
+        [Required]
+        [MaxLength(70)]
+        [ForeignKey("Player")]
         public PlayerId Player { get; private set; }
-        
+        [Required]
+        [MaxLength(70)]
         public PlayerId Friend { get; private set; }
-
+        [Required]
+        [Range(1, 100)]
         public ConnectionStrength ConnectionStrength { get; private set; }
-
+        [Required]
         public ICollection<Tag> Tags { get; private set; }
-
         public bool Active { get; private set; }
 
         private Connection()
@@ -23,13 +29,20 @@ namespace DDDNetCore.Domain.Connections
             Active = true;
         }
 
-        public Connection(string player, string friend)
+        public Connection(string player, string friend, int connectionStrength, ICollection<string> tags)
         {
             Id = new ConnectionId(Guid.NewGuid());
             Player = new PlayerId(player);
             Friend = new PlayerId(friend);
-            ConnectionStrength = new ConnectionStrength(0);
-            Tags = new List<Tag>();
+            ConnectionStrength = new ConnectionStrength(connectionStrength);
+            ICollection<Tag> tagsList = new List<Tag>();
+            foreach (var tag in tags)
+            {
+                Tag tempTag = new(tag);
+                if (!tagsList.Contains(tempTag))
+                    tagsList.Add(tempTag);
+            }
+            Tags = tagsList;
             Active = true;
         }
 

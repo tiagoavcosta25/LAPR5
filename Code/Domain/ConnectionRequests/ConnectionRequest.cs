@@ -3,23 +3,28 @@ using DDDSample1.Domain.Players;
 using DDDSample1.Domain.Shared;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DDDNetCore.Domain.ConnectionRequests
 {
     public abstract class ConnectionRequest : Entity<ConnectionRequestId>, IAggregateRoot
     {
+        [Required]
+        [MaxLength(70)]
         public PlayerId Player { get; private set; }
-
+        [Required]
+        [MaxLength(70)]
         public PlayerId Target { get; private set; }
-
+        [Required]
+        [MaxLength(1000)]
         public Message PlayerToTargetMessage { get; private set; }
-
+        [Required]
         public ConnectionRequestStatus CurrentStatus { get; private set; }
-
+        [Required]
+        [Range(1, 100)]
         public ConnectionStrength Strength { get; private set; }
-
+        [Required]
         public ICollection<Tag> Tags { get; private set; }
-
         public bool Active { get; private set; }
 
         public ConnectionRequest()

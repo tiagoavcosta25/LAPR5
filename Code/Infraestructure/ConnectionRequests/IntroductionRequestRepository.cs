@@ -21,8 +21,9 @@ namespace DDDNetCore.Infraestructure.ConnectionRequests
 
         public async Task<List<IntroductionRequest>> GetAllUserPendingIntroductionRequestsAsync(PlayerId playerId)
         {
+            var pending = ConnectionRequestStatusEnum.request_pending;
             return await _dbintroductionRequest
-                .Where(x => x.CurrentStatus.CurrentStatus.ToString().Equals("request_pending") &&
+                .Where(x => x.CurrentStatus.CurrentStatus.Equals(pending) &&
                 x.Target.Equals(playerId))
                 .ToListAsync();
         } 
