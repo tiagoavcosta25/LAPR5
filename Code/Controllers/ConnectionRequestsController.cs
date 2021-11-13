@@ -1,4 +1,5 @@
 ﻿using DDDNetCore.Domain.ConnectionRequests;
+using DDDSample1.Domain.Players;
 using DDDNetCore.Domain.ConnectionRequests.DTOS;
 using DDDSample1.Domain.Shared;
 using Microsoft.AspNetCore.Mvc;
@@ -165,6 +166,13 @@ namespace DDDNetCore.Controllers
         public async Task<ActionResult<IEnumerable<ConnectionRequestDto>>> GetAllUserPendingDirectRequests(string email)
         {
             return await _service.GetAllUserPendingDirectRequestsAsync(email);
+        }
+
+        // GET: api/ConnectionRequests/reachableUsers/email
+        [HttpGet("{email}")]
+        public async Task<ActionResult<IEnumerable<PlayerDto>>> GetReachableUsers(string email)
+        {
+            return await _service.GetReachableUsers(email);
         }
     }
 }
