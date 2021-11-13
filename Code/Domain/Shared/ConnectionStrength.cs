@@ -14,12 +14,20 @@ namespace DDDNetCore.Domain.Shared
 
         public ConnectionStrength(int strength)
         {
+            LocalValidation(strength);
             Strength = strength;
         }
 
         public void ChangeStrength(int strength)
         {
-                Strength = strength;
+            LocalValidation(strength);
+            Strength = strength;
+        }
+
+        private static void LocalValidation(int strength) 
+        {
+            if (!(strength > 0 && strength <= 100))
+                throw new BusinessRuleValidationException("Connection strength cannot be lower than 0 or higher than 100!");
         }
 
         public override bool Equals(object obj)

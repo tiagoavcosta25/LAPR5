@@ -167,13 +167,18 @@ namespace DDDNetCore.Controllers
             return await _service.GetAllUserPendingDirectRequestsAsync(email);
         }
 
-        // PUT: api/ConnectionRequests/accept/5
-        [HttpPut("accept/{id}")]
-        public async Task<ActionResult<AcceptRequestDto>> AcceptRequest(string id, AcceptRequestDto dto)
+        // PUT: api/ConnectionRequests/pendingRequests/email@gmail.com/accept/
+        [HttpPut("pendingRequests/{email}/accept")]
+        public async Task<ActionResult<AcceptRequestDto>> AcceptRequest(string email, AcceptRequestDto dto)
         {
+            if (!email.Equals(dto.Target))
+            {
+                return BadRequest();
+            }
+
             try
             {
-                var conR = await _service.AcceptRequest(id, dto);
+                var conR = await _service.AcceptRequest(dto);
 
                 if (conR == null)
                 {

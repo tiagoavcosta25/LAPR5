@@ -235,10 +235,13 @@ namespace DDDNetCore.Domain.ConnectionRequests
             return listDto;
         }
 
-        public async Task<ConnectionRequestDto> AcceptRequest(string id, AcceptRequestDto dto)
+        public async Task<ConnectionRequestDto> AcceptRequest(AcceptRequestDto dto)
         {
 
-            var dir = await _repoDir.GetByIdAsync(new ConnectionRequestId(id));
+            var playerId = await _repoPl.GetByEmailAsync(dto.Player);
+            var targetId = await _repoPl.GetByEmailAsync(dto.Target);
+
+            var dir = await _repoDir.GetPendingDirectRequestByPlayerIds(playerId.Id, targetId.Id);
 
             if (dir != null)
             {
@@ -260,7 +263,7 @@ namespace DDDNetCore.Domain.ConnectionRequests
                                             dir.PlayerToTargetMessage.Text, dir.CurrentStatus.CurrentStatus.ToString(), dir.Strength.Strength, dir.Tags.Select(t => t.tagName).ToList());
             }
 
-            var intr = await _repoInt.GetByIdAsync(new ConnectionRequestId(id));
+            var intr = await _repoInt.GetPendingIntroductionRequestByPlayerIds(playerId.Id, targetId.Id);
 
             if (intr == null)
                 return null;

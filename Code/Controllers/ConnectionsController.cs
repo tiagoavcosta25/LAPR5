@@ -122,7 +122,7 @@ namespace DDDNetCore.Controllers
         // CRUD OVER //
 
 
-        // GET: api/Connections/user/5
+        // GET: api/connections/user/email@gmail.com
         [HttpGet("user/{playerEmail}")]
         public async Task<ActionResult<IEnumerable<GettingConnectionDto>>> GetAllConnections(string playerEmail)
         {
@@ -130,10 +130,14 @@ namespace DDDNetCore.Controllers
         }
 
 
-        // PUT: api/Connections/edit/
-        [HttpPut("edit")]
-        public async Task<ActionResult<ConnectionDto>> UpdateTagsAndStrength(UpdatingConnectionDto dto)
+        // PUT: api/Connections/user/email@gmail.com
+        [HttpPut("user/{playerEmail}")]
+        public async Task<ActionResult<ConnectionDto>> UpdateTagsAndStrength(string playerEmail, UpdatingConnectionDto dto)
         {
+            if (!playerEmail.Equals(dto.PlayerEmail))
+            {
+                return BadRequest();
+            }
             try
             {
                 var con = await _service.UpdateTagsAndStrengthAsync(dto);
