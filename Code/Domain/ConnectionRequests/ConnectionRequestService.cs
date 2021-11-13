@@ -282,5 +282,38 @@ namespace DDDNetCore.Domain.ConnectionRequests
                  intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString(),
                  intr.Strength.Strength, intr.Tags.Select(t => t.tagName).ToList());
         }
+
+        public async Task<ApproveRequestDto> UpdateApproval(ConnectionRequestId id, ApproveRequestDto dto)
+        {
+            var intr = await _repoInt.GetByIdAsync(id);
+
+            if (intr == null)
+                return null;
+
+            intr.ChangeMiddleManToTargetMessage(dto.MiddleManToTargetMessage);
+            intr.ChangeCurrentStatus(dto.Status);
+
+            await _unitOfWork.CommitAsync();
+
+            return new ApproveRequestDto(intr.CurrentStatus.CurrentStatus.ToString(), intr.MiddleManToTargetMessage.Text);
+        }
+
+        public async Task<List<ConnectionRequestDto>> GetMiddleManRequests(string playerEmail)
+        {
+            var player = await _repoPl.GetByEmailAsync(playerEmail);
+
+            var listInt = await _repoInt.GetMiddleManRequests(player.Id);
+
+            List<IntroductionRequestDto> listDtoInt = listInt.ConvertAll<IntroductionRequestDto>(intr =>
+                new IntroductionRequestDto(intr.Id.AsString(), intr.Player.AsString(), intr.MiddleMan.AsString(), intr.Target.AsString(),
+                 intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString(),
+                 intr.Strength.Strength, intr.Tags.Select(t => t.tagName).ToList()));
+
+            List<ConnectionRequestDto> listDto = new(listDtoDir);
+            listDto.AddRange(listDtoInt);
+
+            return listDto;
+        }
+
     }
 }
