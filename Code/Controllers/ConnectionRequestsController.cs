@@ -188,12 +188,5 @@ namespace DDDNetCore.Controllers
                 return BadRequest(new { Message = ex.Message });
             }
         }
-
-        // GET: api/ConnectionRequests/reachableUsers/email
-        [HttpGet("{email}")]
-        public async Task<ActionResult<IEnumerable<PlayerDto>>> GetReachableUsers(string email)
-        {
-            return await _service.GetReachableUsers(email);
-        }
     }
 }
