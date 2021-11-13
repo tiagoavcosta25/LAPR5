@@ -30,7 +30,7 @@
       ><path d="M0 0 L468 0 L468 87 L0 87 L0 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath9"
-      ><path d="M0 0 L0 12 L96 12 L96 25 L409 25 L409 40 L44 40 L44 27 L0 27 L0 87 L106 87 L106 82 L347 82 L347 87 L468 87 L468 7 L355 7 L355 0 Z"
+      ><path d="M0 0 L0 12 L96 12 L96 24 L409 24 L409 39 L44 39 L44 27 L0 27 L0 87 L106 87 L106 82 L347 82 L347 87 L468 87 L468 7 L355 7 L355 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath10"
       ><path d="M0 0 L469 0 L469 87 L0 87 L0 0 Z"
@@ -174,7 +174,7 @@
       /><text fill="black" x="11" xml:space="preserve" y="12" clip-path="url(#clipPath20)" stroke="none"
       >1.1: presents a list of all connection requests</text
     ></g
-    ><g font-size="11px" transform="translate(67,50)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
+    ><g font-size="11px" transform="translate(67,49)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
     ><rect x="0" width="365" height="15" y="0" clip-path="url(#clipPath21)" stroke="none"
       /><text fill="black" x="11" xml:space="preserve" y="12" clip-path="url(#clipPath21)" stroke="none"
       >1: initiates the process of approving / disapproving connection request</text
