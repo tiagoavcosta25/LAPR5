@@ -33,10 +33,10 @@
       ><path d="M378 28 L378 43 L114 43 L114 28 ZM332 77 L332 92 L174 92 L174 77 ZM0 0 L0 20 L103 20 L103 35 L0 35 L0 104 L514 104 L514 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath10"
-      ><path d="M332 31 L332 46 L174 46 L174 31 ZM0 0 L0 104 L165 104 L165 90 L335 90 L335 104 L514 104 L514 0 Z"
+      ><path d="M332 31 L332 46 L174 46 L174 31 ZM0 0 L0 104 L157 104 L157 90 L343 90 L343 104 L514 104 L514 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath11"
-      ><path d="M335 30 L335 45 L165 45 L165 30 ZM373 78 L373 93 L135 93 L135 78 ZM0 0 L0 104 L514 104 L514 0 Z"
+      ><path d="M343 30 L343 45 L157 45 L157 30 ZM373 78 L373 93 L135 93 L135 78 ZM0 0 L0 104 L514 104 L514 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath12"
       ><path d="M373 30 L373 45 L135 45 L135 30 ZM0 0 L0 104 L216 104 L216 89 L290 89 L290 104 L514 104 L514 0 Z"
@@ -57,7 +57,7 @@
       ><path d="M-238 -15 L476 -15 L476 30 L-238 30 L-238 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath18"
-      ><path d="M-170 -15 L340 -15 L340 30 L-170 30 L-170 -15 Z"
+      ><path d="M-186 -15 L372 -15 L372 30 L-186 30 L-186 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath19"
       ><path d="M-158 -15 L316 -15 L316 30 L-158 30 L-158 -15 Z"
@@ -159,10 +159,10 @@
       /><text fill="black" x="10" xml:space="preserve" y="12" clip-path="url(#clipPath17)" stroke="none"
       >2.1: presents data and requests confirmation</text
     ></g
-    ><g font-size="11px" transform="translate(178,153)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
-    ><rect x="0" width="170" height="15" y="0" clip-path="url(#clipPath18)" stroke="none"
-      /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath18)" stroke="none"
-      >2: updates player's profile data</text
+    ><g font-size="11px" transform="translate(170,153)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
+    ><rect x="0" width="186" height="15" y="0" clip-path="url(#clipPath18)" stroke="none"
+      /><text fill="black" x="10" xml:space="preserve" y="12" clip-path="url(#clipPath18)" stroke="none"
+      >2: inserts player's profile new data</text
     ></g
     ><g font-size="11px" transform="translate(187,94)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
     ><rect x="0" width="158" height="15" y="0" clip-path="url(#clipPath19)" stroke="none"
