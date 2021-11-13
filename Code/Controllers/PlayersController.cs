@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Players;
 
-
 namespace DDDSample1.Controllers
 {
     [Route("api/[controller]")]
@@ -116,5 +115,34 @@ namespace DDDSample1.Controllers
                return BadRequest(new {Message = ex.Message});
             }
         }
+
+        // CRUD OVER
+
+
+        // PUT: api/Players/emotionalStatus/email1@gmail.com
+        [HttpPut("emotionalStatus/{playerEmail}")]
+        public async Task<ActionResult<PlayerDto>> ChangeEmotionalStatus(string playerEmail, ChangeEmotionalStatusDto dto)
+        {
+            if (playerEmail != dto.PlayerEmail)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                var plyr = await _service.ChangeEmotionalStatusAsync(dto);
+
+                if (plyr == null)
+                {
+                    return NotFound();
+                }
+                return Ok(plyr);
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
     }
 }
