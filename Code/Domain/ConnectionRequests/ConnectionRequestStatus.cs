@@ -1,5 +1,6 @@
 ﻿using DDDSample1.Domain.Shared;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DDDNetCore.Domain.ConnectionRequests
@@ -16,6 +17,7 @@ namespace DDDNetCore.Domain.ConnectionRequests
     [ComplexType]
     public class ConnectionRequestStatus : IValueObject 
     {
+        [Required]
         public ConnectionRequestStatusEnum CurrentStatus { get; private set; }
 
         public ConnectionRequestStatus(ConnectionRequestStatusEnum currentStatus)

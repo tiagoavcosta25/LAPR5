@@ -1,12 +1,15 @@
 ﻿using DDDSample1.Domain.Shared;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DDDNetCore.Domain.Connections
+namespace DDDNetCore.Domain.Shared
 {
     [ComplexType]
     public class ConnectionStrength : IValueObject
-    {
+    {   
+        [Required]
+        [Range(1, 100)]
         public int Strength { get; private set; }
 
         public ConnectionStrength(int strength)

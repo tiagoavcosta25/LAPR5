@@ -31,6 +31,7 @@ namespace DDDSample1.Infrastructure
 
         public DbSet<IntroductionRequest> IntroductionRequests { get; set; }
 
+        public DbSet<DirectRequest> DirectRequests { get; set; }
         public DDDSample1DbContext(DbContextOptions options) : base(options)
         {
 
@@ -45,6 +46,8 @@ namespace DDDSample1.Infrastructure
             modelBuilder.ApplyConfiguration(new ConnectionEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new MissionEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new IntroductionRequestEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new DirectRequestEntityTypeConfiguration());
+
         }
     }
 }

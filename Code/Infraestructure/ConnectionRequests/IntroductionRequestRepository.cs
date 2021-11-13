@@ -1,4 +1,5 @@
 ﻿using DDDNetCore.Domain.ConnectionRequests;
+using DDDSample1.Domain.Players;
 using DDDSample1.Infrastructure;
 using DDDSample1.Infrastructure.Shared;
 using Microsoft.EntityFrameworkCore;
@@ -17,5 +18,28 @@ namespace DDDNetCore.Infraestructure.ConnectionRequests
         {
             _dbintroductionRequest = context.IntroductionRequests;
         }
-    }
+
+        public async Task<List<IntroductionRequest>> GetAllUserPendingIntroductionRequestsAsync(PlayerId playerId)
+        {
+            var pending = ConnectionRequestStatusEnum.request_pending;
+            return await _dbintroductionRequest
+                .Where(x => x.CurrentStatus.CurrentStatus.Equals(pending) &&
+                x.Target.Equals(playerId))
+                .ToListAsync();
+        } 
+
+        public async Task<List<Player>> GetReachableUsers(PlayerId playerId)
+        {
+            return null;
+
+                //TODO: Get Friends of Friends
+        }
+
+        public async Task<List<Player>> GetMiddlemanList(PlayerId playerId, PlayerId targetId)
+        {
+            return null;
+
+                //TODO: Get Friends of Friends
+        }
+    }  
 }
