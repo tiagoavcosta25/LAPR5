@@ -122,18 +122,41 @@ namespace DDDNetCore.Controllers
         // CRUD OVER //
 
 
-        // GET: api/Connections/user/5
+        // GET: api/connections/user/email@gmail.com
         [HttpGet("user/{playerEmail}")]
         public async Task<ActionResult<IEnumerable<GettingConnectionDto>>> GetAllConnections(string playerEmail)
         {
             return await _service.GetAllConnectionsAsync(playerEmail);
         }
 
-
-        // PUT: api/Connections/edit/
-        [HttpPut("edit")]
-        public async Task<ActionResult<ConnectionDto>> UpdateTagsAndStrength(UpdatingConnectionDto dto)
+        // GET: api/connections/user/emails?emailPlayer=email1@gmail.com&emailFriend=email2@gmail.com
+        [HttpGet("user/emails")]
+        public async Task<ActionResult<ConnectionDto>> GetByEmails(string emailPlayer, string emailFriend)
         {
+            try
+            {
+                var con = await _service.GetByEmailsAsync(emailPlayer, emailFriend);
+                if (con == null)
+                {
+                    return NotFound();
+                }
+                return con;
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
+
+        // PUT: api/connections/user/email@gmail.com
+        [HttpPut("user/{playerEmail}")]
+        public async Task<ActionResult<ConnectionDto>> UpdateTagsAndStrength(string playerEmail, UpdatingConnectionDto dto)
+        {
+            if (!playerEmail.Equals(dto.PlayerEmail))
+            {
+                return BadRequest();
+            }
             try
             {
                 var con = await _service.UpdateTagsAndStrengthAsync(dto);

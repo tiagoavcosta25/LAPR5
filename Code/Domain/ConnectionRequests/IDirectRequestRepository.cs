@@ -8,5 +8,7 @@ namespace DDDNetCore.Domain.ConnectionRequests
     public interface IDirectRequestRepository : IRepository<DirectRequest, ConnectionRequestId>
     {
         Task<List<DirectRequest>> GetAllUserPendingDirectRequestsAsync(PlayerId playerId);
+
+        Task<DirectRequest> GetPendingDirectRequestByPlayerIds(PlayerId player, PlayerId target);
     }
 }

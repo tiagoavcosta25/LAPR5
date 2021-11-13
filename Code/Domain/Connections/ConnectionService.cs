@@ -107,21 +107,15 @@ namespace DDDNetCore.Domain.Connections
                 throw new BusinessRuleValidationException("Invalid Player or Friend Id.");
         }
 
-        private async Task checkPlayerEmailAsync(string playerEmail) 
-        {
-            var pl = await _repoPl.GetByEmailAsync(playerEmail);
-            if (pl == null)
-                throw new BusinessRuleValidationException("Invalid Player or Friend Email.");
-        }
-
 
         // CRUD OVER //
 
         public async Task<List<GettingConnectionDto>> GetAllConnectionsAsync(string playerEmail)
         {
-            await checkPlayerEmailAsync(playerEmail);
-
             var pl = await _repoPl.GetByEmailAsync(playerEmail);
+
+            if(pl == null)
+                throw new BusinessRuleValidationException("Invalid Player or Friend Email.");
 
             var list = await _repo.GetAllUserConnectionsAsync(pl.Id);
 
@@ -139,14 +133,31 @@ namespace DDDNetCore.Domain.Connections
             return finalListDto;
         }
 
+        public async Task<ConnectionDto> GetByEmailsAsync(string playerEmail, string friendEmail)
+        {
+            var player = await _repoPl.GetByEmailAsync(playerEmail);
+            var friend = await _repoPl.GetByEmailAsync(friendEmail);
+
+            if (player == null || friend == null)
+                throw new BusinessRuleValidationException("Invalid Player or Friend Email");
+
+            var con = await _repo.GetByBothPlayerIdAsync(player.Id, friend.Id);
+
+            if (con == null)
+                return null;
+
+            return new ConnectionDto(con.Id.AsString(), con.Player.AsString(), con.Friend.AsString(), con.ConnectionStrength.Strength, con.Tags.Select(t => t.tagName).ToList());
+        }
+
 
         public async Task<ConnectionDto> UpdateTagsAndStrengthAsync(UpdatingConnectionDto dto)
         {
-            await checkPlayerEmailAsync(dto.PlayerEmail);
-            await checkPlayerEmailAsync(dto.FriendEmail);
 
             var player = await _repoPl.GetByEmailAsync(dto.PlayerEmail);
             var friend = await _repoPl.GetByEmailAsync(dto.FriendEmail);
+
+            if (player == null || friend == null)
+                throw new BusinessRuleValidationException("Invalid Player or Friend Email");
 
             var con = await _repo.GetByBothPlayerIdAsync(player.Id, friend.Id);
 

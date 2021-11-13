@@ -26,5 +26,14 @@ namespace DDDNetCore.Infraestructure.ConnectionRequests
                 .Where(x => x.CurrentStatus.CurrentStatus.Equals(pending) && x.Target.Equals(playerId))
                 .ToListAsync();
         }
+
+        public async Task<DirectRequest> GetPendingDirectRequestByPlayerIds(PlayerId player, PlayerId target)
+        {
+            var pending = ConnectionRequestStatusEnum.request_pending;
+            return await _dbdirectRequest
+                .Where(x => x.CurrentStatus.CurrentStatus.Equals(pending) &&
+                x.Player.Equals(player) && x.Target.Equals(target))
+                .FirstOrDefaultAsync();
+        }
     }
 }
