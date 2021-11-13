@@ -1,4 +1,5 @@
 ﻿using DDDNetCore.Domain.ConnectionRequests.DTOS;
+using DDDNetCore.Domain.Connections;
 using DDDSample1.Domain.Players;
 using DDDSample1.Domain.Shared;
 using System.Collections.Generic;
@@ -12,14 +13,16 @@ namespace DDDNetCore.Domain.ConnectionRequests
         private readonly IUnitOfWork _unitOfWork;
         private readonly IDirectRequestRepository _repoDir;
         private readonly IIntroductionRequestRepository _repoInt;
+        private readonly IConnectionRepository _repoCon;
         private readonly IPlayerRepository _repoPl;
 
         public ConnectionRequestService(IUnitOfWork unitOfWork, IDirectRequestRepository repoDir ,
-            IIntroductionRequestRepository repoInt, IPlayerRepository repoPl)
+            IIntroductionRequestRepository repoInt, IConnectionRepository repoCon, IPlayerRepository repoPl)
         {
             _unitOfWork = unitOfWork;
             _repoDir = repoDir;
             _repoInt = repoInt;
+            _repoCon = repoCon;
             _repoPl = repoPl;
         }
 
@@ -232,16 +235,52 @@ namespace DDDNetCore.Domain.ConnectionRequests
             return listDto;
         }
 
-        public async Task<List<PlayerDto>> GetReachableUsers(string email)
+        public async Task<ConnectionRequestDto> AcceptRequest(string id, AcceptRequestDto dto)
         {
-            var player = await _repoPl.GetByEmailAsync(email);
 
-            var targetList = await _repoInt.GetReachableUsers(player.Id);
+            var dir = await _repoDir.GetByIdAsync(new ConnectionRequestId(id));
 
-            return targetList.ConvertAll<PlayerDto>(plyr =>
-                new PlayerDto(plyr.Id.AsGuid(),plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, 
-                plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, plyr.DateOfBirth.date.Day, plyr.EmotionalStatus.Status, plyr.Facebook.Url, plyr.LinkedIn.Url));
+            if (dir != null)
+            {
+                if (!dir.CurrentStatus.Equals(new ConnectionRequestStatus(ConnectionRequestStatusEnum.request_pending)))
+                {
+                    throw new BusinessRuleValidationException("Nothing to accept.");
+                }
+                dir.ChangeCurrentStatus(ConnectionRequestStatusEnum.accepted.ToString());
+
+                var conPlayerDir = new Connection(dir.Player.AsString(), dir.Target.AsString(), dir.Strength.Strength, dir.Tags.Select(t => t.tagName).ToList());
+                var conTargetDir = new Connection(dir.Target.AsString(), dir.Player.AsString(), dto.Strength, dto.Tags);
+
+                await _repoCon.AddAsync(conPlayerDir);
+                await _repoCon.AddAsync(conTargetDir);
+
+                await _unitOfWork.CommitAsync();
+
+                return new DirectRequestDto(dir.Id.AsString(), dir.Player.AsString(), dir.Target.AsString(),
+                                            dir.PlayerToTargetMessage.Text, dir.CurrentStatus.CurrentStatus.ToString(), dir.Strength.Strength, dir.Tags.Select(t => t.tagName).ToList());
+            }
+
+            var intr = await _repoInt.GetByIdAsync(new ConnectionRequestId(id));
+
+            if (intr == null)
+                return null;
+
+            if (!intr.CurrentStatus.Equals(new ConnectionRequestStatus(ConnectionRequestStatusEnum.request_pending)))
+            {
+                throw new BusinessRuleValidationException("Nothing to accept.");
+            }
+            intr.ChangeCurrentStatus(ConnectionRequestStatusEnum.accepted.ToString());
+
+            var conPlayerIntr = new Connection(intr.Player.AsString(), intr.Target.AsString(), intr.Strength.Strength, intr.Tags.Select(t => t.tagName).ToList());
+            var conTargetIntr = new Connection(intr.Target.AsString(), intr.Player.AsString(), dto.Strength, dto.Tags);
+
+            await _repoCon.AddAsync(conPlayerIntr);
+            await _repoCon.AddAsync(conTargetIntr);
+
+            await _unitOfWork.CommitAsync();
+            return new IntroductionRequestDto(intr.Id.AsString(), intr.Player.AsString(), intr.MiddleMan.AsString(), intr.Target.AsString(),
+                 intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString(),
+                 intr.Strength.Strength, intr.Tags.Select(t => t.tagName).ToList());
         }
-
     }
 }
