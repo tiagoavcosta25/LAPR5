@@ -11,5 +11,7 @@ namespace DDDNetCore.Domain.Connections
         Task<List<Connection>> GetAllUserConnectionsAsync(PlayerId playerId);
 
         Task<Connection> GetByBothPlayerIdAsync(PlayerId playerId, PlayerId friendId);
+        Task<List<PlayerId>> GetFriendsList(PlayerId playerId);
+        Task<List<PlayerId>> GetMutualFriends(PlayerId playerId, PlayerId targetId);
     }
 }
