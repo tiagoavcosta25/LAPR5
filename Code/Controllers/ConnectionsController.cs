@@ -129,8 +129,27 @@ namespace DDDNetCore.Controllers
             return await _service.GetAllConnectionsAsync(playerEmail);
         }
 
+        // GET: api/connections/user/emails?emailPlayer=email1@gmail.com&emailFriend=email2@gmail.com
+        [HttpGet("user/emails")]
+        public async Task<ActionResult<ConnectionDto>> GetByEmails(string emailPlayer, string emailFriend)
+        {
+            try
+            {
+                var con = await _service.GetByEmailsAsync(emailPlayer, emailFriend);
+                if (con == null)
+                {
+                    return NotFound();
+                }
+                return con;
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
 
-        // PUT: api/Connections/user/email@gmail.com
+
+        // PUT: api/connections/user/email@gmail.com
         [HttpPut("user/{playerEmail}")]
         public async Task<ActionResult<ConnectionDto>> UpdateTagsAndStrength(string playerEmail, UpdatingConnectionDto dto)
         {
