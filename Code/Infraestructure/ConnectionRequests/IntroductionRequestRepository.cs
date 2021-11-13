@@ -27,19 +27,5 @@ namespace DDDNetCore.Infraestructure.ConnectionRequests
                 x.Target.Equals(playerId))
                 .ToListAsync();
         } 
-
-        public async Task<List<Player>> GetReachableUsers(PlayerId playerId)
-        {
-            return null;
-
-                //TODO: Get Friends of Friends
-        }
-
-        public async Task<List<Player>> GetMiddlemanList(PlayerId playerId, PlayerId targetId)
-        {
-            return null;
-
-                //TODO: Get Friends of Friends
-        }
     }  
 }
