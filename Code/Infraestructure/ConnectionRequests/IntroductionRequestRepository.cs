@@ -35,6 +35,20 @@ namespace DDDNetCore.Infraestructure.ConnectionRequests
                 .Where(x => x.CurrentStatus.CurrentStatus.Equals(pending) &&
                 x.Player.Equals(player) && x.Target.Equals(target))
                 .FirstOrDefaultAsync();
+        } 
+
+        public async Task<List<Player>> GetReachableUsers(PlayerId playerId)
+        {
+            return null;
+
+                //TODO: Get Friends of Friends
+        }
+
+        public async Task<List<Player>> GetMiddlemanList(PlayerId playerId, PlayerId targetId)
+        {
+            return null;
+
+                //TODO: Get Friends of Friends
         }
     }  
 }
