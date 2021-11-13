@@ -136,7 +136,7 @@ namespace DDDNetCore.Controllers
             return Ok(con);
         }
 
-        // DELETE: api/ConnectionRequests/5
+        // DELETE: api/ConnectionRequests/5/hard
         [HttpDelete("{id}/hard")]
         public async Task<ActionResult<ConnectionRequestDto>> HardDelete(Guid id)
         {
@@ -161,10 +161,31 @@ namespace DDDNetCore.Controllers
         // CRUD OVER //
 
         // GET: api/ConnectionRequests/pendingRequests/email
-        [HttpGet("{email}")]
+        [HttpGet("pendingRequests/{email}")]
         public async Task<ActionResult<IEnumerable<ConnectionRequestDto>>> GetAllUserPendingDirectRequests(string email)
         {
             return await _service.GetAllUserPendingDirectRequestsAsync(email);
+        }
+
+        // PUT: api/ConnectionRequests/accept/5
+        [HttpPut("accept/{id}")]
+        public async Task<ActionResult<AcceptRequestDto>> AcceptRequest(string id, AcceptRequestDto dto)
+        {
+            try
+            {
+                var conR = await _service.AcceptRequest(id, dto);
+
+                if (conR == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(conR);
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
         }
     }
 }
