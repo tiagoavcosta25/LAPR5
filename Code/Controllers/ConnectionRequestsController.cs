@@ -167,6 +167,25 @@ namespace DDDNetCore.Controllers
             return await _service.GetAllUserPendingDirectRequestsAsync(email);
         }
 
+        // GET: api/connectionRequests/pendingRequests/emails?emailPlayer=email1@gmail.com&emailTarget=email2@gmail.com
+        [HttpGet("pendingRequests/emails")]
+        public async Task<ActionResult<ConnectionRequestDto>> GetByEmails(string emailPlayer, string emailTarget)
+        {
+            try
+            {
+                var con = await _service.GetByEmailsAsync(emailPlayer, emailTarget);
+                if (con == null)
+                {
+                    return NotFound();
+                }
+                return con;
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
         // PUT: api/ConnectionRequests/pendingRequests/email@gmail.com/accept/
         [HttpPut("pendingRequests/{email}/accept")]
         public async Task<ActionResult<AcceptRequestDto>> AcceptRequest(string email, AcceptRequestDto dto)
