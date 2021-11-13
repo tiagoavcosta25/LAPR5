@@ -1,12 +1,12 @@
 ﻿using DDDNetCore.Domain.Shared;
 using DDDSample1.Domain.Players;
 using DDDSample1.Domain.Shared;
+using System.Collections.Generic;
 
 namespace DDDNetCore.Domain.ConnectionRequests
 {
     public class IntroductionRequest : ConnectionRequest
     {
-
         public PlayerId MiddleMan { get; private set; }
 
         public Message PlayerToMiddleManMessage { get; private set; }
@@ -18,7 +18,8 @@ namespace DDDNetCore.Domain.ConnectionRequests
         }
 
         public IntroductionRequest(string player, string target, string playerToTargetMessage, string currentStatus,
-            string middleMan, string playerToMiddleManMessage, string middleManToTargetMessage) : base(player, target, playerToTargetMessage, currentStatus)
+            string middleMan, string playerToMiddleManMessage, string middleManToTargetMessage, int strength, ICollection<string> tags) 
+            : base(player, target, playerToTargetMessage, currentStatus, strength, tags)
         {
             MiddleMan = new PlayerId(middleMan);
             PlayerToMiddleManMessage = new Message(playerToMiddleManMessage);

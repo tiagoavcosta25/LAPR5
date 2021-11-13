@@ -1,4 +1,9 @@
-﻿namespace DDDNetCore.Domain.ConnectionRequests.DTOS
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace DDDNetCore.Domain.ConnectionRequests.DTOS
 {
     public class CreatingIntroductionRequestDto
     {
@@ -9,9 +14,11 @@
         public string PlayerToMiddleManMessage { get; set; }
         public string MiddleManToTargetMessage { get; set; }
         public string CurrentStatus { get; set; }
+        public int Strength { get; set;  }
+        public ICollection<string> Tags { get; set; }
 
         public CreatingIntroductionRequestDto(string player, string middleMan, string target, string playerToTargetMessage,
-            string playerToMiddleManMessage, string middleManToTargetMessage, string currentStatus)
+            string playerToMiddleManMessage, string middleManToTargetMessage, string currentStatus, int strength, ICollection<string> tags)
         {
             Player = player;
             MiddleMan = middleMan;
@@ -20,6 +27,8 @@
             PlayerToMiddleManMessage = playerToMiddleManMessage;
             MiddleManToTargetMessage = middleManToTargetMessage;
             CurrentStatus = currentStatus;
+            Strength = strength;
+            Tags = tags;
         }
     }
 }
