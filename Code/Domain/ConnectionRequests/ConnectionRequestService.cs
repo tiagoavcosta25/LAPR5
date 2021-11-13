@@ -282,5 +282,17 @@ namespace DDDNetCore.Domain.ConnectionRequests
                  intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString(),
                  intr.Strength.Strength, intr.Tags.Select(t => t.tagName).ToList());
         }
+
+        
+        public async Task<List<PlayerDto>> GetReachableUsers(string email)
+        {
+            var player = await _repoPl.GetByEmailAsync(email);
+
+            var targetList = await _repoInt.GetReachableUsers(player.Id);
+
+            return targetList.ConvertAll<PlayerDto>(plyr =>
+                new PlayerDto(plyr.Id.AsGuid(),plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, 
+                plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, plyr.DateOfBirth.date.Day, plyr.EmotionalStatus.Status, plyr.Facebook.Url, plyr.LinkedIn.Url));
+        }
     }
 }
