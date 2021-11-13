@@ -1,10 +1,12 @@
 ﻿using DDDSample1.Domain.Shared;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace DDDNetCore.Domain.Missions
 {
     public class MissionDifficulty : IValueObject
     {
+        [Required]
         public int Difficulty { get; private set; }
 
         public MissionDifficulty(int difficulty)

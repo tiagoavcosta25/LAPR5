@@ -2,17 +2,21 @@
 using DDDSample1.Domain.Shared;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DDDNetCore.Domain.Missions
 {
     public class Mission : Entity<MissionId>, IAggregateRoot
     {
+        [Required]
+        [MaxLength(70)]
         public PlayerId Challenger { get; private set; }
-
+        [Required]
+        [MaxLength(70)]
         public PlayerId Objective { get; private set; }
-
+        [Required]
         public MissionDifficulty Difficulty { get; private set; }
-
+        [Required]
         public MissionStatus CurrentStatus { get; private set; }
 
         public bool Active { get; private set; }
