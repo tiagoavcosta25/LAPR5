@@ -41,5 +41,14 @@ namespace DDDNetCore.Infraestructure.ConnectionRequests
 
                 //TODO: Get Friends of Friends
         }
+
+        public async Task<List<IntroductionRequest>> GetMiddleManRequests(PlayerId playerId)
+        {
+            var pending = ConnectionRequestStatusEnum.request_pending;
+            return await _dbintroductionRequest
+                .Where(x => x.CurrentStatus.CurrentStatus.Equals(pending) &&
+                x.MiddleMan.Equals(playerId))
+                .ToListAsync();
+        } 
     }  
 }
