@@ -13,7 +13,7 @@ namespace DDDSample1.Domain.Players
         disappointed,
         proud,
         remorseful,
-        gratefuk,
+        grateful,
         angry
 
     }

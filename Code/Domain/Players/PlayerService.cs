@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Players;
+using System;
 
 namespace DDDSample1.Domain.Players
 {
@@ -105,6 +106,11 @@ namespace DDDSample1.Domain.Players
 
             if (Player == null)
                 return null;
+            var exists = Enum.TryParse(dto.EmotionalStatus, out OOC _);
+            if (!exists)
+            {
+                throw new BusinessRuleValidationException("Not a valid emotional status.");
+            }
 
             Player.ChangeEmotionalStatus(dto.EmotionalStatus);
 
