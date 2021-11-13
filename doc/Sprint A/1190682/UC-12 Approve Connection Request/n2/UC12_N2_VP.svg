@@ -30,7 +30,7 @@
       ><path d="M-115 -30 L230 -30 L230 60 L-115 60 L-115 -30 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath9"
-      ><path d="M-44 -15 L88 -15 L88 30 L-44 30 L-44 -15 Z"
+      ><path d="M-114 -15 L228 -15 L228 30 L-114 30 L-114 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath10"
       ><path d="M-122 -45 L244 -45 L244 90 L-122 90 L-122 -45 Z"
@@ -39,7 +39,7 @@
       ><path d="M0 0 L514 0 L514 104 L0 104 L0 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath12"
-      ><path d="M67 26 L67 29 L429 29 L429 44 L65 44 L65 41 L23 41 L23 26 ZM0 0 L0 104 L487 104 L487 93 L514 93 L514 60 L491 60 L491 45 L514 45 L514 21 L407 21 L407 0 Z"
+      ><path d="M0 0 L0 26 L102 26 L102 28 L460 28 L460 43 L96 43 L96 41 L0 41 L0 104 L487 104 L487 93 L514 93 L514 60 L491 60 L491 45 L514 45 L514 21 L407 21 L407 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath13"
       ><path d="M343 30 L343 45 L160 45 L160 30 ZM0 0 L0 104 L105 104 L105 97 L398 97 L398 104 L514 104 L514 34 L487 34 L487 19 L514 19 L514 0 Z"
@@ -54,7 +54,7 @@
       ><path d="M0 0 L342 0 L342 104 L0 104 L0 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath17"
-      ><path d="M250 30 L250 45 L73 45 L73 30 ZM260 78 L260 93 L69 93 L69 78 ZM104 0 L104 6 L0 6 L0 14 L11 14 L11 29 L0 29 L0 104 L342 104 L342 21 L231 21 L231 0 Z"
+      ><path d="M250 30 L250 45 L73 45 L73 30 ZM260 78 L260 93 L69 93 L69 78 ZM104 0 L104 6 L0 6 L0 13 L42 13 L42 28 L0 28 L0 104 L342 104 L342 21 L231 21 L231 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath18"
       ><path d="M260 31 L260 46 L69 46 L69 31 ZM0 0 L0 104 L342 104 L342 0 Z"
@@ -185,9 +185,9 @@
       ><text x="15" xml:space="preserve" y="27" clip-path="url(#clipPath8)" stroke="none"
       >Graphic Interface</text
     ></g
-    ><g font-size="11px" transform="translate(54,37)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><g font-size="11px" transform="translate(19,37)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
     ><text x="10" xml:space="preserve" y="12" clip-path="url(#clipPath9)" stroke="none"
-      >User</text
+      >Authenticated User</text
     ></g
     ><g font-size="11px" transform="translate(680,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
     ><text x="9" xml:space="preserve" y="12" clip-path="url(#clipPath10)" stroke="none"
@@ -316,7 +316,7 @@
       /><text fill="black" x="10" xml:space="preserve" y="12" clip-path="url(#clipPath37)" stroke="none"
       >1.3:  presents connection request</text
     ></g
-    ><g font-size="11px" transform="translate(96,40)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
+    ><g font-size="11px" transform="translate(127,39)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
     ><rect x="0" width="364" height="15" y="0" clip-path="url(#clipPath38)" stroke="none"
       /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath38)" stroke="none"
       >1: iniciates the process of approving / disapproving connection request</text
