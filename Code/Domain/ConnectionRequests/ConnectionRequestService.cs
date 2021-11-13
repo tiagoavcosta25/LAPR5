@@ -2,6 +2,7 @@
 using DDDSample1.Domain.Players;
 using DDDSample1.Domain.Shared;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DDDNetCore.Domain.ConnectionRequests
@@ -29,11 +30,12 @@ namespace DDDNetCore.Domain.ConnectionRequests
 
             List<DirectRequestDto> listDtoDir = listDir.ConvertAll<DirectRequestDto>(dir =>
                 new DirectRequestDto(dir.Id.AsString(), dir.Player.AsString(), dir.Target.AsString(),
-                    dir.PlayerToTargetMessage.Text, dir.CurrentStatus.CurrentStatus.ToString()));
+                    dir.PlayerToTargetMessage.Text, dir.CurrentStatus.CurrentStatus.ToString(), dir.Strength.Strength, dir.Tags.Select(t => t.tagName).ToList()));
 
             List<IntroductionRequestDto> listDtoInt = listInt.ConvertAll<IntroductionRequestDto>(intr =>
                 new IntroductionRequestDto(intr.Id.AsString(), intr.Player.AsString(), intr.MiddleMan.AsString(), intr.Target.AsString(),
-                intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString()));
+                intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString(),
+                intr.Strength.Strength, intr.Tags.Select(t => t.tagName).ToList()));
 
             List<ConnectionRequestDto> listDto = new(listDtoDir);
             listDto.AddRange(listDtoInt);
@@ -48,7 +50,7 @@ namespace DDDNetCore.Domain.ConnectionRequests
             if (dir != null)
             {
                 return new DirectRequestDto(dir.Id.AsString(), dir.Player.AsString(), dir.Target.AsString(),
-                   dir.PlayerToTargetMessage.Text, dir.CurrentStatus.CurrentStatus.ToString());
+                    dir.PlayerToTargetMessage.Text, dir.CurrentStatus.CurrentStatus.ToString(), dir.Strength.Strength, dir.Tags.Select(t => t.tagName).ToList());
 
             }
 
@@ -59,20 +61,22 @@ namespace DDDNetCore.Domain.ConnectionRequests
 
 
             return new IntroductionRequestDto(intr.Id.AsString(), intr.Player.AsString(), intr.MiddleMan.AsString(), intr.Target.AsString(),
-                intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString());
+                 intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString(),
+                 intr.Strength.Strength, intr.Tags.Select(t => t.tagName).ToList());
         }
 
         public async Task<DirectRequestDto> AddDirAsync(CreatingDirectRequestDto dto)
         {
             await checkPlayerIdAsync(new PlayerId(dto.Player));
             await checkPlayerIdAsync(new PlayerId(dto.Target));
-            var dir = new DirectRequest(dto.Player.ToString(), dto.Target.ToString(), dto.PlayerToTargetMessage, dto.CurrentStatus);
+            var dir = new DirectRequest(dto.Player.ToString(), dto.Target.ToString(), dto.PlayerToTargetMessage, dto.CurrentStatus, dto.Strength, dto.Tags);
 
             await _repoDir.AddAsync(dir);
 
             await _unitOfWork.CommitAsync();
 
-            return new DirectRequestDto(dir.Id.AsString(), dir.Player.AsString(), dir.Target.ToString(), dir.PlayerToTargetMessage.Text, dir.CurrentStatus.CurrentStatus.ToString());
+            return new DirectRequestDto(dir.Id.AsString(), dir.Player.AsString(), dir.Target.AsString(),
+                                dir.PlayerToTargetMessage.Text, dir.CurrentStatus.CurrentStatus.ToString(), dir.Strength.Strength, dir.Tags.Select(t => t.tagName).ToList());
         }
 
         public async Task<IntroductionRequestDto> AddIntAsync(CreatingIntroductionRequestDto dto)
@@ -81,14 +85,15 @@ namespace DDDNetCore.Domain.ConnectionRequests
             await checkPlayerIdAsync(new PlayerId(dto.MiddleMan));
             await checkPlayerIdAsync(new PlayerId(dto.Target));
             var intr = new IntroductionRequest(dto.Player.ToString(), dto.Target.ToString(), dto.PlayerToTargetMessage, dto.CurrentStatus,
-                dto.MiddleMan, dto.PlayerToMiddleManMessage, dto.MiddleManToTargetMessage);
+                dto.MiddleMan, dto.PlayerToMiddleManMessage, dto.MiddleManToTargetMessage, dto.Strength, dto.Tags);
 
             await _repoInt.AddAsync(intr);
 
             await _unitOfWork.CommitAsync();
 
             return new IntroductionRequestDto(intr.Id.AsString(), intr.Player.AsString(), intr.MiddleMan.AsString(), intr.Target.AsString(),
-                          intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString());
+                 intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString(),
+                 intr.Strength.Strength, intr.Tags.Select(t => t.tagName).ToList());
         }
 
         public async Task<DirectRequestDto> UpdateDirAsync(DirectRequestDto dto)
@@ -107,7 +112,8 @@ namespace DDDNetCore.Domain.ConnectionRequests
 
             await _unitOfWork.CommitAsync();
 
-            return new DirectRequestDto(dir.Id.AsString(), dir.Player.AsString(), dir.Target.ToString(), dir.PlayerToTargetMessage.Text, dir.CurrentStatus.CurrentStatus.ToString());
+            return new DirectRequestDto(dir.Id.AsString(), dir.Player.AsString(), dir.Target.AsString(),
+                                            dir.PlayerToTargetMessage.Text, dir.CurrentStatus.CurrentStatus.ToString(), dir.Strength.Strength, dir.Tags.Select(t => t.tagName).ToList());
         }
 
         public async Task<IntroductionRequestDto> UpdateIntAsync(IntroductionRequestDto dto)
@@ -131,7 +137,8 @@ namespace DDDNetCore.Domain.ConnectionRequests
             await _unitOfWork.CommitAsync();
 
             return new IntroductionRequestDto(intr.Id.AsString(), intr.Player.AsString(), intr.MiddleMan.AsString(), intr.Target.AsString(),
-                         intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString());
+                 intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString(),
+                 intr.Strength.Strength, intr.Tags.Select(t => t.tagName).ToList());
         }
 
         public async Task<ConnectionRequestDto> InactivateAsync(ConnectionRequestId id)
@@ -143,8 +150,8 @@ namespace DDDNetCore.Domain.ConnectionRequests
 
                 await _unitOfWork.CommitAsync();
 
-                return new DirectRequestDto(dir.Id.AsString(), dir.Player.AsString(), dir.Target.ToString(), dir.PlayerToTargetMessage.Text, dir.CurrentStatus.CurrentStatus.ToString());
-
+                return new DirectRequestDto(dir.Id.AsString(), dir.Player.AsString(), dir.Target.AsString(),
+                                                            dir.PlayerToTargetMessage.Text, dir.CurrentStatus.CurrentStatus.ToString(), dir.Strength.Strength, dir.Tags.Select(t => t.tagName).ToList());
             }
 
             var intr = await _repoInt.GetByIdAsync(id);
@@ -156,7 +163,8 @@ namespace DDDNetCore.Domain.ConnectionRequests
             await _unitOfWork.CommitAsync();
 
             return new IntroductionRequestDto(intr.Id.AsString(), intr.Player.AsString(), intr.MiddleMan.AsString(), intr.Target.AsString(),
-                          intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString());
+                 intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString(),
+                 intr.Strength.Strength, intr.Tags.Select(t => t.tagName).ToList());
         }
 
         public async Task<ConnectionRequestDto> DeleteAsync(ConnectionRequestId id)
@@ -168,7 +176,8 @@ namespace DDDNetCore.Domain.ConnectionRequests
                 _repoDir.Remove(dir);
                 await _unitOfWork.CommitAsync();
 
-                return new DirectRequestDto(dir.Id.AsString(), dir.Player.AsString(), dir.Target.ToString(), dir.PlayerToTargetMessage.Text, dir.CurrentStatus.CurrentStatus.ToString());
+                return new DirectRequestDto(dir.Id.AsString(), dir.Player.AsString(), dir.Target.AsString(),
+                                                            dir.PlayerToTargetMessage.Text, dir.CurrentStatus.CurrentStatus.ToString(), dir.Strength.Strength, dir.Tags.Select(t => t.tagName).ToList());
             }
 
             var intr = await _repoInt.GetByIdAsync(id);
@@ -180,7 +189,8 @@ namespace DDDNetCore.Domain.ConnectionRequests
             await _unitOfWork.CommitAsync();
 
             return new IntroductionRequestDto(intr.Id.AsString(), intr.Player.AsString(), intr.MiddleMan.AsString(), intr.Target.AsString(),
-                          intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString());
+                 intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString(),
+                 intr.Strength.Strength, intr.Tags.Select(t => t.tagName).ToList());
         }
 
         private async Task checkPlayerIdAsync(PlayerId playerId)
@@ -196,9 +206,31 @@ namespace DDDNetCore.Domain.ConnectionRequests
             if (pl == null)
                 throw new BusinessRuleValidationException("Invalid Player or Friend Email.");
         }
-        
+
 
         // CRUD OVER //
+
+       public async Task<List<ConnectionRequestDto>> GetAllUserPendingDirectRequestsAsync(string email)
+        {
+            var player = await _repoPl.GetByEmailAsync(email);
+
+            var listDir = await _repoDir.GetAllUserPendingDirectRequestsAsync(player.Id);
+            var listInt = await _repoInt.GetAllUserPendingIntroductionRequestsAsync(player.Id);
+
+            List<DirectRequestDto> listDtoDir = listDir.ConvertAll<DirectRequestDto>(dir =>
+                new DirectRequestDto(dir.Id.AsString(), dir.Player.AsString(), dir.Target.AsString(),
+                                                            dir.PlayerToTargetMessage.Text, dir.CurrentStatus.CurrentStatus.ToString(), dir.Strength.Strength, dir.Tags.Select(t => t.tagName).ToList()));
+
+            List<IntroductionRequestDto> listDtoInt = listInt.ConvertAll<IntroductionRequestDto>(intr =>
+                new IntroductionRequestDto(intr.Id.AsString(), intr.Player.AsString(), intr.MiddleMan.AsString(), intr.Target.AsString(),
+                 intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString(),
+                 intr.Strength.Strength, intr.Tags.Select(t => t.tagName).ToList()));
+
+            List<ConnectionRequestDto> listDto = new(listDtoDir);
+            listDto.AddRange(listDtoInt);
+
+            return listDto;
+        }
 
     }
 }

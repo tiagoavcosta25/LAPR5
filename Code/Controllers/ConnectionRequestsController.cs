@@ -40,7 +40,7 @@ namespace DDDNetCore.Controllers
             return con;
         }
 
-        // POST: api/Connections/dir
+        // POST: api/ConnectionRequests/dir
         [HttpPost("dir")]
         public async Task<ActionResult<DirectRequestDto>> CreateDir(CreatingDirectRequestDto dto)
         {
@@ -56,7 +56,7 @@ namespace DDDNetCore.Controllers
             }
         }
 
-        // POST: api/Connections/intr
+        // POST: api/ConnectionRequests/intr
         [HttpPost("intr")]
         public async Task<ActionResult<IntroductionRequestDto>> CreateIntr(CreatingIntroductionRequestDto dto)
         {
@@ -122,5 +122,49 @@ namespace DDDNetCore.Controllers
             }
         }
 
+        // Inactivate: api/ConnectionRequests/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ConnectionRequestDto>> SoftDelete(Guid id)
+        {
+            var con = await _service.InactivateAsync(new ConnectionRequestId(id));
+
+            if (con == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(con);
+        }
+
+        // DELETE: api/ConnectionRequests/5
+        [HttpDelete("{id}/hard")]
+        public async Task<ActionResult<ConnectionRequestDto>> HardDelete(Guid id)
+        {
+            try
+            {
+                var con = await _service.DeleteAsync(new ConnectionRequestId(id));
+
+                if (con == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(con);
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
+
+        // CRUD OVER //
+
+        // GET: api/ConnectionRequests/pendingRequests/email
+        [HttpGet("{email}")]
+        public async Task<ActionResult<IEnumerable<ConnectionRequestDto>>> GetAllUserPendingDirectRequests(string email)
+        {
+            return await _service.GetAllUserPendingDirectRequestsAsync(email);
+        }
     }
 }

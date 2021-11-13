@@ -18,6 +18,8 @@ namespace DDDNetCore.Infraestructure.ConnectionRequests
             builder.OwnsOne(b => b.PlayerToMiddleManMessage);
             builder.OwnsOne(b => b.MiddleManToTargetMessage);
             builder.OwnsOne(b => b.CurrentStatus);
+            builder.OwnsOne(b => b.Strength);
+            builder.OwnsMany(b => b.Tags);
 
         }
     }

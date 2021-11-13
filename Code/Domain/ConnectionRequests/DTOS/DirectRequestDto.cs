@@ -7,7 +7,7 @@ namespace DDDNetCore.Domain.ConnectionRequests.DTOS
 {
     public class DirectRequestDto : ConnectionRequestDto
     {
-        public DirectRequestDto(string id, string player, string target, string playerToTargetMessage, string currentStatus) : base(id, player, target, playerToTargetMessage, currentStatus)
+        public DirectRequestDto(string id, string player, string target, string playerToTargetMessage, string currentStatus, int strength, ICollection<string> tags) : base(id, player, target, playerToTargetMessage, currentStatus, strength, tags)
         {
         }
     }

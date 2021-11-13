@@ -12,8 +12,8 @@ namespace DDDNetCore.Domain.ConnectionRequests.DTOS
         public string MiddleManToTargetMessage { get; set; }
 
         public IntroductionRequestDto(string id, string player, string middleMan, string target, string playerToTargetMessage,
-            string playerToMiddleManMessage, string middleManToTargetMessage, string currentStatus)
-            : base(id, player, target, playerToTargetMessage, currentStatus)
+            string playerToMiddleManMessage, string middleManToTargetMessage, string currentStatus, int strength, ICollection<string> tags)
+            : base(id, player, target, playerToTargetMessage, currentStatus, strength, tags)
         {
             MiddleMan = middleMan;
             PlayerToMiddleManMessage = playerToMiddleManMessage;

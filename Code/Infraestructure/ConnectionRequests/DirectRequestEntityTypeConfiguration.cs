@@ -12,6 +12,8 @@ namespace DDDNetCore.Infraestructure.ConnectionRequests
             builder.HasKey(b => b.Id);
             builder.OwnsOne(b => b.PlayerToTargetMessage);
             builder.OwnsOne(b => b.CurrentStatus);
+            builder.OwnsOne(b => b.Strength);
+            builder.OwnsMany(b => b.Tags);
         }
     }
 }
