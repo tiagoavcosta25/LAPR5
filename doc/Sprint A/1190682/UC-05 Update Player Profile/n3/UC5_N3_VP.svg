@@ -359,8 +359,8 @@
     ><g font-size="11px" transform="translate(251,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
     ><text x="7" xml:space="preserve" y="12" clip-path="url(#clipPath19)" stroke="none"
       >&lt;&lt;component (C4)&gt;&gt; :</text
-      ><text x="57" xml:space="preserve" y="27" clip-path="url(#clipPath19)" stroke="none"
-      >UI</text
+      ><text x="20" xml:space="preserve" y="27" clip-path="url(#clipPath19)" stroke="none"
+      >Graphic Interface</text
     ></g
     ><g font-size="11px" transform="translate(487,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
     ><text x="30" xml:space="preserve" y="12" clip-path="url(#clipPath20)" stroke="none"
