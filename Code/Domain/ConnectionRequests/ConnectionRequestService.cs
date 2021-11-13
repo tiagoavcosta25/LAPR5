@@ -284,15 +284,6 @@ namespace DDDNetCore.Domain.ConnectionRequests
         }
 
         
-        public async Task<List<PlayerDto>> GetReachableUsers(string email)
-        {
-            var player = await _repoPl.GetByEmailAsync(email);
-
-            var targetList = await _repoInt.GetReachableUsers(player.Id);
-
-            return targetList.ConvertAll<PlayerDto>(plyr =>
-                new PlayerDto(plyr.Id.AsGuid(),plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, 
-                plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, plyr.DateOfBirth.date.Day, plyr.EmotionalStatus.Status, plyr.Facebook.Url, plyr.LinkedIn.Url));
-        }
+        
     }
 }
