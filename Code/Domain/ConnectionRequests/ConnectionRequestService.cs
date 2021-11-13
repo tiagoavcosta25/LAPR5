@@ -213,7 +213,7 @@ namespace DDDNetCore.Domain.ConnectionRequests
 
         // CRUD OVER //
 
-       public async Task<List<ConnectionRequestDto>> GetAllUserPendingDirectRequestsAsync(string email)
+       public async Task<List<TargetPendingRequestDto>> GetAllUserPendingDirectRequestsAsync(string email)
         {
             var player = await _repoPl.GetByEmailAsync(email);
 
@@ -229,10 +229,22 @@ namespace DDDNetCore.Domain.ConnectionRequests
                  intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString(),
                  intr.Strength.Strength, intr.Tags.Select(t => t.tagName).ToList()));
 
-            List<ConnectionRequestDto> listDto = new(listDtoDir);
-            listDto.AddRange(listDtoInt);
 
-            return listDto;
+            List<TargetPendingRequestDto> finalList = new();
+            foreach (DirectRequestDto conDir in listDtoDir)
+            {
+                var sender = await _repoPl.GetByIdAsync(new PlayerId(conDir.Player));
+                finalList.Add(new TargetDirectPendingRequestDto(sender.Email.address, player.Email.address, conDir.PlayerToTargetMessage));
+            }
+            foreach (IntroductionRequestDto conInt in listDtoInt)
+            {
+                var sender = await _repoPl.GetByIdAsync(new PlayerId(conInt.Player));
+                var mid = await _repoPl.GetByIdAsync(new PlayerId(conInt.MiddleMan));
+                finalList.Add(new TargetIntroductionPendingRequestDto(sender.Email.address, player.Email.address, conInt.PlayerToTargetMessage,
+                    mid.Email.address, conInt.MiddleManToTargetMessage));
+            }
+
+            return finalList;
         }
 
         public async Task<ConnectionRequestDto> GetByEmailsAsync(string playerEmail, string targetEmail)
@@ -330,7 +342,9 @@ namespace DDDNetCore.Domain.ConnectionRequests
 
             foreach (IntroductionRequestDto dto in listDtoInt)
             {
-                listDto.Add(new ListMidPendingRequestDto(dto.Player, dto.MiddleMan, dto.Target, dto.PlayerToMiddleManMessage));
+                var sender = await _repoPl.GetByIdAsync(new PlayerId(dto.Player));
+                var target = await _repoPl.GetByIdAsync(new PlayerId(dto.Target));
+                listDto.Add(new ListMidPendingRequestDto(sender.Email.address, player.Email.address, target.Email.address, dto.PlayerToMiddleManMessage));
             }
 
             return listDto;

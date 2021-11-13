@@ -162,7 +162,7 @@ namespace DDDNetCore.Controllers
 
         // GET: api/ConnectionRequests/pendingRequests/email
         [HttpGet("pendingRequests/{email}")]
-        public async Task<ActionResult<IEnumerable<ConnectionRequestDto>>> GetAllUserPendingDirectRequests(string email)
+        public async Task<ActionResult<IEnumerable<TargetPendingRequestDto>>> GetAllUserPendingDirectRequests(string email)
         {
             return await _service.GetAllUserPendingDirectRequestsAsync(email);
         }
