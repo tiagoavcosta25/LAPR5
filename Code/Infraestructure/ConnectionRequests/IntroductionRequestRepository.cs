@@ -63,20 +63,6 @@ namespace DDDNetCore.Infraestructure.ConnectionRequests
             return !(playerToTarget == null && targetToPlayer == null);
         }
 
-        public async Task<List<Player>> GetReachableUsers(PlayerId playerId)
-        {
-            return null;
-
-                //TODO: Get Friends of Friends
-        }
-
-        public async Task<List<Player>> GetMiddlemanList(PlayerId playerId, PlayerId targetId)
-        {
-            return null;
-
-                //TODO: Get Friends of Friends
-        }
-
         public async Task<List<IntroductionRequest>> GetMiddleManRequests(PlayerId playerId)
         {
             var pending = ConnectionRequestStatusEnum.request_pending;

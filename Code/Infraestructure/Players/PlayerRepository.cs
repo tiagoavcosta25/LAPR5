@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DDDNetCore.Domain.Shared;
 
 namespace DDDSample1.Infrastructure.Players
 {
@@ -40,8 +41,9 @@ namespace DDDSample1.Infrastructure.Players
 
         public async Task<List<Player>> GetByTagAsync(string tag)
         {
-            //TODO
-            return null;
+            return await _dbplayer
+                .Where(x => x.Tags.ToList().Contains(new Tag(tag)))
+                .ToListAsync();
         }
     }
 }
