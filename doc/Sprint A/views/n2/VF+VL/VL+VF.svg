@@ -63,7 +63,7 @@
       ><path d="M-7 -7 L186 -7 L186 77 L-7 77 L-7 -7 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath20"
-      ><path d="M0 0 L0 67 L152 67 L152 0 Z"
+      ><path d="M0 0 L0 66 L151 66 L151 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath21"
       ><path d="M0 0 L0 18 L175 18 L175 0 Z"
@@ -111,7 +111,7 @@
       ><path d="M-7 -7 L161 -7 L161 82 L-7 82 L-7 -7 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath36"
-      ><path d="M0 0 L0 72 L126 72 L126 0 Z"
+      ><path d="M0 0 L0 71 L126 71 L126 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath37"
       ><path d="M0 0 L0 23 L150 23 L150 0 Z"
@@ -280,8 +280,8 @@
       >&lt;&lt;component&gt;&gt;</text
       ><text x="75" xml:space="preserve" y="30" clip-path="url(#clipPath20)" font-weight="bold" stroke="none"
       ></text
-      ><text x="24" xml:space="preserve" y="45" clip-path="url(#clipPath20)" font-weight="bold" stroke="none"
-      >Artificial Intelligene</text
+      ><text x="25" xml:space="preserve" y="45" clip-path="url(#clipPath20)" font-weight="bold" stroke="none"
+      >Artificial Inteligene</text
     ></g
     ><g font-size="11px" transform="translate(114,452)" fill-opacity="1" fill="rgb(122,207,245)" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="rgb(122,207,245)" font-weight="bold" stroke-opacity="1"
     ><rect x="0" width="165" height="88" y="0" clip-path="url(#clipPath22)" stroke="none"
@@ -399,8 +399,8 @@
       >&lt;&lt;component&gt;&gt;</text
       ><text x="12" xml:space="preserve" y="30" clip-path="url(#clipPath36)" font-weight="bold" stroke="none"
       >&lt;&lt;container (C4)&gt;&gt;</text
-      ><text x="11" xml:space="preserve" y="45" clip-path="url(#clipPath36)" font-weight="bold" stroke="none"
-      >Artificial Intelligene</text
+      ><text x="13" xml:space="preserve" y="45" clip-path="url(#clipPath36)" font-weight="bold" stroke="none"
+      >Artificial Inteligene</text
     ></g
     ><g stroke-linecap="butt" font-size="11px" transform="translate(363,119)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke-linejoin="round" stroke="black" stroke-opacity="1"
     ><line y2="299" fill="none" x1="56" clip-path="url(#clipPath39)" x2="89" y1="56"
