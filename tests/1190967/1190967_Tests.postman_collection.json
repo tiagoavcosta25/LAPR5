@@ -1,0 +1,4410 @@
+{
+	"info": {
+		"_postman_id": "08c16f11-3f46-4f6a-bdca-c5eadfc56526",
+		"name": "1190967_Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "UC08 Register Player",
+			"item": [
+				{
+					"name": "GET Players",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"There are no players\", function () {\r",
+									"    pm.response.to.have.body(\"[]\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Players/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE First Player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"id_user1\", responseJson.id); // save the user's id for further tests\r",
+									"\r",
+									"console.log(pm.environment.get(\"id_user1\"));"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"name_user1\", \"user1\");\r",
+									"console.log(\"name_user1: \" + \"user1\");\r",
+									"pm.environment.set(\"email_user1\", \"email1@gmail.com\");\r",
+									"console.log(\"email_user1: \" + \"email1@gmail.com\");\r",
+									"pm.environment.set(\"password_user1\", \"password1\");\r",
+									"console.log(\"password_user1: \" + \"password1\");\r",
+									"pm.environment.set(\"phoneNumber_user1\", \"911111111\");\r",
+									"console.log(\"phoneNumber_user1: \" + \"911111111\");\r",
+									"pm.environment.set(\"year_user1\", \"2001\");\r",
+									"console.log(\"year_user1: \" + \"2001\");\r",
+									"pm.environment.set(\"month_user1\", \"1\");\r",
+									"console.log(\"month_user1: \" + \"1\");\r",
+									"pm.environment.set(\"day_user1\", \"1\");\r",
+									"console.log(\"day_user1: \" + \"1\");\r",
+									"pm.environment.set(\"emotionalStatus_user1\", \"angry\");\r",
+									"console.log(\"emotionalStatus_user1: \" + \"angry\");\r",
+									"pm.environment.set(\"facebook_user1\", \"facebook1.com\");\r",
+									"console.log(\"facebook_user1: \" + \"facebook1.com\");\r",
+									"pm.environment.set(\"linkedin_user1\", \"linkedin1.com\");\r",
+									"console.log(\"linkedin_user1: \" + \"linkedin1.com\");\r",
+									"pm.environment.set(\"tag_user1\", \"tag1\");\r",
+									"console.log(\"tag: \" + \"tag1\");\r",
+									"\r",
+									"pm.environment.set(\"dateOfBirth_user1\", \"2001-01-01T00:00:00\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\":\"{{name_user1}}\",\r\n  \"email\": \"{{email_user1}}\", \r\n  \"password\": \"{{password_user1}}\",\r\n  \"phoneNumber\": \"{{phoneNumber_user1}}\",\r\n  \"year\": \"{{year_user1}}\",\r\n  \"month\": \"{{month_user1}}\", \r\n  \"day\": \"{{day_user1}}\",\r\n  \"emotionalStatus\": \"{{emotionalStatus_user1}}\",\r\n  \"facebook\": \"{{facebook_user1}}\",\r\n  \"linkedIn\": \"{{linkedin_user1}}\",\r\n  \"tags\": [\r\n      \"{{tag_user1}}\"\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/Players/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET First Player After Creation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"console.log(pm.environment.get(\"user1_id\"));\r",
+									"\r",
+									"pm.test(\"Player get returns status 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct player_id\", function () {\r",
+									"    pm.expect(responseJson.id).to.eql(pm.environment.get(\"id_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct tags\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user1\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Players/{{id_user1}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								"{{id_user1}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE Second Player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"id_user2\", responseJson.id); // save the user's id for further tests\r",
+									"\r",
+									"console.log(pm.environment.get(\"id_user2\"));"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"name_user2\", \"user2\");\r",
+									"console.log(\"name_user2: \" + \"user2\");\r",
+									"pm.environment.set(\"email_user2\", \"email2@gmail.com\");\r",
+									"console.log(\"email_user2: \" + \"email2@gmail.com\");\r",
+									"pm.environment.set(\"password_user2\", \"password2\");\r",
+									"console.log(\"password_user2: \" + \"password2\");\r",
+									"pm.environment.set(\"phoneNumber_user2\", \"922222222\");\r",
+									"console.log(\"phoneNumber_user2: \" + \"922222222\");\r",
+									"pm.environment.set(\"year_user2\", \"2002\");\r",
+									"console.log(\"year_user2: \" + \"2002\");\r",
+									"pm.environment.set(\"month_user2\", \"2\");\r",
+									"console.log(\"month_user2: \" + \"2\");\r",
+									"pm.environment.set(\"day_user2\", \"2\");\r",
+									"console.log(\"day_user2: \" + \"2\");\r",
+									"pm.environment.set(\"emotionalStatus_user2\", \"angry\");\r",
+									"console.log(\"emotionalStatus_user2: \" + \"angry\");\r",
+									"pm.environment.set(\"facebook_user2\", \"facebook2.com\");\r",
+									"console.log(\"facebook_user2: \" + \"facebook2.com\");\r",
+									"pm.environment.set(\"linkedin_user2\", \"linkedin2.com\");\r",
+									"console.log(\"linkedin_user2: \" + \"linkedin2.com\");\r",
+									"pm.environment.set(\"tag_user2\", \"tag2\");\r",
+									"console.log(\"tag: \" + \"tag2\");\r",
+									"\r",
+									"pm.environment.set(\"dateOfBirth_user2\", \"2002-02-02T00:00:00\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\":\"{{name_user2}}\",\r\n  \"email\": \"{{email_user2}}\", \r\n  \"password\": \"{{password_user2}}\",\r\n  \"phoneNumber\": \"{{phoneNumber_user2}}\",\r\n  \"year\": \"{{year_user2}}\",\r\n  \"month\": \"{{month_user2}}\", \r\n  \"day\": \"{{day_user2}}\",\r\n  \"emotionalStatus\": \"{{emotionalStatus_user2}}\",\r\n  \"facebook\": \"{{facebook_user2}}\",\r\n  \"linkedIn\": \"{{linkedin_user2}}\",\r\n  \"tags\": [\r\n      \"{{tag_user2}}\"\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/Players/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Second Player After Creation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"console.log(pm.environment.get(\"id_user2\"));\r",
+									"\r",
+									"pm.test(\"Player get returns status 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct player_id\", function () {\r",
+									"    pm.expect(responseJson.id).to.eql(pm.environment.get(\"id_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user2\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Players/{{id_user2}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								"{{id_user2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SOFT DELETE Second Player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user2\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/players/{{id_user2}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"players",
+								"{{id_user2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Second Player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user2\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/players/{{id_user2}}/hard",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"players",
+								"{{id_user2}}",
+								"hard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SOFT DELETE First Player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user1\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Players/{{id_user1}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								"{{id_user1}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE First Player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user1\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Players/{{id_user1}}/hard",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								"{{id_user1}}",
+								"hard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Players After Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"There are no players\", function () {\r",
+									"    pm.response.to.have.body(\"[]\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Players/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UC11 Target Introduction Request",
+			"item": [
+				{
+					"name": "GET Players",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"There are no players\", function () {\r",
+									"    pm.response.to.have.body(\"[]\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Players/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE First Player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"id_user1\", responseJson.id); // save the user's id for further tests\r",
+									"\r",
+									"console.log(pm.environment.get(\"id_user1\"));"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"name_user1\", \"user1\");\r",
+									"console.log(\"name_user1: \" + \"user1\");\r",
+									"pm.environment.set(\"email_user1\", \"email1@gmail.com\");\r",
+									"console.log(\"email_user1: \" + \"email1@gmail.com\");\r",
+									"pm.environment.set(\"password_user1\", \"password1\");\r",
+									"console.log(\"password_user1: \" + \"password1\");\r",
+									"pm.environment.set(\"phoneNumber_user1\", \"911111111\");\r",
+									"console.log(\"phoneNumber_user1: \" + \"911111111\");\r",
+									"pm.environment.set(\"year_user1\", \"2001\");\r",
+									"console.log(\"year_user1: \" + \"2001\");\r",
+									"pm.environment.set(\"month_user1\", \"1\");\r",
+									"console.log(\"month_user1: \" + \"1\");\r",
+									"pm.environment.set(\"day_user1\", \"1\");\r",
+									"console.log(\"day_user1: \" + \"1\");\r",
+									"pm.environment.set(\"emotionalStatus_user1\", \"angry\");\r",
+									"console.log(\"emotionalStatus_user1: \" + \"angry\");\r",
+									"pm.environment.set(\"facebook_user1\", \"facebook1.com\");\r",
+									"console.log(\"facebook_user1: \" + \"facebook1.com\");\r",
+									"pm.environment.set(\"linkedin_user1\", \"linkedin1.com\");\r",
+									"console.log(\"linkedin_user1: \" + \"linkedin1.com\");\r",
+									"pm.environment.set(\"tag_user1\", \"tag1\");\r",
+									"console.log(\"tag: \" + \"tag1\");\r",
+									"\r",
+									"pm.environment.set(\"dateOfBirth_user1\", \"2001-01-01T00:00:00\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\":\"{{name_user1}}\",\r\n  \"email\": \"{{email_user1}}\", \r\n  \"password\": \"{{password_user1}}\",\r\n  \"phoneNumber\": \"{{phoneNumber_user1}}\",\r\n  \"year\": \"{{year_user1}}\",\r\n  \"month\": \"{{month_user1}}\", \r\n  \"day\": \"{{day_user1}}\",\r\n  \"emotionalStatus\": \"{{emotionalStatus_user1}}\",\r\n  \"facebook\": \"{{facebook_user1}}\",\r\n  \"linkedIn\": \"{{linkedin_user1}}\",\r\n  \"tags\": [\r\n      \"{{tag_user1}}\"\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/Players/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET First Player After Creation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"console.log(pm.environment.get(\"user1_id\"));\r",
+									"\r",
+									"pm.test(\"Player get returns status 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct player_id\", function () {\r",
+									"    pm.expect(responseJson.id).to.eql(pm.environment.get(\"id_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct tags\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user1\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Players/{{id_user1}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								"{{id_user1}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE Second Player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"id_user2\", responseJson.id); // save the user's id for further tests\r",
+									"\r",
+									"console.log(pm.environment.get(\"id_user2\"));"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"name_user2\", \"user2\");\r",
+									"console.log(\"name_user2: \" + \"user2\");\r",
+									"pm.environment.set(\"email_user2\", \"email2@gmail.com\");\r",
+									"console.log(\"email_user2: \" + \"email2@gmail.com\");\r",
+									"pm.environment.set(\"password_user2\", \"password2\");\r",
+									"console.log(\"password_user2: \" + \"password2\");\r",
+									"pm.environment.set(\"phoneNumber_user2\", \"922222222\");\r",
+									"console.log(\"phoneNumber_user2: \" + \"922222222\");\r",
+									"pm.environment.set(\"year_user2\", \"2002\");\r",
+									"console.log(\"year_user2: \" + \"2002\");\r",
+									"pm.environment.set(\"month_user2\", \"2\");\r",
+									"console.log(\"month_user2: \" + \"2\");\r",
+									"pm.environment.set(\"day_user2\", \"2\");\r",
+									"console.log(\"day_user2: \" + \"2\");\r",
+									"pm.environment.set(\"emotionalStatus_user2\", \"angry\");\r",
+									"console.log(\"emotionalStatus_user2: \" + \"angry\");\r",
+									"pm.environment.set(\"facebook_user2\", \"facebook2.com\");\r",
+									"console.log(\"facebook_user2: \" + \"facebook2.com\");\r",
+									"pm.environment.set(\"linkedin_user2\", \"linkedin2.com\");\r",
+									"console.log(\"linkedin_user2: \" + \"linkedin2.com\");\r",
+									"pm.environment.set(\"tag_user2\", \"tag2\");\r",
+									"console.log(\"tag: \" + \"tag2\");\r",
+									"\r",
+									"pm.environment.set(\"dateOfBirth_user2\", \"2002-02-02T00:00:00\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\":\"{{name_user2}}\",\r\n  \"email\": \"{{email_user2}}\", \r\n  \"password\": \"{{password_user2}}\",\r\n  \"phoneNumber\": \"{{phoneNumber_user2}}\",\r\n  \"year\": \"{{year_user2}}\",\r\n  \"month\": \"{{month_user2}}\", \r\n  \"day\": \"{{day_user2}}\",\r\n  \"emotionalStatus\": \"{{emotionalStatus_user2}}\",\r\n  \"facebook\": \"{{facebook_user2}}\",\r\n  \"linkedIn\": \"{{linkedin_user2}}\",\r\n  \"tags\": [\r\n      \"{{tag_user2}}\"\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/Players/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Second Player After Creation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"console.log(pm.environment.get(\"id_user2\"));\r",
+									"\r",
+									"pm.test(\"Player get returns status 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct player_id\", function () {\r",
+									"    pm.expect(responseJson.id).to.eql(pm.environment.get(\"id_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user2\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Players/{{id_user2}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								"{{id_user2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE Third Player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"id_user3\", responseJson.id); // save the user's id for further tests\r",
+									"\r",
+									"console.log(pm.environment.get(\"id_user3\"));"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"name_user3\", \"user3\");\r",
+									"console.log(\"name_user3: \" + \"user3\");\r",
+									"pm.environment.set(\"email_user3\", \"email3@gmail.com\");\r",
+									"console.log(\"email_user3: \" + \"email3@gmail.com\");\r",
+									"pm.environment.set(\"password_user3\", \"password3\");\r",
+									"console.log(\"password_user3: \" + \"password3\");\r",
+									"pm.environment.set(\"phoneNumber_user3\", \"933333333\");\r",
+									"console.log(\"phoneNumber_user3: \" + \"933333333\");\r",
+									"pm.environment.set(\"year_user3\", \"3003\");\r",
+									"console.log(\"year_user3: \" + \"3003\");\r",
+									"pm.environment.set(\"month_user3\", \"3\");\r",
+									"console.log(\"month_user3: \" + \"3\");\r",
+									"pm.environment.set(\"day_user3\", \"3\");\r",
+									"console.log(\"day_user3: \" + \"3\");\r",
+									"pm.environment.set(\"emotionalStatus_user3\", \"angry\");\r",
+									"console.log(\"emotionalStatus_user3: \" + \"angry\");\r",
+									"pm.environment.set(\"facebook_user3\", \"facebook3.com\");\r",
+									"console.log(\"facebook_user3: \" + \"facebook3.com\");\r",
+									"pm.environment.set(\"linkedin_user3\", \"linkedin3.com\");\r",
+									"console.log(\"linkedin_user3: \" + \"linkedin3.com\");\r",
+									"pm.environment.set(\"tag_user3\", \"tag3\");\r",
+									"console.log(\"tag: \" + \"tag3\");\r",
+									"\r",
+									"pm.environment.set(\"dateOfBirth_user3\", \"3003-03-03T00:00:00\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\":\"{{name_user3}}\",\r\n  \"email\": \"{{email_user3}}\", \r\n  \"password\": \"{{password_user3}}\",\r\n  \"phoneNumber\": \"{{phoneNumber_user3}}\",\r\n  \"year\": \"{{year_user3}}\",\r\n  \"month\": \"{{month_user3}}\", \r\n  \"day\": \"{{day_user3}}\",\r\n  \"emotionalStatus\": \"{{emotionalStatus_user3}}\",\r\n  \"facebook\": \"{{facebook_user3}}\",\r\n  \"linkedIn\": \"{{linkedin_user3}}\",\r\n  \"tags\": [\r\n      \"{{tag_user3}}\"\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/Players/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Third Player After Creation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"console.log(pm.environment.get(\"id_user3\"));\r",
+									"\r",
+									"pm.test(\"Player get returns status 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct player_id\", function () {\r",
+									"    pm.expect(responseJson.id).to.eql(pm.environment.get(\"id_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user3\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Players/{{id_user3}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								"{{id_user3}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Empty Connections",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"There are no connections\", function () {\r",
+									"    pm.response.to.have.body(\"[]\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Connections/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Connections",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE Connection P1 - P2",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"connectionStrength_connection\", \"1\");\r",
+									"console.log(\"connectionStrength_connection: \" + \"1\");\r",
+									"pm.environment.set(\"tag_connnection\", \"tagCon\");\r",
+									"console.log(\"tag_connnection: \" + \"tagCon\");\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct player\", function () {\r",
+									"    pm.expect(responseJson.player).to.eql(pm.environment.get(\"id_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct friend\", function () {\r",
+									"    pm.expect(responseJson.friend).to.eql(pm.environment.get(\"id_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct connection strength\", function () {\r",
+									"    pm.expect(responseJson.connectionStrength).to.eql(parseInt(pm.environment.get(\"connectionStrength_connection\")));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_connnection\"));\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.environment.set(\"id_connection\", responseJson.id); // save the connection's id for further tests\r",
+									"\r",
+									"console.log(pm.environment.get(\"id_connection\"));\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"player\" : \"{{id_user1}}\",\r\n    \"friend\" : \"{{id_user2}}\",\r\n    \"connectionStrength\" : \"{{connectionStrength_connection}}\",\r\n    \"tags\" : [\r\n        \"{{tag_connnection}}\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/Connections/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Connections",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Connection P1 - P2 Created",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"console.log(pm.environment.get(\"id_connection\"));\r",
+									"\r",
+									"pm.test(\"Connection get returns status 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct connection id\", function () {\r",
+									"    pm.expect(responseJson.id).to.eql(pm.environment.get(\"id_connection\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct player\", function () {\r",
+									"    pm.expect(responseJson.player).to.eql(pm.environment.get(\"id_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct friend\", function () {\r",
+									"    pm.expect(responseJson.friend).to.eql(pm.environment.get(\"id_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct connection strength\", function () {\r",
+									"    pm.expect(responseJson.connectionStrength).to.eql(parseInt(pm.environment.get(\"connectionStrength_connection\")));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_connnection\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Connections/{{id_connection}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Connections",
+								"{{id_connection}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE Connection P2 - P3",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"connectionStrength_connection\", \"1\");\r",
+									"console.log(\"connectionStrength_connection: \" + \"1\");\r",
+									"pm.environment.set(\"tag_connnection\", \"tagCon\");\r",
+									"console.log(\"tag_connnection: \" + \"tagCon\");\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct player\", function () {\r",
+									"    pm.expect(responseJson.player).to.eql(pm.environment.get(\"id_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct friend\", function () {\r",
+									"    pm.expect(responseJson.friend).to.eql(pm.environment.get(\"id_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct connection strength\", function () {\r",
+									"    pm.expect(responseJson.connectionStrength).to.eql(parseInt(pm.environment.get(\"connectionStrength_connection\")));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_connnection\"));\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.environment.set(\"id_connection2\", responseJson.id); // save the connection's id for further tests\r",
+									"\r",
+									"console.log(pm.environment.get(\"id_connection2\"));\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"player\" : \"{{id_user2}}\",\r\n    \"friend\" : \"{{id_user3}}\",\r\n    \"connectionStrength\" : \"{{connectionStrength_connection}}\",\r\n    \"tags\" : [\r\n        \"{{tag_connnection}}\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/Connections/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Connections",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Connection P2 - P3 Created",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"console.log(pm.environment.get(\"id_connection\"));\r",
+									"\r",
+									"pm.test(\"Connection get returns status 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct connection id\", function () {\r",
+									"    pm.expect(responseJson.id).to.eql(pm.environment.get(\"id_connection2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct player\", function () {\r",
+									"    pm.expect(responseJson.player).to.eql(pm.environment.get(\"id_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct friend\", function () {\r",
+									"    pm.expect(responseJson.friend).to.eql(pm.environment.get(\"id_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct connection strength\", function () {\r",
+									"    pm.expect(responseJson.connectionStrength).to.eql(parseInt(pm.environment.get(\"connectionStrength_connection\")));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_connnection\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Connections/{{id_connection2}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Connections",
+								"{{id_connection2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Reachable Players",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"console.log(pm.environment.get(\"id_user3\"));\r",
+									"\r",
+									"pm.test(\"Player get returns status 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct player_id\", function () {\r",
+									"    pm.expect(responseJson[0].id).to.eql(pm.environment.get(\"id_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct name\", function () {\r",
+									"    pm.expect(responseJson[0].name).to.eql(pm.environment.get(\"name_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct email\", function () {\r",
+									"    pm.expect(responseJson[0].email).to.eql(pm.environment.get(\"email_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct phone number\", function () {\r",
+									"    pm.expect(responseJson[0].phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson[0].dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct emotional status\", function () {\r",
+									"    pm.expect(responseJson[0].emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct facebook\", function () {\r",
+									"    pm.expect(responseJson[0].facebook).to.eql(pm.environment.get(\"facebook_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct linkedin\", function () {\r",
+									"    pm.expect(responseJson[0].linkedIn).to.eql(pm.environment.get(\"linkedin_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct tag\", function () {\r",
+									"    pm.expect(responseJson[0].tags[0]).to.eql(pm.environment.get(\"tag_user3\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5001/api/Connections/reachablePlayers/{{email_user1}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"Connections",
+								"reachablePlayers",
+								"{{email_user1}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Mutual Friends",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"console.log(pm.environment.get(\"id_user2\"));\r",
+									"\r",
+									"pm.test(\"Player get returns status 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct player_id\", function () {\r",
+									"    pm.expect(responseJson[0].id).to.eql(pm.environment.get(\"id_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct name\", function () {\r",
+									"    pm.expect(responseJson[0].name).to.eql(pm.environment.get(\"name_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct email\", function () {\r",
+									"    pm.expect(responseJson[0].email).to.eql(pm.environment.get(\"email_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct phone number\", function () {\r",
+									"    pm.expect(responseJson[0].phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson[0].dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct emotional status\", function () {\r",
+									"    pm.expect(responseJson[0].emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct facebook\", function () {\r",
+									"    pm.expect(responseJson[0].facebook).to.eql(pm.environment.get(\"facebook_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct linkedin\", function () {\r",
+									"    pm.expect(responseJson[0].linkedIn).to.eql(pm.environment.get(\"linkedin_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct tag\", function () {\r",
+									"    pm.expect(responseJson[0].tags[0]).to.eql(pm.environment.get(\"tag_user2\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\":\"{{email_user3}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5001/api/Connections/mutualFriends/{{email_user1}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"Connections",
+								"mutualFriends",
+								"{{email_user1}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Requests",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"There are no connection requests\", function () {\r",
+									"    pm.response.to.have.body(\"[]\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/connectionRequests/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"connectionRequests",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE Introduction Request",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"ptm_int\", \"player_target_message\");\r",
+									"console.log(\"ptm_int: \" + \"player_target_message\");\r",
+									"pm.environment.set(\"pmm_int\", \"player_middle_message\");\r",
+									"console.log(\"pmm_int: \" + \"player_middle_message\");\r",
+									"pm.environment.set(\"mtm_int\", \"middle_target_message\");\r",
+									"console.log(\"mtm_int: \" + \"middle_target_message\");\r",
+									"pm.environment.set(\"currentStatus_int\", \"introduction_pending\");\r",
+									"console.log(\"currentStatus_int: \" + \"introduction_pending\");\r",
+									"pm.environment.set(\"strength_int\", \"1\");\r",
+									"console.log(\"strength_int: \" + \"1\");\r",
+									"pm.environment.set(\"tag_int\", \"tagInt\");\r",
+									"console.log(\"tag_int: \" + \"tagInt\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct player\", function () {\r",
+									"    pm.expect(responseJson.player).to.eql(pm.environment.get(\"id_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct middle man\", function () {\r",
+									"    pm.expect(responseJson.middleMan).to.eql(pm.environment.get(\"id_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct target\", function () {\r",
+									"    pm.expect(responseJson.target).to.eql(pm.environment.get(\"id_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct player to target message\", function () {\r",
+									"    pm.expect(responseJson.playerToTargetMessage).to.eql(pm.environment.get(\"ptm_int\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct player to middle man message\", function () {\r",
+									"    pm.expect(responseJson.playerToMiddleManMessage).to.eql(pm.environment.get(\"pmm_int\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct middle man to target message\", function () {\r",
+									"    pm.expect(responseJson.middleManToTargetMessage).to.eql(pm.environment.get(\"mtm_int\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct current status\", function () {\r",
+									"    pm.expect(responseJson.currentStatus).to.eql(pm.environment.get(\"currentStatus_int\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct strength\", function () {\r",
+									"    pm.expect(responseJson.strength).to.eql(parseInt(pm.environment.get(\"strength_int\")));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct current status\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_int\"));\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"id_int\", responseJson.id); // save the connection request's id for further tests\r",
+									"\r",
+									"console.log(pm.environment.get(\"id_int\"));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"player\":\"{{id_user1}}\",\r\n  \"middleMan\": \"{{id_user2}}\", \r\n  \"target\": \"{{id_user3}}\",\r\n  \"playerToTargetMessage\": \"{{ptm_int}}\",\r\n  \"playerToMiddleManMessage\": \"{{pmm_int}}\",\r\n  \"middleManToTargetMessage\": \"{{mtm_int}}\", \r\n  \"currentStatus\": \"{{currentStatus_int}}\",\r\n  \"strength\": \"{{strength_int}}\",\r\n  \"tags\": [\r\n      \"{{tag_int}}\"\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/ConnectionRequests/intr",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"ConnectionRequests",
+								"intr"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Introduction Request Created",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct id\", function () {\r",
+									"    pm.expect(responseJson.id).to.eql(pm.environment.get(\"id_int\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct player\", function () {\r",
+									"    pm.expect(responseJson.player).to.eql(pm.environment.get(\"id_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct middle man\", function () {\r",
+									"    pm.expect(responseJson.middleMan).to.eql(pm.environment.get(\"id_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct target\", function () {\r",
+									"    pm.expect(responseJson.target).to.eql(pm.environment.get(\"id_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct player to target message\", function () {\r",
+									"    pm.expect(responseJson.playerToTargetMessage).to.eql(pm.environment.get(\"ptm_int\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct player to middle man message\", function () {\r",
+									"    pm.expect(responseJson.playerToMiddleManMessage).to.eql(pm.environment.get(\"pmm_int\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct middle man to target message\", function () {\r",
+									"    pm.expect(responseJson.middleManToTargetMessage).to.eql(pm.environment.get(\"mtm_int\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct current status\", function () {\r",
+									"    pm.expect(responseJson.currentStatus).to.eql(pm.environment.get(\"currentStatus_int\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct strength\", function () {\r",
+									"    pm.expect(responseJson.strength).to.eql(parseInt(pm.environment.get(\"strength_int\")));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct current status\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_int\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/ConnectionRequests/{{id_int}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"ConnectionRequests",
+								"{{id_int}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Introduction Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct player\", function () {\r",
+									"    pm.expect(responseJson.player).to.eql(pm.environment.get(\"id_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct middle man\", function () {\r",
+									"    pm.expect(responseJson.middleMan).to.eql(pm.environment.get(\"id_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct target\", function () {\r",
+									"    pm.expect(responseJson.target).to.eql(pm.environment.get(\"id_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct player to target message\", function () {\r",
+									"    pm.expect(responseJson.playerToTargetMessage).to.eql(pm.environment.get(\"ptm_int\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct player to middle man message\", function () {\r",
+									"    pm.expect(responseJson.playerToMiddleManMessage).to.eql(pm.environment.get(\"pmm_int\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct middle man to target message\", function () {\r",
+									"    pm.expect(responseJson.middleManToTargetMessage).to.eql(pm.environment.get(\"mtm_int\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct current status\", function () {\r",
+									"    pm.expect(responseJson.currentStatus).to.eql(pm.environment.get(\"currentStatus_int\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct strength\", function () {\r",
+									"    pm.expect(responseJson.strength).to.eql(parseInt(pm.environment.get(\"strength_int\")));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct current status\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_int\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/ConnectionRequests/{{id_int}}/hard",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"ConnectionRequests",
+								"{{id_int}}",
+								"hard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Requests After Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"There are no connection requests\", function () {\r",
+									"    pm.response.to.have.body(\"[]\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/connectionRequests/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"connectionRequests",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Connection P2 - P3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct id\", function () {\r",
+									"    pm.expect(responseJson.id).to.eql(pm.environment.get(\"id_connection2\"));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/connections/{{id_connection2}}/hard",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"connections",
+								"{{id_connection2}}",
+								"hard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Connection P1 - P2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct id\", function () {\r",
+									"    pm.expect(responseJson.id).to.eql(pm.environment.get(\"id_connection\"));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/connections/{{id_connection}}/hard",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"connections",
+								"{{id_connection}}",
+								"hard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Connections After Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"There are no connections\", function () {\r",
+									"    pm.response.to.have.body(\"[]\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Connections/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Connections",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SOFT DELETE Third Player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user3\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/players/{{id_user3}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"players",
+								"{{id_user3}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Third Player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user3\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/players/{{id_user3}}/hard",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"players",
+								"{{id_user3}}",
+								"hard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SOFT DELETE Second Player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user2\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/players/{{id_user2}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"players",
+								"{{id_user2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Second Player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user2\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/players/{{id_user2}}/hard",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"players",
+								"{{id_user2}}",
+								"hard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SOFT DELETE First Player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user1\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Players/{{id_user1}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								"{{id_user1}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE First Player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user1\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Players/{{id_user1}}/hard",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								"{{id_user1}}",
+								"hard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Players After Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"There are no players\", function () {\r",
+									"    pm.response.to.have.body(\"[]\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Players/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UC07 Get Network",
+			"item": [
+				{
+					"name": "GET Players",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"There are no players\", function () {\r",
+									"    pm.response.to.have.body(\"[]\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Players/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE First Player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"id_user1\", responseJson.id); // save the user's id for further tests\r",
+									"\r",
+									"console.log(pm.environment.get(\"id_user1\"));"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"name_user1\", \"user1\");\r",
+									"console.log(\"name_user1: \" + \"user1\");\r",
+									"pm.environment.set(\"email_user1\", \"email1@gmail.com\");\r",
+									"console.log(\"email_user1: \" + \"email1@gmail.com\");\r",
+									"pm.environment.set(\"password_user1\", \"password1\");\r",
+									"console.log(\"password_user1: \" + \"password1\");\r",
+									"pm.environment.set(\"phoneNumber_user1\", \"911111111\");\r",
+									"console.log(\"phoneNumber_user1: \" + \"911111111\");\r",
+									"pm.environment.set(\"year_user1\", \"2001\");\r",
+									"console.log(\"year_user1: \" + \"2001\");\r",
+									"pm.environment.set(\"month_user1\", \"1\");\r",
+									"console.log(\"month_user1: \" + \"1\");\r",
+									"pm.environment.set(\"day_user1\", \"1\");\r",
+									"console.log(\"day_user1: \" + \"1\");\r",
+									"pm.environment.set(\"emotionalStatus_user1\", \"angry\");\r",
+									"console.log(\"emotionalStatus_user1: \" + \"angry\");\r",
+									"pm.environment.set(\"facebook_user1\", \"facebook1.com\");\r",
+									"console.log(\"facebook_user1: \" + \"facebook1.com\");\r",
+									"pm.environment.set(\"linkedin_user1\", \"linkedin1.com\");\r",
+									"console.log(\"linkedin_user1: \" + \"linkedin1.com\");\r",
+									"pm.environment.set(\"tag_user1\", \"tag1\");\r",
+									"console.log(\"tag: \" + \"tag1\");\r",
+									"\r",
+									"pm.environment.set(\"dateOfBirth_user1\", \"2001-01-01T00:00:00\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\":\"{{name_user1}}\",\r\n  \"email\": \"{{email_user1}}\", \r\n  \"password\": \"{{password_user1}}\",\r\n  \"phoneNumber\": \"{{phoneNumber_user1}}\",\r\n  \"year\": \"{{year_user1}}\",\r\n  \"month\": \"{{month_user1}}\", \r\n  \"day\": \"{{day_user1}}\",\r\n  \"emotionalStatus\": \"{{emotionalStatus_user1}}\",\r\n  \"facebook\": \"{{facebook_user1}}\",\r\n  \"linkedIn\": \"{{linkedin_user1}}\",\r\n  \"tags\": [\r\n      \"{{tag_user1}}\"\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/Players/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET First Player After Creation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"console.log(pm.environment.get(\"user1_id\"));\r",
+									"\r",
+									"pm.test(\"Player get returns status 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct player_id\", function () {\r",
+									"    pm.expect(responseJson.id).to.eql(pm.environment.get(\"id_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct tags\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user1\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Players/{{id_user1}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								"{{id_user1}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE Second Player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"id_user2\", responseJson.id); // save the user's id for further tests\r",
+									"\r",
+									"console.log(pm.environment.get(\"id_user2\"));"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"name_user2\", \"user2\");\r",
+									"console.log(\"name_user2: \" + \"user2\");\r",
+									"pm.environment.set(\"email_user2\", \"email2@gmail.com\");\r",
+									"console.log(\"email_user2: \" + \"email2@gmail.com\");\r",
+									"pm.environment.set(\"password_user2\", \"password2\");\r",
+									"console.log(\"password_user2: \" + \"password2\");\r",
+									"pm.environment.set(\"phoneNumber_user2\", \"922222222\");\r",
+									"console.log(\"phoneNumber_user2: \" + \"922222222\");\r",
+									"pm.environment.set(\"year_user2\", \"2002\");\r",
+									"console.log(\"year_user2: \" + \"2002\");\r",
+									"pm.environment.set(\"month_user2\", \"2\");\r",
+									"console.log(\"month_user2: \" + \"2\");\r",
+									"pm.environment.set(\"day_user2\", \"2\");\r",
+									"console.log(\"day_user2: \" + \"2\");\r",
+									"pm.environment.set(\"emotionalStatus_user2\", \"angry\");\r",
+									"console.log(\"emotionalStatus_user2: \" + \"angry\");\r",
+									"pm.environment.set(\"facebook_user2\", \"facebook2.com\");\r",
+									"console.log(\"facebook_user2: \" + \"facebook2.com\");\r",
+									"pm.environment.set(\"linkedin_user2\", \"linkedin2.com\");\r",
+									"console.log(\"linkedin_user2: \" + \"linkedin2.com\");\r",
+									"pm.environment.set(\"tag_user2\", \"tag2\");\r",
+									"console.log(\"tag: \" + \"tag2\");\r",
+									"\r",
+									"pm.environment.set(\"dateOfBirth_user2\", \"2002-02-02T00:00:00\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\":\"{{name_user2}}\",\r\n  \"email\": \"{{email_user2}}\", \r\n  \"password\": \"{{password_user2}}\",\r\n  \"phoneNumber\": \"{{phoneNumber_user2}}\",\r\n  \"year\": \"{{year_user2}}\",\r\n  \"month\": \"{{month_user2}}\", \r\n  \"day\": \"{{day_user2}}\",\r\n  \"emotionalStatus\": \"{{emotionalStatus_user2}}\",\r\n  \"facebook\": \"{{facebook_user2}}\",\r\n  \"linkedIn\": \"{{linkedin_user2}}\",\r\n  \"tags\": [\r\n      \"{{tag_user2}}\"\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/Players/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Second Player After Creation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"console.log(pm.environment.get(\"id_user2\"));\r",
+									"\r",
+									"pm.test(\"Player get returns status 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct player_id\", function () {\r",
+									"    pm.expect(responseJson.id).to.eql(pm.environment.get(\"id_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user2\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Players/{{id_user2}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								"{{id_user2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE Third Player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"id_user3\", responseJson.id); // save the user's id for further tests\r",
+									"\r",
+									"console.log(pm.environment.get(\"id_user3\"));"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"name_user3\", \"user3\");\r",
+									"console.log(\"name_user3: \" + \"user3\");\r",
+									"pm.environment.set(\"email_user3\", \"email3@gmail.com\");\r",
+									"console.log(\"email_user3: \" + \"email3@gmail.com\");\r",
+									"pm.environment.set(\"password_user3\", \"password3\");\r",
+									"console.log(\"password_user3: \" + \"password3\");\r",
+									"pm.environment.set(\"phoneNumber_user3\", \"933333333\");\r",
+									"console.log(\"phoneNumber_user3: \" + \"933333333\");\r",
+									"pm.environment.set(\"year_user3\", \"3003\");\r",
+									"console.log(\"year_user3: \" + \"3003\");\r",
+									"pm.environment.set(\"month_user3\", \"3\");\r",
+									"console.log(\"month_user3: \" + \"3\");\r",
+									"pm.environment.set(\"day_user3\", \"3\");\r",
+									"console.log(\"day_user3: \" + \"3\");\r",
+									"pm.environment.set(\"emotionalStatus_user3\", \"angry\");\r",
+									"console.log(\"emotionalStatus_user3: \" + \"angry\");\r",
+									"pm.environment.set(\"facebook_user3\", \"facebook3.com\");\r",
+									"console.log(\"facebook_user3: \" + \"facebook3.com\");\r",
+									"pm.environment.set(\"linkedin_user3\", \"linkedin3.com\");\r",
+									"console.log(\"linkedin_user3: \" + \"linkedin3.com\");\r",
+									"pm.environment.set(\"tag_user3\", \"tag3\");\r",
+									"console.log(\"tag: \" + \"tag3\");\r",
+									"\r",
+									"pm.environment.set(\"dateOfBirth_user3\", \"3003-03-03T00:00:00\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\":\"{{name_user3}}\",\r\n  \"email\": \"{{email_user3}}\", \r\n  \"password\": \"{{password_user3}}\",\r\n  \"phoneNumber\": \"{{phoneNumber_user3}}\",\r\n  \"year\": \"{{year_user3}}\",\r\n  \"month\": \"{{month_user3}}\", \r\n  \"day\": \"{{day_user3}}\",\r\n  \"emotionalStatus\": \"{{emotionalStatus_user3}}\",\r\n  \"facebook\": \"{{facebook_user3}}\",\r\n  \"linkedIn\": \"{{linkedin_user3}}\",\r\n  \"tags\": [\r\n      \"{{tag_user3}}\"\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/Players/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Third Player After Creation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"console.log(pm.environment.get(\"id_user3\"));\r",
+									"\r",
+									"pm.test(\"Player get returns status 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct player_id\", function () {\r",
+									"    pm.expect(responseJson.id).to.eql(pm.environment.get(\"id_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Player has correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user3\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Players/{{id_user3}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								"{{id_user3}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Empty Connections",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"There are no connections\", function () {\r",
+									"    pm.response.to.have.body(\"[]\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Connections/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Connections",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE Connection P1 - P2",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"connectionStrength_connection\", \"1\");\r",
+									"console.log(\"connectionStrength_connection: \" + \"1\");\r",
+									"pm.environment.set(\"tag_connnection\", \"tagCon\");\r",
+									"console.log(\"tag_connnection: \" + \"tagCon\");\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct player\", function () {\r",
+									"    pm.expect(responseJson.player).to.eql(pm.environment.get(\"id_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct friend\", function () {\r",
+									"    pm.expect(responseJson.friend).to.eql(pm.environment.get(\"id_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct connection strength\", function () {\r",
+									"    pm.expect(responseJson.connectionStrength).to.eql(parseInt(pm.environment.get(\"connectionStrength_connection\")));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_connnection\"));\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.environment.set(\"id_connection\", responseJson.id); // save the connection's id for further tests\r",
+									"\r",
+									"console.log(pm.environment.get(\"id_connection\"));\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"player\" : \"{{id_user1}}\",\r\n    \"friend\" : \"{{id_user2}}\",\r\n    \"connectionStrength\" : \"{{connectionStrength_connection}}\",\r\n    \"tags\" : [\r\n        \"{{tag_connnection}}\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/Connections/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Connections",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Connection P1 - P2 Created",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"console.log(pm.environment.get(\"id_connection\"));\r",
+									"\r",
+									"pm.test(\"Connection get returns status 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct connection id\", function () {\r",
+									"    pm.expect(responseJson.id).to.eql(pm.environment.get(\"id_connection\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct player\", function () {\r",
+									"    pm.expect(responseJson.player).to.eql(pm.environment.get(\"id_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct friend\", function () {\r",
+									"    pm.expect(responseJson.friend).to.eql(pm.environment.get(\"id_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct connection strength\", function () {\r",
+									"    pm.expect(responseJson.connectionStrength).to.eql(parseInt(pm.environment.get(\"connectionStrength_connection\")));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_connnection\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Connections/{{id_connection}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Connections",
+								"{{id_connection}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE Connection P2 - P3",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"connectionStrength_connection\", \"1\");\r",
+									"console.log(\"connectionStrength_connection: \" + \"1\");\r",
+									"pm.environment.set(\"tag_connnection\", \"tagCon\");\r",
+									"console.log(\"tag_connnection: \" + \"tagCon\");\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct player\", function () {\r",
+									"    pm.expect(responseJson.player).to.eql(pm.environment.get(\"id_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct friend\", function () {\r",
+									"    pm.expect(responseJson.friend).to.eql(pm.environment.get(\"id_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct connection strength\", function () {\r",
+									"    pm.expect(responseJson.connectionStrength).to.eql(parseInt(pm.environment.get(\"connectionStrength_connection\")));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_connnection\"));\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.environment.set(\"id_connection2\", responseJson.id); // save the connection's id for further tests\r",
+									"\r",
+									"console.log(pm.environment.get(\"id_connection2\"));\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"player\" : \"{{id_user2}}\",\r\n    \"friend\" : \"{{id_user3}}\",\r\n    \"connectionStrength\" : \"{{connectionStrength_connection}}\",\r\n    \"tags\" : [\r\n        \"{{tag_connnection}}\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/Connections/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Connections",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Connection P2 - P3 Created",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"console.log(pm.environment.get(\"id_connection\"));\r",
+									"\r",
+									"pm.test(\"Connection get returns status 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct connection id\", function () {\r",
+									"    pm.expect(responseJson.id).to.eql(pm.environment.get(\"id_connection2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct player\", function () {\r",
+									"    pm.expect(responseJson.player).to.eql(pm.environment.get(\"id_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct friend\", function () {\r",
+									"    pm.expect(responseJson.friend).to.eql(pm.environment.get(\"id_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct connection strength\", function () {\r",
+									"    pm.expect(responseJson.connectionStrength).to.eql(parseInt(pm.environment.get(\"connectionStrength_connection\")));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_connnection\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Connections/{{id_connection2}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Connections",
+								"{{id_connection2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Player Network",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"email_user1\", \"email1@gmail.com\");\r",
+									"console.log(\"email_user1: \" + \"email1@gmail.com\");\r",
+									"pm.environment.set(\"scope\", 2);\r",
+									"console.log(\"scope: \" + \"1\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"console.log(pm.environment.get(\"id_connection\"));\r",
+									"\r",
+									"pm.test(\"Connection get returns status 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct connection id\", function () {\r",
+									"    pm.expect(responseJson[0].id).to.eql(pm.environment.get(\"id_connection\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct player\", function () {\r",
+									"    pm.expect(responseJson[0].player).to.eql(pm.environment.get(\"id_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct friend\", function () {\r",
+									"    pm.expect(responseJson[0].friend).to.eql(pm.environment.get(\"id_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct connection strength\", function () {\r",
+									"    pm.expect(responseJson[0].connectionStrength).to.eql(parseInt(pm.environment.get(\"connectionStrength_connection\")));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct tag\", function () {\r",
+									"    pm.expect(responseJson[0].tags[0]).to.eql(pm.environment.get(\"tag_connnection\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct connection id\", function () {\r",
+									"    pm.expect(responseJson[1].id).to.eql(pm.environment.get(\"id_connection2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct player\", function () {\r",
+									"    pm.expect(responseJson[1].player).to.eql(pm.environment.get(\"id_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct friend\", function () {\r",
+									"    pm.expect(responseJson[1].friend).to.eql(pm.environment.get(\"id_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct connection strength\", function () {\r",
+									"    pm.expect(responseJson[1].connectionStrength).to.eql(parseInt(pm.environment.get(\"connectionStrength_connection\")));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Connection has correct tag\", function () {\r",
+									"    pm.expect(responseJson[1].tags[0]).to.eql(pm.environment.get(\"tag_connnection\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"scope\": {{scope}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5001/api/connections/network/{{email_user1}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"connections",
+								"network",
+								"{{email_user1}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Connection P2 - P3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct id\", function () {\r",
+									"    pm.expect(responseJson.id).to.eql(pm.environment.get(\"id_connection2\"));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/connections/{{id_connection2}}/hard",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"connections",
+								"{{id_connection2}}",
+								"hard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Connection P1 - P2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct id\", function () {\r",
+									"    pm.expect(responseJson.id).to.eql(pm.environment.get(\"id_connection\"));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/connections/{{id_connection}}/hard",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"connections",
+								"{{id_connection}}",
+								"hard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Connections After Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"There are no connections\", function () {\r",
+									"    pm.response.to.have.body(\"[]\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Connections/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Connections",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SOFT DELETE Third Player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user3\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/players/{{id_user3}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"players",
+								"{{id_user3}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Third Player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user3\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user3\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/players/{{id_user3}}/hard",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"players",
+								"{{id_user3}}",
+								"hard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SOFT DELETE Second Player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user2\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/players/{{id_user2}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"players",
+								"{{id_user2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Second Player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user2\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user2\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/players/{{id_user2}}/hard",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"players",
+								"{{id_user2}}",
+								"hard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SOFT DELETE First Player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user1\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Players/{{id_user1}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								"{{id_user1}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE First Player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct name\", function () {\r",
+									"    pm.expect(responseJson.name).to.eql(pm.environment.get(\"name_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct email\", function () {\r",
+									"    pm.expect(responseJson.email).to.eql(pm.environment.get(\"email_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct phone number\", function () {\r",
+									"    pm.expect(responseJson.phoneNumber).to.eql(pm.environment.get(\"phoneNumber_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct date Of Birth\", function () {\r",
+									"    pm.expect(responseJson.dateOfBirth).to.eql(pm.environment.get(\"dateOfBirth_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct emotional status\", function () {\r",
+									"    pm.expect(responseJson.emotionalStatus).to.eql(pm.environment.get(\"emotionalStatus_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct facebook\", function () {\r",
+									"    pm.expect(responseJson.facebook).to.eql(pm.environment.get(\"facebook_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct linkedin\", function () {\r",
+									"    pm.expect(responseJson.linkedIn).to.eql(pm.environment.get(\"linkedin_user1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body returns the correct tag\", function () {\r",
+									"    pm.expect(responseJson.tags[0]).to.eql(pm.environment.get(\"tag_user1\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Players/{{id_user1}}/hard",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								"{{id_user1}}",
+								"hard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Players After Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"There are no players\", function () {\r",
+									"    pm.response.to.have.body(\"[]\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/Players/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"Players",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
