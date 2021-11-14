@@ -187,7 +187,7 @@ namespace DDDNetCore.Domain.Connections
 
             return reachableUsersList.ConvertAll<PlayerDto>(plyr =>
                 new PlayerDto(plyr.Id.AsGuid(),plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, 
-                plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, plyr.DateOfBirth.date.Day, plyr.EmotionalStatus.Status, plyr.Facebook.Url, plyr.LinkedIn.Url));
+                plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, plyr.DateOfBirth.date.Day, plyr.EmotionalStatus.Status.ToString(), plyr.Facebook.Url, plyr.LinkedIn.Url));
         }
 
         public async Task<List<PlayerDto>> GetMutualFriends(string playerEmail, PlayerDto targetDto)
@@ -201,7 +201,7 @@ namespace DDDNetCore.Domain.Connections
 
             return mutualfriendsList.ConvertAll<PlayerDto>(plyr =>
                 new PlayerDto(plyr.Id.AsGuid(),plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, 
-                plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, plyr.DateOfBirth.date.Day, plyr.EmotionalStatus.Status, plyr.Facebook.Url, plyr.LinkedIn.Url));
+                plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, plyr.DateOfBirth.date.Day, plyr.EmotionalStatus.Status.ToString(), plyr.Facebook.Url, plyr.LinkedIn.Url));
         }
 
     }
