@@ -208,10 +208,12 @@ namespace DDDNetCore.Domain.Connections
 
         }
         
-        public async Task<List<ConnectionDto>> GetNetwork(PlayerId id, int scope){
+        public async Task<List<ConnectionDto>> GetNetwork(string playerEmail, GetNetworkDto dto){
+
+            var player = await _repoPl.GetByEmailAsync(playerEmail);
             
             List<Connection> lst = new List<Connection>();
-            lst = await this.GetNetwork(id, scope, lst);
+            lst = await this.GetNetwork(player.Id, dto.Scope, lst);
 
             List<ConnectionDto> lstDto = lst.ConvertAll<ConnectionDto>(con =>
                 new ConnectionDto(con.Id.AsString(), con.Player.AsString(), con.Friend.AsString(), con.ConnectionStrength.Strength, con.Tags.Select(t => t.tagName).ToList()));
@@ -230,7 +232,7 @@ namespace DDDNetCore.Domain.Connections
             lst.AddRange(lstFriends);
             
             foreach(Connection c in lstFriends){
-                await this.GetNetwork(c.Friend, scope - 1);
+                await this.GetNetwork(c.Friend, scope - 1, lst);
             }
 
             return lst;

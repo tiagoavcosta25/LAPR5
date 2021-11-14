@@ -188,10 +188,10 @@ namespace DDDNetCore.Controllers
         }
 
         // GET: api/Connections/network
-        [HttpGet("network/{id}")]
-        public async Task<ActionResult<IEnumerable<ConnectionDto>>> GetNetwork(Guid id, int scope)
+        [HttpGet("network/{playerEmail}")]
+        public async Task<ActionResult<IEnumerable<ConnectionDto>>> GetNetwork(string playerEmail, GetNetworkDto dto)
         {
-            return await _service.GetNetwork(new PlayerId(id), scope);
+            return await _service.GetNetwork(playerEmail, dto);
         }
 
     }

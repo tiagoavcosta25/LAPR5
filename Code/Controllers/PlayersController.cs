@@ -62,7 +62,7 @@ namespace DDDSample1.Controllers
 
         // PUT: api/Players/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<PlayerDto>> Update(Guid id, UpdatePlayerDto dto)
+        public async Task<ActionResult<UpdatePlayerDto>> Update(Guid id, UpdatePlayerDto dto)
         {
             if (id != dto.Id)
             {
@@ -181,5 +181,6 @@ namespace DDDSample1.Controllers
                     return BadRequest();
             }
         }
+        
     }
 }

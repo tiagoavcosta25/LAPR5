@@ -57,7 +57,7 @@ namespace DDDSample1.Domain.Players
 
         public async Task<PlayerDto> UpdateAsync(UpdatePlayerDto dto)
         {
-            var Player = await this._repo.GetByEmailAsync(dto.Email); 
+            var Player = await this._repo.GetByIdAsync(new PlayerId(dto.Id)); 
 
             if (Player == null)
                 return null;   
