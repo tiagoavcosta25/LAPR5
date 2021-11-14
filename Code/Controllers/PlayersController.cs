@@ -14,9 +14,9 @@ namespace DDDSample1.Controllers
     public class PlayersController : ControllerBase
     {
         private readonly IPlayerService _service;
-        private readonly ConnectionRequestService _crservice;
+        private readonly IConnectionRequestService _crservice;
 
-        public PlayersController(IPlayerService service, ConnectionRequestService crservice)
+        public PlayersController(IPlayerService service, IConnectionRequestService crservice)
         {
             _service = service;
             _crservice = crservice;
