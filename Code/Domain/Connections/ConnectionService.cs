@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DDDNetCore.Domain.Connections
 {
-    public class ConnectionService
+    public class ConnectionService : IConnectionService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IConnectionRepository _repo;

@@ -260,7 +260,7 @@ namespace DDDNetCore.Controllers
 
         // GET: api/ConnectionRequests/middleManRequests/playerEmail
         [HttpGet("middleManRequests/{playerEmail}")]
-        public async Task<ActionResult<IEnumerable<ConnectionRequestDto>>> GetMiddleManRequests(string playerEmail)
+        public async Task<ActionResult<IEnumerable<IntroductionRequestDto>>> GetMiddleManRequests(string playerEmail)
         {
             return await _service.GetMiddleManRequests(playerEmail);
         }
