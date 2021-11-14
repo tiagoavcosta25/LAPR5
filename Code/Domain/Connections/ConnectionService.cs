@@ -51,7 +51,7 @@ namespace DDDNetCore.Domain.Connections
 
             await _unitOfWork.CommitAsync();
 
-            return new ConnectionDto(con.Id.AsString(), con.Player.AsString(), con.Friend.AsString(), 0, new List<string>());
+            return new ConnectionDto(con.Id.AsString(), con.Player.AsString(), con.Friend.AsString(), con.ConnectionStrength.Strength, con.Tags.Select(t => t.tagName).ToList());
         }
 
         public async Task<ConnectionDto> UpdateAsync(ConnectionDto dto)
