@@ -27,6 +27,8 @@ namespace DDDSample1.Domain.Players
         Task<List<GetPlayerDto>> GetByPhoneAsync(string phoneNumber);
 
         Task<List<GetPlayerDto>> GetByTagAsync(string tag);
+
+        ICollection<string> GetFilters();
         
         Task<List<GetPlayerSuggestionDto>> GetSuggestions(string playerEmail);
     }
