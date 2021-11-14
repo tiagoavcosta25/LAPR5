@@ -8,6 +8,7 @@ namespace DDDSample1.Domain.Players
      
         public PlayerName Name { get;  private set; }
         public PlayerEmail Email { get;  private set; }
+        public PlayerPassword Password { get;  private set; }
         public PlayerDateOfBirth DateOfBirth { get;  private set; }
         public PlayerPhoneNumber PhoneNumber { get;  private set; }
         public PlayerEmotionalStatus EmotionalStatus { get;  private set; }
@@ -21,11 +22,12 @@ namespace DDDSample1.Domain.Players
             this.Active = true;
         }
 
-        public Player(string name, string email, string phoneNumber, int year, int month, int day, string emotionalStatus, string facebook, string linkedin)
+        public Player(string name, string email, string password, string phoneNumber, int year, int month, int day, string emotionalStatus, string facebook, string linkedin)
         {
             this.Id = new PlayerId(Guid.NewGuid());
             this.Name = new PlayerName(name);
             this.Email = new PlayerEmail(email);
+            this.Password = new PlayerPassword(password);
             this.PhoneNumber = new PlayerPhoneNumber(phoneNumber);
             this.DateOfBirth = new PlayerDateOfBirth(year, month, day);
             _ = Enum.TryParse(emotionalStatus, out OOC status);
@@ -48,6 +50,13 @@ namespace DDDSample1.Domain.Players
             if (!this.Active)
                 throw new BusinessRuleValidationException("It is not possible to change the email address to an inactive Player.");
             this.Email = new PlayerEmail(email);
+        }
+
+        public void ChangePassword(string password)
+        {
+            if (!this.Active)
+                throw new BusinessRuleValidationException("It is not possible to change the password to an inactive Player.");
+            this.Password = new PlayerPassword(password);
         }
         
         public void ChangePhoneNumber(string phoneNumber)
