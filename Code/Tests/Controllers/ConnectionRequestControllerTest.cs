@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using DDDNetCore.Domain.ConnectionRequests.DTOS;
 using DDDSample1.Domain.Shared;
+using System;
 
 namespace DDDNetCore.Tests.Controllers
 {
@@ -122,6 +123,110 @@ namespace DDDNetCore.Tests.Controllers
             // Assert
             var actionResult = Assert.IsType<BadRequestObjectResult>(result.Result);
             Assert.IsType<BadRequestObjectResult>(actionResult);
+        }
+
+        [Fact]
+        public async Task GetAllUserPendingDirectRequests_ReturnsTargetPendingRequestDtoList()
+        {
+            // Arrange
+            string email = "teste@gmail.com";
+            TargetPendingRequestDto dto = new TargetDirectPendingRequestDto(email, "teste2@gmail.com", "message");
+            List<TargetPendingRequestDto> lst = new() { dto };
+
+            var mockServ = new Mock<IConnectionRequestService>();
+            mockServ.Setup(serv => serv.GetAllUserPendingDirectRequestsAsync(email))
+                .ReturnsAsync(lst).Verifiable();
+            var controller = new ConnectionRequestsController(mockServ.Object);
+
+            // Act
+            var result = await controller.GetAllUserPendingDirectRequests(email);
+
+            // Assert
+            var returnValue = Assert.IsType<List<TargetPendingRequestDto>>(result.Value);
+            mockServ.Verify();
+
+            Assert.Equal(lst, returnValue);
+        }
+
+
+        [Fact]
+        public async Task GetByEmails_ReturnsConnectionRequestDto()
+        {
+            // Arrange
+            string email = "teste@gmail.com";
+            string email2 = "teste2@gmail.com";
+            ConnectionRequestDto dto = new DirectRequestDto(new Guid().ToString(), new Guid().ToString(), new Guid().ToString(), "message", "accepted", 3, new List<string> { "tag1" });
+
+
+            var mockServ = new Mock<IConnectionRequestService>();
+            mockServ.Setup(serv => serv.GetByEmailsAsync(email, email2))
+                .ReturnsAsync(dto).Verifiable();
+            var controller = new ConnectionRequestsController(mockServ.Object);
+
+            // Act
+            var result = await controller.GetByEmails(email, email2);
+
+            // Assert
+            //var actionResult = Assert.IsType<CreatedAtActionResult>(result.Result);
+
+            var returnValue = Assert.IsType<DirectRequestDto>(result.Value);
+            mockServ.Verify();
+
+            Assert.Equal(dto, returnValue);
+        }
+
+        [Fact]
+        public async Task AcceptRequest_ReturnsAcceptRequestDto()
+        {
+            // Arrange
+            string email = "teste@gmail.com";
+            string email2 = "teste2@gmail.com";
+            AcceptRequestDto dto = new(email2, email, 3, new List<string> { "tag1"} );
+            ConnectionRequestDto dto2 = new DirectRequestDto(new Guid().ToString(), new Guid().ToString(), new Guid().ToString(), "message", "accepted", 3, new List<string> { "tag1" });
+
+
+
+            var mockServ = new Mock<IConnectionRequestService>();
+            mockServ.Setup(serv => serv.AcceptRequest(dto))
+                .ReturnsAsync(dto2).Verifiable();
+            var controller = new ConnectionRequestsController(mockServ.Object);
+
+            // Act
+            var result = await controller.AcceptRequest(email, dto);
+
+            var actionResult = Assert.IsType<OkObjectResult>(result.Result);
+            
+            
+            var returnValue = Assert.IsType<AcceptRequestDto>(actionResult.Value);
+            mockServ.Verify();
+
+            Assert.Equal(dto, returnValue);
+        }
+
+
+        [Fact]
+        public async Task AcceptRequest_WrongEmail()
+        {
+            // Arrange
+            string email = "teste@gmail.com";
+            string email2 = "teste2@gmail.com";
+            AcceptRequestDto dto = new(email, email2, 3, new List<string> { "tag1" });
+            ConnectionRequestDto dto2 = new DirectRequestDto(new Guid().ToString(), new Guid().ToString(), new Guid().ToString(), "message", "accepted", 3, new List<string> { "tag1" });
+
+
+
+            var mockServ = new Mock<IConnectionRequestService>();
+            mockServ.Setup(serv => serv.AcceptRequest(dto))
+                .ReturnsAsync(dto2).Verifiable();
+            var controller = new ConnectionRequestsController(mockServ.Object);
+
+            // Act
+            var result = await controller.AcceptRequest(email, dto);
+
+
+
+            var actionResult = Assert.IsType<BadRequestResult>(result.Result);
+            Assert.IsType<BadRequestResult>(actionResult);
         }
     }
 }
