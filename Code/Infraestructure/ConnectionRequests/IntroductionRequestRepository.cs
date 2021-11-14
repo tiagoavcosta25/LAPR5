@@ -46,6 +46,23 @@ namespace DDDNetCore.Infraestructure.ConnectionRequests
                 .ToListAsync();
         }
 
+        public async Task<bool> CheckIfIntroductionRequestExistsAsync(PlayerId player, PlayerId target)
+        {
+            var failed1 = ConnectionRequestStatusEnum.introduction_refused;
+            var failed2 = ConnectionRequestStatusEnum.request_refused;
+            var playerToTarget = await _dbintroductionRequest
+                .Where(x => x.Player.Equals(player) && x.Target.Equals(target) &&
+                (!x.CurrentStatus.CurrentStatus.Equals(failed1) || !x.CurrentStatus.CurrentStatus.Equals(failed2)))
+                .FirstOrDefaultAsync();
+
+            var targetToPlayer = await _dbintroductionRequest
+                .Where(x => x.Target.Equals(player) && x.Player.Equals(target) &&
+                (!x.CurrentStatus.CurrentStatus.Equals(failed1) || !x.CurrentStatus.CurrentStatus.Equals(failed2)))
+                .FirstOrDefaultAsync();
+
+            return !(playerToTarget == null && targetToPlayer == null);
+        }
+
         public async Task<List<Player>> GetReachableUsers(PlayerId playerId)
         {
             return null;

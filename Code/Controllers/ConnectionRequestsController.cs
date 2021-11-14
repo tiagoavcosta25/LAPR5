@@ -218,5 +218,22 @@ namespace DDDNetCore.Controllers
         {
             return await _service.GetAllUserPendingMidRequests(email);
         }
+
+        // POST: api/ConnectionRequests/directRequest/
+        [HttpPost("directRequest")]
+        public async Task<ActionResult<CreatingDirectRequestAutoDto>> CreateDirectRequest(CreatingDirectRequestAutoDto dto)
+        {
+            try
+            {
+                var con = await _service.AddDirectRequestAsync(dto);
+
+                CreatedAtAction(nameof(GetGetById), new { id = con.Id }, con);
+                return dto;
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
     }
 }
