@@ -90,14 +90,14 @@ namespace DDDSample1
             services.AddTransient<FamilyService>();
 
             services.AddTransient<IConnectionRepository, ConnectionRepository>();
-            services.AddTransient<ConnectionService>();
+            services.AddTransient<IConnectionService, ConnectionService>();
 
             services.AddTransient<IMissionRepository, MissionRepository>();
             services.AddTransient<MissionService>();
 
             services.AddTransient<IIntroductionRequestRepository, IntroductionRequestRepository>();
             services.AddTransient<IDirectRequestRepository, DirectRequestRepository>();
-            services.AddTransient<ConnectionRequestService>();
+            services.AddTransient<IConnectionRequestService, ConnectionRequestService>();
 
         }
     }
