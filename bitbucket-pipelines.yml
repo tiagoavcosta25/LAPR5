@@ -16,6 +16,5 @@ pipelines:
               - export PROJECT_NAME=Code
               - export TEST_NAME=Code/Tests
               - dotnet restore ./Code
-              - dotnet restore ./Code/Tests
               - dotnet build $PROJECT_NAME
               - dotnet build $TEST_NAME
