@@ -1,5 +1,5 @@
 using System;
-using DDDSample1.Domain.Categories;
+using System.Collections.Generic;
 
 namespace DDDSample1.Domain.Players
 {
@@ -13,8 +13,10 @@ namespace DDDSample1.Domain.Players
         public string EmotionalStatus { get;  private set; }
         public string Facebook { get;  private set; }
         public string LinkedIn { get;  private set; }
+        public ICollection<string> Tags { get; set; }
 
-        public PlayerDto(Guid Id, string name, string email, string phoneNumber, int year, int month, int day, string emotionalStatus, string facebook, string linkedin)
+        public PlayerDto(Guid Id, string name, string email, string phoneNumber, int year, int month, int day, string emotionalStatus, string facebook, 
+        string linkedin, ICollection<string> tags)
         {
             this.Id = Id;
             this.Name = name;
@@ -24,6 +26,7 @@ namespace DDDSample1.Domain.Players
             this.EmotionalStatus = emotionalStatus;
             this.Facebook = facebook;
             this.LinkedIn = linkedin;
+            Tags = tags;
         }
     }
 }
