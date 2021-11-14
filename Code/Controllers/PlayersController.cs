@@ -182,6 +182,10 @@ namespace DDDSample1.Controllers
             }
         }
 
+        public ICollection<string> GetFilters() 
+        {
+            return _service.GetFilters();
+        }
         // GET: api/Players/suggestions/email1@gmail.com
         [HttpGet("suggestions/{playerEmail}")]
         public async Task<ActionResult<IEnumerable<GetPlayerSuggestionDto>>> GetSuggestions(string playerEmail)
