@@ -174,7 +174,7 @@ namespace DDDNetCore.Domain.ConnectionRequests
         {
             var dir = await _repoDir.GetByIdAsync(id);
 
-            if (dir == null) 
+            if (dir != null) 
             {
                 _repoDir.Remove(dir);
                 await _unitOfWork.CommitAsync();

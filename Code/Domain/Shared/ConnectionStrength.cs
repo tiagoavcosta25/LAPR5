@@ -26,7 +26,7 @@ namespace DDDNetCore.Domain.Shared
 
         private static void LocalValidation(int strength) 
         {
-            if (!(strength > 0 && strength <= 100))
+            if (strength < 0 || strength > 100)
                 throw new BusinessRuleValidationException("Connection strength cannot be lower than 0 or higher than 100!");
         }
 

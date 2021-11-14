@@ -149,7 +149,7 @@ namespace DDDNetCore.Controllers
         }
 
 
-        // PUT: api/connections/user/email@gmail.com
+        // PATCH: api/connections/user/email@gmail.com
         [HttpPatch("user/{playerEmail}")]
         public async Task<ActionResult<ConnectionDto>> UpdateTagsAndStrength(string playerEmail, UpdatingConnectionDto dto)
         {

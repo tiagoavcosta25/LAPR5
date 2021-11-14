@@ -187,7 +187,7 @@ namespace DDDNetCore.Controllers
             }
         }
 
-        // PUT: api/ConnectionRequests/pendingRequests/email@gmail.com/accept/
+        // PATCH: api/ConnectionRequests/pendingRequests/email@gmail.com/accept/
         [HttpPatch("pendingRequests/{email}/accept")]
         public async Task<ActionResult<AcceptRequestDto>> AcceptRequest(string email, AcceptRequestDto dto)
         {
@@ -205,7 +205,7 @@ namespace DDDNetCore.Controllers
                     return NotFound();
                 }
 
-                return Ok(conR);
+                return Ok(dto);
             }
             catch (BusinessRuleValidationException ex)
             {
