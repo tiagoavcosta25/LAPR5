@@ -21,7 +21,7 @@ namespace DDDSample1.Domain.Players
             this.Active = true;
         }
 
-        public Player(string name, string email, double phoneNumber, int year, int month, int day, string emotionalStatus, string facebook, string linkedin)
+        public Player(string name, string email, string phoneNumber, int year, int month, int day, string emotionalStatus, string facebook, string linkedin)
         {
             this.Id = new PlayerId(Guid.NewGuid());
             this.Name = new PlayerName(name);
@@ -50,7 +50,7 @@ namespace DDDSample1.Domain.Players
             this.Email = new PlayerEmail(email);
         }
         
-        public void ChangePhoneNumber(double phoneNumber)
+        public void ChangePhoneNumber(string phoneNumber)
         {
             if (!this.Active)
                 throw new BusinessRuleValidationException("It is not possible to change the phone number to an inactive Player.");

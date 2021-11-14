@@ -349,5 +349,31 @@ namespace DDDNetCore.Domain.ConnectionRequests
 
             return listDto;
         }
+
+
+        public async Task<DirectRequestDto> AddDirectRequestAsync(CreatingDirectRequestAutoDto dto)
+        {
+            var player = await _repoPl.GetByEmailAsync(dto.Player);
+            var target = await _repoPl.GetByEmailAsync(dto.Target);
+
+            if (player == null || target == null)
+                throw new BusinessRuleValidationException("Either the player or the target email is wrong.");
+
+            bool test1 = await _repoDir.CheckIfDirectRequestExistsAsync(player.Id, target.Id);
+            bool test2 = await _repoInt.CheckIfIntroductionRequestExistsAsync(player.Id, target.Id);
+
+            if (test1 == true || test2 == true)
+                throw new BusinessRuleValidationException("Pending request already exists.");
+
+            var dir = new DirectRequest(player.Id.AsString(), target.Id.AsString(), dto.PlayerToTargetMessage, "request_pending", dto.Strength, dto.Tags);
+
+            await _repoDir.AddAsync(dir);
+
+            await _unitOfWork.CommitAsync();
+
+            return new DirectRequestDto(dir.Id.AsString(), dir.Player.AsString(), dir.Target.AsString(), dir.PlayerToTargetMessage.Text,
+                dir.CurrentStatus.CurrentStatus.ToString(), dir.Strength.Strength, dir.Tags.Select(t => t.tagName).ToList());
+        }
+
     }
 }

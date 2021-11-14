@@ -4,6 +4,8 @@ using System;
 using System.Threading.Tasks;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Players;
+using DDDNetCore.Domain.Shared;
+using DDDNetCore.Domain.ConnectionRequests;
 
 namespace DDDSample1.Controllers
 {
@@ -12,10 +14,12 @@ namespace DDDSample1.Controllers
     public class PlayersController : ControllerBase
     {
         private readonly PlayerService _service;
+        private readonly ConnectionRequestService _crservice;
 
-        public PlayersController(PlayerService service)
+        public PlayersController(PlayerService service, ConnectionRequestService crservice)
         {
             _service = service;
+            _crservice = crservice;
         }
 
         // GET: api/Players
@@ -49,13 +53,13 @@ namespace DDDSample1.Controllers
 
                 return CreatedAtAction(nameof(GetGetById), new { id = plyr.Id }, plyr);
             }
-            catch(BusinessRuleValidationException ex)
+            catch (BusinessRuleValidationException ex)
             {
-                return BadRequest(new {Message = ex.Message});
+                return BadRequest(new { Message = ex.Message });
             }
         }
 
-        
+
         // PUT: api/Players/5
         [HttpPut("{id}")]
         public async Task<ActionResult<PlayerDto>> Update(Guid id, PlayerDto dto)
@@ -68,16 +72,16 @@ namespace DDDSample1.Controllers
             try
             {
                 var plyr = await _service.UpdateAsync(dto);
-                
+
                 if (plyr == null)
                 {
                     return NotFound();
                 }
                 return Ok(plyr);
             }
-            catch(BusinessRuleValidationException ex)
+            catch (BusinessRuleValidationException ex)
             {
-                return BadRequest(new {Message = ex.Message});
+                return BadRequest(new { Message = ex.Message });
             }
         }
 
@@ -94,7 +98,7 @@ namespace DDDSample1.Controllers
 
             return Ok(plyr);
         }
-        
+
         // DELETE: api/Players/5
         [HttpDelete("{id}/hard")]
         public async Task<ActionResult<PlayerDto>> HardDelete(Guid id)
@@ -110,9 +114,9 @@ namespace DDDSample1.Controllers
 
                 return Ok(plyr);
             }
-            catch(BusinessRuleValidationException ex)
+            catch (BusinessRuleValidationException ex)
             {
-               return BadRequest(new {Message = ex.Message});
+                return BadRequest(new { Message = ex.Message });
             }
         }
 
@@ -144,5 +148,38 @@ namespace DDDSample1.Controllers
             }
         }
 
+
+        // GET: api/Players/search?filter=filter&value=value
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<CreatingPlayerDto>>> GetAllFiltered(string filter, string value)
+        {
+
+            var isFilter = Enum.TryParse(filter, out UserSearchFilterEnum filterBy);
+
+            if (!isFilter)
+            {
+                return BadRequest();
+            }
+
+            switch (filterBy)
+            {
+                case UserSearchFilterEnum.email :
+                    var dto = await _service.GetByEmailAsync(value);
+                    List<CreatingPlayerDto> list = new()
+                    {
+                        dto
+                    };
+                    return list;
+                case UserSearchFilterEnum.name :
+                    return await _service.GetByNameAsync(value);
+                case UserSearchFilterEnum.phone :
+                    return await _service.GetByPhoneAsync(value);
+                    //TODO: Finish when player has tags
+                case UserSearchFilterEnum.tag :
+                    return await _service.GetByTagAsync(value);
+                default:
+                    return BadRequest();
+            }
+        }
     }
 }

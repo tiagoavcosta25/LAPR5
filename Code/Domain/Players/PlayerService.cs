@@ -120,5 +120,46 @@ namespace DDDSample1.Domain.Players
             return new ChangeEmotionalStatusDto(Player.Email.address, Player.EmotionalStatus.Status.ToString());
         }
 
+        public async Task<CreatingPlayerDto> GetByEmailAsync(string email)
+        {
+            var plyr = await this._repo.GetByEmailAsync(email);
+
+            if (plyr == null)
+                return null;
+
+            return new CreatingPlayerDto(plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, plyr.DateOfBirth.date.Day, plyr.EmotionalStatus.Status.ToString(), plyr.Facebook.Url, plyr.LinkedIn.Url);
+        }
+
+        public async Task<List<CreatingPlayerDto>> GetByNameAsync(string name)
+        {
+            var list = await _repo.GetByNameAsync(name);
+
+            List<CreatingPlayerDto> listDto = list.ConvertAll<CreatingPlayerDto>(plyr =>
+                new CreatingPlayerDto(plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, plyr.DateOfBirth.date.Day, plyr.EmotionalStatus.Status.ToString(), plyr.Facebook.Url, plyr.LinkedIn.Url));
+
+            return listDto;
+        }
+
+        public async Task<List<CreatingPlayerDto>> GetByPhoneAsync(string phoneNumber)
+        {
+            var list = await _repo.GetByPhoneAsync(phoneNumber);
+
+            List<CreatingPlayerDto> listDto = list.ConvertAll<CreatingPlayerDto>(plyr =>
+                new CreatingPlayerDto(plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, plyr.DateOfBirth.date.Day, plyr.EmotionalStatus.Status.ToString(), plyr.Facebook.Url, plyr.LinkedIn.Url));
+
+            return listDto;
+        }
+
+        public async Task<List<CreatingPlayerDto>> GetByTagAsync(string tag)
+        {
+            var list = await _repo.GetByTagAsync(tag);
+
+            List<CreatingPlayerDto> listDto = list.ConvertAll<CreatingPlayerDto>(plyr =>
+                new CreatingPlayerDto(plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, plyr.DateOfBirth.date.Day, plyr.EmotionalStatus.Status.ToString(), plyr.Facebook.Url, plyr.LinkedIn.Url));
+
+            return listDto;
+        }
+
+
     }
 }

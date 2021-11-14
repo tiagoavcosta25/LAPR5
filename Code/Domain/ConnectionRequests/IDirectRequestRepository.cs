@@ -10,5 +10,7 @@ namespace DDDNetCore.Domain.ConnectionRequests
         Task<List<DirectRequest>> GetAllUserPendingDirectRequestsAsync(PlayerId playerId);
 
         Task<DirectRequest> GetPendingDirectRequestByPlayerIds(PlayerId player, PlayerId target);
+
+        Task<bool> CheckIfDirectRequestExistsAsync(PlayerId player, PlayerId target);
     }
 }
