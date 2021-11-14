@@ -84,7 +84,7 @@ namespace DDDSample1
             services.AddTransient<ProductService>();
 
             services.AddTransient<IPlayerRepository,PlayerRepository>();
-            services.AddTransient<PlayerService>();
+            services.AddTransient<IPlayerService, PlayerService>();
 
             services.AddTransient<IFamilyRepository,FamilyRepository>();
             services.AddTransient<FamilyService>();
