@@ -184,6 +184,7 @@ namespace DDDSample1.Domain.Players
             return listDto;
         }
 
+
         public ICollection<string> GetFilters()
         {
             ICollection<string> filters = new List<string>
@@ -194,6 +195,18 @@ namespace DDDSample1.Domain.Players
                 UserSearchFilterEnum.tag.ToString()
             };
             return filters;
+        }
+
+        public async Task<List<GetPlayerSuggestionDto>> GetSuggestions(string playerEmail)
+        {
+            var list = await _repo.GetSuggestions(playerEmail);
+
+            List<GetPlayerSuggestionDto> listDto = list.ConvertAll<GetPlayerSuggestionDto>(plyr =>
+                new GetPlayerSuggestionDto(plyr.Name.name, plyr.Email.address, plyr.Facebook.Url, plyr.LinkedIn.Url,
+                plyr.Tags.Select(t => t.tagName).ToList()));
+
+            return listDto;
+
         }
 
 
