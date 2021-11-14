@@ -14,7 +14,5 @@ pipelines:
               - dotnetcore
             script:
               - export PROJECT_NAME=Code
-              - export TEST_NAME=Code/Tests
               - dotnet restore ./Code
               - dotnet build $PROJECT_NAME
-              - dotnet build $TEST_NAME
