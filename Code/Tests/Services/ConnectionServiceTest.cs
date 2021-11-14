@@ -149,6 +149,46 @@ namespace DDDNetCore.Tests.Services
             Assert.Equal(connDto.ConnectionStrength, returnValue.First().ConnectionStrength);
             Assert.Equal(connDto.Tags, returnValue.First().Tags);
         }
+
+        [Fact]
+        public async Task AddAsync_ReturnsAConnectionDto_WithConnectionData()
+        {
+            // Arrange
+            Player p = new Player("john", "test@email.com", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            "www.linkedin.com/john-doe", new List<string>{"tag1"});
+            Player p2 = new Player("john", "test@email.com", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            "www.linkedin.com/john-doe", new List<string>{"tag1"});
+            
+
+            CreatingConnectionDto dto = new CreatingConnectionDto(p.Id.AsString(), p2.Id.AsString(),1, new List<string>{"tag1"});
+            Connection con = new Connection(dto.Player.ToString(), dto.Friend.ToString(), dto.ConnectionStrength, dto.Tags);
+            ConnectionDto dto2 = new ConnectionDto("12312322-4444-5555-6666-777888999000", p.Id.AsString(),p2.Id.AsString(), 
+            1, new List<string>{"tag1"});
+
+            var mockRepo = new Mock<IConnectionRepository>();
+            mockRepo.Setup(repo => repo.AddAsync(con));
+
+            var mockRepoPl = new Mock<IPlayerRepository>();
+            mockRepoPl.Setup(repo => repo.GetByIdAsync(p.Id))
+                .ReturnsAsync(p).Verifiable();
+            mockRepoPl.Setup(repo => repo.GetByIdAsync(p2.Id))
+                .ReturnsAsync(p2).Verifiable();
+
+            var mockUnity = new Mock<IUnitOfWork>();
+            mockUnity.Setup(u => u.CommitAsync());
+            var service = new ConnectionService(mockUnity.Object, mockRepo.Object, mockRepoPl.Object);
+
+            // Act
+            var result = await service.AddAsync(dto);
+
+            // Assert            
+            var returnValue = Assert.IsType<ConnectionDto>(result);
+            
+            Assert.Equal(dto.Friend, returnValue.Friend);
+            Assert.Equal(dto.Player, returnValue.Player);
+            Assert.Equal(dto.ConnectionStrength, returnValue.ConnectionStrength);
+            Assert.Equal(dto.Tags, returnValue.Tags);
+        }
         
     }
 }
