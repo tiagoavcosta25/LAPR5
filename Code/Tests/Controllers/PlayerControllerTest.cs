@@ -159,5 +159,208 @@ namespace DDDNetCore.Tests.Controllers
             var actionResult = Assert.IsType<BadRequestObjectResult>(result.Result);
             Assert.IsType<BadRequestObjectResult>(actionResult);
         }
+
+
+
+        [Fact]
+        public async Task ChangeEmotionalStatus_ReturnsChangeEmotionalStatusDto()
+        {
+            // Arrange
+            string playerEmail = "teste@gmail.com";
+            string emotionalStatus = "angry";
+            ChangeEmotionalStatusDto dto = new(playerEmail, emotionalStatus);
+
+            var mockServ = new Mock<IPlayerService>();
+            mockServ.Setup(serv => serv.ChangeEmotionalStatusAsync(dto))
+            .ReturnsAsync(dto).Verifiable();
+            var controller = new PlayersController(mockServ.Object, null);
+
+            // Act
+            var result = await controller.ChangeEmotionalStatus(playerEmail, dto);
+
+            // Assert
+            var actionResult = Assert.IsType<OkObjectResult>(result.Result);
+
+            var returnValue = Assert.IsType<ChangeEmotionalStatusDto>(actionResult.Value);
+            mockServ.Verify();
+
+            Assert.Equal(dto, returnValue);
+        }
+
+
+        [Fact]
+        public async Task ChangeEmotionalStatus_ReturnsBadRequestResult_WhenDifferentEmails()
+        {
+            // Arrange
+            string playerEmail = "teste@gmail.com";
+            string emotionalStatus = "angry";
+            ChangeEmotionalStatusDto dto = new("wrong", emotionalStatus);
+
+            var mockServ = new Mock<IPlayerService>();
+            mockServ.Setup(serv => serv.ChangeEmotionalStatusAsync(dto))
+            .ReturnsAsync(dto).Verifiable();
+            var controller = new PlayersController(mockServ.Object, null);
+
+            // Act
+            var result = await controller.ChangeEmotionalStatus(playerEmail, dto);
+
+            // Assert
+            var actionResult = Assert.IsType<BadRequestResult>(result.Result);
+            Assert.IsType<BadRequestResult>(actionResult);
+        }
+
+        [Fact]
+        public async Task ChangeEmotionalStatus_ReturnsBadRequestResult_WhenPlayerDataNotValid()
+        {
+            // Arrange
+            string playerEmail = "teste@gmail.com";
+            string emotionalStatus = "angry";
+            ChangeEmotionalStatusDto dto = new(playerEmail, emotionalStatus);
+
+            var mockServ = new Mock<IPlayerService>();
+            mockServ.Setup(serv => serv.ChangeEmotionalStatusAsync(dto))
+            .ThrowsAsync(new BusinessRuleValidationException(""));
+            var controller = new PlayersController(mockServ.Object, null);
+
+            // Act
+            var result = await controller.ChangeEmotionalStatus(playerEmail, dto);
+
+            // Assert
+            var actionResult = Assert.IsType<BadRequestObjectResult>(result.Result);
+            Assert.IsType<BadRequestObjectResult>(actionResult);
+        }
+
+        [Fact]
+        public async Task GetAllFiltered_ByEmail_ReturnsPlayersList()
+        {
+            // Arrange
+            string filter = "email";
+            string value = "teste@gmail.com";
+            GetPlayerDto obj = new GetPlayerDto("john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
+            "www.linkedin.com/john-doe", new List<string> { "tag1" });
+            ICollection<GetPlayerDto> lst = new List<GetPlayerDto> { obj };
+
+            var mockServ = new Mock<IPlayerService>();
+            mockServ.Setup(serv => serv.GetByEmailAsync(value))
+                .ReturnsAsync(obj).Verifiable();
+            var controller = new PlayersController(mockServ.Object, null);
+
+            // Act
+
+            var result = await controller.GetAllFiltered(filter, value);
+
+            // Assert
+            var returnValue = Assert.IsType<List<GetPlayerDto>>(result.Value);
+            mockServ.Verify();
+
+            Assert.Equal(lst, returnValue);
+        }
+
+        [Fact]
+        public async Task GetAllFiltered_ByName_ReturnsPlayersList()
+        {
+            // Arrange
+            string filter = "name";
+            string value = "john";
+            GetPlayerDto obj = new GetPlayerDto("john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
+            "www.linkedin.com/john-doe", new List<string> { "tag1" });
+            List<GetPlayerDto> lst = new List<GetPlayerDto> { obj };
+
+            var mockServ = new Mock<IPlayerService>();
+            mockServ.Setup(serv => serv.GetByNameAsync(value))
+                .ReturnsAsync(lst).Verifiable();
+            var controller = new PlayersController(mockServ.Object, null);
+
+            // Act
+
+            var result = await controller.GetAllFiltered(filter, value);
+
+            // Assert
+            var returnValue = Assert.IsType<List<GetPlayerDto>>(result.Value);
+            mockServ.Verify();
+
+            Assert.Equal(lst, returnValue);
+        }
+
+        [Fact]
+        public async Task GetAllFiltered_ByPhone_ReturnsPlayersList()
+        {
+            // Arrange
+            string filter = "phone";
+            string value = "987654321";
+            GetPlayerDto obj = new GetPlayerDto("john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
+            "www.linkedin.com/john-doe", new List<string> { "tag1" });
+            List<GetPlayerDto> lst = new List<GetPlayerDto> { obj };
+
+            var mockServ = new Mock<IPlayerService>();
+            mockServ.Setup(serv => serv.GetByPhoneAsync(value))
+                .ReturnsAsync(lst).Verifiable();
+            var controller = new PlayersController(mockServ.Object, null);
+
+            // Act
+
+            var result = await controller.GetAllFiltered(filter, value);
+
+            // Assert
+            var returnValue = Assert.IsType<List<GetPlayerDto>>(result.Value);
+            mockServ.Verify();
+
+            Assert.Equal(lst, returnValue);
+        }
+
+
+        [Fact]
+        public async Task GetAllFiltered_ByTag_ReturnsPlayersList()
+        {
+            // Arrange
+            string filter = "tag";
+            string value = "tag1";
+            GetPlayerDto obj = new GetPlayerDto("john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
+            "www.linkedin.com/john-doe", new List<string> { "tag1" });
+            List<GetPlayerDto> lst = new List<GetPlayerDto> { obj };
+
+            var mockServ = new Mock<IPlayerService>();
+            mockServ.Setup(serv => serv.GetByTagAsync(value))
+                .ReturnsAsync(lst).Verifiable();
+            var controller = new PlayersController(mockServ.Object, null);
+
+            // Act
+
+            var result = await controller.GetAllFiltered(filter, value);
+
+            // Assert
+            var returnValue = Assert.IsType<List<GetPlayerDto>>(result.Value);
+            mockServ.Verify();
+
+            Assert.Equal(lst, returnValue);
+        }
+
+
+        [Fact]
+        public async Task GetAllFiltered_BadRequest_NoFilter()
+        {
+            // Arrange
+            string filter = "none";
+            string value = "tag1";
+            GetPlayerDto obj = new GetPlayerDto("john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
+            "www.linkedin.com/john-doe", new List<string> { "tag1" });
+            List<GetPlayerDto> lst = new List<GetPlayerDto> { obj };
+
+            var mockServ = new Mock<IPlayerService>();
+            mockServ.Setup(serv => serv.GetByTagAsync(value))
+                .ReturnsAsync(lst).Verifiable();
+            var controller = new PlayersController(mockServ.Object, null);
+
+            // Act
+
+            var result = await controller.GetAllFiltered(filter, value);
+
+            // Assert
+            var actionResult = Assert.IsType<BadRequestResult>(result.Result);
+            Assert.IsType<BadRequestResult>(actionResult);
+        }
+
+
+
     }
 }
