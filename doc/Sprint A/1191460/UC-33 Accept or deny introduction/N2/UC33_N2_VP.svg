@@ -87,13 +87,13 @@
       ><path d="M0 0 L0 60 L35 60 L35 75 L0 75 L0 124 L134 124 L134 65 L97 65 L97 50 L134 50 L134 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath28"
-      ><path d="M478 30 L478 45 L133 45 L133 30 ZM365 54 L365 69 L247 69 L247 54 ZM0 0 L0 104 L619 104 L619 0 Z"
+      ><path d="M478 30 L478 45 L133 45 L133 30 ZM344 58 L344 73 L265 73 L265 58 ZM0 0 L0 104 L619 104 L619 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath29"
-      ><path d="M478 6 L478 21 L133 21 L133 6 ZM365 30 L365 45 L247 45 L247 30 ZM0 0 L0 104 L619 104 L619 0 Z"
+      ><path d="M478 2 L478 17 L133 17 L133 2 ZM344 30 L344 45 L265 45 L265 30 ZM0 0 L0 104 L619 104 L619 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath30"
-      ><path d="M-118 -15 L236 -15 L236 30 L-118 30 L-118 -15 Z"
+      ><path d="M-79 -15 L158 -15 L158 30 L-79 30 L-79 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath31"
       ><path d="M-345 -15 L690 -15 L690 30 L-345 30 L-345 -15 Z"
@@ -102,36 +102,39 @@
       ><path d="M-142 -15 L284 -15 L284 30 L-142 30 L-142 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath33"
-      ><path d="M-460 -15 L920 -15 L920 30 L-460 30 L-460 -15 Z"
+      ><path d="M-118 -15 L236 -15 L236 30 L-118 30 L-118 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath34"
-      ><path d="M-124 -15 L248 -15 L248 30 L-124 30 L-124 -15 Z"
+      ><path d="M-460 -15 L920 -15 L920 30 L-460 30 L-460 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath35"
-      ><path d="M-293 -15 L586 -15 L586 30 L-293 30 L-293 -15 Z"
+      ><path d="M-124 -15 L248 -15 L248 30 L-124 30 L-124 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath36"
-      ><path d="M-134 -15 L268 -15 L268 30 L-134 30 L-134 -15 Z"
+      ><path d="M-293 -15 L586 -15 L586 30 L-293 30 L-293 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath37"
-      ><path d="M-77 -15 L154 -15 L154 30 L-77 30 L-77 -15 Z"
+      ><path d="M-134 -15 L268 -15 L268 30 L-134 30 L-134 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath38"
-      ><path d="M-337 -15 L674 -15 L674 30 L-337 30 L-337 -15 Z"
+      ><path d="M-77 -15 L154 -15 L154 30 L-77 30 L-77 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath39"
-      ><path d="M-250 -15 L500 -15 L500 30 L-250 30 L-250 -15 Z"
+      ><path d="M-337 -15 L674 -15 L674 30 L-337 30 L-337 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath40"
-      ><path d="M-168 -15 L336 -15 L336 30 L-168 30 L-168 -15 Z"
+      ><path d="M-250 -15 L500 -15 L500 30 L-250 30 L-250 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath41"
-      ><path d="M-217 -15 L434 -15 L434 30 L-217 30 L-217 -15 Z"
+      ><path d="M-168 -15 L336 -15 L336 30 L-168 30 L-168 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath42"
-      ><path d="M-230 -15 L460 -15 L460 30 L-230 30 L-230 -15 Z"
+      ><path d="M-217 -15 L434 -15 L434 30 L-217 30 L-217 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath43"
+      ><path d="M-230 -15 L460 -15 L460 30 L-230 30 L-230 -15 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath44"
       ><path d="M-284 -15 L568 -15 L568 30 L-284 30 L-284 -15 Z"
       /></clipPath
     ></defs
@@ -290,15 +293,15 @@
       /><polygon points=" 565 50 553 44 553 56" clip-path="url(#clipPath28)" stroke="none"
       /><polygon fill="none" points=" 565 50 553 44 553 56" clip-path="url(#clipPath28)"
     /></g
-    ><g fill-opacity="1" text-rendering="geometricPrecision" stroke="black" stroke-linecap="butt" transform="translate(341,386)" stroke-miterlimit="0" stroke-opacity="1" fill="black" stroke-dasharray="8,3" font-family="sans-serif" stroke-linejoin="round" font-size="11px" image-rendering="optimizeQuality"
+    ><g fill-opacity="1" text-rendering="geometricPrecision" stroke="black" stroke-linecap="butt" transform="translate(341,390)" stroke-miterlimit="0" stroke-opacity="1" fill="black" stroke-dasharray="8,3" font-family="sans-serif" stroke-linejoin="round" font-size="11px" image-rendering="optimizeQuality"
     ><line y2="50" fill="none" x1="565" clip-path="url(#clipPath29)" x2="50" y1="50"
       /><line clip-path="url(#clipPath29)" fill="none" x1="50" x2="62" y1="50" y2="56" stroke-dasharray="none" stroke-miterlimit="10"
       /><line clip-path="url(#clipPath29)" fill="none" x1="50" x2="62" y1="50" y2="44" stroke-dasharray="none" stroke-miterlimit="10"
     /></g
-    ><g font-size="11px" transform="translate(588,416)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
-    ><rect x="0" width="118" height="15" y="0" clip-path="url(#clipPath30)" stroke="none"
+    ><g font-size="11px" transform="translate(606,420)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
+    ><rect x="0" width="79" height="15" y="0" clip-path="url(#clipPath30)" stroke="none"
       /><text fill="black" x="10" xml:space="preserve" y="12" clip-path="url(#clipPath30)" stroke="none"
-      >4.2: request (JSON)</text
+      >4.2: 200 OK</text
     ></g
     ><g font-size="11px" transform="translate(474,392)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
     ><rect x="0" width="345" height="15" y="0" clip-path="url(#clipPath31)" stroke="none"
@@ -311,63 +314,63 @@
       >3.1: localValidation(data)</text
     ></g
     ><g font-size="11px" transform="translate(588,206)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
-    ><rect x="0" width="118" height="15" y="0" clip-path="url(#clipPath30)" stroke="none"
-      /><text fill="black" x="10" xml:space="preserve" y="12" clip-path="url(#clipPath30)" stroke="none"
+    ><rect x="0" width="118" height="15" y="0" clip-path="url(#clipPath33)" stroke="none"
+      /><text fill="black" x="10" xml:space="preserve" y="12" clip-path="url(#clipPath33)" stroke="none"
       >2.2: request (JSON)</text
     ></g
     ><g font-size="11px" transform="translate(415,177)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
-    ><rect x="0" width="460" height="15" y="0" clip-path="url(#clipPath33)" stroke="none"
-      /><text fill="black" x="10" xml:space="preserve" y="12" clip-path="url(#clipPath33)" stroke="none"
+    ><rect x="0" width="460" height="15" y="0" clip-path="url(#clipPath34)" stroke="none"
+      /><text fill="black" x="10" xml:space="preserve" y="12" clip-path="url(#clipPath34)" stroke="none"
       >2.1: GET pendingRequests/emails?emailPlayer={emailPlayer}&amp;emailTarget={emailTarget}</text
     ></g
     ><g font-size="11px" transform="translate(586,98)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
-    ><rect x="0" width="124" height="15" y="0" clip-path="url(#clipPath34)" stroke="none"
-      /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath34)" stroke="none"
+    ><rect x="0" width="124" height="15" y="0" clip-path="url(#clipPath35)" stroke="none"
+      /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath35)" stroke="none"
       >1.2: requests (JSON)</text
     ></g
     ><g font-size="11px" transform="translate(501,64)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
-    ><rect x="0" width="293" height="15" y="0" clip-path="url(#clipPath35)" stroke="none"
-      /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath35)" stroke="none"
+    ><rect x="0" width="293" height="15" y="0" clip-path="url(#clipPath36)" stroke="none"
+      /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath36)" stroke="none"
       >1.1: GET connectionRequests/pendingRequests/{email}</text
     ></g
     ><g font-size="11px" transform="translate(141,429)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
-    ><rect x="0" width="134" height="15" y="0" clip-path="url(#clipPath36)" stroke="none"
-      /><text fill="black" x="10" xml:space="preserve" y="12" clip-path="url(#clipPath36)" stroke="none"
+    ><rect x="0" width="134" height="15" y="0" clip-path="url(#clipPath37)" stroke="none"
+      /><text fill="black" x="10" xml:space="preserve" y="12" clip-path="url(#clipPath37)" stroke="none"
       >4.3: Request confirmed</text
     ></g
     ><g font-size="11px" transform="translate(170,374)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
-    ><rect x="0" width="77" height="15" y="0" clip-path="url(#clipPath37)" stroke="none"
-      /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath37)" stroke="none"
+    ><rect x="0" width="77" height="15" y="0" clip-path="url(#clipPath38)" stroke="none"
+      /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath38)" stroke="none"
       >4: Confirms</text
     ></g
     ><g font-size="11px" transform="translate(39,322)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
-    ><rect x="0" width="337" height="15" y="0" clip-path="url(#clipPath38)" stroke="none"
-      /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath38)" stroke="none"
+    ><rect x="0" width="337" height="15" y="0" clip-path="url(#clipPath39)" stroke="none"
+      /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath39)" stroke="none"
       >3.2: Presents the accepted request and requests for confirmation</text
     ></g
     ><g font-size="11px" transform="translate(84,272)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
-    ><rect x="0" width="250" height="15" y="0" clip-path="url(#clipPath39)" stroke="none"
-      /><text fill="black" x="10" xml:space="preserve" y="12" clip-path="url(#clipPath39)" stroke="none"
+    ><rect x="0" width="250" height="15" y="0" clip-path="url(#clipPath40)" stroke="none"
+      /><text fill="black" x="10" xml:space="preserve" y="12" clip-path="url(#clipPath40)" stroke="none"
       >3: Fills the necessary data and accepts request</text
     ></g
     ><g font-size="11px" transform="translate(125,235)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
-    ><rect x="0" width="168" height="15" y="0" clip-path="url(#clipPath40)" stroke="none"
-      /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath40)" stroke="none"
+    ><rect x="0" width="168" height="15" y="0" clip-path="url(#clipPath41)" stroke="none"
+      /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath41)" stroke="none"
       >2.3: Presents the request data</text
     ></g
     ><g font-size="11px" transform="translate(100,165)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
-    ><rect x="0" width="217" height="15" y="0" clip-path="url(#clipPath41)" stroke="none"
-      /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath41)" stroke="none"
+    ><rect x="0" width="217" height="15" y="0" clip-path="url(#clipPath42)" stroke="none"
+      /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath42)" stroke="none"
       >2: Selects the pending request to accept</text
     ></g
     ><g font-size="11px" transform="translate(94,111)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
-    ><rect x="0" width="230" height="15" y="0" clip-path="url(#clipPath42)" stroke="none"
-      /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath42)" stroke="none"
+    ><rect x="0" width="230" height="15" y="0" clip-path="url(#clipPath43)" stroke="none"
+      /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath43)" stroke="none"
       >1.3: Presents all the user pending requests</text
     ></g
     ><g font-size="11px" transform="translate(67,55)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
-    ><rect x="0" width="284" height="15" y="0" clip-path="url(#clipPath43)" stroke="none"
-      /><text fill="black" x="10" xml:space="preserve" y="12" clip-path="url(#clipPath43)" stroke="none"
+    ><rect x="0" width="284" height="15" y="0" clip-path="url(#clipPath44)" stroke="none"
+      /><text fill="black" x="10" xml:space="preserve" y="12" clip-path="url(#clipPath44)" stroke="none"
       >1: Initiates the process of accepting a pending request</text
     ></g
     ><g font-size="8px" fill-opacity="1" fill="rgb(120,120,120)" text-rendering="geometricPrecision" image-rendering="optimizeQuality" stroke="rgb(120,120,120)" stroke-opacity="1"
