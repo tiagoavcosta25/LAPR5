@@ -1,6 +1,7 @@
 ﻿using DDDNetCore.Domain.ConnectionRequests;
 using DDDNetCore.Domain.ConnectionRequests.DTOS;
 using DDDSample1.Domain.Shared;
+using DDDSample1.Domain.Players;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

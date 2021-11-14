@@ -325,7 +325,7 @@ namespace DDDNetCore.Domain.ConnectionRequests
                  intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString(),
                  intr.Strength.Strength, intr.Tags.Select(t => t.tagName).ToList());
         }
-
+        
         public async Task<List<ListMidPendingRequestDto>> GetAllUserPendingMidRequests(string email)
         {
             var player = await _repoPl.GetByEmailAsync(email);
