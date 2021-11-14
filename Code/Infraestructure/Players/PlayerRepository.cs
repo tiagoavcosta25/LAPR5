@@ -42,7 +42,7 @@ namespace DDDSample1.Infrastructure.Players
         public async Task<List<Player>> GetByTagAsync(string tag)
         {
             return await _dbplayer
-                .Where(x => x.Tags.ToList().Contains(new Tag(tag)))
+                .Where(x => x.Tags.Select(t => t.tagName).Contains(tag))
                 .ToListAsync();
         }
         

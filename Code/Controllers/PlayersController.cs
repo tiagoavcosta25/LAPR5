@@ -14,9 +14,9 @@ namespace DDDSample1.Controllers
     public class PlayersController : ControllerBase
     {
         private readonly IPlayerService _service;
-        private readonly ConnectionRequestService _crservice;
+        private readonly IConnectionRequestService _crservice;
 
-        public PlayersController(IPlayerService service, ConnectionRequestService crservice)
+        public PlayersController(IPlayerService service, IConnectionRequestService crservice)
         {
             _service = service;
             _crservice = crservice;
@@ -125,7 +125,7 @@ namespace DDDSample1.Controllers
 
         // PUT: api/Players/emotionalStatus/email1@gmail.com
         [HttpPatch("emotionalStatus/{playerEmail}")]
-        public async Task<ActionResult<PlayerDto>> ChangeEmotionalStatus(string playerEmail, ChangeEmotionalStatusDto dto)
+        public async Task<ActionResult<ChangeEmotionalStatusDto>> ChangeEmotionalStatus(string playerEmail, ChangeEmotionalStatusDto dto)
         {
             if (playerEmail != dto.PlayerEmail)
             {
