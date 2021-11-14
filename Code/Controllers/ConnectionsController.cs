@@ -13,9 +13,9 @@ namespace DDDNetCore.Controllers
     [ApiController]
     public class ConnectionsController : ControllerBase
     {
-        private readonly ConnectionService _service;
+        private readonly IConnectionService _service;
 
-        public ConnectionsController(ConnectionService service)
+        public ConnectionsController(IConnectionService service)
         {
             _service = service;
         }
