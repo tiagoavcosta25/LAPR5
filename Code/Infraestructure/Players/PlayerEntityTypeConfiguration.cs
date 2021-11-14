@@ -18,6 +18,7 @@ namespace DDDSample1.Infrastructure.Players
             builder.OwnsOne(x => x.EmotionalStatus);
             builder.OwnsOne(x => x.Facebook);
             builder.OwnsOne(x => x.LinkedIn);
+            builder.OwnsMany(x => x.Tags);
         }
     }
 }
