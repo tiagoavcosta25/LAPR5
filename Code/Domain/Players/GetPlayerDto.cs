@@ -1,4 +1,4 @@
-using DDDSample1.Domain.Players;
+using System.Collections.Generic;
 using System;
 
 namespace DDDSample1.Domain.Players
@@ -12,9 +12,11 @@ namespace DDDSample1.Domain.Players
         public string EmotionalStatus { get;  private set; }
         public string Facebook { get;  private set; }
         public string LinkedIn { get;  private set; }
+        public ICollection<string> Tags { get; set; }
 
 
-        public GetPlayerDto(string name, string email, string phoneNumber, int year, int month, int day, string emotionalStatus, string facebook, string linkedin)
+        public GetPlayerDto(string name, string email, string phoneNumber, int year, int month, int day, string emotionalStatus, 
+        string facebook, string linkedin, ICollection<string> tags)
         {
             this.Name = name;
             this.Email = email;
@@ -23,6 +25,7 @@ namespace DDDSample1.Domain.Players
             this.EmotionalStatus = emotionalStatus;
             this.Facebook = facebook;
             this.LinkedIn = linkedin;
+            Tags = tags;
         }
     }
 }
