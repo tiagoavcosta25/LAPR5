@@ -176,12 +176,13 @@ namespace DDDNetCore.Domain.Connections
         {
             var player = await _repoPl.GetByEmailAsync(playerEmail);
 
-            var friendsList = await _repo.GetFriendsList(player.Id);
+            List<PlayerId> friendsList = await _repo.GetFriendsList(player.Id);
 
             List<Player> reachableUsersList = new List<Player>();
 
             foreach(PlayerId id in friendsList){
-                var lst = await _repo.GetFriendsList(player.Id);
+                var lst = await _repo.GetFriendsList(id);
+                lst.Remove(player.Id);
                 reachableUsersList.AddRange(await _repoPl.GetByIdsAsync(lst));
             }
 
