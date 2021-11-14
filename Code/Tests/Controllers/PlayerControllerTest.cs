@@ -38,11 +38,11 @@ namespace DDDNetCore.Tests.Controllers
             var returnValue = Assert.IsType<PlayerDto>(actionResult.Value);
             mockServ.Verify();
             
-            Assert.Equal(obj.Email, returnValue.Email);
+            Assert.Equal(obj, returnValue);
         }
 
         [Fact]
-        public async Task Create_ReturnsBadRequestResult_WhenEmptyEmail()
+        public async Task Create_ReturnsBadRequestResult_WhenPlayerDataNotValid()
         {
             // Arrange
             CreatingPlayerDto dto = new CreatingPlayerDto("john", "", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
@@ -57,6 +57,103 @@ namespace DDDNetCore.Tests.Controllers
 
             // Act
             var result = await controller.Create(dto);
+
+            // Assert
+            var actionResult = Assert.IsType<BadRequestObjectResult>(result.Result);
+            Assert.IsType<BadRequestObjectResult>(actionResult);
+        }
+
+        [Fact]
+        public async Task Update_ReturnsAPlayerDtoWithTheNewData()
+        {
+            // Arrange
+            System.Guid id = new System.Guid();
+            UpdatePlayerDto dto = new UpdatePlayerDto(id, "john", "test@email.com", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            "www.linkedin.com/john-doe", new List<string>{"tag1"});
+            PlayerDto obj = new PlayerDto(id, "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            "www.linkedin.com/john-doe", new List<string>{"tag1"});
+
+            var mockServ = new Mock<IPlayerService>();
+            mockServ.Setup(serv => serv.UpdateAsync(dto))
+            .ReturnsAsync(obj).Verifiable();
+            var controller = new PlayersController(mockServ.Object, null);
+
+            // Act
+            var result = await controller.Update(id, dto);
+
+            // Assert
+            var actionResult = Assert.IsType<OkObjectResult>(result.Result);
+            
+            var returnValue = Assert.IsType<PlayerDto>(actionResult.Value);
+            mockServ.Verify();
+            
+            Assert.Equal(obj, returnValue);
+        }
+
+        [Fact]
+        public async Task Update_ReturnsBadRequestResult_WhenDifferentIds()
+        {
+            // Arrange
+            System.Guid id = new System.Guid("b2e7111e-1a64-4ffe-8eba-a18fdc1c1e48");
+            System.Guid id2 = new System.Guid("42c2df9d-709c-4b10-9d65-e0fbffb87293");
+            UpdatePlayerDto dto = new UpdatePlayerDto(id, "john", "test@email.com", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            "www.linkedin.com/john-doe", new List<string>{"tag1"});
+            PlayerDto obj = new PlayerDto(id2, "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            "www.linkedin.com/john-doe", new List<string>{"tag1"});
+
+            var mockServ = new Mock<IPlayerService>();
+            mockServ.Setup(serv => serv.UpdateAsync(dto))
+            .ReturnsAsync(obj).Verifiable();
+            var controller = new PlayersController(mockServ.Object, null);
+
+            // Act
+            var result = await controller.Update(id2, dto);
+
+            // Assert
+            var actionResult = Assert.IsType<BadRequestResult>(result.Result);
+            Assert.IsType<BadRequestResult>(actionResult);
+        }
+
+        [Fact]
+        public async Task Update_ReturnsNotFound_WhenPlayerNotFound()
+        {
+            // Arrange
+            System.Guid id = new System.Guid();
+            UpdatePlayerDto dto = new UpdatePlayerDto(id, "john", "test@email.com", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            "www.linkedin.com/john-doe", new List<string>{"tag1"});
+            PlayerDto obj = new PlayerDto(id, "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            "www.linkedin.com/john-doe", new List<string>{"tag1"});
+
+            var mockServ = new Mock<IPlayerService>();
+            mockServ.Setup(serv => serv.UpdateAsync(dto))
+            .ReturnsAsync((PlayerDto)null).Verifiable();
+            var controller = new PlayersController(mockServ.Object, null);
+
+            // Act
+            var result = await controller.Update(id, dto);
+
+            // Assert
+            var actionResult = Assert.IsType<NotFoundResult>(result.Result);
+            Assert.IsType<NotFoundResult>(actionResult);
+        }
+
+        [Fact]
+        public async Task Update_ReturnsBadRequestResult_WhenPlayerDataNotValid()
+        {
+            // Arrange
+            System.Guid id = new System.Guid();
+            UpdatePlayerDto dto = new UpdatePlayerDto(id, "john", "test@email.com", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            "www.linkedin.com/john-doe", new List<string>{"tag1"});
+            PlayerDto obj = new PlayerDto(id, "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            "www.linkedin.com/john-doe", new List<string>{"tag1"});
+
+            var mockServ = new Mock<IPlayerService>();
+            mockServ.Setup(serv => serv.UpdateAsync(dto))
+            .ThrowsAsync(new BusinessRuleValidationException(""));
+            var controller = new PlayersController(mockServ.Object, null);
+
+            // Act
+            var result = await controller.Update(id, dto);
 
             // Assert
             var actionResult = Assert.IsType<BadRequestObjectResult>(result.Result);
