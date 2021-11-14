@@ -190,7 +190,7 @@ namespace DDDNetCore.Controllers
 
         // PATCH: api/ConnectionRequests/approve/5
         [HttpPatch("approve/{id}")]
-        public async Task<ActionResult<ApproveRequestDto>> ApproveRequest(string id, ApproveRequestDto dto)
+        public async Task<ActionResult<ApproveRequestDto>> ApproveRequest(ConnectionRequestId id, ApproveRequestDto dto)
         {
             try
             {
