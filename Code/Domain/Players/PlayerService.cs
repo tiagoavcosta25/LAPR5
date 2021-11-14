@@ -6,7 +6,7 @@ using System;
 
 namespace DDDSample1.Domain.Players
 {
-    public class PlayerService
+    public class PlayerService : IPlayerService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPlayerRepository _repo;
