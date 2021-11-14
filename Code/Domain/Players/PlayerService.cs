@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
 using System.Linq;
 using System;
+using DDDNetCore.Domain.Shared;
 
 namespace DDDSample1.Domain.Players
 {
@@ -181,6 +182,18 @@ namespace DDDSample1.Domain.Players
                 plyr.Tags.Select(t => t.tagName).ToList()));
 
             return listDto;
+        }
+
+        public ICollection<string> GetFilters()
+        {
+            ICollection<string> filters = new List<string>
+            {
+                UserSearchFilterEnum.email.ToString(),
+                UserSearchFilterEnum.name.ToString(),
+                UserSearchFilterEnum.phone.ToString(),
+                UserSearchFilterEnum.tag.ToString()
+            };
+            return filters;
         }
 
 

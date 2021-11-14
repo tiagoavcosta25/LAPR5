@@ -181,6 +181,11 @@ namespace DDDSample1.Controllers
                     return BadRequest();
             }
         }
+
+        public ICollection<string> GetFilters() 
+        {
+            return _service.GetFilters();
+        }
         
     }
 }
