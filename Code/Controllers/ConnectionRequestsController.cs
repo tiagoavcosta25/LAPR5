@@ -188,7 +188,7 @@ namespace DDDNetCore.Controllers
         }
 
         // PUT: api/ConnectionRequests/pendingRequests/email@gmail.com/accept/
-        [HttpPut("pendingRequests/{email}/accept")]
+        [HttpPatch("pendingRequests/{email}/accept")]
         public async Task<ActionResult<AcceptRequestDto>> AcceptRequest(string email, AcceptRequestDto dto)
         {
             if (!email.Equals(dto.Target))
