@@ -259,5 +259,62 @@ namespace DDDNetCore.Tests.Controllers
         }
 
 
+        [Fact]
+        public async Task Create_ReturnsAConnectionDto_WithConnectionData()
+        {
+            // Arrange
+            CreatingConnectionDto dto = new CreatingConnectionDto(
+            "12312322-4444-5555-6666-777888999001",
+            "12312322-4444-5555-6666-777888999002",
+            1, new List<string>{"tag1"});
+            ConnectionDto dto2 = new ConnectionDto(
+            "12312322-4444-5555-6666-777888999000",
+            "12312322-4444-5555-6666-777888999001",
+            "12312322-4444-5555-6666-777888999002",
+            1, new List<string>{"tag1"});
+
+            var mockServ = new Mock<IConnectionService>();
+            mockServ.Setup(serv => serv.AddAsync(dto))
+                .ReturnsAsync(dto2).Verifiable();
+            var controller = new ConnectionsController(mockServ.Object);
+
+            // Act
+            var result = await controller.Create(dto);
+
+            // Assert
+            var actionResult = Assert.IsType<CreatedAtActionResult>(result.Result);
+            
+            var returnValue = Assert.IsType<ConnectionDto>(actionResult.Value);
+            mockServ.Verify();
+            
+            Assert.Equal(dto2, returnValue);
+        }
+
+        [Fact]
+        public async Task Create_ReturnsBadRequestResult_WhenIntroductionDataNotValid()
+        {
+            // Arrange
+            CreatingConnectionDto dto = new CreatingConnectionDto(
+            "12312322-4444-5555-6666-777888999001",
+            "12312322-4444-5555-6666-777888999002",
+            1, new List<string>{"tag1"});
+            ConnectionDto dto2 = new ConnectionDto(
+            "12312322-4444-5555-6666-777888999000",
+            "12312322-4444-5555-6666-777888999001",
+            "12312322-4444-5555-6666-777888999002",
+            1, new List<string>{"tag1"});
+
+            var mockServ = new Mock<IConnectionService>();
+            mockServ.Setup(serv => serv.AddAsync(dto))
+                .ThrowsAsync(new BusinessRuleValidationException(""));
+            var controller = new ConnectionsController(mockServ.Object);
+
+            // Act
+            var result = await controller.Create(dto);
+
+            // Assert
+            var actionResult = Assert.IsType<BadRequestObjectResult>(result.Result);
+            Assert.IsType<BadRequestObjectResult>(actionResult);
+        }
     }
 }
