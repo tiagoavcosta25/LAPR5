@@ -23,7 +23,7 @@ namespace DDDSample1.Domain.Players
         public void updatePassword(string pswd){
             try{
                 
-                this.password = password;
+                this.password = pswd;
             } catch{
                 throw new BusinessRuleValidationException("The provided password is not valid.");
             }
