@@ -126,7 +126,19 @@ namespace DDDNetCore.Controllers
         [HttpGet("user/{playerEmail}")]
         public async Task<ActionResult<IEnumerable<GettingConnectionDto>>> GetAllConnections(string playerEmail)
         {
-            return await _service.GetAllConnectionsAsync(playerEmail);
+            try
+            {
+                var list = await _service.GetAllConnectionsAsync(playerEmail);
+                if (list == null)
+                {
+                    return NotFound();
+                }
+                return list;
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
         }
 
         // GET: api/connections/user/emails?emailPlayer=email1@gmail.com&emailFriend=email2@gmail.com
