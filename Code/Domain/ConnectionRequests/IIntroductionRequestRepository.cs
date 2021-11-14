@@ -15,5 +15,6 @@ namespace DDDNetCore.Domain.ConnectionRequests
         Task<List<Player>> GetReachableUsers(PlayerId playerId);
         Task<List<Player>> GetMiddlemanList(PlayerId playerId, PlayerId targetId);
 
+        Task<List<IntroductionRequest>> GetMiddleManRequests(PlayerId playerId);
     }
 }

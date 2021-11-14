@@ -235,5 +235,34 @@ namespace DDDNetCore.Controllers
                 return BadRequest(new { Message = ex.Message });
             }
         }
+        
+        // PATCH: api/ConnectionRequests/approve/5
+        [HttpPatch("approve/{id}")]
+        public async Task<ActionResult<ApproveRequestDto>> ApproveRequest(ConnectionRequestId id, ApproveRequestDto dto)
+        {
+            try
+            {
+                var conR = await _service.ApproveRequest(id, dto);
+
+                if (conR == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(conR);
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
+        // GET: api/ConnectionRequests/middleManRequests/playerEmail
+        [HttpGet("middleManRequests/{playerEmail}")]
+        public async Task<ActionResult<IEnumerable<ConnectionRequestDto>>> GetMiddleManRequests(string playerEmail)
+        {
+            return await _service.GetMiddleManRequests(playerEmail);
+        }
+
     }
 }
