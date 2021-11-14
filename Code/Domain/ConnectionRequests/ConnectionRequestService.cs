@@ -283,7 +283,7 @@ namespace DDDNetCore.Domain.ConnectionRequests
                  intr.Strength.Strength, intr.Tags.Select(t => t.tagName).ToList());
         }
 
-        public async Task<ApproveRequestDto> UpdateApproval(ConnectionRequestId id, ApproveRequestDto dto)
+        public async Task<ApproveRequestDto> ApproveRequest(ConnectionRequestId id, ApproveRequestDto dto)
         {
             var intr = await _repoInt.GetByIdAsync(id);
 
@@ -309,7 +309,7 @@ namespace DDDNetCore.Domain.ConnectionRequests
                  intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString(),
                  intr.Strength.Strength, intr.Tags.Select(t => t.tagName).ToList()));
 
-            List<ConnectionRequestDto> listDto = new(listDtoDir);
+            List<ConnectionRequestDto> listDto = new(listDtoInt);
             listDto.AddRange(listDtoInt);
 
             return listDto;
