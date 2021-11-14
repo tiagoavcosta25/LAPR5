@@ -63,5 +63,65 @@ namespace DDDNetCore.Tests.Controllers
             
             Assert.Equal(lst, resultValue);
         }
+
+        [Fact]
+        public async Task Create_ReturnsAIntroductionDto_WithIntroductionData()
+        {
+            // Arrange
+            CreatingIntroductionRequestDto dto = new CreatingIntroductionRequestDto( 
+            "12312322-4444-5555-6666-777888999001", 
+            "12312322-4444-5555-6666-777888999002",
+            "12312322-4444-5555-6666-777888999003", "middle_target_message", "middle_target_message",
+            "middle_target_message", "request_pending", 1, new List<string>{"tag1"});
+            IntroductionRequestDto dto2 = new IntroductionRequestDto("12312322-4444-5555-6666-777888999000", 
+            "12312322-4444-5555-6666-777888999001", 
+            "12312322-4444-5555-6666-777888999002",
+            "12312322-4444-5555-6666-777888999003", "middle_target_message", "middle_target_message",
+            "middle_target_message", "request_pending", 1, new List<string>{"tag1"});
+
+            var mockServ = new Mock<IConnectionRequestService>();
+            mockServ.Setup(serv => serv.AddIntAsync(dto))
+                .ReturnsAsync(dto2).Verifiable();
+            var controller = new ConnectionRequestsController(mockServ.Object);
+
+            // Act
+            var result = await controller.CreateIntr(dto);
+
+            // Assert
+            var actionResult = Assert.IsType<CreatedAtActionResult>(result.Result);
+            
+            var returnValue = Assert.IsType<IntroductionRequestDto>(actionResult.Value);
+            mockServ.Verify();
+            
+            Assert.Equal(dto2, returnValue);
+        }
+
+        [Fact]
+        public async Task Create_ReturnsBadRequestResult_WhenIntroductionDataNotValid()
+        {
+            // Arrange
+            CreatingIntroductionRequestDto dto = new CreatingIntroductionRequestDto( 
+            "12312322-4444-5555-6666-777888999001", 
+            "12312322-4444-5555-6666-777888999002",
+            "12312322-4444-5555-6666-777888999003", "middle_target_message", "middle_target_message",
+            "middle_target_message", "request_pending", 1, new List<string>{"tag1"});
+            IntroductionRequestDto dto2 = new IntroductionRequestDto("12312322-4444-5555-6666-777888999000", 
+            "12312322-4444-5555-6666-777888999001", 
+            "12312322-4444-5555-6666-777888999002",
+            "12312322-4444-5555-6666-777888999003", "middle_target_message", "middle_target_message",
+            "middle_target_message", "request_pending", 1, new List<string>{"tag1"});
+
+            var mockServ = new Mock<IConnectionRequestService>();
+            mockServ.Setup(serv => serv.AddIntAsync(dto))
+                .ThrowsAsync(new BusinessRuleValidationException(""));
+            var controller = new ConnectionRequestsController(mockServ.Object);
+
+            // Act
+            var result = await controller.CreateIntr(dto);
+
+            // Assert
+            var actionResult = Assert.IsType<BadRequestObjectResult>(result.Result);
+            Assert.IsType<BadRequestObjectResult>(actionResult);
+        }
     }
 }
