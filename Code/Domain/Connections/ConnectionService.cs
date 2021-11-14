@@ -192,7 +192,7 @@ namespace DDDNetCore.Domain.Connections
                 plyr.Facebook.Url, plyr.LinkedIn.Url, plyr.Tags.Select(t => t.tagName).ToList()));
         }
 
-        public async Task<List<PlayerDto>> GetMutualFriends(string playerEmail, PlayerDto targetDto)
+        public async Task<List<PlayerDto>> GetMutualFriends(string playerEmail, GetMutualFriendsDto targetDto)
         {
             var player = await _repoPl.GetByEmailAsync(playerEmail);
             var target = await _repoPl.GetByEmailAsync(targetDto.Email);
