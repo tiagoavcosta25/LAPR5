@@ -45,5 +45,12 @@ namespace DDDSample1.Infrastructure.Players
                 .Where(x => x.Tags.ToList().Contains(new Tag(tag)))
                 .ToListAsync();
         }
+        
+        public async Task<List<Player>> GetSuggestions(string playerEmail)
+        {
+            return await _dbplayer
+                .Where(x => !(x.Email.address.Equals(playerEmail)))
+                .ToListAsync();
+        }
     }
 }
