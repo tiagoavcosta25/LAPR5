@@ -1,19 +1,33 @@
 using System;
 using DDDSample1.Domain.Shared;
+using DDDNetCore.Domain.Shared;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DDDSample1.Domain.Players
 {
     public class Player : Entity<PlayerId>, IAggregateRoot
     {
      
+        [Required]
         public PlayerName Name { get;  private set; }
+        [Required]
         public PlayerEmail Email { get;  private set; }
+        [Required]
         public PlayerPassword Password { get;  private set; }
+        [Required]
         public PlayerDateOfBirth DateOfBirth { get;  private set; }
+        [Required]
         public PlayerPhoneNumber PhoneNumber { get;  private set; }
+        [Required]
         public PlayerEmotionalStatus EmotionalStatus { get;  private set; }
+        [Required]
         public PlayerFacebook Facebook { get;  private set; }
+        [Required]
         public PlayerLinkedIn LinkedIn { get;  private set; }
+        [Required]
+        public ICollection<Tag> Tags { get; private set; }
 
         public bool Active{ get;  private set; }
 
@@ -22,7 +36,7 @@ namespace DDDSample1.Domain.Players
             this.Active = true;
         }
 
-        public Player(string name, string email, string password, string phoneNumber, int year, int month, int day, string emotionalStatus, string facebook, string linkedin)
+        public Player(string name, string email, string password, string phoneNumber, int year, int month, int day, string emotionalStatus, string facebook, string linkedin, ICollection<string> tags)
         {
             this.Id = new PlayerId(Guid.NewGuid());
             this.Name = new PlayerName(name);
@@ -34,6 +48,14 @@ namespace DDDSample1.Domain.Players
             EmotionalStatus = new PlayerEmotionalStatus(status);
             this.Facebook = new PlayerFacebook(facebook);
             this.LinkedIn = new PlayerLinkedIn(linkedin);
+            ICollection<Tag> tagsList = new List<Tag>();
+            foreach (var tag in tags)
+            {
+                Tag tempTag = new(tag);
+                if (!tagsList.Contains(tempTag))
+                    tagsList.Add(tempTag);
+            }
+            Tags = tagsList;
             this.Active = true;
         }
 
@@ -93,7 +115,21 @@ namespace DDDSample1.Domain.Players
             if (!this.Active)
                 throw new BusinessRuleValidationException("It is not possible to change the linkedIn Player to an inactive Player.");
             this.LinkedIn = new PlayerLinkedIn(linkedIn);
-        }        public void MarkAsInative()
+        }   
+
+        public void ChangeTags(ICollection<string> tags) 
+        {
+            if (!Active)
+                throw new BusinessRuleValidationException("It is not possible to change the tags of an inactive Player!");
+            ICollection<Tag> finalTags = new List<Tag>();
+            foreach (string str in tags)
+            {
+                finalTags.Add(new Tag(str));
+            }
+            Tags = finalTags;
+        }
+
+        public void MarkAsInative()
         {
             this.Active = false;
         }
