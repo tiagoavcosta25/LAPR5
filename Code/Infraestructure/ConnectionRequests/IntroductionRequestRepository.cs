@@ -65,7 +65,7 @@ namespace DDDNetCore.Infraestructure.ConnectionRequests
 
         public async Task<List<IntroductionRequest>> GetMiddleManRequests(PlayerId playerId)
         {
-            var pending = ConnectionRequestStatusEnum.request_pending;
+            var pending = ConnectionRequestStatusEnum.introduction_pending;
             return await _dbintroductionRequest
                 .Where(x => x.CurrentStatus.CurrentStatus.Equals(pending) &&
                 x.MiddleMan.Equals(playerId))
