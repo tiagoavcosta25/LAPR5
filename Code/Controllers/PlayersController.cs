@@ -125,7 +125,7 @@ namespace DDDSample1.Controllers
 
         // PUT: api/Players/emotionalStatus/email1@gmail.com
         [HttpPatch("emotionalStatus/{playerEmail}")]
-        public async Task<ActionResult<PlayerDto>> ChangeEmotionalStatus(string playerEmail, ChangeEmotionalStatusDto dto)
+        public async Task<ActionResult<ChangeEmotionalStatusDto>> ChangeEmotionalStatus(string playerEmail, ChangeEmotionalStatusDto dto)
         {
             if (playerEmail != dto.PlayerEmail)
             {
