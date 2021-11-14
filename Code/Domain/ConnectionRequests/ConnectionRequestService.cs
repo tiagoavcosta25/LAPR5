@@ -390,7 +390,7 @@ namespace DDDNetCore.Domain.ConnectionRequests
             return new ApproveRequestDto(intr.CurrentStatus.CurrentStatus.ToString(), intr.MiddleManToTargetMessage.Text);
         }
 
-        public async Task<List<ConnectionRequestDto>> GetMiddleManRequests(string playerEmail)
+        public async Task<List<IntroductionRequestDto>> GetMiddleManRequests(string playerEmail)
         {
             var player = await _repoPl.GetByEmailAsync(playerEmail);
 
@@ -401,10 +401,7 @@ namespace DDDNetCore.Domain.ConnectionRequests
                  intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString(),
                  intr.Strength.Strength, intr.Tags.Select(t => t.tagName).ToList()));
 
-            List<ConnectionRequestDto> listDto = new(listDtoInt);
-            listDto.AddRange(listDtoInt);
-
-            return listDto;
+            return listDtoInt;
         }
 
     }
