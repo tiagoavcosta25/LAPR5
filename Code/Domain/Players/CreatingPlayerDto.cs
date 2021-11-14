@@ -6,6 +6,7 @@ namespace DDDSample1.Domain.Players
     public class CreatingPlayerDto
     {
         public string Email { get;  set; }
+        public string Password { get;  set; }
         public string Name { get;  set; }
         public string PhoneNumber { get;  set; }
         public DateTime DateOfBirth { get;  set; }
@@ -14,10 +15,11 @@ namespace DDDSample1.Domain.Players
         public string LinkedIn { get;  private set; }
 
 
-        public CreatingPlayerDto(string name, string email, string phoneNumber, int year, int month, int day, string emotionalStatus, string facebook, string linkedin)
+        public CreatingPlayerDto(string name, string email, string password, string phoneNumber, int year, int month, int day, string emotionalStatus, string facebook, string linkedin)
         {
             this.Name = name;
             this.Email = email;
+            this.Password = password;
             this.PhoneNumber = phoneNumber;
             this.DateOfBirth = new DateTime(year, month, day);
             this.EmotionalStatus = emotionalStatus;
