@@ -187,5 +187,12 @@ namespace DDDNetCore.Controllers
             return await _service.GetMutualFriends(playerEmail, dto);
         }
 
+        // GET: api/Connections/network
+        [HttpGet("network/{id}")]
+        public async Task<ActionResult<IEnumerable<ConnectionDto>>> GetNetwork(Guid id, int scope)
+        {
+            return await _service.GetNetwork(new PlayerId(id), scope);
+        }
+
     }
 }
