@@ -523,8 +523,8 @@ namespace DDDNetCore.Migrations
                             b1.Property<string>("PlayerId")
                                 .HasColumnType("nvarchar(450)");
 
-                            b1.Property<string>("Status")
-                                .HasColumnType("nvarchar(max)");
+                            b1.Property<int>("Status")
+                                .HasColumnType("int");
 
                             b1.HasKey("PlayerId");
 
@@ -587,8 +587,8 @@ namespace DDDNetCore.Migrations
                             b1.Property<string>("PlayerId")
                                 .HasColumnType("nvarchar(450)");
 
-                            b1.Property<double>("phoneNumber")
-                                .HasColumnType("float");
+                            b1.Property<string>("phoneNumber")
+                                .HasColumnType("nvarchar(max)");
 
                             b1.HasKey("PlayerId");
 

@@ -8,19 +8,19 @@ namespace DDDSample1.Domain.Players
     public class PlayerPhoneNumber : IValueObject
     {
     
-        public double phoneNumber { get;  private set; }
+        public string phoneNumber { get;  private set; }
 
         public PlayerPhoneNumber()
         {
         }
 
-        public PlayerPhoneNumber(double phoneNumber)
+        public PlayerPhoneNumber(string phoneNumber)
         {
             this.updatePhonenNumber(phoneNumber);
             
         }
 
-        public void updatePhonenNumber(double number){
+        public void updatePhonenNumber(string number){
             try{
                 this.phoneNumber = number;
             } catch{

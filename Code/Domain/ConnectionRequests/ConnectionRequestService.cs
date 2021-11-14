@@ -213,7 +213,7 @@ namespace DDDNetCore.Domain.ConnectionRequests
 
         // CRUD OVER //
 
-       public async Task<List<ConnectionRequestDto>> GetAllUserPendingDirectRequestsAsync(string email)
+       public async Task<List<TargetPendingRequestDto>> GetAllUserPendingDirectRequestsAsync(string email)
         {
             var player = await _repoPl.GetByEmailAsync(email);
 
@@ -229,16 +229,59 @@ namespace DDDNetCore.Domain.ConnectionRequests
                  intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString(),
                  intr.Strength.Strength, intr.Tags.Select(t => t.tagName).ToList()));
 
-            List<ConnectionRequestDto> listDto = new(listDtoDir);
-            listDto.AddRange(listDtoInt);
 
-            return listDto;
+            List<TargetPendingRequestDto> finalList = new();
+            foreach (DirectRequestDto conDir in listDtoDir)
+            {
+                var sender = await _repoPl.GetByIdAsync(new PlayerId(conDir.Player));
+                finalList.Add(new TargetDirectPendingRequestDto(sender.Email.address, player.Email.address, conDir.PlayerToTargetMessage));
+            }
+            foreach (IntroductionRequestDto conInt in listDtoInt)
+            {
+                var sender = await _repoPl.GetByIdAsync(new PlayerId(conInt.Player));
+                var mid = await _repoPl.GetByIdAsync(new PlayerId(conInt.MiddleMan));
+                finalList.Add(new TargetIntroductionPendingRequestDto(sender.Email.address, player.Email.address, conInt.PlayerToTargetMessage,
+                    mid.Email.address, conInt.MiddleManToTargetMessage));
+            }
+
+            return finalList;
         }
 
-        public async Task<ConnectionRequestDto> AcceptRequest(string id, AcceptRequestDto dto)
+        public async Task<ConnectionRequestDto> GetByEmailsAsync(string playerEmail, string targetEmail)
+        {
+            var player = await _repoPl.GetByEmailAsync(playerEmail);
+            var target = await _repoPl.GetByEmailAsync(targetEmail);
+
+            if (player == null || target == null)
+                throw new BusinessRuleValidationException("Invalid Player or Target Email");
+
+            var dir = await _repoDir.GetPendingDirectRequestByPlayerIds(player.Id, target.Id);
+
+            if (dir != null)
+            {
+                return new DirectRequestDto(dir.Id.AsString(), dir.Player.AsString(), dir.Target.AsString(),
+                    dir.PlayerToTargetMessage.Text, dir.CurrentStatus.CurrentStatus.ToString(), dir.Strength.Strength, dir.Tags.Select(t => t.tagName).ToList());
+
+            }
+
+            var intr = await _repoInt.GetPendingIntroductionRequestByPlayerIds(player.Id, target.Id);
+
+            if (intr == null)
+                return null;
+
+
+            return new IntroductionRequestDto(intr.Id.AsString(), intr.Player.AsString(), intr.MiddleMan.AsString(), intr.Target.AsString(),
+                 intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString(),
+                 intr.Strength.Strength, intr.Tags.Select(t => t.tagName).ToList());
+        }
+
+        public async Task<ConnectionRequestDto> AcceptRequest(AcceptRequestDto dto)
         {
 
-            var dir = await _repoDir.GetByIdAsync(new ConnectionRequestId(id));
+            var playerId = await _repoPl.GetByEmailAsync(dto.Player);
+            var targetId = await _repoPl.GetByEmailAsync(dto.Target);
+
+            var dir = await _repoDir.GetPendingDirectRequestByPlayerIds(playerId.Id, targetId.Id);
 
             if (dir != null)
             {
@@ -260,7 +303,7 @@ namespace DDDNetCore.Domain.ConnectionRequests
                                             dir.PlayerToTargetMessage.Text, dir.CurrentStatus.CurrentStatus.ToString(), dir.Strength.Strength, dir.Tags.Select(t => t.tagName).ToList());
             }
 
-            var intr = await _repoInt.GetByIdAsync(new ConnectionRequestId(id));
+            var intr = await _repoInt.GetPendingIntroductionRequestByPlayerIds(playerId.Id, targetId.Id);
 
             if (intr == null)
                 return null;
@@ -282,8 +325,55 @@ namespace DDDNetCore.Domain.ConnectionRequests
                  intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString(),
                  intr.Strength.Strength, intr.Tags.Select(t => t.tagName).ToList());
         }
+        
+        public async Task<List<ListMidPendingRequestDto>> GetAllUserPendingMidRequests(string email)
+        {
+            var player = await _repoPl.GetByEmailAsync(email);
 
-        
-        
+            var listInt = await _repoInt.GetAllUserPendingMidRequestsAsync(player.Id);
+
+            List<IntroductionRequestDto> listDtoInt = listInt.ConvertAll<IntroductionRequestDto>(intr =>
+                new IntroductionRequestDto(intr.Id.AsString(), intr.Player.AsString(), intr.MiddleMan.AsString(), intr.Target.AsString(),
+                 intr.PlayerToTargetMessage.Text, intr.PlayerToMiddleManMessage.Text, intr.MiddleManToTargetMessage.Text, intr.CurrentStatus.CurrentStatus.ToString(),
+                 intr.Strength.Strength, intr.Tags.Select(t => t.tagName).ToList()));
+
+            //
+            List<ListMidPendingRequestDto> listDto = new();
+
+            foreach (IntroductionRequestDto dto in listDtoInt)
+            {
+                var sender = await _repoPl.GetByIdAsync(new PlayerId(dto.Player));
+                var target = await _repoPl.GetByIdAsync(new PlayerId(dto.Target));
+                listDto.Add(new ListMidPendingRequestDto(sender.Email.address, player.Email.address, target.Email.address, dto.PlayerToMiddleManMessage));
+            }
+
+            return listDto;
+        }
+
+
+        public async Task<DirectRequestDto> AddDirectRequestAsync(CreatingDirectRequestAutoDto dto)
+        {
+            var player = await _repoPl.GetByEmailAsync(dto.Player);
+            var target = await _repoPl.GetByEmailAsync(dto.Target);
+
+            if (player == null || target == null)
+                throw new BusinessRuleValidationException("Either the player or the target email is wrong.");
+
+            bool test1 = await _repoDir.CheckIfDirectRequestExistsAsync(player.Id, target.Id);
+            bool test2 = await _repoInt.CheckIfIntroductionRequestExistsAsync(player.Id, target.Id);
+
+            if (test1 == true || test2 == true)
+                throw new BusinessRuleValidationException("Pending request already exists.");
+
+            var dir = new DirectRequest(player.Id.AsString(), target.Id.AsString(), dto.PlayerToTargetMessage, "request_pending", dto.Strength, dto.Tags);
+
+            await _repoDir.AddAsync(dir);
+
+            await _unitOfWork.CommitAsync();
+
+            return new DirectRequestDto(dir.Id.AsString(), dir.Player.AsString(), dir.Target.AsString(), dir.PlayerToTargetMessage.Text,
+                dir.CurrentStatus.CurrentStatus.ToString(), dir.Strength.Strength, dir.Tags.Select(t => t.tagName).ToList());
+        }
+
     }
 }

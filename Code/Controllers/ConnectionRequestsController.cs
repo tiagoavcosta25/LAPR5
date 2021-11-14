@@ -163,18 +163,42 @@ namespace DDDNetCore.Controllers
 
         // GET: api/ConnectionRequests/pendingRequests/email
         [HttpGet("pendingRequests/{email}")]
-        public async Task<ActionResult<IEnumerable<ConnectionRequestDto>>> GetAllUserPendingDirectRequests(string email)
+        public async Task<ActionResult<IEnumerable<TargetPendingRequestDto>>> GetAllUserPendingDirectRequests(string email)
         {
             return await _service.GetAllUserPendingDirectRequestsAsync(email);
         }
 
-        // PUT: api/ConnectionRequests/accept/5
-        [HttpPut("accept/{id}")]
-        public async Task<ActionResult<AcceptRequestDto>> AcceptRequest(string id, AcceptRequestDto dto)
+        // GET: api/connectionRequests/pendingRequests/emails?emailPlayer=email1@gmail.com&emailTarget=email2@gmail.com
+        [HttpGet("pendingRequests/emails")]
+        public async Task<ActionResult<ConnectionRequestDto>> GetByEmails(string emailPlayer, string emailTarget)
         {
             try
             {
-                var conR = await _service.AcceptRequest(id, dto);
+                var con = await _service.GetByEmailsAsync(emailPlayer, emailTarget);
+                if (con == null)
+                {
+                    return NotFound();
+                }
+                return con;
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
+        // PUT: api/ConnectionRequests/pendingRequests/email@gmail.com/accept/
+        [HttpPut("pendingRequests/{email}/accept")]
+        public async Task<ActionResult<AcceptRequestDto>> AcceptRequest(string email, AcceptRequestDto dto)
+        {
+            if (!email.Equals(dto.Target))
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                var conR = await _service.AcceptRequest(dto);
 
                 if (conR == null)
                 {
@@ -182,6 +206,30 @@ namespace DDDNetCore.Controllers
                 }
 
                 return Ok(conR);
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
+        // GET: api/ConnectionRequests/pendingRequests/middleman/email
+        [HttpGet("pendingRequests/middleman/{email}")]
+        public async Task<ActionResult<IEnumerable<ListMidPendingRequestDto>>> GetAllUserPendingMidRequests(string email)
+        {
+            return await _service.GetAllUserPendingMidRequests(email);
+        }
+
+        // POST: api/ConnectionRequests/directRequest/
+        [HttpPost("directRequest")]
+        public async Task<ActionResult<CreatingDirectRequestAutoDto>> CreateDirectRequest(CreatingDirectRequestAutoDto dto)
+        {
+            try
+            {
+                var con = await _service.AddDirectRequestAsync(dto);
+
+                CreatedAtAction(nameof(GetGetById), new { id = con.Id }, con);
+                return dto;
             }
             catch (BusinessRuleValidationException ex)
             {

@@ -21,14 +21,15 @@ namespace DDDSample1.Domain.Players
             this.Active = true;
         }
 
-        public Player(string name, string email, double phoneNumber, int year, int month, int day, string emotionalStatus, string facebook, string linkedin)
+        public Player(string name, string email, string phoneNumber, int year, int month, int day, string emotionalStatus, string facebook, string linkedin)
         {
             this.Id = new PlayerId(Guid.NewGuid());
             this.Name = new PlayerName(name);
             this.Email = new PlayerEmail(email);
             this.PhoneNumber = new PlayerPhoneNumber(phoneNumber);
             this.DateOfBirth = new PlayerDateOfBirth(year, month, day);
-            this.EmotionalStatus = new PlayerEmotionalStatus(emotionalStatus);
+            _ = Enum.TryParse(emotionalStatus, out OOC status);
+            EmotionalStatus = new PlayerEmotionalStatus(status);
             this.Facebook = new PlayerFacebook(facebook);
             this.LinkedIn = new PlayerLinkedIn(linkedin);
             this.Active = true;
@@ -49,7 +50,7 @@ namespace DDDSample1.Domain.Players
             this.Email = new PlayerEmail(email);
         }
         
-        public void ChangePhoneNumber(double phoneNumber)
+        public void ChangePhoneNumber(string phoneNumber)
         {
             if (!this.Active)
                 throw new BusinessRuleValidationException("It is not possible to change the phone number to an inactive Player.");
@@ -67,7 +68,8 @@ namespace DDDSample1.Domain.Players
         {
             if (!this.Active)
                 throw new BusinessRuleValidationException("It is not possible to change the emotional status to an inactive Player.");
-            this.EmotionalStatus = new PlayerEmotionalStatus(emotionalStatus);
+            _ = Enum.TryParse(emotionalStatus, out OOC status);
+            EmotionalStatus = new PlayerEmotionalStatus(status);
         }
 
         public void ChangeFacebook(string facebook)

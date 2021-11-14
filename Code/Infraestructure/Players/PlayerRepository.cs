@@ -1,12 +1,13 @@
 using DDDSample1.Domain.Players;
 using DDDSample1.Infrastructure.Shared;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace DDDSample1.Infrastructure.Players
 {
-    public class PlayerRepository : BaseRepository<Player, PlayerId>,IPlayerRepository
+    public class PlayerRepository : BaseRepository<Player, PlayerId>, IPlayerRepository
     {
 
         private readonly DbSet<Player> _dbplayer;
@@ -21,6 +22,26 @@ namespace DDDSample1.Infrastructure.Players
             return await _dbplayer
                 .Where(x => x.Email.address.Equals(email))
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<List<Player>> GetByNameAsync(string name)
+        {
+            return await _dbplayer
+                .Where(x => x.Name.name.Equals(name))
+                .ToListAsync();
+        }
+
+        public async Task<List<Player>> GetByPhoneAsync(string phoneNumber)
+        {
+            return await _dbplayer
+                .Where(x => x.PhoneNumber.phoneNumber.Equals(phoneNumber))
+                .ToListAsync();
+        }
+
+        public async Task<List<Player>> GetByTagAsync(string tag)
+        {
+            //TODO
+            return null;
         }
     }
 }
