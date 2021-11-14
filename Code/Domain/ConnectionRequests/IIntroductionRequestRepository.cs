@@ -12,9 +12,6 @@ namespace DDDNetCore.Domain.ConnectionRequests
         Task<IntroductionRequest> GetPendingIntroductionRequestByPlayerIds(PlayerId player, PlayerId target);
         Task<bool> CheckIfIntroductionRequestExistsAsync(PlayerId player, PlayerId target);
 
-        Task<List<Player>> GetReachableUsers(PlayerId playerId);
-        Task<List<Player>> GetMiddlemanList(PlayerId playerId, PlayerId targetId);
-
         Task<List<IntroductionRequest>> GetMiddleManRequests(PlayerId playerId);
     }
 }
