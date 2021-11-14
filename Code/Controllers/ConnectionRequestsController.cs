@@ -165,7 +165,19 @@ namespace DDDNetCore.Controllers
         [HttpGet("pendingRequests/{email}")]
         public async Task<ActionResult<IEnumerable<TargetPendingRequestDto>>> GetAllUserPendingDirectRequests(string email)
         {
-            return await _service.GetAllUserPendingDirectRequestsAsync(email);
+            try
+            {
+                var list = await _service.GetAllUserPendingDirectRequestsAsync(email);
+                if (list == null)
+                {
+                    return NotFound();
+                }
+                return list;
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
         }
 
         // GET: api/connectionRequests/pendingRequests/emails?emailPlayer=email1@gmail.com&emailTarget=email2@gmail.com
