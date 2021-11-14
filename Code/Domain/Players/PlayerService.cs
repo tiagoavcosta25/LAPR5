@@ -55,9 +55,9 @@ namespace DDDSample1.Domain.Players
             Player.Tags.Select(t => t.tagName).ToList());
         }
 
-        public async Task<PlayerDto> UpdateAsync(PlayerDto dto)
+        public async Task<PlayerDto> UpdateAsync(UpdatePlayerDto dto)
         {
-            var Player = await this._repo.GetByIdAsync(new PlayerId(dto.Id)); 
+            var Player = await this._repo.GetByEmailAsync(dto.Email); 
 
             if (Player == null)
                 return null;   
@@ -69,6 +69,8 @@ namespace DDDSample1.Domain.Players
             Player.ChangeEmotionalStatus(dto.EmotionalStatus);
             Player.ChangeFacebook(dto.Facebook);
             Player.ChangeLinkedIn(dto.LinkedIn);
+            Player.ChangePassword(dto.Password);
+            Player.ChangeTags(dto.Tags);
             
             await this._unitOfWork.CommitAsync();
 
