@@ -181,6 +181,28 @@ namespace DDDSample1.Controllers
                     return BadRequest();
             }
         }
+
+        // GET: api/Players/suggestions/email1@gmail.com
+        [HttpGet("suggestions/{playerEmail}")]
+        public async Task<ActionResult<IEnumerable<GetPlayerSuggestionDto>>> GetSuggestions(string playerEmail)
+        {
+            var plyr = await _service.GetSuggestions(playerEmail);
+
+            try{
+                
+                if (plyr == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(plyr);
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
         
     }
 }
