@@ -1,0 +1,3845 @@
+{
+	"id": "6e3a54dc-91b2-4625-a89e-08fd8a7287ee",
+	"name": "1190682_Tests",
+	"timestamp": "2021-11-14T17:05:32.171Z",
+	"collection_id": "18350857-27456cfb-2b95-49af-8b2a-036b78f2b9e2",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 401,
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "29c9814c-0256-4813-bb2f-547543d7dc4b",
+			"name": "GET Players",
+			"url": "http://localhost:5000/api/Players/",
+			"time": 48,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"There are no players": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"There are no players": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				48
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"There are no players": true
+				}
+			]
+		},
+		{
+			"id": "5e1891ac-8b40-420e-b157-3448e482e8bf",
+			"name": "CREATE Player",
+			"url": "http://localhost:5000/api/Players/",
+			"time": 187,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Body returns the correct name": true,
+				"Body returns the correct email": true,
+				"Body returns the correct phone number": true,
+				"Body returns the correct date Of Birth": true,
+				"Body returns the correct emotional status": true,
+				"Body returns the correct facebook": true,
+				"Body returns the correct linkedin": true,
+				"Body returns the correct tag": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				187
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Body returns the correct name": true,
+					"Body returns the correct email": true,
+					"Body returns the correct phone number": true,
+					"Body returns the correct date Of Birth": true,
+					"Body returns the correct emotional status": true,
+					"Body returns the correct facebook": true,
+					"Body returns the correct linkedin": true,
+					"Body returns the correct tag": true
+				}
+			]
+		},
+		{
+			"id": "f8145a10-13f3-448e-8f2e-2f47dc84fb30",
+			"name": "GET Player After Creation",
+			"url": "http://localhost:5000/api/Players/861ba0a0-0822-418e-9160-130dc199d44e",
+			"time": 49,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Player get returns status 200": true,
+				"Returned Player has correct player_id": true,
+				"Returned Player has correct name": true,
+				"Returned Player has correct email": true,
+				"Returned Player has correct phone number": true,
+				"Returned Player has correct date Of Birth": true,
+				"Returned Player has correct emotional status": true,
+				"Returned Player has correct facebook": true,
+				"Returned Player has correct linkedin": true,
+				"Returned Player has correct tags": true
+			},
+			"testPassFailCounts": {
+				"Player get returns status 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct player_id": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct tags": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				49
+			],
+			"allTests": [
+				{
+					"Player get returns status 200": true,
+					"Returned Player has correct player_id": true,
+					"Returned Player has correct name": true,
+					"Returned Player has correct email": true,
+					"Returned Player has correct phone number": true,
+					"Returned Player has correct date Of Birth": true,
+					"Returned Player has correct emotional status": true,
+					"Returned Player has correct facebook": true,
+					"Returned Player has correct linkedin": true,
+					"Returned Player has correct tags": true
+				}
+			]
+		},
+		{
+			"id": "184ddd7e-263c-4c48-a7a8-7e6a06b001f4",
+			"name": "UPDATE Player",
+			"url": "https://localhost:5001/api/players/861ba0a0-0822-418e-9160-130dc199d44e",
+			"time": 287,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Player get returns status 200": true,
+				"Returned Player has correct player_id": true,
+				"Returned Player has correct name": true,
+				"Returned Player has correct email": true,
+				"Returned Player has correct phone number": true,
+				"Returned Player has correct date Of Birth": true,
+				"Returned Player has correct emotional status": true,
+				"Returned Player has correct facebook": true,
+				"Returned Player has correct linkedin": true,
+				"Returned Player has correct tags": true
+			},
+			"testPassFailCounts": {
+				"Player get returns status 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct player_id": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct tags": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				287
+			],
+			"allTests": [
+				{
+					"Player get returns status 200": true,
+					"Returned Player has correct player_id": true,
+					"Returned Player has correct name": true,
+					"Returned Player has correct email": true,
+					"Returned Player has correct phone number": true,
+					"Returned Player has correct date Of Birth": true,
+					"Returned Player has correct emotional status": true,
+					"Returned Player has correct facebook": true,
+					"Returned Player has correct linkedin": true,
+					"Returned Player has correct tags": true
+				}
+			]
+		},
+		{
+			"id": "5b481d05-59e6-440f-b9c8-8d0abe23a863",
+			"name": "SOFT DELETE Player",
+			"url": "http://localhost:5000/api/Players/861ba0a0-0822-418e-9160-130dc199d44e",
+			"time": 185,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Body returns the correct name": true,
+				"Body returns the correct email": true,
+				"Body returns the correct phone number": true,
+				"Body returns the correct date Of Birth": true,
+				"Body returns the correct emotional status": true,
+				"Body returns the correct facebook": true,
+				"Body returns the correct linkedin": true,
+				"Body returns the correct tag": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				185
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Body returns the correct name": true,
+					"Body returns the correct email": true,
+					"Body returns the correct phone number": true,
+					"Body returns the correct date Of Birth": true,
+					"Body returns the correct emotional status": true,
+					"Body returns the correct facebook": true,
+					"Body returns the correct linkedin": true,
+					"Body returns the correct tag": true
+				}
+			]
+		},
+		{
+			"id": "abe71581-d638-4781-9de3-9e37a5d340de",
+			"name": "DELETE Player",
+			"url": "http://localhost:5000/api/Players/861ba0a0-0822-418e-9160-130dc199d44e/hard",
+			"time": 231,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Body returns the correct name": true,
+				"Body returns the correct email": true,
+				"Body returns the correct phone number": true,
+				"Body returns the correct date Of Birth": true,
+				"Body returns the correct emotional status": true,
+				"Body returns the correct facebook": true,
+				"Body returns the correct linkedin": true,
+				"Body returns the correct tag": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				231
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Body returns the correct name": true,
+					"Body returns the correct email": true,
+					"Body returns the correct phone number": true,
+					"Body returns the correct date Of Birth": true,
+					"Body returns the correct emotional status": true,
+					"Body returns the correct facebook": true,
+					"Body returns the correct linkedin": true,
+					"Body returns the correct tag": true
+				}
+			]
+		},
+		{
+			"id": "303107c3-8fca-4f03-980f-81a08c191afc",
+			"name": "GET Players After Delete",
+			"url": "http://localhost:5000/api/Players/",
+			"time": 47,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"There are no players": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"There are no players": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				47
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"There are no players": true
+				}
+			]
+		},
+		{
+			"id": "d0aacbf3-53cb-40ad-86bb-019ff1d94b28",
+			"name": "GET Players",
+			"url": "http://localhost:5000/api/Players/",
+			"time": 47,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"There are no players": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"There are no players": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				47
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"There are no players": true
+				}
+			]
+		},
+		{
+			"id": "6250fd22-310b-4a77-b784-33c6f51fba88",
+			"name": "CREATE First Player",
+			"url": "http://localhost:5000/api/Players/",
+			"time": 186,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Body returns the correct name": true,
+				"Body returns the correct email": true,
+				"Body returns the correct phone number": true,
+				"Body returns the correct date Of Birth": true,
+				"Body returns the correct emotional status": true,
+				"Body returns the correct facebook": true,
+				"Body returns the correct linkedin": true,
+				"Body returns the correct tag": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				186
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Body returns the correct name": true,
+					"Body returns the correct email": true,
+					"Body returns the correct phone number": true,
+					"Body returns the correct date Of Birth": true,
+					"Body returns the correct emotional status": true,
+					"Body returns the correct facebook": true,
+					"Body returns the correct linkedin": true,
+					"Body returns the correct tag": true
+				}
+			]
+		},
+		{
+			"id": "45af51d4-693c-4f3a-b63c-7c210615ba33",
+			"name": "GET First Player After Creation",
+			"url": "http://localhost:5000/api/Players/4842f86e-1c87-4104-b0d6-21a3d3396c31",
+			"time": 49,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Player get returns status 200": true,
+				"Returned Player has correct player_id": true,
+				"Returned Player has correct name": true,
+				"Returned Player has correct email": true,
+				"Returned Player has correct phone number": true,
+				"Returned Player has correct date Of Birth": true,
+				"Returned Player has correct emotional status": true,
+				"Returned Player has correct facebook": true,
+				"Returned Player has correct linkedin": true,
+				"Returned Player has correct tags": true
+			},
+			"testPassFailCounts": {
+				"Player get returns status 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct player_id": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct tags": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				49
+			],
+			"allTests": [
+				{
+					"Player get returns status 200": true,
+					"Returned Player has correct player_id": true,
+					"Returned Player has correct name": true,
+					"Returned Player has correct email": true,
+					"Returned Player has correct phone number": true,
+					"Returned Player has correct date Of Birth": true,
+					"Returned Player has correct emotional status": true,
+					"Returned Player has correct facebook": true,
+					"Returned Player has correct linkedin": true,
+					"Returned Player has correct tags": true
+				}
+			]
+		},
+		{
+			"id": "42bfb69a-b298-4177-b7df-18489ffcf475",
+			"name": "CREATE Second Player",
+			"url": "http://localhost:5000/api/Players/",
+			"time": 189,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Body returns the correct name": true,
+				"Body returns the correct email": true,
+				"Body returns the correct phone number": true,
+				"Body returns the correct date Of Birth": true,
+				"Body returns the correct emotional status": true,
+				"Body returns the correct facebook": true,
+				"Body returns the correct linkedin": true,
+				"Body returns the correct tag": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				189
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Body returns the correct name": true,
+					"Body returns the correct email": true,
+					"Body returns the correct phone number": true,
+					"Body returns the correct date Of Birth": true,
+					"Body returns the correct emotional status": true,
+					"Body returns the correct facebook": true,
+					"Body returns the correct linkedin": true,
+					"Body returns the correct tag": true
+				}
+			]
+		},
+		{
+			"id": "7f64022d-69c1-4d11-a167-dca2e78b8d19",
+			"name": "GET Second Player After Creation",
+			"url": "http://localhost:5000/api/Players/46c190b8-68cf-49b7-9bd6-e6206d958e8d",
+			"time": 47,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Player get returns status 200": true,
+				"Returned Player has correct player_id": true,
+				"Returned Player has correct name": true,
+				"Returned Player has correct email": true,
+				"Returned Player has correct phone number": true,
+				"Returned Player has correct date Of Birth": true,
+				"Returned Player has correct emotional status": true,
+				"Returned Player has correct facebook": true,
+				"Returned Player has correct linkedin": true,
+				"Returned Player has correct tag": true
+			},
+			"testPassFailCounts": {
+				"Player get returns status 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct player_id": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				47
+			],
+			"allTests": [
+				{
+					"Player get returns status 200": true,
+					"Returned Player has correct player_id": true,
+					"Returned Player has correct name": true,
+					"Returned Player has correct email": true,
+					"Returned Player has correct phone number": true,
+					"Returned Player has correct date Of Birth": true,
+					"Returned Player has correct emotional status": true,
+					"Returned Player has correct facebook": true,
+					"Returned Player has correct linkedin": true,
+					"Returned Player has correct tag": true
+				}
+			]
+		},
+		{
+			"id": "0a5ec763-e090-4781-a1b1-e7d6cb10c8ad",
+			"name": "CREATE Third Player",
+			"url": "http://localhost:5000/api/Players/",
+			"time": 184,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Body returns the correct name": true,
+				"Body returns the correct email": true,
+				"Body returns the correct phone number": true,
+				"Body returns the correct date Of Birth": true,
+				"Body returns the correct emotional status": true,
+				"Body returns the correct facebook": true,
+				"Body returns the correct linkedin": true,
+				"Body returns the correct tag": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				184
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Body returns the correct name": true,
+					"Body returns the correct email": true,
+					"Body returns the correct phone number": true,
+					"Body returns the correct date Of Birth": true,
+					"Body returns the correct emotional status": true,
+					"Body returns the correct facebook": true,
+					"Body returns the correct linkedin": true,
+					"Body returns the correct tag": true
+				}
+			]
+		},
+		{
+			"id": "fae2a4c3-6763-4f72-adfa-88a754a918f3",
+			"name": "GET Third Player After Creation",
+			"url": "http://localhost:5000/api/Players/9487c80d-a1d9-4451-8848-a616f2cd4f27",
+			"time": 48,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Player get returns status 200": true,
+				"Returned Player has correct player_id": true,
+				"Returned Player has correct name": true,
+				"Returned Player has correct email": true,
+				"Returned Player has correct phone number": true,
+				"Returned Player has correct date Of Birth": true,
+				"Returned Player has correct emotional status": true,
+				"Returned Player has correct facebook": true,
+				"Returned Player has correct linkedin": true,
+				"Returned Player has correct tag": true
+			},
+			"testPassFailCounts": {
+				"Player get returns status 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct player_id": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				48
+			],
+			"allTests": [
+				{
+					"Player get returns status 200": true,
+					"Returned Player has correct player_id": true,
+					"Returned Player has correct name": true,
+					"Returned Player has correct email": true,
+					"Returned Player has correct phone number": true,
+					"Returned Player has correct date Of Birth": true,
+					"Returned Player has correct emotional status": true,
+					"Returned Player has correct facebook": true,
+					"Returned Player has correct linkedin": true,
+					"Returned Player has correct tag": true
+				}
+			]
+		},
+		{
+			"id": "5643ef75-61c9-47bc-b4e2-3c43be1f4627",
+			"name": "GET Empty Connections",
+			"url": "http://localhost:5000/api/Connections/",
+			"time": 47,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"There are no connections": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"There are no connections": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				47
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"There are no connections": true
+				}
+			]
+		},
+		{
+			"id": "1060423b-a44b-4d2c-9419-2fade4200d7a",
+			"name": "CREATE Connection P1 - P2",
+			"url": "http://localhost:5000/api/Connections/",
+			"time": 278,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Body returns the correct player": true,
+				"Body returns the correct friend": true,
+				"Body returns the correct connection strength": true,
+				"Body returns the correct tag": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct player": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct friend": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct connection strength": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				278
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Body returns the correct player": true,
+					"Body returns the correct friend": true,
+					"Body returns the correct connection strength": true,
+					"Body returns the correct tag": true
+				}
+			]
+		},
+		{
+			"id": "adaa81e0-34e3-4049-b6cf-d92434d2cedf",
+			"name": "GET Connection P1 - P2 Created",
+			"url": "http://localhost:5000/api/Connections/0caf71ab-3399-46ac-a9d2-ed28c2b1abbe",
+			"time": 48,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Connection get returns status 200": true,
+				"Returned Connection has correct connection id": true,
+				"Returned Connection has correct player": true,
+				"Returned Connection has correct friend": true,
+				"Returned Connection has correct connection strength": true,
+				"Returned Connection has correct tag": true
+			},
+			"testPassFailCounts": {
+				"Connection get returns status 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Connection has correct connection id": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Connection has correct player": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Connection has correct friend": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Connection has correct connection strength": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Connection has correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				48
+			],
+			"allTests": [
+				{
+					"Connection get returns status 200": true,
+					"Returned Connection has correct connection id": true,
+					"Returned Connection has correct player": true,
+					"Returned Connection has correct friend": true,
+					"Returned Connection has correct connection strength": true,
+					"Returned Connection has correct tag": true
+				}
+			]
+		},
+		{
+			"id": "43152080-0c40-49dd-b2d0-a4c15c25efb6",
+			"name": "CREATE Connection P2 - P3",
+			"url": "http://localhost:5000/api/Connections/",
+			"time": 274,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Body returns the correct player": true,
+				"Body returns the correct friend": true,
+				"Body returns the correct connection strength": true,
+				"Body returns the correct tag": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct player": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct friend": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct connection strength": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				274
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Body returns the correct player": true,
+					"Body returns the correct friend": true,
+					"Body returns the correct connection strength": true,
+					"Body returns the correct tag": true
+				}
+			]
+		},
+		{
+			"id": "92fe787b-296b-491a-8ab4-6848329b2d36",
+			"name": "GET Connection P2 - P3 Created",
+			"url": "http://localhost:5000/api/Connections/409ce30a-e3b7-4932-81ea-ccbf10829e6b",
+			"time": 48,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Connection get returns status 200": true,
+				"Returned Connection has correct connection id": true,
+				"Returned Connection has correct player": true,
+				"Returned Connection has correct friend": true,
+				"Returned Connection has correct connection strength": true,
+				"Returned Connection has correct tag": true
+			},
+			"testPassFailCounts": {
+				"Connection get returns status 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Connection has correct connection id": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Connection has correct player": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Connection has correct friend": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Connection has correct connection strength": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Connection has correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				48
+			],
+			"allTests": [
+				{
+					"Connection get returns status 200": true,
+					"Returned Connection has correct connection id": true,
+					"Returned Connection has correct player": true,
+					"Returned Connection has correct friend": true,
+					"Returned Connection has correct connection strength": true,
+					"Returned Connection has correct tag": true
+				}
+			]
+		},
+		{
+			"id": "9abb05a1-12b4-41b5-adcb-f4429141ca72",
+			"name": "GET Requests",
+			"url": "http://localhost:5000/api/connectionRequests/",
+			"time": 90,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"There are no connection requests": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"There are no connection requests": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				90
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"There are no connection requests": true
+				}
+			]
+		},
+		{
+			"id": "63bd7f27-c757-4d4f-8572-f5184b1fd796",
+			"name": "CREATE Introduction Request",
+			"url": "http://localhost:5000/api/ConnectionRequests/intr",
+			"time": 315,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Body returns the correct player": true,
+				"Body returns the correct middle man": true,
+				"Body returns the correct target": true,
+				"Body returns the correct player to target message": true,
+				"Body returns the correct player to middle man message": true,
+				"Body returns the correct middle man to target message": true,
+				"Body returns the correct current status": true,
+				"Body returns the correct strength": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct player": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct middle man": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct target": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct player to target message": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct player to middle man message": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct middle man to target message": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct current status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct strength": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				315
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Body returns the correct player": true,
+					"Body returns the correct middle man": true,
+					"Body returns the correct target": true,
+					"Body returns the correct player to target message": true,
+					"Body returns the correct player to middle man message": true,
+					"Body returns the correct middle man to target message": true,
+					"Body returns the correct current status": true,
+					"Body returns the correct strength": true
+				}
+			]
+		},
+		{
+			"id": "666e7695-bf12-4a87-a9df-8d12d54d0e06",
+			"name": "GET Introduction Request Created",
+			"url": "http://localhost:5000/api/ConnectionRequests/e63c4b64-7de8-4fed-bec2-3077f28b21cf",
+			"time": 94,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Body returns the correct id": true,
+				"Body returns the correct player": true,
+				"Body returns the correct middle man": true,
+				"Body returns the correct target": true,
+				"Body returns the correct player to target message": true,
+				"Body returns the correct player to middle man message": true,
+				"Body returns the correct middle man to target message": true,
+				"Body returns the correct current status": true,
+				"Body returns the correct strength": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct id": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct player": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct middle man": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct target": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct player to target message": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct player to middle man message": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct middle man to target message": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct current status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct strength": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				94
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Body returns the correct id": true,
+					"Body returns the correct player": true,
+					"Body returns the correct middle man": true,
+					"Body returns the correct target": true,
+					"Body returns the correct player to target message": true,
+					"Body returns the correct player to middle man message": true,
+					"Body returns the correct middle man to target message": true,
+					"Body returns the correct current status": true,
+					"Body returns the correct strength": true
+				}
+			]
+		},
+		{
+			"id": "5f313f8c-bc67-45d4-a328-348cd877446e",
+			"name": "GET Middle Man Requests",
+			"url": "https://localhost:5001/api/ConnectionRequests/middleManRequests/email2@gmail.com",
+			"time": 93,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Body returns the correct id": true,
+				"Body returns the correct player": true,
+				"Body returns the correct middle man": true,
+				"Body returns the correct target": true,
+				"Body returns the correct player to target message": true,
+				"Body returns the correct player to middle man message": true,
+				"Body returns the correct middle man to target message": true,
+				"Body returns the correct current status": true,
+				"Body returns the correct strength": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct id": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct player": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct middle man": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct target": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct player to target message": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct player to middle man message": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct middle man to target message": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct current status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct strength": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				93
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Body returns the correct id": true,
+					"Body returns the correct player": true,
+					"Body returns the correct middle man": true,
+					"Body returns the correct target": true,
+					"Body returns the correct player to target message": true,
+					"Body returns the correct player to middle man message": true,
+					"Body returns the correct middle man to target message": true,
+					"Body returns the correct current status": true,
+					"Body returns the correct strength": true
+				}
+			]
+		},
+		{
+			"id": "2808571e-b518-4a4a-ab02-45ebda23451f",
+			"name": "PATCH Approve Introduction",
+			"url": "https://localhost:5001/api/ConnectionRequests/approve/e63c4b64-7de8-4fed-bec2-3077f28b21cf",
+			"time": 186,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Body returns the correct middle man to target message": true,
+				"Body returns the correct current status": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct middle man to target message": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct current status": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				186
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Body returns the correct middle man to target message": true,
+					"Body returns the correct current status": true
+				}
+			]
+		},
+		{
+			"id": "2af8876f-943b-49ef-a199-6fd634dd33f3",
+			"name": "DELETE Introduction Request",
+			"url": "http://localhost:5000/api/ConnectionRequests/e63c4b64-7de8-4fed-bec2-3077f28b21cf/hard",
+			"time": 274,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Body returns the correct player": true,
+				"Body returns the correct middle man": true,
+				"Body returns the correct target": true,
+				"Body returns the correct player to target message": true,
+				"Body returns the correct player to middle man message": true,
+				"Body returns the correct middle man to target message": true,
+				"Body returns the correct current status": true,
+				"Body returns the correct strength": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct player": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct middle man": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct target": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct player to target message": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct player to middle man message": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct middle man to target message": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct current status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct strength": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				274
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Body returns the correct player": true,
+					"Body returns the correct middle man": true,
+					"Body returns the correct target": true,
+					"Body returns the correct player to target message": true,
+					"Body returns the correct player to middle man message": true,
+					"Body returns the correct middle man to target message": true,
+					"Body returns the correct current status": true,
+					"Body returns the correct strength": true
+				}
+			]
+		},
+		{
+			"id": "1f2efdb1-71c4-4702-9964-536754904f49",
+			"name": "GET Requests After Delete",
+			"url": "http://localhost:5000/api/connectionRequests/",
+			"time": 90,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"There are no connection requests": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"There are no connection requests": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				90
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"There are no connection requests": true
+				}
+			]
+		},
+		{
+			"id": "1a7cf9b2-937c-4952-a512-bcf2219656b0",
+			"name": "DELETE Connection P2 - P3",
+			"url": "http://localhost:5000/api/connections/409ce30a-e3b7-4932-81ea-ccbf10829e6b/hard",
+			"time": 233,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Body returns the correct id": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct id": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				233
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Body returns the correct id": true
+				}
+			]
+		},
+		{
+			"id": "fb3ca4ec-3707-4022-9182-dd9e5a18f34c",
+			"name": "DELETE Connection P1 - P2",
+			"url": "http://localhost:5000/api/connections/0caf71ab-3399-46ac-a9d2-ed28c2b1abbe/hard",
+			"time": 229,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Body returns the correct id": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct id": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				229
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Body returns the correct id": true
+				}
+			]
+		},
+		{
+			"id": "e7f626c8-d438-4b13-86e0-778723da2708",
+			"name": "GET Connections After Delete",
+			"url": "http://localhost:5000/api/Connections/",
+			"time": 46,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"There are no connections": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"There are no connections": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				46
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"There are no connections": true
+				}
+			]
+		},
+		{
+			"id": "c4ca896e-eb9c-483e-a18a-4540034f4f46",
+			"name": "SOFT DELETE Third Player",
+			"url": "http://localhost:5000/api/players/9487c80d-a1d9-4451-8848-a616f2cd4f27",
+			"time": 188,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Body returns the correct name": true,
+				"Body returns the correct email": true,
+				"Body returns the correct phone number": true,
+				"Body returns the correct date Of Birth": true,
+				"Body returns the correct emotional status": true,
+				"Body returns the correct facebook": true,
+				"Body returns the correct linkedin": true,
+				"Body returns the correct tag": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				188
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Body returns the correct name": true,
+					"Body returns the correct email": true,
+					"Body returns the correct phone number": true,
+					"Body returns the correct date Of Birth": true,
+					"Body returns the correct emotional status": true,
+					"Body returns the correct facebook": true,
+					"Body returns the correct linkedin": true,
+					"Body returns the correct tag": true
+				}
+			]
+		},
+		{
+			"id": "905de528-e89b-439e-a4f1-1604c8cb3124",
+			"name": "DELETE Third Player",
+			"url": "http://localhost:5000/api/players/9487c80d-a1d9-4451-8848-a616f2cd4f27/hard",
+			"time": 230,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Body returns the correct name": true,
+				"Body returns the correct email": true,
+				"Body returns the correct phone number": true,
+				"Body returns the correct date Of Birth": true,
+				"Body returns the correct emotional status": true,
+				"Body returns the correct facebook": true,
+				"Body returns the correct linkedin": true,
+				"Body returns the correct tag": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				230
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Body returns the correct name": true,
+					"Body returns the correct email": true,
+					"Body returns the correct phone number": true,
+					"Body returns the correct date Of Birth": true,
+					"Body returns the correct emotional status": true,
+					"Body returns the correct facebook": true,
+					"Body returns the correct linkedin": true,
+					"Body returns the correct tag": true
+				}
+			]
+		},
+		{
+			"id": "3a758b84-a1f7-42a7-aa3f-1575003d2bb5",
+			"name": "SOFT DELETE Second Player",
+			"url": "http://localhost:5000/api/players/46c190b8-68cf-49b7-9bd6-e6206d958e8d",
+			"time": 184,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Body returns the correct name": true,
+				"Body returns the correct email": true,
+				"Body returns the correct phone number": true,
+				"Body returns the correct date Of Birth": true,
+				"Body returns the correct emotional status": true,
+				"Body returns the correct facebook": true,
+				"Body returns the correct linkedin": true,
+				"Body returns the correct tag": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				184
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Body returns the correct name": true,
+					"Body returns the correct email": true,
+					"Body returns the correct phone number": true,
+					"Body returns the correct date Of Birth": true,
+					"Body returns the correct emotional status": true,
+					"Body returns the correct facebook": true,
+					"Body returns the correct linkedin": true,
+					"Body returns the correct tag": true
+				}
+			]
+		},
+		{
+			"id": "1c3931b5-569f-442d-b78d-6b3b4b86c35f",
+			"name": "DELETE Second Player",
+			"url": "http://localhost:5000/api/players/46c190b8-68cf-49b7-9bd6-e6206d958e8d/hard",
+			"time": 229,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Body returns the correct name": true,
+				"Body returns the correct email": true,
+				"Body returns the correct phone number": true,
+				"Body returns the correct date Of Birth": true,
+				"Body returns the correct emotional status": true,
+				"Body returns the correct facebook": true,
+				"Body returns the correct linkedin": true,
+				"Body returns the correct tag": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				229
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Body returns the correct name": true,
+					"Body returns the correct email": true,
+					"Body returns the correct phone number": true,
+					"Body returns the correct date Of Birth": true,
+					"Body returns the correct emotional status": true,
+					"Body returns the correct facebook": true,
+					"Body returns the correct linkedin": true,
+					"Body returns the correct tag": true
+				}
+			]
+		},
+		{
+			"id": "15eaaaf8-fc1a-469e-842d-da623cedeef0",
+			"name": "SOFT DELETE First Player",
+			"url": "http://localhost:5000/api/Players/4842f86e-1c87-4104-b0d6-21a3d3396c31",
+			"time": 193,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Body returns the correct name": true,
+				"Body returns the correct email": true,
+				"Body returns the correct phone number": true,
+				"Body returns the correct date Of Birth": true,
+				"Body returns the correct emotional status": true,
+				"Body returns the correct facebook": true,
+				"Body returns the correct linkedin": true,
+				"Body returns the correct tag": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				193
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Body returns the correct name": true,
+					"Body returns the correct email": true,
+					"Body returns the correct phone number": true,
+					"Body returns the correct date Of Birth": true,
+					"Body returns the correct emotional status": true,
+					"Body returns the correct facebook": true,
+					"Body returns the correct linkedin": true,
+					"Body returns the correct tag": true
+				}
+			]
+		},
+		{
+			"id": "37531faa-2c41-4e70-99dd-253fecf78d37",
+			"name": "DELETE First Player",
+			"url": "http://localhost:5000/api/Players/4842f86e-1c87-4104-b0d6-21a3d3396c31/hard",
+			"time": 228,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Body returns the correct name": true,
+				"Body returns the correct email": true,
+				"Body returns the correct phone number": true,
+				"Body returns the correct date Of Birth": true,
+				"Body returns the correct emotional status": true,
+				"Body returns the correct facebook": true,
+				"Body returns the correct linkedin": true,
+				"Body returns the correct tag": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				228
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Body returns the correct name": true,
+					"Body returns the correct email": true,
+					"Body returns the correct phone number": true,
+					"Body returns the correct date Of Birth": true,
+					"Body returns the correct emotional status": true,
+					"Body returns the correct facebook": true,
+					"Body returns the correct linkedin": true,
+					"Body returns the correct tag": true
+				}
+			]
+		},
+		{
+			"id": "aa7d7e26-7b6b-42f6-8fdf-d41579541540",
+			"name": "GET Players After Delete",
+			"url": "http://localhost:5000/api/Players/",
+			"time": 52,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"There are no players": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"There are no players": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				52
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"There are no players": true
+				}
+			]
+		},
+		{
+			"id": "b695e099-3e98-4893-8a26-6843a9b203cb",
+			"name": "GET Players",
+			"url": "http://localhost:5000/api/Players/",
+			"time": 47,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"There are no players": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"There are no players": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				47
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"There are no players": true
+				}
+			]
+		},
+		{
+			"id": "7f5c0088-41ed-4edb-9cec-3b6c7a08c368",
+			"name": "CREATE First Player",
+			"url": "http://localhost:5000/api/Players/",
+			"time": 185,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Body returns the correct name": true,
+				"Body returns the correct email": true,
+				"Body returns the correct phone number": true,
+				"Body returns the correct date Of Birth": true,
+				"Body returns the correct emotional status": true,
+				"Body returns the correct facebook": true,
+				"Body returns the correct linkedin": true,
+				"Body returns the correct tag": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				185
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Body returns the correct name": true,
+					"Body returns the correct email": true,
+					"Body returns the correct phone number": true,
+					"Body returns the correct date Of Birth": true,
+					"Body returns the correct emotional status": true,
+					"Body returns the correct facebook": true,
+					"Body returns the correct linkedin": true,
+					"Body returns the correct tag": true
+				}
+			]
+		},
+		{
+			"id": "0805f5b4-9a4e-4a87-aa9f-e2f5e45ba51e",
+			"name": "GET First Player After Creation",
+			"url": "http://localhost:5000/api/Players/05f31383-c3a3-4c5b-a8f0-3ac3b3fd69d5",
+			"time": 48,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Player get returns status 200": true,
+				"Returned Player has correct player_id": true,
+				"Returned Player has correct name": true,
+				"Returned Player has correct email": true,
+				"Returned Player has correct phone number": true,
+				"Returned Player has correct date Of Birth": true,
+				"Returned Player has correct emotional status": true,
+				"Returned Player has correct facebook": true,
+				"Returned Player has correct linkedin": true,
+				"Returned Player has correct tags": true
+			},
+			"testPassFailCounts": {
+				"Player get returns status 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct player_id": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct tags": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				48
+			],
+			"allTests": [
+				{
+					"Player get returns status 200": true,
+					"Returned Player has correct player_id": true,
+					"Returned Player has correct name": true,
+					"Returned Player has correct email": true,
+					"Returned Player has correct phone number": true,
+					"Returned Player has correct date Of Birth": true,
+					"Returned Player has correct emotional status": true,
+					"Returned Player has correct facebook": true,
+					"Returned Player has correct linkedin": true,
+					"Returned Player has correct tags": true
+				}
+			]
+		},
+		{
+			"id": "69bc816d-0dbc-4373-a77a-a6bc1b969842",
+			"name": "CREATE Second Player",
+			"url": "http://localhost:5000/api/Players/",
+			"time": 189,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Body returns the correct name": true,
+				"Body returns the correct email": true,
+				"Body returns the correct phone number": true,
+				"Body returns the correct date Of Birth": true,
+				"Body returns the correct emotional status": true,
+				"Body returns the correct facebook": true,
+				"Body returns the correct linkedin": true,
+				"Body returns the correct tag": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				189
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Body returns the correct name": true,
+					"Body returns the correct email": true,
+					"Body returns the correct phone number": true,
+					"Body returns the correct date Of Birth": true,
+					"Body returns the correct emotional status": true,
+					"Body returns the correct facebook": true,
+					"Body returns the correct linkedin": true,
+					"Body returns the correct tag": true
+				}
+			]
+		},
+		{
+			"id": "377a613a-84d2-4a86-a6c8-22174c79efa9",
+			"name": "GET Second Player After Creation",
+			"url": "http://localhost:5000/api/Players/2e394c36-bdcf-44cf-a6c4-bd0ff45adbf2",
+			"time": 48,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Player get returns status 200": true,
+				"Returned Player has correct player_id": true,
+				"Returned Player has correct name": true,
+				"Returned Player has correct email": true,
+				"Returned Player has correct phone number": true,
+				"Returned Player has correct date Of Birth": true,
+				"Returned Player has correct emotional status": true,
+				"Returned Player has correct facebook": true,
+				"Returned Player has correct linkedin": true,
+				"Returned Player has correct tag": true
+			},
+			"testPassFailCounts": {
+				"Player get returns status 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct player_id": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				48
+			],
+			"allTests": [
+				{
+					"Player get returns status 200": true,
+					"Returned Player has correct player_id": true,
+					"Returned Player has correct name": true,
+					"Returned Player has correct email": true,
+					"Returned Player has correct phone number": true,
+					"Returned Player has correct date Of Birth": true,
+					"Returned Player has correct emotional status": true,
+					"Returned Player has correct facebook": true,
+					"Returned Player has correct linkedin": true,
+					"Returned Player has correct tag": true
+				}
+			]
+		},
+		{
+			"id": "f5bb3ac6-fe4d-406b-902a-44212070bd6c",
+			"name": "CREATE Third Player",
+			"url": "http://localhost:5000/api/Players/",
+			"time": 188,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Body returns the correct name": true,
+				"Body returns the correct email": true,
+				"Body returns the correct phone number": true,
+				"Body returns the correct date Of Birth": true,
+				"Body returns the correct emotional status": true,
+				"Body returns the correct facebook": true,
+				"Body returns the correct linkedin": true,
+				"Body returns the correct tag": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				188
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Body returns the correct name": true,
+					"Body returns the correct email": true,
+					"Body returns the correct phone number": true,
+					"Body returns the correct date Of Birth": true,
+					"Body returns the correct emotional status": true,
+					"Body returns the correct facebook": true,
+					"Body returns the correct linkedin": true,
+					"Body returns the correct tag": true
+				}
+			]
+		},
+		{
+			"id": "9276365d-c33d-4feb-b292-7ba8cc459524",
+			"name": "GET Third Player After Creation",
+			"url": "http://localhost:5000/api/Players/b9919675-be14-4b86-8be8-92d7d4828088",
+			"time": 47,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Player get returns status 200": true,
+				"Returned Player has correct player_id": true,
+				"Returned Player has correct name": true,
+				"Returned Player has correct email": true,
+				"Returned Player has correct phone number": true,
+				"Returned Player has correct date Of Birth": true,
+				"Returned Player has correct emotional status": true,
+				"Returned Player has correct facebook": true,
+				"Returned Player has correct linkedin": true,
+				"Returned Player has correct tag": true
+			},
+			"testPassFailCounts": {
+				"Player get returns status 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct player_id": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Player has correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				47
+			],
+			"allTests": [
+				{
+					"Player get returns status 200": true,
+					"Returned Player has correct player_id": true,
+					"Returned Player has correct name": true,
+					"Returned Player has correct email": true,
+					"Returned Player has correct phone number": true,
+					"Returned Player has correct date Of Birth": true,
+					"Returned Player has correct emotional status": true,
+					"Returned Player has correct facebook": true,
+					"Returned Player has correct linkedin": true,
+					"Returned Player has correct tag": true
+				}
+			]
+		},
+		{
+			"id": "a1ce931c-0618-4f8d-855f-ec69ebfd06fc",
+			"name": "GET Empty Connections",
+			"url": "http://localhost:5000/api/Connections/",
+			"time": 47,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"There are no connections": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"There are no connections": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				47
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"There are no connections": true
+				}
+			]
+		},
+		{
+			"id": "754e3de2-a0ba-4f70-a875-484dedb03374",
+			"name": "CREATE Connection P1 - P2",
+			"url": "http://localhost:5000/api/Connections/",
+			"time": 275,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Body returns the correct player": true,
+				"Body returns the correct friend": true,
+				"Body returns the correct connection strength": true,
+				"Body returns the correct tag": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct player": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct friend": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct connection strength": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				275
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Body returns the correct player": true,
+					"Body returns the correct friend": true,
+					"Body returns the correct connection strength": true,
+					"Body returns the correct tag": true
+				}
+			]
+		},
+		{
+			"id": "f049f9b4-fd1a-4ae0-870d-d17dbd4dd7b6",
+			"name": "GET Connection P1 - P2 Created",
+			"url": "http://localhost:5000/api/Connections/82b14582-2fe6-41da-a983-5c8349b08032",
+			"time": 47,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Connection get returns status 200": true,
+				"Returned Connection has correct connection id": true,
+				"Returned Connection has correct player": true,
+				"Returned Connection has correct friend": true,
+				"Returned Connection has correct connection strength": true,
+				"Returned Connection has correct tag": true
+			},
+			"testPassFailCounts": {
+				"Connection get returns status 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Connection has correct connection id": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Connection has correct player": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Connection has correct friend": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Connection has correct connection strength": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Connection has correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				47
+			],
+			"allTests": [
+				{
+					"Connection get returns status 200": true,
+					"Returned Connection has correct connection id": true,
+					"Returned Connection has correct player": true,
+					"Returned Connection has correct friend": true,
+					"Returned Connection has correct connection strength": true,
+					"Returned Connection has correct tag": true
+				}
+			]
+		},
+		{
+			"id": "bdd63d78-944a-47d4-be7a-8af28c7877b6",
+			"name": "CREATE Connection P2 - P3",
+			"url": "http://localhost:5000/api/Connections/",
+			"time": 277,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Body returns the correct player": true,
+				"Body returns the correct friend": true,
+				"Body returns the correct connection strength": true,
+				"Body returns the correct tag": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct player": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct friend": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct connection strength": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				277
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Body returns the correct player": true,
+					"Body returns the correct friend": true,
+					"Body returns the correct connection strength": true,
+					"Body returns the correct tag": true
+				}
+			]
+		},
+		{
+			"id": "563c38a5-2895-4186-a5c8-58d352b59f1d",
+			"name": "GET Connection P2 - P3 Created",
+			"url": "http://localhost:5000/api/Connections/aa9cb0fb-a416-49a8-9978-a21cce932b93",
+			"time": 47,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Connection get returns status 200": true,
+				"Returned Connection has correct connection id": true,
+				"Returned Connection has correct player": true,
+				"Returned Connection has correct friend": true,
+				"Returned Connection has correct connection strength": true,
+				"Returned Connection has correct tag": true
+			},
+			"testPassFailCounts": {
+				"Connection get returns status 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Connection has correct connection id": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Connection has correct player": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Connection has correct friend": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Connection has correct connection strength": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Connection has correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				47
+			],
+			"allTests": [
+				{
+					"Connection get returns status 200": true,
+					"Returned Connection has correct connection id": true,
+					"Returned Connection has correct player": true,
+					"Returned Connection has correct friend": true,
+					"Returned Connection has correct connection strength": true,
+					"Returned Connection has correct tag": true
+				}
+			]
+		},
+		{
+			"id": "16b39b3b-250a-4ab6-99ca-9317adfb7253",
+			"name": "GET Player Network",
+			"url": "https://localhost:5001/api/connections/network/email1@gmail.com",
+			"time": 138,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Connection get returns status 200": true,
+				"Returned Connection has correct connection id": true,
+				"Returned Connection has correct player": true,
+				"Returned Connection has correct friend": true,
+				"Returned Connection has correct connection strength": true,
+				"Returned Connection has correct tag": true
+			},
+			"testPassFailCounts": {
+				"Connection get returns status 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Connection has correct connection id": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Connection has correct player": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Connection has correct friend": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Connection has correct connection strength": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Returned Connection has correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				138
+			],
+			"allTests": [
+				{
+					"Connection get returns status 200": true,
+					"Returned Connection has correct connection id": true,
+					"Returned Connection has correct player": true,
+					"Returned Connection has correct friend": true,
+					"Returned Connection has correct connection strength": true,
+					"Returned Connection has correct tag": true
+				}
+			]
+		},
+		{
+			"id": "b5920070-6637-4913-93ea-cdb67dd85bf0",
+			"name": "DELETE Connection P2 - P3",
+			"url": "http://localhost:5000/api/connections/aa9cb0fb-a416-49a8-9978-a21cce932b93/hard",
+			"time": 237,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Body returns the correct id": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct id": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				237
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Body returns the correct id": true
+				}
+			]
+		},
+		{
+			"id": "cfe3f360-ba4d-4acc-8228-84f8869bfa23",
+			"name": "DELETE Connection P1 - P2",
+			"url": "http://localhost:5000/api/connections/82b14582-2fe6-41da-a983-5c8349b08032/hard",
+			"time": 227,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Body returns the correct id": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct id": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				227
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Body returns the correct id": true
+				}
+			]
+		},
+		{
+			"id": "e52f28f1-fdf5-46d2-892c-f7dc9dc51e5a",
+			"name": "GET Connections After Delete",
+			"url": "http://localhost:5000/api/Connections/",
+			"time": 46,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"There are no connections": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"There are no connections": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				46
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"There are no connections": true
+				}
+			]
+		},
+		{
+			"id": "38f3657c-cfe2-4e77-a736-f9e714921483",
+			"name": "SOFT DELETE Third Player",
+			"url": "http://localhost:5000/api/players/b9919675-be14-4b86-8be8-92d7d4828088",
+			"time": 216,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Body returns the correct name": true,
+				"Body returns the correct email": true,
+				"Body returns the correct phone number": true,
+				"Body returns the correct date Of Birth": true,
+				"Body returns the correct emotional status": true,
+				"Body returns the correct facebook": true,
+				"Body returns the correct linkedin": true,
+				"Body returns the correct tag": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				216
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Body returns the correct name": true,
+					"Body returns the correct email": true,
+					"Body returns the correct phone number": true,
+					"Body returns the correct date Of Birth": true,
+					"Body returns the correct emotional status": true,
+					"Body returns the correct facebook": true,
+					"Body returns the correct linkedin": true,
+					"Body returns the correct tag": true
+				}
+			]
+		},
+		{
+			"id": "f1d0cb20-371f-4247-874e-59cd3ffabec8",
+			"name": "DELETE Third Player",
+			"url": "http://localhost:5000/api/players/b9919675-be14-4b86-8be8-92d7d4828088/hard",
+			"time": 231,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Body returns the correct name": true,
+				"Body returns the correct email": true,
+				"Body returns the correct phone number": true,
+				"Body returns the correct date Of Birth": true,
+				"Body returns the correct emotional status": true,
+				"Body returns the correct facebook": true,
+				"Body returns the correct linkedin": true,
+				"Body returns the correct tag": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				231
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Body returns the correct name": true,
+					"Body returns the correct email": true,
+					"Body returns the correct phone number": true,
+					"Body returns the correct date Of Birth": true,
+					"Body returns the correct emotional status": true,
+					"Body returns the correct facebook": true,
+					"Body returns the correct linkedin": true,
+					"Body returns the correct tag": true
+				}
+			]
+		},
+		{
+			"id": "97bf2baa-6a79-41e0-b242-c5f752ada45b",
+			"name": "SOFT DELETE Second Player",
+			"url": "http://localhost:5000/api/players/2e394c36-bdcf-44cf-a6c4-bd0ff45adbf2",
+			"time": 190,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Body returns the correct name": true,
+				"Body returns the correct email": true,
+				"Body returns the correct phone number": true,
+				"Body returns the correct date Of Birth": true,
+				"Body returns the correct emotional status": true,
+				"Body returns the correct facebook": true,
+				"Body returns the correct linkedin": true,
+				"Body returns the correct tag": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				190
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Body returns the correct name": true,
+					"Body returns the correct email": true,
+					"Body returns the correct phone number": true,
+					"Body returns the correct date Of Birth": true,
+					"Body returns the correct emotional status": true,
+					"Body returns the correct facebook": true,
+					"Body returns the correct linkedin": true,
+					"Body returns the correct tag": true
+				}
+			]
+		},
+		{
+			"id": "91982ba3-e7ca-4003-abe3-e5eb2b363590",
+			"name": "DELETE Second Player",
+			"url": "http://localhost:5000/api/players/2e394c36-bdcf-44cf-a6c4-bd0ff45adbf2/hard",
+			"time": 228,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Body returns the correct name": true,
+				"Body returns the correct email": true,
+				"Body returns the correct phone number": true,
+				"Body returns the correct date Of Birth": true,
+				"Body returns the correct emotional status": true,
+				"Body returns the correct facebook": true,
+				"Body returns the correct linkedin": true,
+				"Body returns the correct tag": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				228
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Body returns the correct name": true,
+					"Body returns the correct email": true,
+					"Body returns the correct phone number": true,
+					"Body returns the correct date Of Birth": true,
+					"Body returns the correct emotional status": true,
+					"Body returns the correct facebook": true,
+					"Body returns the correct linkedin": true,
+					"Body returns the correct tag": true
+				}
+			]
+		},
+		{
+			"id": "6690d7bf-02e5-4cbe-964a-635baf703eda",
+			"name": "SOFT DELETE First Player",
+			"url": "http://localhost:5000/api/Players/05f31383-c3a3-4c5b-a8f0-3ac3b3fd69d5",
+			"time": 184,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Body returns the correct name": true,
+				"Body returns the correct email": true,
+				"Body returns the correct phone number": true,
+				"Body returns the correct date Of Birth": true,
+				"Body returns the correct emotional status": true,
+				"Body returns the correct facebook": true,
+				"Body returns the correct linkedin": true,
+				"Body returns the correct tag": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				184
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Body returns the correct name": true,
+					"Body returns the correct email": true,
+					"Body returns the correct phone number": true,
+					"Body returns the correct date Of Birth": true,
+					"Body returns the correct emotional status": true,
+					"Body returns the correct facebook": true,
+					"Body returns the correct linkedin": true,
+					"Body returns the correct tag": true
+				}
+			]
+		},
+		{
+			"id": "9e0a46ab-351f-4ef7-b236-43a9dd32d06c",
+			"name": "DELETE First Player",
+			"url": "http://localhost:5000/api/Players/05f31383-c3a3-4c5b-a8f0-3ac3b3fd69d5/hard",
+			"time": 226,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Body returns the correct name": true,
+				"Body returns the correct email": true,
+				"Body returns the correct phone number": true,
+				"Body returns the correct date Of Birth": true,
+				"Body returns the correct emotional status": true,
+				"Body returns the correct facebook": true,
+				"Body returns the correct linkedin": true,
+				"Body returns the correct tag": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct email": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct phone number": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct date Of Birth": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct emotional status": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct facebook": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct linkedin": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body returns the correct tag": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				226
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Body returns the correct name": true,
+					"Body returns the correct email": true,
+					"Body returns the correct phone number": true,
+					"Body returns the correct date Of Birth": true,
+					"Body returns the correct emotional status": true,
+					"Body returns the correct facebook": true,
+					"Body returns the correct linkedin": true,
+					"Body returns the correct tag": true
+				}
+			]
+		},
+		{
+			"id": "4dae347e-75cc-42a5-9548-9bb3efd5d1c5",
+			"name": "GET Players After Delete",
+			"url": "http://localhost:5000/api/Players/",
+			"time": 47,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"There are no players": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"There are no players": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				47
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"There are no players": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 8848,
+	"collection": {
+		"requests": [
+			{
+				"id": "29c9814c-0256-4813-bb2f-547543d7dc4b",
+				"method": "GET"
+			},
+			{
+				"id": "5e1891ac-8b40-420e-b157-3448e482e8bf",
+				"method": "POST"
+			},
+			{
+				"id": "f8145a10-13f3-448e-8f2e-2f47dc84fb30",
+				"method": "GET"
+			},
+			{
+				"id": "184ddd7e-263c-4c48-a7a8-7e6a06b001f4",
+				"method": "PUT"
+			},
+			{
+				"id": "5b481d05-59e6-440f-b9c8-8d0abe23a863",
+				"method": "DELETE"
+			},
+			{
+				"id": "abe71581-d638-4781-9de3-9e37a5d340de",
+				"method": "DELETE"
+			},
+			{
+				"id": "303107c3-8fca-4f03-980f-81a08c191afc",
+				"method": "GET"
+			},
+			{
+				"id": "d0aacbf3-53cb-40ad-86bb-019ff1d94b28",
+				"method": "GET"
+			},
+			{
+				"id": "6250fd22-310b-4a77-b784-33c6f51fba88",
+				"method": "POST"
+			},
+			{
+				"id": "45af51d4-693c-4f3a-b63c-7c210615ba33",
+				"method": "GET"
+			},
+			{
+				"id": "42bfb69a-b298-4177-b7df-18489ffcf475",
+				"method": "POST"
+			},
+			{
+				"id": "7f64022d-69c1-4d11-a167-dca2e78b8d19",
+				"method": "GET"
+			},
+			{
+				"id": "0a5ec763-e090-4781-a1b1-e7d6cb10c8ad",
+				"method": "POST"
+			},
+			{
+				"id": "fae2a4c3-6763-4f72-adfa-88a754a918f3",
+				"method": "GET"
+			},
+			{
+				"id": "5643ef75-61c9-47bc-b4e2-3c43be1f4627",
+				"method": "GET"
+			},
+			{
+				"id": "1060423b-a44b-4d2c-9419-2fade4200d7a",
+				"method": "POST"
+			},
+			{
+				"id": "adaa81e0-34e3-4049-b6cf-d92434d2cedf",
+				"method": "GET"
+			},
+			{
+				"id": "43152080-0c40-49dd-b2d0-a4c15c25efb6",
+				"method": "POST"
+			},
+			{
+				"id": "92fe787b-296b-491a-8ab4-6848329b2d36",
+				"method": "GET"
+			},
+			{
+				"id": "9abb05a1-12b4-41b5-adcb-f4429141ca72",
+				"method": "GET"
+			},
+			{
+				"id": "63bd7f27-c757-4d4f-8572-f5184b1fd796",
+				"method": "POST"
+			},
+			{
+				"id": "666e7695-bf12-4a87-a9df-8d12d54d0e06",
+				"method": "GET"
+			},
+			{
+				"id": "5f313f8c-bc67-45d4-a328-348cd877446e",
+				"method": "GET"
+			},
+			{
+				"id": "2808571e-b518-4a4a-ab02-45ebda23451f",
+				"method": "PATCH"
+			},
+			{
+				"id": "2af8876f-943b-49ef-a199-6fd634dd33f3",
+				"method": "DELETE"
+			},
+			{
+				"id": "1f2efdb1-71c4-4702-9964-536754904f49",
+				"method": "GET"
+			},
+			{
+				"id": "1a7cf9b2-937c-4952-a512-bcf2219656b0",
+				"method": "DELETE"
+			},
+			{
+				"id": "fb3ca4ec-3707-4022-9182-dd9e5a18f34c",
+				"method": "DELETE"
+			},
+			{
+				"id": "e7f626c8-d438-4b13-86e0-778723da2708",
+				"method": "GET"
+			},
+			{
+				"id": "c4ca896e-eb9c-483e-a18a-4540034f4f46",
+				"method": "DELETE"
+			},
+			{
+				"id": "905de528-e89b-439e-a4f1-1604c8cb3124",
+				"method": "DELETE"
+			},
+			{
+				"id": "3a758b84-a1f7-42a7-aa3f-1575003d2bb5",
+				"method": "DELETE"
+			},
+			{
+				"id": "1c3931b5-569f-442d-b78d-6b3b4b86c35f",
+				"method": "DELETE"
+			},
+			{
+				"id": "15eaaaf8-fc1a-469e-842d-da623cedeef0",
+				"method": "DELETE"
+			},
+			{
+				"id": "37531faa-2c41-4e70-99dd-253fecf78d37",
+				"method": "DELETE"
+			},
+			{
+				"id": "aa7d7e26-7b6b-42f6-8fdf-d41579541540",
+				"method": "GET"
+			},
+			{
+				"id": "b695e099-3e98-4893-8a26-6843a9b203cb",
+				"method": "GET"
+			},
+			{
+				"id": "7f5c0088-41ed-4edb-9cec-3b6c7a08c368",
+				"method": "POST"
+			},
+			{
+				"id": "0805f5b4-9a4e-4a87-aa9f-e2f5e45ba51e",
+				"method": "GET"
+			},
+			{
+				"id": "69bc816d-0dbc-4373-a77a-a6bc1b969842",
+				"method": "POST"
+			},
+			{
+				"id": "377a613a-84d2-4a86-a6c8-22174c79efa9",
+				"method": "GET"
+			},
+			{
+				"id": "f5bb3ac6-fe4d-406b-902a-44212070bd6c",
+				"method": "POST"
+			},
+			{
+				"id": "9276365d-c33d-4feb-b292-7ba8cc459524",
+				"method": "GET"
+			},
+			{
+				"id": "a1ce931c-0618-4f8d-855f-ec69ebfd06fc",
+				"method": "GET"
+			},
+			{
+				"id": "754e3de2-a0ba-4f70-a875-484dedb03374",
+				"method": "POST"
+			},
+			{
+				"id": "f049f9b4-fd1a-4ae0-870d-d17dbd4dd7b6",
+				"method": "GET"
+			},
+			{
+				"id": "bdd63d78-944a-47d4-be7a-8af28c7877b6",
+				"method": "POST"
+			},
+			{
+				"id": "563c38a5-2895-4186-a5c8-58d352b59f1d",
+				"method": "GET"
+			},
+			{
+				"id": "16b39b3b-250a-4ab6-99ca-9317adfb7253",
+				"method": "GET"
+			},
+			{
+				"id": "b5920070-6637-4913-93ea-cdb67dd85bf0",
+				"method": "DELETE"
+			},
+			{
+				"id": "cfe3f360-ba4d-4acc-8228-84f8869bfa23",
+				"method": "DELETE"
+			},
+			{
+				"id": "e52f28f1-fdf5-46d2-892c-f7dc9dc51e5a",
+				"method": "GET"
+			},
+			{
+				"id": "38f3657c-cfe2-4e77-a736-f9e714921483",
+				"method": "DELETE"
+			},
+			{
+				"id": "f1d0cb20-371f-4247-874e-59cd3ffabec8",
+				"method": "DELETE"
+			},
+			{
+				"id": "97bf2baa-6a79-41e0-b242-c5f752ada45b",
+				"method": "DELETE"
+			},
+			{
+				"id": "91982ba3-e7ca-4003-abe3-e5eb2b363590",
+				"method": "DELETE"
+			},
+			{
+				"id": "6690d7bf-02e5-4cbe-964a-635baf703eda",
+				"method": "DELETE"
+			},
+			{
+				"id": "9e0a46ab-351f-4ef7-b236-43a9dd32d06c",
+				"method": "DELETE"
+			},
+			{
+				"id": "4dae347e-75cc-42a5-9548-9bb3efd5d1c5",
+				"method": "GET"
+			}
+		]
+	}
+}
