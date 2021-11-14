@@ -173,5 +173,19 @@ namespace DDDNetCore.Controllers
             }
         }
 
+        // GET: api/Connections/reachableUsers/email
+        [HttpGet("reachablePlayers/{playerEmail}")]
+        public async Task<ActionResult<IEnumerable<PlayerDto>>> GetReachablePlayers(string playerEmail)
+        {
+            return await _service.GetReachablePlayers(playerEmail);
+        }
+
+        // GET: api/Connections/reachableUsers/email
+        [HttpGet("mutualFriends/{playerEmail}")]
+        public async Task<ActionResult<IEnumerable<PlayerDto>>> GetMutualFriends(string playerEmail, PlayerDto dto)
+        {
+            return await _service.GetMutualFriends(playerEmail, dto);
+        }
+
     }
 }

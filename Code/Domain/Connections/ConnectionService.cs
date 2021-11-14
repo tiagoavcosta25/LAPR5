@@ -172,5 +172,37 @@ namespace DDDNetCore.Domain.Connections
             return new ConnectionDto(con.Id.AsString(), con.Player.AsString(), con.Friend.AsString(), con.ConnectionStrength.Strength, con.Tags.Select(t => t.tagName).ToList());
         }
 
+        public async Task<List<PlayerDto>> GetReachablePlayers(string playerEmail)
+        {
+            var player = await _repoPl.GetByEmailAsync(playerEmail);
+
+            var friendsList = await _repo.GetFriendsList(player.Id);
+
+            List<Player> reachableUsersList = new List<Player>();
+
+            foreach(PlayerId id in friendsList){
+                var lst = await _repo.GetFriendsList(player.Id);
+                reachableUsersList.AddRange(await _repoPl.GetByIdsAsync(lst));
+            }
+
+            return reachableUsersList.ConvertAll<PlayerDto>(plyr =>
+                new PlayerDto(plyr.Id.AsGuid(),plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, 
+                plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, plyr.DateOfBirth.date.Day, plyr.EmotionalStatus.Status, plyr.Facebook.Url, plyr.LinkedIn.Url));
+        }
+
+        public async Task<List<PlayerDto>> GetMutualFriends(string playerEmail, PlayerDto targetDto)
+        {
+            var player = await _repoPl.GetByEmailAsync(playerEmail);
+            var target = await _repoPl.GetByEmailAsync(targetDto.Email);
+
+            var lst = await _repo.GetMutualFriends(player.Id, target.Id);
+
+            var mutualfriendsList = await _repoPl.GetByIdsAsync(lst);
+
+            return mutualfriendsList.ConvertAll<PlayerDto>(plyr =>
+                new PlayerDto(plyr.Id.AsGuid(),plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, 
+                plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, plyr.DateOfBirth.date.Day, plyr.EmotionalStatus.Status, plyr.Facebook.Url, plyr.LinkedIn.Url));
+        }
+
     }
 }
