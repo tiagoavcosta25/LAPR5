@@ -84,9 +84,9 @@ connection(1,51,6,2).
 connection(51,61,7,3).
 connection(61,200,2,4).
 
-:-dynamic safest_current_route/2.
-
 % safest route
+
+:-dynamic safest_current_route/2.
 
 dfs_safest_route(Orig,Dest,Threshold, Strength, Path):-dfs2_safest_route(Orig,Dest,[Orig],Threshold, 0, Strength, Path).
 
