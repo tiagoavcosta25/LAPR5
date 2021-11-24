@@ -13,6 +13,6 @@ pipelines:
             caches:
               - dotnetcore
             script:
-              - export PROJECT_NAME=Code
-              - dotnet restore ./Code
+              - export PROJECT_NAME=g4s-master-data-module
+              - dotnet restore ./g4s-master-data-module
               - dotnet build $PROJECT_NAME
