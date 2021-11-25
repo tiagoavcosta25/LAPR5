@@ -141,7 +141,7 @@ safest_route(Orig,Dest,Threshold, SafestPath):-
 		get_time(Initial_Time),
 		(find_safest_route(Orig,Dest, Threshold);true),
 		retract(safest_current_route(SafestPath,Strength)),
-		((Strength >= 0, !, get_time(End_Time),
+		((Strength > 0, !, get_time(End_Time),
 		T is End_Time - Initial_Time,
 		write('Time:'),write(T),nl,
 		write('Strength: '), write(Strength),nl);
