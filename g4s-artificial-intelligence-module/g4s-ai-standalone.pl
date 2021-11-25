@@ -84,6 +84,47 @@ connection(1,51,6,2).
 connection(51,61,7,3).
 connection(61,200,2,4).
 
+% shortest path
+
+:-dynamic shortest_current_path/2.
+
+all_dfs(Player1,Player2,PathList):-get_time(T1),
+    findall(Path,dfs(Player1,Player2,Path),PathList),
+    length(PathList,PathLength),
+    get_time(T2),
+    write(PathLength),write(' paths found in '),
+    T is T2-T1,write(T),write(' seconds'),nl,
+    write('Possible Path List: '),write(PathList),nl,nl.
+
+dfs(Orig,Dest,Path):-dfs2(Orig,Dest,[Orig],Path).
+
+dfs2(Dest,Dest,LA,Path):-!,reverse(LA,Path).
+dfs2(Act,Dest,LA,Path):-node(NAct,Act,_),(connection(NAct,NX,_,_);connection(NX,NAct,_,_)),
+    node(NX,X,_),\+ member(X,LA),dfs2(X,Dest,[X|LA],Path).
+
+
+shortest_path(Orig,Dest,ShortestPathList):-
+		get_time(Ti),
+		(find_shortest_path(Orig,Dest);true),
+		retract(shortest_current_path(ShortestPathList,_)),
+		get_time(Tf),
+		T is Tf-Ti,
+		write('Solution generation time:'),write(T),nl.
+
+find_shortest_path(Orig,Dest):-
+		asserta(shortest_current_path(_,10000)),
+		dfs(Orig,Dest,PathList),
+		update_shortest_path(PathList),
+		fail.
+
+update_shortest_path(PathList):-
+		shortest_current_path(_,N),
+		length(PathList,P),
+                P<N,retract(shortest_current_path(_,_)),
+		asserta(shortest_current_path(PathList,P)).
+
+
+
 % safest route
 
 :-dynamic safest_current_route/2.
