@@ -25,7 +25,7 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/spa-module'),
+      dir: require('path').join(__dirname, './coverage/g4s-spa-module'),
       subdir: '.',
       reporters: [
         { type: 'html' },

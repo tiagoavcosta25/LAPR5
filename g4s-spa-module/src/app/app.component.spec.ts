@@ -1,9 +1,13 @@
 import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule
+      ],
       declarations: [
         AppComponent
       ],
@@ -16,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'spa-module'`, () => {
+  it(`should have as title 'g4s-spa-module'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('spa-module');
+    expect(app.title).toEqual('g4s-spa-module');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('spa-module app is running!');
+    expect(compiled.querySelector('.content span')?.textContent).toContain('g4s-spa-module app is running!');
   });
 });

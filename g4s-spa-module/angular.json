@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "spa-module": {
+    "g4s-spa-module": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/spa-module",
+            "outputPath": "dist/g4s-spa-module",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -68,10 +68,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "spa-module:build:production"
+              "browserTarget": "g4s-spa-module:build:production"
             },
             "development": {
-              "browserTarget": "spa-module:build:development"
+              "browserTarget": "g4s-spa-module:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -79,7 +79,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "spa-module:build"
+            "browserTarget": "g4s-spa-module:build"
           }
         },
         "test": {
@@ -102,5 +102,5 @@
       }
     }
   },
-  "defaultProject": "spa-module"
+  "defaultProject": "g4s-spa-module"
 }
