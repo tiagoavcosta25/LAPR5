@@ -51,6 +51,12 @@ update_shortest_path(PathList):-
 		asserta(shortest_current_path(PathList,P)).
 
 
+% aux methods
+
+intersect([ ],_,[ ]).
+intersect([X|L1],L2,[X|LI]):-member(X,L2),!,intersect(L1,L2,LI).
+intersect([_|L1],L2, LI):- intersect(L1,L2,LI).
+
 % safest route
 
 :-dynamic safest_current_route/2.
@@ -83,3 +89,85 @@ update_safest_route(Strength, PathList):-
 		safest_current_route(_,Current_Strength),
 		Strength > Current_Strength,retract(safest_current_route(_,_)),
 		asserta(safest_current_route(PathList,Strength)).
+
+
+% player suggestion
+
+:-dynamic suggest_currentPath/2.
+
+suggest_players(Player, Level, SuggestedPlayersList):-
+		network_getNetworkByLevel(Player, Level, NetworkList),
+		suggest_removeFriends(Player, NetworkList, CandidateList),
+		suggest_getRelatedPlayers(Player, CandidateList, RelatedPlayersList),
+		suggest_checkSuggestedPaths(Player, RelatedPlayersList, SuggestedPlayersList).
+
+network_getNetworkByLevel(_, _, [antonio, beatriz, carlos, eduardo, isabel, jose]):-!.
+
+suggest_removeFriends(_, [ ], []).
+suggest_removeFriends(Player, [CurrentPlayer | NetworkList], CandidateList):-
+		node(CurrentID, CurrentPlayer, _),
+		node(PlayerID,Player,_),
+		(connection(PlayerID, CurrentID, _, _);
+		connection(CurrentID, PlayerID, _, _)), !,
+		suggest_removeFriends(Player, NetworkList, CandidateList).
+suggest_removeFriends(Player, [CurrentPlayer | NetworkList], [CurrentPlayer | CandidateList]):-
+		suggest_removeFriends(Player, NetworkList, CandidateList).
+
+suggest_getRelatedPlayers(_, [ ], []).
+suggest_getRelatedPlayers(Player, [NetworkPlayer | Network], [ NetworkPlayer | RelatedPlayersList]):-
+		node(_,Player,PlayerTagList),
+		node(_, NetworkPlayer,NetworkPlayerTagList),
+		intersect(PlayerTagList, NetworkPlayerTagList, CommonTagList),
+		CommonTagList=[_|_], !,
+		suggest_getRelatedPlayers(Player, Network, RelatedPlayersList).
+suggest_getRelatedPlayers(Player, [_ | Network], RelatedPlayersList):-
+		suggest_getRelatedPlayers(Player, Network, RelatedPlayersList).
+
+
+suggest_checkSuggestedPaths(_, [], []).
+suggest_checkSuggestedPaths(Player, [CurrentPlayer | RelatedPlayersList], [CurrentPlayer | SuggestedPlayersList]):-
+		node(_, CurrentPlayer, CurrentPlayerTagList),
+		node(_, Player, PlayerTagList),
+		intersect(PlayerTagList, CurrentPlayerTagList, CommonTagList),
+		suggest_findPathByPlayer(Player, CurrentPlayer, CommonTagList, Paths),
+		Paths=[_|_], !,
+		suggest_checkSuggestedPaths(Player, RelatedPlayersList, SuggestedPlayersList).
+suggest_checkSuggestedPaths(Player, [_ | RelatedPlayersList], SuggestedPlayersList):-
+		suggest_checkSuggestedPaths(Player, RelatedPlayersList, SuggestedPlayersList).
+
+
+suggest_findPathByPlayer(_, _, [], []).
+suggest_findPathByPlayer(Player, SuggestedPlayer, [CurrentTag | CommonTagList], [SuggestedPath | Paths]):-
+		(suggest_findPathByTag(Player, SuggestedPlayer, CurrentTag);true),
+		retract(suggest_currentPath(SuggestedPath, SuggestedPathLength)),
+		\+ SuggestedPathLength = 10000,!,
+		suggest_findPathByPlayer(Player, SuggestedPlayer, CommonTagList, Paths).
+suggest_findPathByPlayer(Player, SuggestedPlayer, [_ | CommonTagList], Paths):-
+		suggest_findPathByPlayer(Player, SuggestedPlayer, CommonTagList, Paths).
+
+
+suggest_findPathByTag(_, _, []).
+suggest_findPathByTag(Player, SuggestedPlayer, Tag):-
+		asserta(suggest_currentPath(_, 10000)),
+		suggest_dfs(Player, SuggestedPlayer, Tag, PathList),
+		suggest_updateRoute(PathList),
+		fail.
+
+suggest_updateRoute(PathList):-
+		suggest_currentPath(_, CurrentLength),
+		length(PathList, PathListLength),
+		PathListLength < CurrentLength,
+		retract(suggest_currentPath(_,_)),
+		asserta(suggest_currentPath(PathList, PathListLength)).
+
+suggest_dfs(Orig,Dest, Tag, Path):-suggest_dfsAux(Orig,Dest,[Orig], Tag, Path).
+
+suggest_dfsAux(Dest,Dest,AuxList, _, Path):-!,reverse(AuxList,Path).
+suggest_dfsAux(Current,Dest,AuxList, Tag, Path):-
+		node(CurrentID, Current, _),
+		(connection(CurrentID, FriendID, _, _);
+		connection(FriendID, CurrentID, _, _)),
+		node(FriendID, Friend, FriendTagList),
+		\+ member(Friend, AuxList),
+		member(Tag, FriendTagList),
+		suggest_dfsAux(Friend, Dest, [Friend | AuxList], Tag, Path).
