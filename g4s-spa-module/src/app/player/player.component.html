@@ -1,1 +1,15 @@
-<p>player works!</p>
+<h2>Player List</h2>
+<ul class="players">
+  <li *ngFor="let player of players" (click)="onSelect(player)">
+    <span class="badge">{{player.id}}</span> {{player.name}}
+  </li>
+</ul>
+
+<div *ngIf="selectedPlayer">
+  <h2>{{selectedPlayer.name | uppercase}} Details</h2>
+  <div><span>id: </span>{{selectedPlayer.id}}</div>
+  <div>
+    <label for="player-name">Player name: </label>
+    <input id="player-name" [(ngModel)]="selectedPlayer.name" placeholder="name">
+  </div>
+</div>
