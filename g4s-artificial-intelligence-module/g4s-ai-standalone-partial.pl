@@ -1,15 +1,27 @@
-% Library
-:- use_module(library(http/thread_httpd)).
-:- use_module(library(http/http_dispatch)).
-:- use_module(library(http/http_parameters)).
+% Knowledge Base - Standalone Mode
 
-% HTTP Request Relations
-:- http_handler('/register_user', register_user, []).
+node(1,john,[gaming,programming]).
+node(2,jane,[gaming]).
+node(3,steve,[programming]).
+node(4,james,[gaming]).
+node(5,carol,[programming]).
+node(6,michelle,[movies]).
 
-% HTTP Server Creation on port 'Port'
-server(Port) :-
-        http_server(http_dispatch, [port(Port)]).
 
+
+connection(1,2,10,8).
+connection(2,4,2,6).
+connection(2,5,-3,-2).
+connection(2,6,-3,-2).
+connection(1,3,-3,-2).
+connection(3,5,-3,-2).
+
+
+% aux methods
+
+intersect([ ],_,[ ]).
+intersect([X|L1],L2,[X|LI]):-member(X,L2),!,intersect(L1,L2,LI).
+intersect([_|L1],L2, LI):- intersect(L1,L2,LI).
 
 % shortest path
 
@@ -48,48 +60,48 @@ shortest_findPath(Orig, Dest):-
 shortest_updatePath(PathList):-
 		shortest_currentPath(_, CurrentPathLength),
 		length(PathList, PathLength),
-    PathLength < CurrentPathLength, retract(shortest_currentPath(_,_)),
+                PathLength < CurrentPathLength, retract(shortest_currentPath(_,_)),
 		asserta(shortest_currentPath(PathList, PathLength)).
-
-
-% aux methods
-
-intersect([ ],_,[ ]).
-intersect([X|L1],L2,[X|LI]):-member(X,L2),!,intersect(L1,L2,LI).
-intersect([_|L1],L2, LI):- intersect(L1,L2,LI).
 
 % safest route
 
-:-dynamic safest_current_route/2.
+:-dynamic safest_currentRoute/2.
 
-dfs_safest_route(Orig,Dest,Threshold, Strength, Path):-dfs2_safest_route(Orig,Dest,[Orig],Threshold, 0, Strength, Path).
+safest_dfs(Orig, Dest, Threshold, Strength, Path):- safest_dfsAux(Orig, Dest, [Orig], Threshold, 0, Strength, Path).
 
-dfs2_safest_route(Dest,Dest,LA, _, S,S, Cam):-!,reverse(LA,Cam).
-dfs2_safest_route(Act,Dest,LA,Threshold,Strength, ReturnStrength,Cam):-node(NAct,Act,_),(connection(NAct,NX,N_StrengthA,N_StrengthB);connection(NX,NAct,N_StrengthA,N_StrengthB)),
-    node(NX,X,_),\+ member(X,LA),N_StrengthA >= Threshold,
-    N_StrengthB >= Threshold, FinalStrength1 is N_StrengthA + N_StrengthB,FinalStrength is Strength + FinalStrength1, dfs2_safest_route(X,Dest,[X|LA], Threshold, FinalStrength, ReturnStrength,Cam).
+safest_dfsAux(Dest, Dest, AuxList, _ , Strength, Strength, Path):-!, reverse(AuxList,Path).
+safest_dfsAux(Current, Dest, AuxList, Threshold, Strength, ReturnStrength, Path):-
+		node(CurrentID,Current,_),
+		(connection(CurrentID, FriendID, StrengthA, StrengthB);
+		connection(FriendID, CurrentID, StrengthA, StrengthB)),
+		node(FriendID, Friend, _),
+		\+ member(Friend, AuxList),
+		StrengthA >= Threshold,
+		StrengthB >= Threshold,
+		CurrentStrength is Strength + StrengthA + StrengthB,
+		safest_dfsAux(Friend, Dest, [Friend | AuxList], Threshold, CurrentStrength, ReturnStrength, Path).
 
 
-safest_route(Orig,Dest,Threshold, SafestPath):-
+safest_route(Orig, Dest, Threshold, SafestPath):-
 		get_time(Initial_Time),
-		(find_safest_route(Orig,Dest, Threshold);true),
-		retract(safest_current_route(SafestPath,Strength)),
+		(safest_findRoute(Orig,Dest, Threshold);true),
+		retract(safest_currentRoute(SafestPath,Strength)),
 		((Strength >= 0, !, get_time(End_Time),
 		T is End_Time - Initial_Time,
 		write('Time:'),write(T),nl,
 		write('Strength: '), write(Strength),nl);
 		write('No path found.'),false).
 
-find_safest_route(Orig,Dest,Threshold):-
-		asserta(safest_current_route(_,-10000)),
-		dfs_safest_route(Orig,Dest,Threshold, Strength, PathList),
-		update_safest_route(Strength, PathList),
+safest_findRoute(Orig, Dest, Threshold):-
+		asserta(safest_currentRoute(_,-10000)),
+		safest_dfs(Orig, Dest, Threshold, Strength, PathList),
+		safest_updateRoute(Strength, PathList),
 		fail.
 
-update_safest_route(Strength, PathList):-
-		safest_current_route(_,Current_Strength),
-		Strength > Current_Strength,retract(safest_current_route(_,_)),
-		asserta(safest_current_route(PathList,Strength)).
+safest_updateRoute(Strength, PathList):-
+		safest_currentRoute(_,Current_Strength),
+		Strength > Current_Strength, retract(safest_currentRoute(_,_)),
+		asserta(safest_currentRoute(PathList,Strength)).
 
 
 % player suggestion
@@ -102,7 +114,7 @@ suggest_players(Player, Level, SuggestedPlayersList):-
 		suggest_getRelatedPlayers(Player, CandidateList, RelatedPlayersList),
 		suggest_checkSuggestedPaths(Player, RelatedPlayersList, SuggestedPlayersList).
 
-network_getNetworkByLevel(_, _, [antonio, beatriz, carlos, eduardo, isabel, jose]):-!.
+network_getNetworkByLevel(_, _, [jane, steve, james, carol, michelle]):-!.
 
 suggest_removeFriends(_, [ ], []).
 suggest_removeFriends(Player, [CurrentPlayer | NetworkList], CandidateList):-
