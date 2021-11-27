@@ -1,16 +1,18 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PlayerComponent } from './player/player.component';
+import { SidePanelComponent } from './layout/side-panel/side-panel.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PlayerComponent
+    SidePanelComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
