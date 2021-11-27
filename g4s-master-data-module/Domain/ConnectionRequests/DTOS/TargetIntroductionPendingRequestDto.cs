@@ -1,3 +1,4 @@
+using DDDSample1.Domain.Players;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +8,11 @@ namespace DDDNetCore.Domain.ConnectionRequests.DTOS
 {
     public class TargetIntroductionPendingRequestDto : TargetPendingRequestDto
     {
-        public string MiddleMan { get; set; }
+        public PlayerDto MiddleMan { get; set; }
         public string MiddleManToTargetMessage { get; set; }
 
-        public TargetIntroductionPendingRequestDto(string player, string target, string playerToTargetMessage, string middleMan, string middleManToTargetMessage)
-            : base(player, target, playerToTargetMessage)
+        public TargetIntroductionPendingRequestDto(string id, PlayerDto player, PlayerDto target, string playerToTargetMessage, PlayerDto middleMan, string middleManToTargetMessage) 
+            : base(id, player, target, playerToTargetMessage)
         {
             MiddleMan = middleMan;
             MiddleManToTargetMessage = middleManToTargetMessage;

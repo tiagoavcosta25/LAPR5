@@ -73,7 +73,7 @@ namespace DDDNetCore.Tests.Controllers
             "12312322-4444-5555-6666-777888999001", 
             "12312322-4444-5555-6666-777888999002",
             "12312322-4444-5555-6666-777888999003", "middle_target_message", "middle_target_message",
-            "middle_target_message", "request_pending", 1, new List<string>{"tag1"});
+            "middle_target_message", 1, new List<string>{"tag1"});
             IntroductionRequestDto dto2 = new IntroductionRequestDto("12312322-4444-5555-6666-777888999000", 
             "12312322-4444-5555-6666-777888999001", 
             "12312322-4444-5555-6666-777888999002",
@@ -105,7 +105,7 @@ namespace DDDNetCore.Tests.Controllers
             "12312322-4444-5555-6666-777888999001", 
             "12312322-4444-5555-6666-777888999002",
             "12312322-4444-5555-6666-777888999003", "middle_target_message", "middle_target_message",
-            "middle_target_message", "request_pending", 1, new List<string>{"tag1"});
+            "middle_target_message", 1, new List<string>{"tag1"});
             IntroductionRequestDto dto2 = new IntroductionRequestDto("12312322-4444-5555-6666-777888999000", 
             "12312322-4444-5555-6666-777888999001", 
             "12312322-4444-5555-6666-777888999002",
@@ -129,17 +129,18 @@ namespace DDDNetCore.Tests.Controllers
         public async Task GetAllUserPendingDirectRequests_ReturnsTargetPendingRequestDtoList()
         {
             // Arrange
-            string email = "teste@gmail.com";
-            TargetPendingRequestDto dto = new TargetDirectPendingRequestDto(email, "teste2@gmail.com", "message");
+            PlayerDto pobj = new PlayerDto(new System.Guid(), "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
+            "www.linkedin.com/john-doe", new List<string> { "tag1" });
+            TargetPendingRequestDto dto = new TargetDirectPendingRequestDto("1", pobj, pobj, "message");
             List<TargetPendingRequestDto> lst = new() { dto };
 
             var mockServ = new Mock<IConnectionRequestService>();
-            mockServ.Setup(serv => serv.GetAllUserPendingDirectRequestsAsync(email))
+            mockServ.Setup(serv => serv.GetAllUserPendingDirectRequestsAsync("1"))
                 .ReturnsAsync(lst).Verifiable();
             var controller = new ConnectionRequestsController(mockServ.Object);
 
             // Act
-            var result = await controller.GetAllUserPendingDirectRequests(email);
+            var result = await controller.GetAllUserPendingDirectRequests("1");
 
             // Assert
             var returnValue = Assert.IsType<List<TargetPendingRequestDto>>(result.Value);
@@ -179,20 +180,15 @@ namespace DDDNetCore.Tests.Controllers
         public async Task AcceptRequest_ReturnsAcceptRequestDto()
         {
             // Arrange
-            string email = "teste@gmail.com";
-            string email2 = "teste2@gmail.com";
-            AcceptRequestDto dto = new(email2, email, 3, new List<string> { "tag1"} );
-            ConnectionRequestDto dto2 = new DirectRequestDto(new Guid().ToString(), new Guid().ToString(), new Guid().ToString(), "message", "accepted", 3, new List<string> { "tag1" });
-
-
+            AcceptRequestDto dto = new("1234", 3, new List<string> { "tag1"} );
 
             var mockServ = new Mock<IConnectionRequestService>();
             mockServ.Setup(serv => serv.AcceptRequest(dto))
-                .ReturnsAsync(dto2).Verifiable();
+                .ReturnsAsync(dto).Verifiable();
             var controller = new ConnectionRequestsController(mockServ.Object);
 
             // Act
-            var result = await controller.AcceptRequest(email, dto);
+            var result = await controller.AcceptRequest("1234", dto);
 
             var actionResult = Assert.IsType<OkObjectResult>(result.Result);
             
@@ -205,23 +201,18 @@ namespace DDDNetCore.Tests.Controllers
 
 
         [Fact]
-        public async Task AcceptRequest_WrongEmail()
+        public async Task AcceptRequest_WrongID()
         {
             // Arrange
-            string email = "teste@gmail.com";
-            string email2 = "teste2@gmail.com";
-            AcceptRequestDto dto = new(email, email2, 3, new List<string> { "tag1" });
-            ConnectionRequestDto dto2 = new DirectRequestDto(new Guid().ToString(), new Guid().ToString(), new Guid().ToString(), "message", "accepted", 3, new List<string> { "tag1" });
-
-
+            AcceptRequestDto dto = new("1234", 3, new List<string> { "tag1" });
 
             var mockServ = new Mock<IConnectionRequestService>();
             mockServ.Setup(serv => serv.AcceptRequest(dto))
-                .ReturnsAsync(dto2).Verifiable();
+                .ReturnsAsync(dto).Verifiable();
             var controller = new ConnectionRequestsController(mockServ.Object);
 
             // Act
-            var result = await controller.AcceptRequest(email, dto);
+            var result = await controller.AcceptRequest("12345", dto);
 
 
 

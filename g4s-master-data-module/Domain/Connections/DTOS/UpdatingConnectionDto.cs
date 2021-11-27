@@ -4,18 +4,15 @@ namespace DDDNetCore.Domain.Connections.DTOS
 {
     public class UpdatingConnectionDto
     {
-        public string PlayerEmail { get; set; }
-
-        public string FriendEmail { get; set; }
+        public string Id { get; set; }
 
         public int ConnectionStrength { get; set; }
 
         public ICollection<string> Tags { get; set; }
 
-        public UpdatingConnectionDto(string playerEmail, string friendEmail, int connectionStrength, ICollection<string> tags)
+        public UpdatingConnectionDto(string id, int connectionStrength, ICollection<string> tags)
         {
-            PlayerEmail = playerEmail;
-            FriendEmail = friendEmail;
+            Id = id;
             ConnectionStrength = connectionStrength;
             Tags = tags;
         }

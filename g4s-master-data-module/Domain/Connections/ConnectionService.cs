@@ -43,8 +43,8 @@ namespace DDDNetCore.Domain.Connections
 
         public async Task<ConnectionDto> AddAsync(CreatingConnectionDto dto)
         {
-            await checkPlayerIdAsync(new PlayerId(dto.Player));
-            await checkPlayerIdAsync(new PlayerId(dto.Friend));
+            await CheckPlayerIdAsync(new PlayerId(dto.Player));
+            await CheckPlayerIdAsync(new PlayerId(dto.Friend));
             var con = new Connection(dto.Player.ToString(), dto.Friend.ToString(), dto.ConnectionStrength, dto.Tags);
 
             await _repo.AddAsync(con);
@@ -56,8 +56,8 @@ namespace DDDNetCore.Domain.Connections
 
         public async Task<ConnectionDto> UpdateAsync(ConnectionDto dto)
         {
-            await checkPlayerIdAsync(new PlayerId(dto.Player));
-            await checkPlayerIdAsync(new PlayerId(dto.Friend));
+            await CheckPlayerIdAsync(new PlayerId(dto.Player));
+            await CheckPlayerIdAsync(new PlayerId(dto.Friend));
             var con = await _repo.GetByIdAsync(new ConnectionId(dto.Id));
 
             if (con == null)
@@ -100,7 +100,7 @@ namespace DDDNetCore.Domain.Connections
             return new ConnectionDto(con.Id.AsString(), con.Player.AsString(), con.Friend.AsString(), con.ConnectionStrength.Strength, con.Tags.Select(t => t.tagName).ToList());
         }
 
-        private async Task checkPlayerIdAsync(PlayerId playerId)
+        private async Task CheckPlayerIdAsync(PlayerId playerId)
         {
             var pl = await _repoPl.GetByIdAsync(playerId);
             if (pl == null)
@@ -110,12 +110,13 @@ namespace DDDNetCore.Domain.Connections
 
         // CRUD OVER //
 
-        public async Task<List<GettingConnectionDto>> GetAllConnectionsAsync(string playerEmail)
+        public async Task<List<GettingConnectionDto>> GetAllConnectionsAsync(string playerId)
         {
-            var pl = await _repoPl.GetByEmailAsync(playerEmail);
+            var pl = await _repoPl.GetByIdAsync(new PlayerId(playerId));
+            if (pl == null)
+                throw new BusinessRuleValidationException("Invalid Player or Friend Id.");
 
-            if(pl == null)
-                throw new BusinessRuleValidationException("Invalid Player or Friend Email.");
+            await CheckPlayerIdAsync(pl.Id);
 
             var list = await _repo.GetAllUserConnectionsAsync(pl.Id);
 
@@ -126,8 +127,15 @@ namespace DDDNetCore.Domain.Connections
 
             foreach (var con in listDto)
             {
-                var player = await _repoPl.GetByIdAsync(new PlayerId(con.Friend));
-                finalListDto.Add(new GettingConnectionDto(player.Name.name, player.Email.address, con.ConnectionStrength, con.Tags));
+                var fr = await _repoPl.GetByIdAsync(new PlayerId(con.Friend));
+
+                var pDto = new PlayerDto(pl.Id.AsGuid(), pl.Name.name, pl.Email.address, pl.PhoneNumber.phoneNumber, pl.DateOfBirth.date.Year, 
+                    pl.DateOfBirth.date.Month, pl.DateOfBirth.date.Day, pl.EmotionalStatus.Status.ToString(), pl.Facebook.Url, pl.LinkedIn.Url, pl.Tags.Select(t => t.tagName).ToList());
+
+                var frDto = new PlayerDto(fr.Id.AsGuid(), fr.Name.name, fr.Email.address, fr.PhoneNumber.phoneNumber, fr.DateOfBirth.date.Year,
+                    fr.DateOfBirth.date.Month, fr.DateOfBirth.date.Day, fr.EmotionalStatus.Status.ToString(), fr.Facebook.Url, fr.LinkedIn.Url, fr.Tags.Select(t => t.tagName).ToList());
+
+                finalListDto.Add(new GettingConnectionDto(con.Id.ToString(), pDto, frDto, con.ConnectionStrength, con.Tags));
             }
 
             return finalListDto;
@@ -153,13 +161,7 @@ namespace DDDNetCore.Domain.Connections
         public async Task<ConnectionDto> UpdateTagsAndStrengthAsync(UpdatingConnectionDto dto)
         {
 
-            var player = await _repoPl.GetByEmailAsync(dto.PlayerEmail);
-            var friend = await _repoPl.GetByEmailAsync(dto.FriendEmail);
-
-            if (player == null || friend == null)
-                throw new BusinessRuleValidationException("Invalid Player or Friend Email");
-
-            var con = await _repo.GetByBothPlayerIdAsync(player.Id, friend.Id);
+            var con = await _repo.GetByIdAsync(new ConnectionId(dto.Id));
 
             if (con == null)
                 return null;

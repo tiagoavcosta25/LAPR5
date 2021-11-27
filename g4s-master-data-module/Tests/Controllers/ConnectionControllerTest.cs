@@ -92,7 +92,9 @@ namespace DDDNetCore.Tests.Controllers
         public async Task GetAllConnections_ReturnsGettingConnectionDtoList()
         {
             // Arrange
-            GettingConnectionDto obj = new("john", "test@gmail.com", 5,
+            PlayerDto pobj = new PlayerDto(new System.Guid(), "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
+            "www.linkedin.com/john-doe", new List<string> { "tag1" });
+            GettingConnectionDto obj = new("1234", pobj, pobj, 5,
                 new List<string> { "tag"});
             List<GettingConnectionDto> lst = new() { obj };
             string playerEmail = "test@gmail.com";
@@ -116,7 +118,9 @@ namespace DDDNetCore.Tests.Controllers
         public async Task GetAllConnections_WhenEmailNotValid()
         {
             // Arrange
-            GettingConnectionDto obj = new("john", "test@gmail.com", 5,
+            PlayerDto pobj = new PlayerDto(new System.Guid(), "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
+            "www.linkedin.com/john-doe", new List<string> { "tag1" });
+            GettingConnectionDto obj = new("1234", pobj, pobj, 5,
                 new List<string> { "tag" });
             List<GettingConnectionDto> lst = new() { obj };
             string playerEmail = "test@gmail.com";
@@ -189,10 +193,9 @@ namespace DDDNetCore.Tests.Controllers
         public async Task UpdateTagsAndStrength_ReturnsConnectionDto()
         {
             // Arrange
-            UpdatingConnectionDto param = new("test@gmail.com", "test2@gmail.com", 3, new List<string> { "tag"});
+            UpdatingConnectionDto param = new("1", 3, new List<string> { "tag"});
             ConnectionDto obj = new(new Guid().ToString(), new Guid().ToString(), new Guid().ToString(),
                 3, new List<string> { "tag" });
-            string playerEmail = "test@gmail.com";
 
             var mockServ = new Mock<IConnectionService>();
             mockServ.Setup(s => s.UpdateTagsAndStrengthAsync(param))
@@ -200,7 +203,7 @@ namespace DDDNetCore.Tests.Controllers
             var controller = new ConnectionsController(mockServ.Object);
 
             // Act
-            var result = await controller.UpdateTagsAndStrength(playerEmail, param);
+            var result = await controller.UpdateTagsAndStrength("1", param);
 
             // Assert
             var actionResult = Assert.IsType<OkObjectResult>(result.Result);
@@ -218,7 +221,7 @@ namespace DDDNetCore.Tests.Controllers
         public async Task UpdateTagsAndStrength_EmailNotEqual()
         {
             // Arrange
-            UpdatingConnectionDto param = new("error", "error", 3, new List<string> { "tag" });
+            UpdatingConnectionDto param = new("error", 3, new List<string> { "tag" });
             ConnectionDto obj = new(new Guid().ToString(), new Guid().ToString(), new Guid().ToString(),
                 3, new List<string> { "tag" });
             string playerEmail = "test@gmail.com";
@@ -240,10 +243,9 @@ namespace DDDNetCore.Tests.Controllers
         public async Task UpdateTagsAndStrength_WhenEmailNotValid()
         {
             // Arrange
-            UpdatingConnectionDto param = new("test@gmail.com", "test2@gmail.com", 3, new List<string> { "tag" });
+            UpdatingConnectionDto param = new("1", 3, new List<string> { "tag" });
             ConnectionDto obj = new(new Guid().ToString(), new Guid().ToString(), new Guid().ToString(),
                 3, new List<string> { "tag" });
-            string playerEmail = "test@gmail.com";
 
             var mockServ = new Mock<IConnectionService>();
             mockServ.Setup(s => s.UpdateTagsAndStrengthAsync(param))
@@ -251,7 +253,7 @@ namespace DDDNetCore.Tests.Controllers
             var controller = new ConnectionsController(mockServ.Object);
 
             // Act
-            var result = await controller.UpdateTagsAndStrength(playerEmail, param);
+            var result = await controller.UpdateTagsAndStrength("1", param);
 
             // Assert
             var actionResult = Assert.IsType<BadRequestObjectResult>(result.Result);

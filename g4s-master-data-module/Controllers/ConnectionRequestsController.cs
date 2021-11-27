@@ -161,13 +161,13 @@ namespace DDDNetCore.Controllers
 
         // CRUD OVER //
 
-        // GET: api/ConnectionRequests/pendingRequests/email
-        [HttpGet("pendingRequests/{email}")]
-        public async Task<ActionResult<IEnumerable<TargetPendingRequestDto>>> GetAllUserPendingDirectRequests(string email)
+        // GET: api/ConnectionRequests/pendingRequests/userId
+        [HttpGet("pendingRequests/{userId}")]
+        public async Task<ActionResult<IEnumerable<TargetPendingRequestDto>>> GetAllUserPendingDirectRequests(string userId)
         {
             try
             {
-                var list = await _service.GetAllUserPendingDirectRequestsAsync(email);
+                var list = await _service.GetAllUserPendingDirectRequestsAsync(userId);
                 if (list == null)
                 {
                     return NotFound();
@@ -180,6 +180,7 @@ namespace DDDNetCore.Controllers
             }
         }
 
+        // TODO: Unused method, remove it 
         // GET: api/connectionRequests/pendingRequests/emails?emailPlayer=email1@gmail.com&emailTarget=email2@gmail.com
         [HttpGet("pendingRequests/emails")]
         public async Task<ActionResult<ConnectionRequestDto>> GetByEmails(string emailPlayer, string emailTarget)
@@ -199,11 +200,11 @@ namespace DDDNetCore.Controllers
             }
         }
 
-        // PATCH: api/ConnectionRequests/pendingRequests/email@gmail.com/accept/
-        [HttpPatch("pendingRequests/{email}/accept")]
-        public async Task<ActionResult<AcceptRequestDto>> AcceptRequest(string email, AcceptRequestDto dto)
+        // PATCH: api/ConnectionRequests/pendingRequests/id/accept/
+        [HttpPatch("pendingRequests/{id}/accept")]
+        public async Task<ActionResult<AcceptRequestDto>> AcceptRequest(string id, AcceptRequestDto dto)
         {
-            if (!email.Equals(dto.Target))
+            if (!id.Equals(dto.Id))
             {
                 return BadRequest();
             }

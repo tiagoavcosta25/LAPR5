@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using DDDSample1.Domain.Shared;
 using System.Linq;
+using DDDNetCore.Domain.Connections;
 
 namespace DDDNetCore.Tests.Services
 {
@@ -108,14 +109,14 @@ namespace DDDNetCore.Tests.Services
 
             CreatingIntroductionRequestDto dto = new CreatingIntroductionRequestDto( 
             p.Id.AsString(), p2.Id.AsString(), p3.Id.AsString(), "middle_target_message", "middle_target_message",
-            "middle_target_message", "request_pending", 1, new List<string>{"tag1"});
+            "middle_target_message", 1, new List<string>{"tag1"});
 
-            IntroductionRequest obj = new IntroductionRequest(dto.Player.ToString(), dto.Target.ToString(), dto.PlayerToTargetMessage, dto.CurrentStatus,
+            IntroductionRequest obj = new IntroductionRequest(dto.Player.ToString(), dto.Target.ToString(), dto.PlayerToTargetMessage, "request_pending",
                 dto.MiddleMan, dto.PlayerToMiddleManMessage, dto.MiddleManToTargetMessage, dto.Strength, dto.Tags);
 
             IntroductionRequestDto dto2 = new IntroductionRequestDto(obj.Id.AsString(), 
             p.Id.AsString(), p2.Id.AsString(), p3.Id.AsString(), "middle_target_message", "middle_target_message",
-            "middle_target_message", "request_pending", 1, new List<string>{"tag1"});
+            "middle_target_message", "introduction_pending", 1, new List<string>{"tag1"});
 
             var mockRepo = new Mock<IIntroductionRequestRepository>();
             mockRepo.Setup(repo => repo.AddAsync(obj));
@@ -128,9 +129,13 @@ namespace DDDNetCore.Tests.Services
             mockRepoPl.Setup(repo => repo.GetByIdAsync(p3.Id))
                 .ReturnsAsync(p3).Verifiable();
 
+            var mockRepoCon = new Mock<IConnectionRepository>();
+            mockRepoCon.Setup(repo => repo.GetByBothPlayerIdAsync(p.Id, p3.Id))
+                .ReturnsAsync((Connection)(null)).Verifiable();
+
             var mockUnity = new Mock<IUnitOfWork>();
             mockUnity.Setup(u => u.CommitAsync());
-            var service = new ConnectionRequestService(mockUnity.Object, null, mockRepo.Object, null, mockRepoPl.Object);
+            var service = new ConnectionRequestService(mockUnity.Object, null, mockRepo.Object, mockRepoCon.Object, mockRepoPl.Object);
 
             // Act
             var result = await service.AddIntAsync(dto);
@@ -138,7 +143,7 @@ namespace DDDNetCore.Tests.Services
             // Assert            
             var returnValue = Assert.IsType<IntroductionRequestDto>(result);
             
-            Assert.Equal(dto.CurrentStatus, returnValue.CurrentStatus);
+            Assert.Equal("introduction_pending", returnValue.CurrentStatus);
             Assert.Equal(dto.MiddleMan, returnValue.MiddleMan);
             Assert.Equal(dto.MiddleManToTargetMessage, returnValue.MiddleManToTargetMessage);
             Assert.Equal(dto.Player, returnValue.Player);

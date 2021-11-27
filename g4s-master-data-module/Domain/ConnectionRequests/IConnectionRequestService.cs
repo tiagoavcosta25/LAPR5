@@ -25,11 +25,11 @@ namespace DDDNetCore.Domain.ConnectionRequests
 
         Task<ConnectionRequestDto> DeleteAsync(ConnectionRequestId id);
 
-        Task<List<TargetPendingRequestDto>> GetAllUserPendingDirectRequestsAsync(string email);
+        Task<List<TargetPendingRequestDto>> GetAllUserPendingDirectRequestsAsync(string userId);
 
         Task<ConnectionRequestDto> GetByEmailsAsync(string playerEmail, string targetEmail);
 
-        Task<ConnectionRequestDto> AcceptRequest(AcceptRequestDto dto);
+        Task<AcceptRequestDto> AcceptRequest(AcceptRequestDto dto);
 
         Task<List<ListMidPendingRequestDto>> GetAllUserPendingMidRequests(string email);
 

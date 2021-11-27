@@ -46,6 +46,14 @@ namespace DDDSample1
             ConfigureMyServices(services);
 
             services.AddControllers().AddNewtonsoftJson();
+
+            services.AddCors(option =>
+            {
+                option.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,6 +74,8 @@ namespace DDDSample1
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors();
 
             app.UseEndpoints(endpoints =>
             {

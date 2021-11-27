@@ -1,21 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using DDDSample1.Domain.Players;
+using System.Collections.Generic;
 
 namespace DDDNetCore.Domain.Connections.DTOS
 {
     public class GettingConnectionDto
     {
-        public string FriendName { get; set; }
+        public string Id { get; set; }
 
-        public string FriendEmail { get; set; }
+        public PlayerDto Player { get; set; }
+
+        public PlayerDto Friend { get; set; }
 
         public int ConnectionStrength { get; set; }
 
         public ICollection<string> Tags { get; set; }
 
-        public GettingConnectionDto(string friendName, string friendEmail, int connectionStrength, ICollection<string> tags)
+        public GettingConnectionDto(string id, PlayerDto player, PlayerDto friend, int connectionStrength, ICollection<string> tags)
         {
-            FriendName = friendName;
-            FriendEmail = friendEmail;
+            Id = id;
+            Player = player;
+            Friend = friend;
             ConnectionStrength = connectionStrength;
             Tags = tags;
         }

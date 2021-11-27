@@ -122,13 +122,13 @@ namespace DDDNetCore.Controllers
         // CRUD OVER //
 
 
-        // GET: api/connections/user/email@gmail.com
-        [HttpGet("user/{playerEmail}")]
-        public async Task<ActionResult<IEnumerable<GettingConnectionDto>>> GetAllConnections(string playerEmail)
+        // GET: api/connections/user/playerId
+        [HttpGet("user/{playerId}")]
+        public async Task<ActionResult<IEnumerable<GettingConnectionDto>>> GetAllConnections(string playerId)
         {
             try
             {
-                var list = await _service.GetAllConnectionsAsync(playerEmail);
+                var list = await _service.GetAllConnectionsAsync(playerId);
                 if (list == null)
                 {
                     return NotFound();
@@ -141,6 +141,7 @@ namespace DDDNetCore.Controllers
             }
         }
 
+        // TODO: Unused method, remove
         // GET: api/connections/user/emails?emailPlayer=email1@gmail.com&emailFriend=email2@gmail.com
         [HttpGet("user/emails")]
         public async Task<ActionResult<ConnectionDto>> GetByEmails(string emailPlayer, string emailFriend)
@@ -161,11 +162,11 @@ namespace DDDNetCore.Controllers
         }
 
 
-        // PATCH: api/connections/user/email@gmail.com
-        [HttpPatch("user/{playerEmail}")]
-        public async Task<ActionResult<ConnectionDto>> UpdateTagsAndStrength(string playerEmail, UpdatingConnectionDto dto)
+        // PATCH: api/connections/id
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<ConnectionDto>> UpdateTagsAndStrength(string id, UpdatingConnectionDto dto)
         {
-            if (!playerEmail.Equals(dto.PlayerEmail))
+            if (!id.Equals(dto.Id))
             {
                 return BadRequest();
             }
