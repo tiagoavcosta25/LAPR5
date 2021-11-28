@@ -38,6 +38,16 @@ persistence_registerPlayers([CurrentPlayer | PlayerList]):-
         persistence_registerPlayers(PlayerList).
 
 
+persistence_getConnections():-
+        http_get('http://Localhost:5001/api/Connections',Reply,[]),
+        persistence_registerConnections(Reply).
+
+persistence_registerConnections([ ]).
+persistence_registerConnections([CurrentConnection | ConnectionList]):-
+        asserta(connection(CurrentConnection.player, CurrentConnection.friend, CurrentConnection.connectionStrength, CurrentConnection.connectionStrength)),
+        persistence_registerConnections(ConnectionList).
+
+
 % shortest path
 
 :-dynamic shortest_currentPath/2.
