@@ -37,6 +37,16 @@ persistence_registerPlayers([CurrentPlayer | PlayerList]):-
         asserta(node(CurrentPlayer.id, CurrentPlayer.name, CurrentPlayer.tags)),
         persistence_registerPlayers(PlayerList).
 
+persistence_getConnections():-
+        http_get('https://localhost:5001/api/Connections',Reply,[]),
+        write('Reply: '), write(Reply), nl,
+        persistence_registerConnections(Reply).
+
+persistence_registerConnections([ ]).
+persistence_registerConnections([CurrentConnection | ConnectionList]):-
+        asserta(connection(CurrentConnection.player, CurrentConnection.friend, CurrentConnection.connectionStrength, CurrentConnection.connectionStrength)),
+        persistence_registerConnections(ConnectionList).
+
 
 % shortest path
 
