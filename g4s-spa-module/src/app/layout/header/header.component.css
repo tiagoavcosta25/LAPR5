@@ -1,0 +1,95 @@
+body { 
+    margin: 0;
+    font-family: 'Roboto', Arial, sans-serif;
+  }
+  
+  .header {
+    overflow: hidden;
+    background-color: #F069B4;
+    padding: 5px 5px;
+  }
+
+  .header a {
+    color: white;
+    text-align: center;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 14px; 
+    line-height: 25px;
+    border-radius: 4px;
+  }
+
+  .header-left {
+    display: grid;
+    grid-auto-flow: column;
+    grid-column-gap: 10px;
+    float: left;
+    margin-left: 10px;
+    
+  }
+  
+  .header-left a:hover {
+    background-color: #ff82c7;
+    color: black;
+  }
+
+  .header-right {
+    margin-right: 25px;
+    margin-top: 15px;
+    float: right;
+  }
+
+  .header-right a {
+    background-color: rgb(120, 244, 248);
+    color: black;
+  }
+
+  .header-right a:hover {
+    background-color: rgb(59, 183, 187);
+    color: white;
+  }
+
+/* Search Bar */
+
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+  }
+  
+  .search {
+    margin-left: 35%;
+    margin-top: 0.5%;
+    width: 600px;
+    height: 35px;
+    padding: 2px;
+    border-radius: 50px;
+    border: 1px solid #F069B4;
+    cursor: text;
+    background-color: #c4488c;
+    flex-direction: row;
+  }
+
+  .search:hover {
+    box-shadow: 1px 1px 8px 1px #ff8bcb;
+  }
+
+  .searchBox {
+    padding-left: 20px;
+    width: 560px;
+    color: #000000;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    flex-grow: 1;
+    font-size: 15px;
+  }
+
+  ::placeholder {
+    color: #000000;
+  }
+  
+.searchIcon {
+    position: absolute;
+    float: right;
+    height: 30px;
+  }
+  

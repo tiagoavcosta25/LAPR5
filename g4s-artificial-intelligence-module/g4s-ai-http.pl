@@ -8,9 +8,9 @@
 :- use_module(library(http/json)).
 
 % HTTP Request Relations
-:- http_handler('/suggestPlayers', suggest_players, []).
-:- http_handler('/shortestPath', shortest_path, []).
-:- http_handler('/safestPath', safest_route, []).
+:- http_handler('/suggestPlayers', suggest_players/3, []).
+:- http_handler('/shortestPath', shortest_path/3, []).
+:- http_handler('/safestPath', safest_route/3, []).
 
 % HTTP Server Creation on port 'Port'
 server(Port) :-
@@ -25,26 +25,31 @@ p_json(Request) :-
         prolog_to_json(R, JSONObject),
         reply_json(JSONObject, [json_object(dict)]).
 
+
 persistence_getPlayers():-
-        http_get('https://localhost:5001/api/players/',Reply,[ cert_verify_hook(cert_accept_any)
-            ]),
+        http_get('https://socialnetworkapi51.azurewebsites.net/api/players/',
+                 Reply,
+                 [ json_object(dict), cert_verify_hook(cert_accept_any)
+                 ]),
         write('Reply: '), write(Reply), nl,
+        retractall(node(_)),
         persistence_registerPlayers(Reply).
 
 
 persistence_registerPlayers([]).
 persistence_registerPlayers([CurrentPlayer | PlayerList]):-
-        asserta(node(CurrentPlayer.id, CurrentPlayer.name, CurrentPlayer.tags)),
+        assertz(node(CurrentPlayer.id, CurrentPlayer.name, ['Tag1'])),
         persistence_registerPlayers(PlayerList).
 
 persistence_getConnections():-
-        http_get('https://localhost:5001/api/Connections',Reply,[]),
+        http_get('https://socialnetworkapi51.azurewebsites.net/api/Connections',Reply,[]),
         write('Reply: '), write(Reply), nl,
+        retractall(connection(_)),
         persistence_registerConnections(Reply).
 
 persistence_registerConnections([ ]).
 persistence_registerConnections([CurrentConnection | ConnectionList]):-
-        asserta(connection(CurrentConnection.player, CurrentConnection.friend, CurrentConnection.connectionStrength, CurrentConnection.connectionStrength)),
+        assertz(connection(CurrentConnection.player, CurrentConnection.friend, CurrentConnection.connectionStrength, CurrentConnection.connectionStrength)),
         persistence_registerConnections(ConnectionList).
 
 
