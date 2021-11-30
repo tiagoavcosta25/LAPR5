@@ -1,0 +1,46 @@
+<mat-drawer-container class="dashboard-container mat-typography">
+	<mat-drawer #drawer mode="side" disableClose="true" opened="true">
+		<mat-nav-list>
+			
+			<button (click)="openRegisterPlayer()">
+				<mat-list-item>
+					<mat-icon mat-list-icon color="accent">check_circle</mat-icon>
+					<h4>Approve Requests</h4>
+				</mat-list-item>
+			</button>
+
+			<button (click)="openLogin()">
+				<mat-list-item>
+					<mat-icon mat-list-icon color="accent">check_circle_outline</mat-icon>
+					<h4>Accept Requests</h4>
+				</mat-list-item>
+			</button>
+
+			<button (click)="openRegisterPlayer()">
+				<mat-list-item>
+					<mat-icon mat-list-icon color="accent">compare_arrows</mat-icon>
+					<h4>Introduction Request</h4>
+				</mat-list-item>
+			</button>
+
+			<button (click)="openLogin()">
+				<mat-list-item>
+					<mat-icon mat-list-icon color="accent">linear_scale</mat-icon>
+					<h4>Network</h4>
+				</mat-list-item>
+			</button>
+
+			<button (click)="openRegisterPlayer()">
+				<mat-list-item>
+					<mat-icon mat-list-icon color="accent">account_circle</mat-icon>
+					<h4>My Profile</h4>
+				</mat-list-item>
+			</button>
+		</mat-nav-list>
+	</mat-drawer>
+
+	<div class="dashboard-content">
+		<app-register-player *ngIf=this.showRegisterPlayer></app-register-player>
+		<app-login *ngIf=this.showLogin></app-login>
+	</div>
+</mat-drawer-container>
