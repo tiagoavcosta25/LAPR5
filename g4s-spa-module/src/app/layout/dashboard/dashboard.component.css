@@ -1,0 +1,49 @@
+.dashboard-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+mat-drawer {
+    background-color: #eee;
+}
+  
+mat-nav-list {
+    width: 60px;
+    overflow: hidden;
+    transition: width 0.3s;
+    top: 50%;
+}
+
+mat-nav-list h4 {
+    opacity: 0;
+    color: #444;
+    text-align: left;
+}
+  
+mat-drawer:hover mat-nav-list {
+    width: 180px;
+}
+
+mat-drawer:hover mat-nav-list h4 {
+    opacity: 1;
+    margin: auto 10px;
+    transition: all 0.1s ease-in 0.2s;
+}
+
+/*.dashboard-content{
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+} */
+
+button{
+    padding: 0;
+    border: none;
+    background: none;
+    width: 100%;
+}
+  
