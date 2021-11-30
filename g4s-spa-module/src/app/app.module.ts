@@ -14,6 +14,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { RegisterPlayerComponent } from './player/register-player/register-player.component';
+import { HeaderComponent } from './layout/header/header.component';
+
 
 @NgModule({
   declarations: [
@@ -21,7 +23,8 @@ import { RegisterPlayerComponent } from './player/register-player/register-playe
     DashboardComponent,
     LoginComponent,
     LayoutComponent,
-    RegisterPlayerComponent
+    RegisterPlayerComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
