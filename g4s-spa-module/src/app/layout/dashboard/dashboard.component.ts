@@ -7,13 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  showRegisterPlayer: boolean = false;
-  showLogin: boolean = true;
+  showRegisterPlayer: boolean = true;
+  showLogin: boolean = false;
 
   constructor() { }
 
   ngOnInit(): void {
-    this.showRegisterPlayer = false;
+    this.showRegisterPlayer = true;
+    this.showLogin = false;
   }
 
   openRegisterPlayer(){
