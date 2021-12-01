@@ -207,6 +207,20 @@ namespace DDDSample1.Controllers
             }
         }
 
-        
+        // GET: api/Players/email
+        [HttpGet("email/{email}")]
+        public async Task<ActionResult<GetPlayerDto>> GetByEmail(string email)
+        {
+            var plyr = await _service.GetByEmailAsync(email);
+
+            if (plyr == null)
+            {
+                return NotFound();
+            }
+
+            return plyr;
+        }
+
+
     }
 }
