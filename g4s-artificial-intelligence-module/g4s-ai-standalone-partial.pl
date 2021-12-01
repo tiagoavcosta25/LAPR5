@@ -184,3 +184,41 @@ suggest_dfsAux(Current,Dest,AuxList, Tag, Path):-
 		\+ member(Friend, AuxList),
 		member(Tag, FriendTagList),
 		suggest_dfsAux(Friend, Dest, [Friend | AuxList], Tag, Path).
+
+
+% strongest route
+
+:-dynamic strongest_currentRoute/2.
+
+strongest_dfs(Orig, Dest, Strength, Path):- strongest_dfsAux(Orig, Dest, [Orig], Strength, Path).
+
+strongest_dfsAux(Dest, Dest, AuxList, 0, Path):-!,reverse(AuxList, Path).
+strongest_dfsAux(Current, Dest, AuxList, Strength, Path):-
+	node(CurrentID, Current, _),
+	(connection(CurrentID, FriendID, StrengthA, StrengthB);
+	connection(FriendID, CurrentID, StrengthA, StrengthB)),
+	node(FriendID, Friend, _),
+	\+ member(Friend, AuxList),
+	strongest_dfsAux(Friend, Dest, [Friend | AuxList], SX, Path),
+	Strength is (SX + StrengthA + StrengthB).
+
+strongest_route(Orig, Dest, StrongestPath):-
+	get_time(Initial_Time),
+    (strongest_findRoute(Orig, Dest); true),
+    retract(strongest_currentRoute(StrongestPath, Strength)),
+    get_time(End_Time),
+    T is End_Time - Initial_Time,
+    write('Time:'),write(T),nl,
+    write('Strength:'),write(Strength),nl,
+    write('Solution path:'),write(StrongestPath),nl.
+
+strongest_findRoute(Orig, Dest):-
+    asserta(strongest_currentRoute(_, 0)),
+    strongest_dfs(Orig, Dest, Strength, PathList),
+    strongest_updateRoute(Strength, PathList),
+    fail.
+
+strongest_updateRoute(Strength, PathList):-
+    strongest_currentRoute(_, Current_Strength),
+    Strength > Current_Strength, retract(strongest_currentRoute(_,_)),
+    asserta(strongest_currentRoute(PathList, Strength)).
