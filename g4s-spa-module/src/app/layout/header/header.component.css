@@ -74,6 +74,7 @@ body {
 
   .searchBox {
     padding-left: 20px;
+    padding-top: 3.5px;
     width: 560px;
     color: #000000;
     outline: none;
