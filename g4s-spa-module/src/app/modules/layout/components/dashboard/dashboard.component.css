@@ -1,6 +1,12 @@
-.dashboard-container {
+app-header{
     position: absolute;
     top: 0;
+    width: 100%;
+    max-height: 35px;
+}
+
+.dashboard-container {
+    position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
