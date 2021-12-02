@@ -20,8 +20,9 @@
 :- dynamic node/3.
 :- dynamic connection/4.
 :- dynamic shortest_currentRoute/2.
-:- dynamic strongest_currentRoute/2.
 :- dynamic safest_currentRoute/2.
+:- dynamic strongest_currentRoute/2.
+:- dynamic suggest_currentRoute/2.
 
 
 % HTTP Server setup at 'Port'
@@ -99,6 +100,12 @@ prepareConnections() :-
 		asserta(connection(A, B, C, D)))),
 	retractall(connectionTemp(_,_,_)).
 
+%======== Auxiliary Methods ========%
+
+intersect([ ],_,[ ]).
+intersect([X|L1],L2,[X|LI]):-member(X,L2),!,intersect(L1,L2,LI).
+intersect([_|L1],L2, LI):- intersect(L1,L2,LI).
+
 %======== Shortest route between two players (HTTP) ========%
 
 :- http_handler('/api/shortest-route', shortest_compute, []).
@@ -157,12 +164,6 @@ shortest_updateRoute(PathList):-
 		length(PathList, PathLength),
     	PathLength < CurrentPathLength, retract(shortest_currentRoute(_,_)),
 		asserta(shortest_currentRoute(PathList, PathLength)).
-
-% aux methods
-
-intersect([ ],_,[ ]).
-intersect([X|L1],L2,[X|LI]):-member(X,L2),!,intersect(L1,L2,LI).
-intersect([_|L1],L2, LI):- intersect(L1,L2,LI).
 
 %======== Safest path between two players (HTTP) ========%
 
@@ -224,9 +225,27 @@ safest_updateRoute(Strength, PathList):-
 		asserta(safest_currentRoute(PathList,Strength)).
 
 
-% player suggestion
+%======== Suggest Players (HTTP) ========%
 
-:-dynamic suggest_currentPath/2.
+:- http_handler('/api/suggest-players', suggest_compute, []).
+
+suggest_compute(Request) :-
+    cors_enable(Request, [methods([get])]),
+    suggest_prepare(Request, SuggestedPlayersList),
+    prolog_to_json(SuggestedPlayersList, JSONObject),
+    reply_json(JSONObject, [json_object(dict)]).
+
+suggest_prepare(Request, SuggestedPlayersList) :-
+    http_parameters(Request, [emailPlayer(EmailPlayer, [string]), scope(Scope, [integer])]),
+    addPlayers(),
+    addConnections(),
+    getPlayerName(EmailPlayer, PlayerName),
+    safest_route(PlayerName, Scope, SuggestedPlayersList),
+    retractall(connection(_,_,_,_)),
+    retractall(node(_,_,_)).
+
+
+%======== Suggest Players (Core) ========%
 
 suggest_players(Player, Level, SuggestedPlayersList):-
 		network_getNetworkByLevel(Player, Level, NetworkList),
@@ -272,7 +291,7 @@ suggest_checkSuggestedPaths(Player, [_ | RelatedPlayersList], SuggestedPlayersLi
 suggest_findPathByPlayer(_, _, [], []).
 suggest_findPathByPlayer(Player, SuggestedPlayer, [CurrentTag | CommonTagList], [SuggestedPath | Paths]):-
 		(suggest_findPathByTag(Player, SuggestedPlayer, CurrentTag);true),
-		retract(suggest_currentPath(SuggestedPath, SuggestedPathLength)),
+		retract(suggest_currentRoute(SuggestedPath, SuggestedPathLength)),
 		\+ SuggestedPathLength = 10000,!,
 		suggest_findPathByPlayer(Player, SuggestedPlayer, CommonTagList, Paths).
 suggest_findPathByPlayer(Player, SuggestedPlayer, [_ | CommonTagList], Paths):-
@@ -281,17 +300,17 @@ suggest_findPathByPlayer(Player, SuggestedPlayer, [_ | CommonTagList], Paths):-
 
 suggest_findPathByTag(_, _, []).
 suggest_findPathByTag(Player, SuggestedPlayer, Tag):-
-		asserta(suggest_currentPath(_, 10000)),
+		asserta(suggest_currentRoute(_, 10000)),
 		suggest_dfs(Player, SuggestedPlayer, Tag, PathList),
 		suggest_updateRoute(PathList),
 		fail.
 
 suggest_updateRoute(PathList):-
-		suggest_currentPath(_, CurrentLength),
+		suggest_currentRoute(_, CurrentLength),
 		length(PathList, PathListLength),
 		PathListLength < CurrentLength,
-		retract(suggest_currentPath(_,_)),
-		asserta(suggest_currentPath(PathList, PathListLength)).
+		retract(suggest_currentRoute(_,_)),
+		asserta(suggest_currentRoute(PathList, PathListLength)).
 
 suggest_dfs(Orig,Dest, Tag, Path):-suggest_dfsAux(Orig,Dest,[Orig], Tag, Path).
 
