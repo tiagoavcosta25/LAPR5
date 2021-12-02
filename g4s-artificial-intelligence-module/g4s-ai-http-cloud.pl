@@ -20,19 +20,20 @@
 :- dynamic node/3.
 :- dynamic connection/4.
 :- dynamic strongest_currentRoute/2.
+:- dynamic safest_currentRoute/2.
 
 
-% HTTP Server setup at 'Port'                           
-startServer(Port) :-   
+% HTTP Server setup at 'Port'
+startServer(Port) :-
         http_server(http_dispatch, [port(Port)]),
         asserta(port(Port)).
-		
+
 % Cors setup
 :- set_setting(http:cors, [*]).
 
 % Server startup
 start_server:-
-    consult('g4s-ai-http-config'),  % Loads server's configuration
+    consult('g4s-ai-http-config-cloud'),  % Loads server's configuration
     server_port(Port),
     startServer(Port).
 
@@ -45,11 +46,11 @@ stopServer:-
 :- start_server.
 
 %================== Common Use ======================%
-	
+
 addPlayers() :-
 	getPlayers(Data),
     parse_players(Data).
-	
+
 addConnections() :-
 	getConnections(Data),
 	parse_connections(Data).
@@ -69,7 +70,7 @@ getConnections(Data) :-
         json_read_dict(In, Data),
         close(In)
 	).
-	
+
 
 getPlayerName(Email, PlayerName) :-
 	atom_concat('email/',Email,Urlpath),
@@ -83,14 +84,14 @@ parse_players([]).
 parse_players([H|List]):-
     asserta(node(H.get(id),H.get(name),H.get(tags))),
     parse_players(List).
-	
+
 parse_connections([]):-
 	prepareConnections().
-	
+
 parse_connections([H|List]):-
     asserta(connectionTemp(H.get(player),H.get(friend),H.get(connectionStrength))),
     parse_connections(List).
-	
+
 prepareConnections() :-
 	forall(connectionTemp(A, B, C),(
 		connectionTemp(B, A, D),
@@ -144,9 +145,28 @@ intersect([ ],_,[ ]).
 intersect([X|L1],L2,[X|LI]):-member(X,L2),!,intersect(L1,L2,LI).
 intersect([_|L1],L2, LI):- intersect(L1,L2,LI).
 
-% safest route
+%======== Safest path between two players (HTTP) ========%
 
-:-dynamic safest_currentRoute/2.
+:- http_handler('/api/safest-route', safest_routeCompute, []).
+
+safest_routeCompute(Request) :-
+	cors_enable(Request, [methods([get])]),
+    safest_routePrepare(Request, Path),
+	prolog_to_json(Path, JSONObject),
+    reply_json(JSONObject, [json_object(dict)]).
+
+safest_routePrepare(Request, Path) :-
+    http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string]), threshold(Threshold, [integer])]),
+	addPlayers(),
+	addConnections(),
+	getPlayerName(EmailPlayer, PlayerName),
+	getPlayerName(EmailTarget, TargetName),
+	safest_route(PlayerName, TargetName, Threshold, Path),
+	retractall(connection(_,_,_,_)),
+	retractall(node(_,_,_)).
+
+
+%======== Safest path between two players (Core) ========%
 
 safest_dfs(Orig, Dest, Threshold, Strength, Path):- safest_dfsAux(Orig, Dest, [Orig], Threshold, 0, Strength, Path).
 
@@ -281,12 +301,12 @@ strongest_routePrepare(Request, Path) :-
 	addPlayers(),
 	addConnections(),
 	getPlayerName(EmailPlayer, PlayerName),
-	getPlayerName(EmailTarget, TargetName),	
+	getPlayerName(EmailTarget, TargetName),
 	strongest_route(PlayerName, TargetName, Path),
 	retractall(connection(_,_,_,_)),
 	retractall(node(_,_,_)).
 
-	
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 strongest_dfs(Orig, Dest, Strength, Path):- strongest_dfsAux(Orig, Dest, [Orig], Strength, Path).
