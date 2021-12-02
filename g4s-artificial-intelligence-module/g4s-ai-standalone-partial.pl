@@ -20,55 +20,55 @@ connection(3,5,-3,-2).
 synonym('c#', csharp).
 
 
+% Secundary knowledge base
+:- dynamic shortest_currentRoute/2.
+:- dynamic safest_currentRoute/2.
+
 % aux methods
 
 intersect([ ],_,[ ]).
 intersect([X|L1],L2,[X|LI]):-member(X,L2),!,intersect(L1,L2,LI).
 intersect([_|L1],L2, LI):- intersect(L1,L2,LI).
 
-% shortest path
+%======== Shortest route between two players (Core) ========%
 
-:-dynamic shortest_currentPath/2.
-
-all_dfs(Player1, Player2, PathList):- get_time(T1),
-    findall(Path, dfs(Player1, Player2, Path), PathList),
+shortest_allDfs(Player1, Player2, PathList):- get_time(T1),
+    findall(Path, shortest_dfs(Player1, Player2, Path), PathList),
     length(PathList, PathLength),
     get_time(T2),
     write(PathLength),write(' paths found in '),
     T is T2-T1,write(T),write(' seconds'),nl,
     write('Possible Path List: '),write(PathList),nl,nl.
 
-dfs(Orig, Dest, Path):- dfs2(Orig, Dest, [Orig], Path).
+shortest_dfs(Orig, Dest, Path):- shortest_dfsAux(Orig, Dest, [Orig], Path).
 
-dfs2(Dest, Dest, LA, Path):- !, reverse(LA, Path).
-dfs2(Current, Dest, LA, Path):-
+shortest_dfsAux(Dest, Dest, LA, Path):- !, reverse(LA, Path).
+shortest_dfsAux(Current, Dest, LA, Path):-
     node(CurrentID, Current,_), (connection(CurrentID, NX, _, _); connection(NX, CurrentID, _, _)),
-    node(NX,X,_),\+ member(X,LA), dfs2(X,Dest,[X|LA],Path).
+    node(NX,X,_),\+ member(X,LA), shortest_dfsAux(X,Dest,[X|LA],Path).
 
 
-shortest_path(Orig, Dest, ShortestPathList):-
+shortest_route(Orig, Dest, ShortestPathList):-
 		get_time(Ti),
-		(shortest_findPath(Orig, Dest); true),
-		retract(shortest_currentPath(ShortestPathList, _)),
+		(shortest_findRoute(Orig, Dest); true),
+		retract(shortest_currentRoute(ShortestPathList, _)),
 		get_time(Tf),
 		T is Tf-Ti,
 		write('Solution generation time:'), write(T), nl.
 
-shortest_findPath(Orig, Dest):-
-		asserta(shortest_currentPath(_,10000)),
-		dfs(Orig, Dest, PathList),
-		shortest_updatePath(PathList),
+shortest_findRoute(Orig, Dest):-
+		asserta(shortest_currentRoute(_,10000)),
+		shortest_dfs(Orig, Dest, PathList),
+		shortest_updateRoute(PathList),
 		fail.
 
-shortest_updatePath(PathList):-
-		shortest_currentPath(_, CurrentPathLength),
+shortest_updateRoute(PathList):-
+		shortest_currentRoute(_, CurrentPathLength),
 		length(PathList, PathLength),
-                PathLength < CurrentPathLength, retract(shortest_currentPath(_,_)),
-		asserta(shortest_currentPath(PathList, PathLength)).
+    	PathLength < CurrentPathLength, retract(shortest_currentRoute(_,_)),
+		asserta(shortest_currentRoute(PathList, PathLength)).
 
 % safest route
-
-:-dynamic safest_currentRoute/2.
 
 safest_dfs(Orig, Dest, Threshold, Strength, Path):- safest_dfsAux(Orig, Dest, [Orig], Threshold, 0, Strength, Path).
 
