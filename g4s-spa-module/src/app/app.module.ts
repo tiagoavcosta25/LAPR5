@@ -14,8 +14,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { RegisterPlayerComponent } from './modules/player/components/register-player/register-player.component';
-import { HeaderComponent } from './layout/header/header.component';
+import { HeaderComponent } from './modules/layout/components/header/header.component';
 import { PlayerComponent } from './modules/player/player.component';
+import { GetNetworkComponent } from './modules/network/components/get-network/get-network.component';
+import { NetworkComponent } from './modules/network/network.component';
 
 
 @NgModule({
@@ -26,7 +28,9 @@ import { PlayerComponent } from './modules/player/player.component';
     LayoutComponent,
     RegisterPlayerComponent,
     HeaderComponent,
-    PlayerComponent
+    PlayerComponent,
+    GetNetworkComponent,
+    NetworkComponent
   ],
   imports: [
     BrowserModule,
