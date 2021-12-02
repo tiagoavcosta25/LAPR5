@@ -2,56 +2,100 @@
 :- use_module(library(http/thread_httpd)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_parameters)).
-:- use_module(library(http/http_client)).
+:- use_module(library(http/http_open)).
+:- use_module(library(http/http_cors)).
+:- use_module(library(date)).
+:- use_module(library(random)).
+
+% JSON Libraries
 :- use_module(library(http/json_convert)).
-%:- use_module(library(http/http_json)).
+:- use_module(library(http/http_json)).
 :- use_module(library(http/json)).
 
-% HTTP Request Relations
-:- http_handler('/suggestPlayers', suggest_players/3, []).
-:- http_handler('/shortestPath', shortest_path/3, []).
-:- http_handler('/safestPath', safest_route/3, []).
-
-% HTTP Server Creation on port 'Port'
-server(Port) :-
-        http_server(http_dispatch, [port(Port)]).
-
-:- json_object playerDTO(id:string, email:integer, name:string, phone:string, dob:string, emotional:string, facebook:string, linkedin:string, tags:string).
+% Primary knowledge base
 
 
-p_json(Request) :-
-        http_read_json(Request, JSON, [json_object(dict)]),
-        R = playerDTO(JSON.id,JSON.email, JSON.name, JSON.phone, JSON.dob, JSON.emotional, JSON.facebook, JSON.linkedin, JSON.tags),
-        prolog_to_json(R, JSONObject),
-        reply_json(JSONObject, [json_object(dict)]).
+
+% Secundary knowledge base
+:- dynamic node/3.
+:- dynamic connection/4.
+:- dynamic strongest_currentRoute/2.
 
 
-persistence_getPlayers():-
-        http_get('https://socialnetworkapi51.azurewebsites.net/api/players/',
-                 Reply,
-                 [ json_object(dict), cert_verify_hook(cert_accept_any)
-                 ]),
-        write('Reply: '), write(Reply), nl,
-        retractall(node(_)),
-        persistence_registerPlayers(Reply).
+% HTTP Server setup at 'Port'                           
+startServer(Port) :-   
+        http_server(http_dispatch, [port(Port)]),
+        asserta(port(Port)).
+		
+% Cors setup
+:- set_setting(http:cors, [*]).
 
+% Server startup
+start_server:-
+    consult('g4s-ai-http-config'),  % Loads server's configuration
+    server_port(Port),
+    startServer(Port).
 
-persistence_registerPlayers([]).
-persistence_registerPlayers([CurrentPlayer | PlayerList]):-
-        assertz(node(CurrentPlayer.id, CurrentPlayer.name, ['Tag1'])),
-        persistence_registerPlayers(PlayerList).
+% Shutdown server
+stopServer:-
+        retract(port(Port)),
+        http_stop_server(Port,_).
 
-persistence_getConnections():-
-        http_get('https://socialnetworkapi51.azurewebsites.net/api/Connections',Reply,[]),
-        write('Reply: '), write(Reply), nl,
-        retractall(connection(_)),
-        persistence_registerConnections(Reply).
+% Server init
+:- start_server.
 
-persistence_registerConnections([ ]).
-persistence_registerConnections([CurrentConnection | ConnectionList]):-
-        assertz(connection(CurrentConnection.player, CurrentConnection.friend, CurrentConnection.connectionStrength, CurrentConnection.connectionStrength)),
-        persistence_registerConnections(ConnectionList).
+%================== Common Use ======================%
+	
+addPlayers() :-
+	getPlayers(Data),
+    parse_players(Data).
+	
+addConnections() :-
+	getConnections(Data),
+	parse_connections(Data).
 
+getPlayers(Data) :-
+    players_url(URL),
+    setup_call_cleanup(
+        http_open(URL, In, [ cert_verify_hook(cert_accept_any)]),
+        json_read_dict(In, Data),
+        close(In)
+	).
+
+getConnections(Data) :-
+	connections_url(URL),
+	setup_call_cleanup(
+        http_open(URL, In, [ cert_verify_hook(cert_accept_any)]),
+        json_read_dict(In, Data),
+        close(In)
+	).
+	
+
+getPlayerName(Email, PlayerName) :-
+	atom_concat('email/',Email,Urlpath),
+	players_url(URL),
+	atom_concat(URL, Urlpath, UrlFinal),
+    http_open(UrlFinal, Stream, [cert_verify_hook(cert_accept_any)]),
+    json_read_dict(Stream, Data),
+	PlayerName = Data.name.
+
+parse_players([]).
+parse_players([H|List]):-
+    asserta(node(H.get(id),H.get(name),H.get(tags))),
+    parse_players(List).
+	
+parse_connections([]):-
+	prepareConnections().
+	
+parse_connections([H|List]):-
+    asserta(connectionTemp(H.get(player),H.get(friend),H.get(connectionStrength))),
+    parse_connections(List).
+	
+prepareConnections() :-
+	forall(connectionTemp(A, B, C),(
+		connectionTemp(B, A, D),
+		asserta(connection(A, B, C, D)))),
+	retractall(connectionTemp(_,_,_)).
 
 % shortest path
 
@@ -222,10 +266,28 @@ suggest_dfsAux(Current,Dest,AuxList, Tag, Path):-
 		member(Tag, FriendTagList),
 		suggest_dfsAux(Friend, Dest, [Friend | AuxList], Tag, Path).
 
+%======== Strongest path between two players ========%
 
-% strongest route
+:- http_handler('/api/strongest-route', strongest_routeCompute, []).
 
-:-dynamic strongest_currentRoute/2.
+strongest_routeCompute(Request) :-
+	cors_enable(Request, [methods([get])]),
+    strongest_routePrepare(Request, Path),
+	prolog_to_json(Path, JSONObject),
+    reply_json(JSONObject, [json_object(dict)]).
+
+strongest_routePrepare(Request, Path) :-
+    http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string])]),
+	addPlayers(),
+	addConnections(),
+	getPlayerName(EmailPlayer, PlayerName),
+	getPlayerName(EmailTarget, TargetName),	
+	strongest_route(PlayerName, TargetName, Path),
+	retractall(connection(_,_,_,_)),
+	retractall(node(_,_,_)).
+
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 strongest_dfs(Orig, Dest, Strength, Path):- strongest_dfsAux(Orig, Dest, [Orig], Strength, Path).
 
@@ -240,14 +302,8 @@ strongest_dfsAux(Current, Dest, AuxList, Strength, Path):-
 	Strength is (SX + StrengthA + StrengthB).
 
 strongest_route(Orig, Dest, StrongestPath):-
-	get_time(Initial_Time),
     (strongest_findRoute(Orig, Dest); true),
-    retract(strongest_currentRoute(StrongestPath, Strength)),
-    get_time(End_Time),
-    T is End_Time - Initial_Time,
-    write('Time:'),write(T),nl,
-    write('Strength:'),write(Strength),nl,
-    write('Solution path:'),write(StrongestPath),nl.
+    retract(strongest_currentRoute(StrongestPath, _)).
 
 strongest_findRoute(Orig, Dest):-
     asserta(strongest_currentRoute(_, 0)),
@@ -259,3 +315,6 @@ strongest_updateRoute(Strength, PathList):-
     strongest_currentRoute(_, Current_Strength),
     Strength > Current_Strength, retract(strongest_currentRoute(_,_)),
     asserta(strongest_currentRoute(PathList, Strength)).
+
+
+%====================================================%
