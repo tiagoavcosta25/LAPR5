@@ -110,9 +110,9 @@ namespace DDDNetCore.Domain.Connections
 
         // CRUD OVER //
 
-        public async Task<List<GettingConnectionDto>> GetAllConnectionsAsync(string playerId)
+        public async Task<List<GettingConnectionDto>> GetAllConnectionsAsync(string email)
         {
-            var pl = await _repoPl.GetByIdAsync(new PlayerId(playerId));
+            var pl = await _repoPl.GetByEmailAsync(email);
             if (pl == null)
                 throw new BusinessRuleValidationException("Invalid Player or Friend Id.");
 

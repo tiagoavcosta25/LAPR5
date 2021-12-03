@@ -24,8 +24,16 @@ import { GetPlayersComponent } from './modules/player/components/get-players/get
 import { RequestComponent } from './modules/request/request.component';
 import { CreateIntRequestComponent } from './modules/request/components/create-int-request/create-int-request.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { ReactiveFormsModule } from '@angular/forms';
-
+import { ConnectionComponent } from './modules/connection/connection.component';
+import { EditConnectionComponent } from './modules/connection/components/edit-connection/edit-connection.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatExpansionModule } from '@angular/material/expansion'
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule} from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { AcceptRequestComponent } from './modules/request/components/accept-request/accept-request.component'
 
 @NgModule({
   declarations: [
@@ -40,7 +48,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     SafestRouteComponent,
     GetPlayersComponent,
     RequestComponent,
-    CreateIntRequestComponent
+    CreateIntRequestComponent,
+    ConnectionComponent,
+    EditConnectionComponent,
+    AcceptRequestComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +66,16 @@ import { ReactiveFormsModule } from '@angular/forms';
     HttpClientModule,
     SharedModule,
     NgxSpinnerModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule,
+    NgxSpinnerModule,
+    BrowserAnimationsModule,
+    MatExpansionModule, 
+    MatNativeDateModule, 
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatDatepickerModule
   ],
   bootstrap: [AppComponent]
 })

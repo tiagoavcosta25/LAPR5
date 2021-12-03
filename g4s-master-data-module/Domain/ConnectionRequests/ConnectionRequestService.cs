@@ -214,9 +214,9 @@ namespace DDDNetCore.Domain.ConnectionRequests
 
         // CRUD OVER //
 
-       public async Task<List<TargetPendingRequestDto>> GetAllUserPendingDirectRequestsAsync(string userId)
+       public async Task<List<TargetPendingRequestDto>> GetAllUserPendingDirectRequestsAsync(string email)
         {
-            var player = await _repoPl.GetByIdAsync(new PlayerId(userId));
+            var player = await _repoPl.GetByEmailAsync(email);
             if (player == null)
                 throw new BusinessRuleValidationException("Invalid Player Id.");
 
@@ -337,7 +337,39 @@ namespace DDDNetCore.Domain.ConnectionRequests
             await _unitOfWork.CommitAsync();
             return dto;
         }
-        
+
+        public async Task<AcceptRequestDto> DenyRequest(string id)
+        {
+            var dir = await _repoDir.GetByIdAsync(new ConnectionRequestId(id));
+
+            if (dir != null)
+            {
+                if (!dir.CurrentStatus.Equals(new ConnectionRequestStatus(ConnectionRequestStatusEnum.request_pending)))
+                {
+                    throw new BusinessRuleValidationException("Nothing to deny.");
+                }
+                dir.ChangeCurrentStatus(ConnectionRequestStatusEnum.request_refused.ToString());
+
+                await _unitOfWork.CommitAsync();
+
+                return new AcceptRequestDto(id, 0, new List<string>());
+            }
+
+            var intr = await _repoInt.GetByIdAsync(new ConnectionRequestId(id));
+
+            if (intr == null)
+                return null;
+
+            if (!intr.CurrentStatus.Equals(new ConnectionRequestStatus(ConnectionRequestStatusEnum.request_pending)))
+            {
+                throw new BusinessRuleValidationException("Nothing to accept.");
+            }
+            intr.ChangeCurrentStatus(ConnectionRequestStatusEnum.request_refused.ToString());
+
+            await _unitOfWork.CommitAsync();
+            return new AcceptRequestDto(id, 0, new List<string>());
+        }
+
         public async Task<List<ListMidPendingRequestDto>> GetAllUserPendingMidRequests(string email)
         {
             var player = await _repoPl.GetByEmailAsync(email);
