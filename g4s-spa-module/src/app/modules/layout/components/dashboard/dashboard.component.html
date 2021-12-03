@@ -17,7 +17,7 @@
 				</mat-list-item>
 			</button>
 
-			<button (click)="openRegisterPlayer()">
+			<button (click)="openRequestIntroduction()">
 				<mat-list-item>
 					<mat-icon mat-list-icon color="accent">compare_arrows</mat-icon>
 					<h4>Introduction Request</h4>
@@ -43,6 +43,7 @@
 	<div class="dashboard-content">
 		<app-get-players *ngIf=this.showGetPlayers></app-get-players>
 		<app-register-player *ngIf=this.showRegisterPlayer></app-register-player>
+		<app-request-introduction *ngIf=this.showRequestIntroduction></app-request-introduction>
 		<app-login *ngIf=this.showLogin></app-login>
 	</div>
 </mat-drawer-container>
