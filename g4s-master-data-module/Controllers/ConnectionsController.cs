@@ -122,13 +122,13 @@ namespace DDDNetCore.Controllers
         // CRUD OVER //
 
 
-        // GET: api/connections/user/playerId
-        [HttpGet("user/{playerId}")]
-        public async Task<ActionResult<IEnumerable<GettingConnectionDto>>> GetAllConnections(string playerId)
+        // GET: api/connections/user/email
+        [HttpGet("user/{email}")]
+        public async Task<ActionResult<IEnumerable<GettingConnectionDto>>> GetAllConnections(string email)
         {
             try
             {
-                var list = await _service.GetAllConnectionsAsync(playerId);
+                var list = await _service.GetAllConnectionsAsync(email);
                 if (list == null)
                 {
                     return NotFound();

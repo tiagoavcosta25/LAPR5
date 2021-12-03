@@ -23,7 +23,16 @@ import { SharedModule } from '../shared/shared.module';
 import { GetPlayersComponent } from './modules/player/components/get-players/get-players.component';
 import { RequestComponent } from './modules/request/request.component';
 import { CreateIntRequestComponent } from './modules/request/components/create-int-request/create-int-request.component';
-
+import { ConnectionComponent } from './modules/connection/connection.component';
+import { EditConnectionComponent } from './modules/connection/components/edit-connection/edit-connection.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { MatExpansionModule } from '@angular/material/expansion'
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule} from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker'
 
 @NgModule({
   declarations: [
@@ -38,7 +47,9 @@ import { CreateIntRequestComponent } from './modules/request/components/create-i
     SafestRouteComponent,
     GetPlayersComponent,
     RequestComponent,
-    CreateIntRequestComponent
+    CreateIntRequestComponent,
+    ConnectionComponent,
+    EditConnectionComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +62,17 @@ import { CreateIntRequestComponent } from './modules/request/components/create-i
     MatDividerModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    SharedModule
+    SharedModule,
+    FormsModule,
+    NgxSpinnerModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatExpansionModule, 
+    MatNativeDateModule, 
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatDatepickerModule
   ],
   bootstrap: [AppComponent]
 })

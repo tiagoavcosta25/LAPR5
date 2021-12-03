@@ -21,7 +21,7 @@ namespace DDDNetCore.Domain.Connections
 
         Task<ConnectionDto> DeleteAsync(ConnectionId id);
 
-        Task<List<GettingConnectionDto>> GetAllConnectionsAsync(string playerId);
+        Task<List<GettingConnectionDto>> GetAllConnectionsAsync(string email);
 
         Task<ConnectionDto> GetByEmailsAsync(string playerEmail, string friendEmail);
 

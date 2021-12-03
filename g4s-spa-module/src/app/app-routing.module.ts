@@ -5,6 +5,7 @@ import { RegisterPlayerComponent } from './modules/player/components/register-pl
 import { GetPlayersComponent } from './modules/player/components/get-players/get-players.component';
 import { LoginComponent } from './modules/login/login.component';
 import { HeaderComponent } from './modules/layout/components/header/header.component';
+import { EditConnectionComponent } from './modules/connection/components/edit-connection/edit-connection.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'dashboard',  component: DashboardComponent },
   { path: 'register-player',  component: RegisterPlayerComponent },
   { path: 'get-players',  component: GetPlayersComponent },
+  { path: 'edit-connection',  component: EditConnectionComponent },
   { path: 'login',  component: LoginComponent }
 ];
 
