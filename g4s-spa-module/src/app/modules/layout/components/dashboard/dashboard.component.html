@@ -5,12 +5,19 @@
 			
 			<button (click)="openGetPlayers()">
 				<mat-list-item>
+					<mat-icon mat-list-icon color="accent">people</mat-icon>
+					<h4>Leaderboard</h4>
+				</mat-list-item>
+			</button>
+
+			<button (click)="openApproveRequest()">
+				<mat-list-item>
 					<mat-icon mat-list-icon color="accent">check_circle</mat-icon>
 					<h4>Approve Requests</h4>
 				</mat-list-item>
 			</button>
 
-			<button (click)="openLogin()">
+			<button (click)="openAcceptRequest()">
 				<mat-list-item>
 					<mat-icon mat-list-icon color="accent">check_circle_outline</mat-icon>
 					<h4>Accept Requests</h4>
@@ -33,6 +40,13 @@
 
 			<button (click)="openRegisterPlayer()">
 				<mat-list-item>
+					<mat-icon mat-list-icon color="accent">person</mat-icon>
+					<h4>New Account</h4>
+				</mat-list-item>
+			</button>
+
+			<button (click)="openUpdatePlayer()">
+				<mat-list-item>
 					<mat-icon mat-list-icon color="accent">account_circle</mat-icon>
 					<h4>My Profile</h4>
 				</mat-list-item>
@@ -42,8 +56,11 @@
 
 	<div class="dashboard-content">
 		<app-get-players *ngIf=this.showGetPlayers></app-get-players>
+		<app-update-player *ngIf=this.showUpdatePlayer></app-update-player>
 		<app-register-player *ngIf=this.showRegisterPlayer></app-register-player>
 		<app-request-introduction *ngIf=this.showRequestIntroduction></app-request-introduction>
+		<app-approve-request *ngIf=this.showApproveRequest></app-approve-request>
+		<app-accept-request *ngIf=this.showAcceptRequest></app-accept-request>
 		<app-login *ngIf=this.showLogin></app-login>
 	</div>
 </mat-drawer-container>

@@ -35,6 +35,8 @@ import { MatSelectModule} from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { AcceptRequestComponent } from './modules/request/components/accept-request/accept-request.component';
 import { SearchPlayerComponent } from './modules/player/components/search-player/search-player.component'
+import { UpdatePlayerComponent } from './modules/player/components/update-player/update-player.component';
+import { ApproveRequestComponent } from './modules/request/components/approve-request/approve-request.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +55,9 @@ import { SearchPlayerComponent } from './modules/player/components/search-player
     ConnectionComponent,
     EditConnectionComponent,
     AcceptRequestComponent,
-    SearchPlayerComponent
+    SearchPlayerComponent,
+    UpdatePlayerComponent,
+    ApproveRequestComponent
   ],
   imports: [
     BrowserModule,
