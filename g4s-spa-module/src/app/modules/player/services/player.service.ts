@@ -14,7 +14,7 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root'
 })
-export class PlayerServiceService {
+export class PlayerService {
 
   playersUrl = 'https://socialnetworkapi51.azurewebsites.net/api/players';  // URL to web api
 
