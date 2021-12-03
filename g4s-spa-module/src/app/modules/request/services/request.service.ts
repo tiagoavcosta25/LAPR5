@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AcceptRequest } from 'src/shared/models/requests/accept-request.model';
+import { ApproveRequest } from 'src/shared/models/requests/approve-request.model';
+import { ConnectionRequest } from 'src/shared/models/requests/connection-request.model';
 import { TargetPendingRequest } from 'src/shared/models/requests/target-pending-request.model';
 
 @Injectable({
@@ -39,6 +41,20 @@ export class RequestService {
         catchError(this.handleError)
       );
     }
+
+    /** GET: returns requests from server */
+  getMiddleManRequests(email: string): Observable<ConnectionRequest[]> {
+    return this.http.get<ConnectionRequest[]>(this.requestUrl + 'middleManRequests/' + email).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  /** PATCH: deny request */
+  approveRequest(id:string, request: ApproveRequest): Observable<ConnectionRequest> {
+    return this.http.patch<ConnectionRequest>(this.requestUrl + 'approve/' + id , request, this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
 
     private handleError(err: HttpErrorResponse) {
       console.error('An error occurred: ', err.error.errors.message);
