@@ -23,6 +23,7 @@
 :- dynamic safest_currentRoute/2.
 :- dynamic strongest_currentRoute/2.
 :- dynamic suggest_currentRoute/2.
+:- dynamic common_tags_users/2.
 
 
 % HTTP Server setup at 'Port'
@@ -376,4 +377,78 @@ strongest_updateRoute(Strength, PathList):-
     asserta(strongest_currentRoute(PathList, Strength)).
 
 
-%====================================================%
+
+%======== Players with X common tags ========%
+
+:- http_handler('/api/common-tags', common_tagsCompute, []).
+
+common_tagsCompute(Request) :-
+	cors_enable(Request, [methods([get])]),
+    common_tagsPrepare(Request, Path),
+	prolog_to_json(Path, JSONObject),
+    reply_json(JSONObject, [json_object(dict)]).
+
+common_tagsPrepare(Request, Path) :-
+    http_parameters(Request, [num(Num, [number])]),
+	addPlayers(),
+	addConnections(),
+	common_tags(Num, Path),
+	retractall(connection(_,_,_,_)),
+	retractall(node(_,_,_)).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+common_tags(X,List_Result):-
+    common_tags_get_all_tags(All_TagsT),
+	common_tags_change_to_synonyms(All_TagsT, All_Tags),
+    findall(Combination,common_tags_combination(X,All_Tags,Combination),Combinations),
+    findall(UserId,node(UserId,_,_),Users),
+    common_tags_users_combination(X,Users,Combinations),
+    findall([Comb,ListUsers],common_tags_users(Comb,ListUsers),List_Result),
+    retractall(common_tags_users(_,_)).
+
+common_tags_users_combination(_,_,[]).
+common_tags_users_combination(X,Users,[Combination|Combinations]):-
+    common_tags_users_combination_aux(X,Combination,Users,Users_With_Tags),
+    common_tags_users_combination(X,Users,Combinations),
+    !,
+	comon_tags_list_length(Users_With_Tags, L),
+	( L > 1-> assertz(common_tags_users(Combination,Users_With_Tags)) ; ! ).
+
+common_tags_users_combination_aux(_,_,[],[]):-!.
+common_tags_users_combination_aux(X,Tags,[U|Users],Result):-
+    node(U,_,User_TagsT),
+	common_tags_change_to_synonyms(User_TagsT, User_Tags),
+    intersection(Tags, User_Tags,Commun),
+    length(Commun, Size),
+    Size >= X, !,
+    common_tags_users_combination_aux(X,Tags,Users,Result1),
+    append([U], Result1, Result).
+common_tags_users_combination_aux(X,Tags,[_|Users],Result):-
+    !,
+    common_tags_users_combination_aux(X,Tags,Users,Result).
+
+common_tags_get_all_tags(Tags):-
+    findall(User_Tags,node(_,_,User_Tags),All_Tags),
+    common_tags_remove_repeated_tags(All_Tags,Tags).
+
+common_tags_remove_repeated_tags([],[]).
+common_tags_remove_repeated_tags([List|All_Tags],Tags):-
+    common_tags_remove_repeated_tags(All_Tags,Tags1),!,
+    union(List,Tags1,Tags).
+
+%=== Combinaçoes ===
+common_tags_combination(0,_,[]).
+common_tags_combination(N,[X|T],[X|Comb]):-N>0,N1 is N-1,common_tags_combination(N1,T,Comb).
+common_tags_combination(N,[_|T],Comb):-N>0,common_tags_combination(N,T,Comb).
+
+comon_tags_list_length([], 0).
+comon_tags_list_length([_|TAIL], N) :- comon_tags_list_length(TAIL, N1), N is N1 + 1.
+	
+common_tags_change_to_synonyms([],[]).
+common_tags_change_to_synonyms([Tag|All_Tags],Tags):-
+    common_tags_change_to_synonyms(All_Tags,Tags1),!,
+	(synonym(Tag, Sign) ->
+		union([Sign], Tags1, Tags);
+		union([Tag], Tags1, Tags)).

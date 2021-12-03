@@ -4,3 +4,4 @@ module_socialnetwork_port(5000).
 api_url("https://socialnetworkapi51.azurewebsites.net/api/").
 players_url("https://socialnetworkapi51.azurewebsites.net/api/players/").
 connections_url("https://socialnetworkapi51.azurewebsites.net/api/connections/").
+synonym('c#', csharp).
