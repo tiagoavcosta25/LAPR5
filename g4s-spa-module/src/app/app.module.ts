@@ -23,10 +23,10 @@ import { SharedModule } from '../shared/shared.module';
 import { GetPlayersComponent } from './modules/player/components/get-players/get-players.component';
 import { RequestComponent } from './modules/request/request.component';
 import { CreateIntRequestComponent } from './modules/request/components/create-int-request/create-int-request.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 import { ConnectionComponent } from './modules/connection/connection.component';
 import { EditConnectionComponent } from './modules/connection/components/edit-connection/edit-connection.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgxSpinnerModule } from 'ngx-spinner';
 import { MatExpansionModule } from '@angular/material/expansion'
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -67,9 +67,10 @@ import { SearchPlayerComponent } from './modules/player/components/search-player
     BrowserAnimationsModule,
     HttpClientModule,
     SharedModule,
-    FormsModule,
     NgxSpinnerModule,
     ReactiveFormsModule,
+    FormsModule,
+    NgxSpinnerModule,
     BrowserAnimationsModule,
     MatExpansionModule, 
     MatNativeDateModule, 

@@ -3,21 +3,16 @@ import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http'
 import { HttpHeaders } from '@angular/common/http';
 
 import { catchError, Observable, throwError } from 'rxjs';
-import { Player } from 'src/shared/models/player/player.model';
 import { environment } from 'src/environments/environment';
-
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type':  'application/json'
-  })
-};
+import { Player } from 'src/shared/models/player/player.model';
+import { CreatingPlayer } from '../models/creating-player.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlayerService {
 
-  playersUrl = 'https://socialnetworkapi51.azurewebsites.net/api/players';  // URL to web api
+  playerUrl: string = "https://socialnetworkapi51.azurewebsites.net/api/players";  // URL to web api
 
   connectionUrl = environment.apiUrl + '/players/';
   
@@ -31,14 +26,7 @@ export class PlayerService {
 
   /** GET players from the server */
   getPlayers(): Observable<Player[]> {
-    return this.http.get<Player[]>(this.playersUrl);
-  }
-
-    /** GET: get player by id */
-  getPlayerById(id: string): Observable<Player> {
-    return this.http.get<Player>(this.connectionUrl + id).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.get<Player[]>(this.playerUrl);
   }
 
   /* GET players by email */
@@ -48,19 +36,29 @@ export class PlayerService {
     // Add safe, URL encoded search parameter if there is a search term
     const options = email ?
      { params: new HttpParams().set('email', email) } : {};
-
-    return this.http.get<Player[]>(this.playersUrl, options);
+    return this.http.get<Player[]>(this.playerUrl).pipe(
+      catchError(this.handleError)
+    );
   }
 
   /** POST: add a new player to the database */
-  registerPlayer(player: Player): Observable<Player> {
-    return this.http.post<Player>(this.playersUrl, player, httpOptions);
+  registerPlayer(player: CreatingPlayer): Observable<Player> {
+    return this.http.post<Player>(this.playerUrl, player, this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
   }
 
   /** DELETE: delete the player from the server */
   deletePlayer(id: number): Observable<unknown> {
-    const url = `${this.playersUrl}/${id}`; // DELETE api/players/42
-    return this.http.delete(url, httpOptions);
+    const url = `${this.playerUrl}/${id}`; // DELETE api/players/42
+    return this.http.delete(url, this.httpOptions);
+  }
+
+  /** GET: get player by id */
+  getPlayerById(id: string): Observable<Player> {
+    return this.http.get<Player>(this.connectionUrl + id).pipe(
+      catchError(this.handleError)
+    );
   }
 
   /** GET: searches for players from server */
