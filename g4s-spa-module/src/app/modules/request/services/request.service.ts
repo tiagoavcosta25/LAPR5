@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AcceptRequest } from 'src/shared/models/requests/accept-request.model';
+import { CreatingDirectRequest } from 'src/shared/models/requests/creating-direct-request.model';
+import { DirectRequest } from 'src/shared/models/requests/direct-request.model';
 import { TargetPendingRequest } from 'src/shared/models/requests/target-pending-request.model';
 
 @Injectable({
@@ -33,12 +35,19 @@ export class RequestService {
     );
   }
 
-    /** PATCH: deny request */
-    denyRequest(id:string): Observable<AcceptRequest> {
-      return this.http.patch<AcceptRequest>(this.requestUrl + 'pendingRequests/' + id + '/deny', this.httpOptions).pipe(
-        catchError(this.handleError)
-      );
-    }
+  /** PATCH: deny request */
+  denyRequest(id:string): Observable<AcceptRequest> {
+    return this.http.patch<AcceptRequest>(this.requestUrl + 'pendingRequests/' + id + '/deny', this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  //** POST: adds direct request to servidor */
+  sendDirectRequest(p: CreatingDirectRequest): Observable<DirectRequest> {
+    return this.http.post<DirectRequest>(this.requestUrl + 'dir', p, this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
 
     private handleError(err: HttpErrorResponse) {
       console.error('An error occurred: ', err.error.errors.message);

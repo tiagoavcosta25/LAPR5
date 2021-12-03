@@ -1,0 +1,241 @@
+
+
+<div class="container my-5">
+    <!-- remover -->
+    <div class="div mb-4 my-4">
+        <div class="row">
+            <div class="col-5">
+                <label for="inputTemp">Input temporaria de id do player  </label>
+                <input type="text" id="inputTemp" [(ngModel)]="playerid">
+            </div>
+            <div class="col-5">
+                <button type ="submit" (click)="currentPlayerUpdate()">Current player update</button>
+            </div>
+        </div>
+    </div>
+    <!-- remover -->
+    <form>
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <div [formGroup]="requestForm" class="mb-3">
+                    <label for="inputFilter" class="form-label">Filter</label>
+
+                    <select [ngClass]="{ 'is-invalid': f['filter'].errors && (f['filter'].dirty || f['filter'].touched) }"
+                        class="form-select form-control" formControlName="filter" id="inputFilter" (change)="clearResults()">
+                        <option *ngFor="let filter of filters" value={{filter}}> {{ filter }} </option>
+                    </select>
+                    <div *ngIf="f['filter'].errors" class="invalid-feedback">
+                        <div *ngIf="f['filter'].errors?.['required'] && (f['filter'].dirty || f['filter'].touched)">{{ getErrorMessageFilterRequired() }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-4">
+                <div [formGroup]="requestForm" class="mb-3" ngNativeValidate>
+                    <label for="inputValue" class="form-label">Value to search for</label>
+                    <input [ngClass]="{ 'is-invalid': f['value'].errors && (f['value'].dirty || f['value'].touched) }" 
+                        type="text" class="form-control" formControlName="value" id="inputValue" (input)="clearResults()">
+                        <div *ngIf="f['value'].errors" class="invalid-feedback">
+                            <div *ngIf="f['value'].errors?.['required'] && (f['value'].dirty || f['value'].touched)">{{ getErrorMessageValueRequired() }}</div>
+                        </div>
+                </div>
+            </div>
+
+            <div class="col-5">
+                <button type ="submit" class="btn back btn-primary w-30 my-3" (click)="search()" [disabled]="f['value'].errors || f['filter'].errors">Search for Player</button>
+            </div>
+        </div>
+    </form>   
+</div>
+
+<div *ngIf="players==undefined; else defined">
+</div>
+
+<div *ngIf="error">
+    <div class="container">
+        <div class="row justify-content-center">
+            <h1 class="font-weight-bold my-5 mb-3 text-center">There was an error trying to obtain your players, please try again later.</h1>
+            <p></p>
+            <div class="col-4">
+                <button class="btn back btn-primary w-100" (click)="goBack()">Go back!</button>
+            </div>
+            <div class="col-4">
+            <button class="btn back btn-primary w-100" (click)="refresh()">Try again now!</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #defined>
+    <div class="container my-5">
+        <div *ngIf="players?.length; else noPlayers">
+            <h2>Players with {{ f['value'].value }} as their {{ f['filter'].value }}</h2>
+            <mat-accordion class="example-headers-align">
+                <mat-expansion-panel *ngFor="let p of players; let i = index" [expanded]="step === i" (opened)="setStep(i);clearSuccess()" (closed)="setStep(-1)" hideToggle>
+                  <mat-expansion-panel-header>
+                      <div class="up-down-sign">
+                        <div class="down-sign" *ngIf="step != i">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray" class="bi bi-arrow-down" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
+                            </svg> 
+                          </div>
+    
+                          <div class="up-sign" *ngIf="step === i">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray" class="bi bi-arrow-up" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+                              </svg>
+                          </div>
+                      </div>
+                      
+
+
+                    <mat-panel-title>
+                      {{ p.name }}
+                    </mat-panel-title>
+                    <mat-panel-description>
+                      {{ p.email }}
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+
+                  <div class="container-4">
+                    <p  style="font-size: 14px; margin: 5px;">Phone number: {{ p.phoneNumber }}</p>
+                  </div>
+
+                  <div class="container-4 mb-4" style="display: flex;">
+                      <span class="badge rounded-pill bg-success" style="margin: 5px; font-size: 14px;" *ngFor="let tag of p.tags">{{ tag }}</span>
+                  </div>
+
+                  <div *ngIf="!checkIfFriend(p); else isFriend;">
+                    <form>
+
+                        <div [formGroup]="requestForm" class="mb-3" ngNativeValidate>
+                            <label for="inputMessage" class="form-label">Message</label>
+                            <textarea [ngClass]="{ 'is-invalid': f['playerToTargetMessage'].errors && (f['playerToTargetMessage'].dirty || f['playerToTargetMessage'].touched) }" 
+                                type="text" class="form-control" formControlName="playerToTargetMessage" id="inputMessage"></textarea>
+                                <div *ngIf="f['playerToTargetMessage'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['playerToTargetMessage'].errors?.['required'] && (f['playerToTargetMessage'].dirty || f['playerToTargetMessage'].touched)">{{ getErrorMessagePlayerToTargetMessageRequired() }}</div>
+                                </div>
+                        </div>
+    
+                        <div [formGroup]="requestForm" class="mb-3" ngNativeValidate>
+                            <label for="inputConnectionStrength" class="form-label">Connection strength</label>
+                            <input [ngClass]="{ 'is-invalid': f['connectionStrength'].errors && (f['connectionStrength'].dirty || f['connectionStrength'].touched) }" 
+                                type="text" class="form-control" formControlName="connectionStrength" id="inputConnectionStrength">
+                                <div *ngIf="f['connectionStrength'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['connectionStrength'].errors?.['required'] && (f['connectionStrength'].dirty || f['connectionStrength'].touched)">{{ getErrorMessageConnectionStrengthRequired() }}</div>
+                                    <div *ngIf="f['connectionStrength'].errors?.['min'] || f['connectionStrength'].errors?.['max']">{{ getErrorMessageConnectionStrengthInvalid() }}</div>
+                                </div>
+                        </div>
+        
+                        <div [formGroup]="requestForm" class="mb-3">
+                        <div class="card mt-2r">
+                            <div class="card-header ">
+                              <div class="header-container">
+                                <span class="tag-header">
+                                  Add Tags
+                                </span>
+                                <div class="position-absolute top-0 end-0 my-2 mx-2">
+                                    <svg style="cursor:pointer" (click)="addTag()" width="25" height="25" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+                                        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z" />
+                                    </svg>
+                                </div>
+                                
+                              </div>
+                
+                
+                            </div>
+                            <div class="card-body">
+                              <div class="row">
+                                <div class="col-12">
+                
+                                  <ul class="list-group">
+                                    <li class="list-group-item" formArrayName="tags" *ngFor="let tagF of tagsFormGroups['controls']; let i = index;">
+                                      <div [formGroupName]="i" class="row">
+                                        <div class="col-6">
+        
+                                            <input [ngClass]="{ 'is-invalid': tagF.get('tag')?.errors && (tagF.dirty || tagF.touched) }" 
+                                            type="text" class="form-control" formControlName="tag" id="inputTag">
+    
+                                            
+        
+                                            <div *ngIf="tagF.get('tag')?.invalid" class="invalid-feedback">
+                                                <div *ngIf="tagF.get('tag')?.errors?.['required'] && (tagF.get('tag')?.dirty || tagF.get('tag')?.touched)">
+                                                    {{ getErrorMessageTagRequired() }}</div>
+                                            </div>
+                                        </div>
+                
+                                        <div class="col-2">
+                                            <div class="position-absolute my-1">
+                                          <svg style="cursor:pointer" (click)="removeTag(tagF.get('tag')?.value)" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                            class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                            <path
+                                              d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
+                                          </svg>
+                                        </div>
+                                        </div>
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                        </div>
+        
+        
+                                <button type ="submit" class="btn back btn-primary w-30" (click)="sendRequest()" [disabled]="requestForm.invalid">Send request</button>
+    
+        
+                                <div class="my-3">
+                                    <div *ngIf="success!=undefined">
+                                        <div *ngIf="success">
+                                            <div class="alert alert-success" role="alert">
+                                                {{ successMessage }}
+                                            </div>
+                                        </div>
+                                        <div *ngIf="!success">
+                                            <div class="alert alert-danger" role="alert">
+                                                {{ errorMessage }}
+                                            </div>
+                                        </div>
+                                    </div>
+                        </div>
+                        
+        
+                    </form>
+                </div>
+
+                <ng-template #isFriend>
+                    <h2 class ="text-success" style="text-align: center;font-size: 33px; margin-top: 10px;">He's already your friend!</h2>
+                </ng-template>
+                  
+                
+                
+
+
+                </mat-expansion-panel>              
+              </mat-accordion>
+        </div>
+            <ng-template #noPlayers>
+                <h1 class="font-weight-bold my-5 mb-4 text-center">No users found.</h1>
+            </ng-template>
+    </div>
+</ng-template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ngx-spinner></ngx-spinner>

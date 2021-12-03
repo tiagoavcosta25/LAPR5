@@ -81,7 +81,7 @@ export class AcceptRequestComponent implements OnInit {
       tags.removeAt(tags.value.findIndex((tag: { tag: string; }) => tag.tag === value))
     }
   
-    getConnectionById(id: string): void {
+    getRequestById(id: string): void {
       this.requestIdSelected = id;
       for(let request of this.requests) {
         if (request.id == id) {

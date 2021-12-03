@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { Player } from 'src/shared/models/player/player.model';
+import { environment } from 'src/environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -18,6 +19,12 @@ export class PlayerService {
 
   playersUrl = 'https://socialnetworkapi51.azurewebsites.net/api/players';  // URL to web api
 
+  connectionUrl = environment.apiUrl + '/players/';
+  
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
+
   constructor(
     private http: HttpClient) {
   }
@@ -25,6 +32,13 @@ export class PlayerService {
   /** GET players from the server */
   getPlayers(): Observable<Player[]> {
     return this.http.get<Player[]>(this.playersUrl);
+  }
+
+    /** GET: get player by id */
+  getPlayerById(id: string): Observable<Player> {
+    return this.http.get<Player>(this.connectionUrl + id).pipe(
+      catchError(this.handleError)
+    );
   }
 
   /* GET players by email */
@@ -47,5 +61,28 @@ export class PlayerService {
   deletePlayer(id: number): Observable<unknown> {
     const url = `${this.playersUrl}/${id}`; // DELETE api/players/42
     return this.http.delete(url, httpOptions);
+  }
+
+  /** GET: searches for players from server */
+  searchPlayers(filter: string, value: string): Observable<Player[]> {
+    const params = new HttpParams()
+    .set('filter', filter)
+    .set('value', value);
+    return this.http.get<Player[]>(this.connectionUrl + 'search', { params: params }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  private handleError(err: HttpErrorResponse) {
+    console.error('An error occurred: ', err.error.errors.message);
+    if (err.error instanceof ErrorEvent) {
+      console.error('An error occurred: ', err.error.message);
+    }
+    else {
+      console.error(
+        `Web Api returned code ${err.status}, ` + ` Response body was: ${err.error}`
+      );
+    }
+    return throwError(() => err);
   }
 }

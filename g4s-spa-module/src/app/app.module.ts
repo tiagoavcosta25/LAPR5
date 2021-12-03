@@ -33,7 +33,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule} from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { AcceptRequestComponent } from './modules/request/components/accept-request/accept-request.component'
+import { AcceptRequestComponent } from './modules/request/components/accept-request/accept-request.component';
+import { SearchPlayerComponent } from './modules/player/components/search-player/search-player.component'
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { AcceptRequestComponent } from './modules/request/components/accept-requ
     CreateIntRequestComponent,
     ConnectionComponent,
     EditConnectionComponent,
-    AcceptRequestComponent
+    AcceptRequestComponent,
+    SearchPlayerComponent
   ],
   imports: [
     BrowserModule,
