@@ -23,6 +23,8 @@ import { SharedModule } from '../shared/shared.module';
 import { GetPlayersComponent } from './modules/player/components/get-players/get-players.component';
 import { RequestComponent } from './modules/request/request.component';
 import { CreateIntRequestComponent } from './modules/request/components/create-int-request/create-int-request.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -51,7 +53,9 @@ import { CreateIntRequestComponent } from './modules/request/components/create-i
     MatDividerModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    SharedModule
+    SharedModule,
+    NgxSpinnerModule,
+    ReactiveFormsModule
   ],
   bootstrap: [AppComponent]
 })
