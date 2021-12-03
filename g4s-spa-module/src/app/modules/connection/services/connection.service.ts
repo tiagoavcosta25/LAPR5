@@ -5,6 +5,8 @@ import { environment } from 'src/environments/environment';
 import { Connection } from 'src/shared/models/connection/connection.model';
 import { GettingConnection } from 'src/shared/models/connection/getting-connection.model';
 import { UpdatingConnection } from 'src/shared/models/connection/updating-connection.model';
+import { GetMutualFriends } from 'src/shared/models/player/get-mutual-friends.model';
+import { Player } from 'src/shared/models/player/player.model';
 
 
 @Injectable({
@@ -31,6 +33,20 @@ export class ConnectionService {
   /** PATCH: updates connection */
   updateConnection(id:string, connection: UpdatingConnection): Observable<Connection> {
     return this.http.patch<Connection>(this.connectionUrl + id , connection, this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  /** GET: returns reachable players from server */
+  getReachablePlayers(email: string): Observable<Player[]> {
+    return this.http.get<Player[]>(this.connectionUrl + 'reachablePlayers/' + email).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  /** GET: returns mutual friends from server */
+  getMutualFriends(email: string, emailTarget: GetMutualFriends): Observable<Player> {
+    return this.http.get<Player>(this.connectionUrl + 'mutualFriends/' + email, this.httpOptions).pipe(
       catchError(this.handleError)
     );
   }
