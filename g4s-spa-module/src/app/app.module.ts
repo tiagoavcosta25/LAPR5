@@ -33,7 +33,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule} from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { AcceptRequestComponent } from './modules/request/components/accept-request/accept-request.component'
+import { AcceptRequestComponent } from './modules/request/components/accept-request/accept-request.component';
+import { UpdatePlayerComponent } from './modules/player/components/update-player/update-player.component';
+import { ApproveRequestComponent } from './modules/request/components/approve-request/approve-request.component'
 
 @NgModule({
   declarations: [
@@ -51,7 +53,9 @@ import { AcceptRequestComponent } from './modules/request/components/accept-requ
     CreateIntRequestComponent,
     ConnectionComponent,
     EditConnectionComponent,
-    AcceptRequestComponent
+    AcceptRequestComponent,
+    UpdatePlayerComponent,
+    ApproveRequestComponent
   ],
   imports: [
     BrowserModule,

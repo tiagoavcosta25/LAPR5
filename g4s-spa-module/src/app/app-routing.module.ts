@@ -7,6 +7,7 @@ import { LoginComponent } from './modules/login/login.component';
 import { HeaderComponent } from './modules/layout/components/header/header.component';
 import { EditConnectionComponent } from './modules/connection/components/edit-connection/edit-connection.component';
 import { AcceptRequestComponent } from './modules/request/components/accept-request/accept-request.component';
+import { UpdatePlayerComponent } from './modules/player/components/update-player/update-player.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -17,7 +18,8 @@ const routes: Routes = [
   { path: 'get-players',  component: GetPlayersComponent },
   { path: 'edit-connection',  component: EditConnectionComponent },
   { path: 'accept-request',  component: AcceptRequestComponent },
-  { path: 'login',  component: LoginComponent }
+  { path: 'login',  component: LoginComponent },
+  { path: 'update-player',  component: UpdatePlayerComponent },
 ];
 
 @NgModule({
