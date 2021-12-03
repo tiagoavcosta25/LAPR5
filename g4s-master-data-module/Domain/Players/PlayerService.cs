@@ -136,48 +136,48 @@ namespace DDDSample1.Domain.Players
             return new ChangeEmotionalStatusDto(Player.Email.address, Player.EmotionalStatus.Status.ToString());
         }
 
-        public async Task<GetPlayerDto> GetByEmailAsync(string email)
+        public async Task<PlayerDto> GetByEmailAsync(string email)
         {
             var plyr = await this._repo.GetByEmailAsync(email);
 
             if (plyr == null)
                 return null;
 
-            return new GetPlayerDto(plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, 
+            return new PlayerDto(plyr.Id.AsGuid(), plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, 
             plyr.DateOfBirth.date.Day, plyr.EmotionalStatus.Status.ToString(), plyr.Facebook.Url, plyr.LinkedIn.Url,
             plyr.Tags.Select(t => t.tagName).ToList());
         }
 
-        public async Task<List<GetPlayerDto>> GetByNameAsync(string name)
+        public async Task<List<PlayerDto>> GetByNameAsync(string name)
         {
             var list = await _repo.GetByNameAsync(name);
 
-            List<GetPlayerDto> listDto = list.ConvertAll<GetPlayerDto>(plyr =>
-                new GetPlayerDto(plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, 
+            List<PlayerDto> listDto = list.ConvertAll<PlayerDto>(plyr =>
+                new PlayerDto(plyr.Id.AsGuid(), plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, 
                 plyr.DateOfBirth.date.Day, plyr.EmotionalStatus.Status.ToString(), plyr.Facebook.Url, plyr.LinkedIn.Url,
                 plyr.Tags.Select(t => t.tagName).ToList()));
 
             return listDto;
         }
 
-        public async Task<List<GetPlayerDto>> GetByPhoneAsync(string phoneNumber)
+        public async Task<List<PlayerDto>> GetByPhoneAsync(string phoneNumber)
         {
             var list = await _repo.GetByPhoneAsync(phoneNumber);
 
-            List<GetPlayerDto> listDto = list.ConvertAll<GetPlayerDto>(plyr =>
-                new GetPlayerDto(plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, 
+            List<PlayerDto> listDto = list.ConvertAll<PlayerDto>(plyr =>
+                new PlayerDto(plyr.Id.AsGuid(), plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, 
                 plyr.DateOfBirth.date.Day, plyr.EmotionalStatus.Status.ToString(), plyr.Facebook.Url, plyr.LinkedIn.Url,
                 plyr.Tags.Select(t => t.tagName).ToList()));
 
             return listDto;
         }
 
-        public async Task<List<GetPlayerDto>> GetByTagAsync(string tag)
+        public async Task<List<PlayerDto>> GetByTagAsync(string tag)
         {
             var list = await _repo.GetByTagAsync(tag);
 
-            List<GetPlayerDto> listDto = list.ConvertAll<GetPlayerDto>(plyr =>
-                new GetPlayerDto(plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, 
+            List<PlayerDto> listDto = list.ConvertAll<PlayerDto>(plyr =>
+                new PlayerDto(plyr.Id.AsGuid(), plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, 
                 plyr.DateOfBirth.date.Day, plyr.EmotionalStatus.Status.ToString(), plyr.Facebook.Url, plyr.LinkedIn.Url,
                 plyr.Tags.Select(t => t.tagName).ToList()));
 

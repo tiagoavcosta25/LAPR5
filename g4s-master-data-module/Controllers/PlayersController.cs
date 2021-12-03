@@ -151,7 +151,7 @@ namespace DDDSample1.Controllers
 
         // GET: api/Players/search?filter=filter&value=value
         [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<GetPlayerDto>>> GetAllFiltered(string filter, string value)
+        public async Task<ActionResult<IEnumerable<PlayerDto>>> GetAllFiltered(string filter, string value)
         {
 
             var isFilter = Enum.TryParse(filter, out UserSearchFilterEnum filterBy);
@@ -165,7 +165,7 @@ namespace DDDSample1.Controllers
             {
                 case UserSearchFilterEnum.email :
                     var dto = await _service.GetByEmailAsync(value);
-                    List<GetPlayerDto> list = new()
+                    List<PlayerDto> list = new()
                     {
                         dto
                     };
@@ -209,7 +209,7 @@ namespace DDDSample1.Controllers
 
         // GET: api/Players/email
         [HttpGet("email/{email}")]
-        public async Task<ActionResult<GetPlayerDto>> GetByEmail(string email)
+        public async Task<ActionResult<PlayerDto>> GetByEmail(string email)
         {
             var plyr = await _service.GetByEmailAsync(email);
 

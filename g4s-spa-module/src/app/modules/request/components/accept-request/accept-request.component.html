@@ -22,7 +22,7 @@
         <div *ngIf="requests.length; else noRequests">
             <h2>Choose the request to accept</h2>
             <mat-accordion class="example-headers-align">
-                <mat-expansion-panel *ngFor="let r of requests; let i = index" [expanded]="step === i" (opened)="setStep(i);getConnectionById(r.id);clearSuccess()" (closed)="setStep(-1)" hideToggle>
+                <mat-expansion-panel *ngFor="let r of requests; let i = index" [expanded]="step === i" (opened)="setStep(i);getRequestById(r.id);clearSuccess()" (closed)="setStep(-1)" hideToggle>
                   <mat-expansion-panel-header>
                       <div class="up-down-sign">
                         <div class="down-sign" *ngIf="step != i">

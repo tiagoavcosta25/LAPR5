@@ -236,9 +236,9 @@ namespace DDDNetCore.Tests.Controllers
             // Arrange
             string filter = "email";
             string value = "teste@gmail.com";
-            GetPlayerDto obj = new GetPlayerDto("john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
+            PlayerDto obj = new PlayerDto(new System.Guid(), "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
             "www.linkedin.com/john-doe", new List<string> { "tag1" });
-            ICollection<GetPlayerDto> lst = new List<GetPlayerDto> { obj };
+            ICollection<PlayerDto> lst = new List<PlayerDto> { obj };
 
             var mockServ = new Mock<IPlayerService>();
             mockServ.Setup(serv => serv.GetByEmailAsync(value))
@@ -250,7 +250,7 @@ namespace DDDNetCore.Tests.Controllers
             var result = await controller.GetAllFiltered(filter, value);
 
             // Assert
-            var returnValue = Assert.IsType<List<GetPlayerDto>>(result.Value);
+            var returnValue = Assert.IsType<List<PlayerDto>>(result.Value);
             mockServ.Verify();
 
             Assert.Equal(lst, returnValue);
@@ -262,9 +262,9 @@ namespace DDDNetCore.Tests.Controllers
             // Arrange
             string filter = "name";
             string value = "john";
-            GetPlayerDto obj = new GetPlayerDto("john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
+            PlayerDto obj = new PlayerDto(new System.Guid(), "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
             "www.linkedin.com/john-doe", new List<string> { "tag1" });
-            List<GetPlayerDto> lst = new List<GetPlayerDto> { obj };
+            List<PlayerDto> lst = new List<PlayerDto> { obj };
 
             var mockServ = new Mock<IPlayerService>();
             mockServ.Setup(serv => serv.GetByNameAsync(value))
@@ -276,7 +276,7 @@ namespace DDDNetCore.Tests.Controllers
             var result = await controller.GetAllFiltered(filter, value);
 
             // Assert
-            var returnValue = Assert.IsType<List<GetPlayerDto>>(result.Value);
+            var returnValue = Assert.IsType<List<PlayerDto>>(result.Value);
             mockServ.Verify();
 
             Assert.Equal(lst, returnValue);
@@ -288,9 +288,9 @@ namespace DDDNetCore.Tests.Controllers
             // Arrange
             string filter = "phone";
             string value = "987654321";
-            GetPlayerDto obj = new GetPlayerDto("john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
+            PlayerDto obj = new PlayerDto(new System.Guid(), "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
             "www.linkedin.com/john-doe", new List<string> { "tag1" });
-            List<GetPlayerDto> lst = new List<GetPlayerDto> { obj };
+            List<PlayerDto> lst = new List<PlayerDto> { obj };
 
             var mockServ = new Mock<IPlayerService>();
             mockServ.Setup(serv => serv.GetByPhoneAsync(value))
@@ -302,7 +302,7 @@ namespace DDDNetCore.Tests.Controllers
             var result = await controller.GetAllFiltered(filter, value);
 
             // Assert
-            var returnValue = Assert.IsType<List<GetPlayerDto>>(result.Value);
+            var returnValue = Assert.IsType<List<PlayerDto>>(result.Value);
             mockServ.Verify();
 
             Assert.Equal(lst, returnValue);
@@ -315,9 +315,9 @@ namespace DDDNetCore.Tests.Controllers
             // Arrange
             string filter = "tag";
             string value = "tag1";
-            GetPlayerDto obj = new GetPlayerDto("john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
+            PlayerDto obj = new PlayerDto(new System.Guid(), "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
             "www.linkedin.com/john-doe", new List<string> { "tag1" });
-            List<GetPlayerDto> lst = new List<GetPlayerDto> { obj };
+            List<PlayerDto> lst = new List<PlayerDto> { obj };
 
             var mockServ = new Mock<IPlayerService>();
             mockServ.Setup(serv => serv.GetByTagAsync(value))
@@ -329,7 +329,7 @@ namespace DDDNetCore.Tests.Controllers
             var result = await controller.GetAllFiltered(filter, value);
 
             // Assert
-            var returnValue = Assert.IsType<List<GetPlayerDto>>(result.Value);
+            var returnValue = Assert.IsType<List<PlayerDto>>(result.Value);
             mockServ.Verify();
 
             Assert.Equal(lst, returnValue);
@@ -342,9 +342,9 @@ namespace DDDNetCore.Tests.Controllers
             // Arrange
             string filter = "none";
             string value = "tag1";
-            GetPlayerDto obj = new GetPlayerDto("john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
+            PlayerDto obj = new PlayerDto(new System.Guid(), "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
             "www.linkedin.com/john-doe", new List<string> { "tag1" });
-            List<GetPlayerDto> lst = new List<GetPlayerDto> { obj };
+            List<PlayerDto> lst = new List<PlayerDto> { obj };
 
             var mockServ = new Mock<IPlayerService>();
             mockServ.Setup(serv => serv.GetByTagAsync(value))

@@ -8,6 +8,7 @@ import { HeaderComponent } from './modules/layout/components/header/header.compo
 import { EditConnectionComponent } from './modules/connection/components/edit-connection/edit-connection.component';
 import { AcceptRequestComponent } from './modules/request/components/accept-request/accept-request.component';
 import { RequestIntroductionComponent } from './modules/request/components/request-introduction/request-introduction.component';
+import { SearchPlayerComponent } from './modules/player/components/search-player/search-player.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'request-introduction', pathMatch: 'full' },
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'request-introduction',  component: RequestIntroductionComponent },
   { path: 'edit-connection',  component: EditConnectionComponent },
   { path: 'accept-request',  component: AcceptRequestComponent },
+  { path: 'search-player', component: SearchPlayerComponent},
   { path: 'login',  component: LoginComponent }
 ];
 
