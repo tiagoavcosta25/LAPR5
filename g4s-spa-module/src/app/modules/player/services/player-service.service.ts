@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
-import { Player } from 'src/shared/models/player.model';
+import { Player } from 'src/shared/models/player/player.model';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -39,7 +39,7 @@ export class PlayerServiceService {
   }
 
   /** POST: add a new player to the database */
-  addPlayer(player: Player): Observable<Player> {
+  registerPlayer(player: Player): Observable<Player> {
     return this.http.post<Player>(this.playersUrl, player, httpOptions);
   }
 
