@@ -7,6 +7,7 @@ import { LoginComponent } from './modules/login/login.component';
 import { HeaderComponent } from './modules/layout/components/header/header.component';
 import { EditConnectionComponent } from './modules/connection/components/edit-connection/edit-connection.component';
 import { AcceptRequestComponent } from './modules/request/components/accept-request/accept-request.component';
+import { ApproveRequestComponent } from './modules/request/components/approve-request/approve-request.component';
 import { UpdatePlayerComponent } from './modules/player/components/update-player/update-player.component';
 import { SearchPlayerComponent } from './modules/player/components/search-player/search-player.component';
 
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'get-players',  component: GetPlayersComponent },
   { path: 'edit-connection',  component: EditConnectionComponent },
   { path: 'accept-request',  component: AcceptRequestComponent },
+  { path: 'approve-request',  component: ApproveRequestComponent },
   { path: 'update-player',  component: UpdatePlayerComponent },
   { path: 'search-player', component: SearchPlayerComponent},
   { path: 'login',  component: LoginComponent }
