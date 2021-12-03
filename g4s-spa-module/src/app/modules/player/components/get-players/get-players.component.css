@@ -1,5 +1,13 @@
+div{
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-top: 3rem;
+}
+
 .players {
-    margin: 0 0 2em 0;
+    margin: 0 0 2em 3rem;
     list-style-type: none;
     padding: 0;
     width: 15em;
