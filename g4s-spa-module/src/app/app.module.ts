@@ -32,7 +32,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule} from '@angular/material/select';
-import { MatDatepickerModule } from '@angular/material/datepicker'
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { AcceptRequestComponent } from './modules/request/components/accept-request/accept-request.component'
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker'
     RequestComponent,
     CreateIntRequestComponent,
     ConnectionComponent,
-    EditConnectionComponent
+    EditConnectionComponent,
+    AcceptRequestComponent
   ],
   imports: [
     BrowserModule,

@@ -161,13 +161,13 @@ namespace DDDNetCore.Controllers
 
         // CRUD OVER //
 
-        // GET: api/ConnectionRequests/pendingRequests/userId
-        [HttpGet("pendingRequests/{userId}")]
-        public async Task<ActionResult<IEnumerable<TargetPendingRequestDto>>> GetAllUserPendingDirectRequests(string userId)
+        // GET: api/ConnectionRequests/pendingRequests/email
+        [HttpGet("pendingRequests/{email}")]
+        public async Task<ActionResult<IEnumerable<TargetPendingRequestDto>>> GetAllUserPendingDirectRequests(string email)
         {
             try
             {
-                var list = await _service.GetAllUserPendingDirectRequestsAsync(userId);
+                var list = await _service.GetAllUserPendingDirectRequestsAsync(email);
                 if (list == null)
                 {
                     return NotFound();
@@ -219,6 +219,28 @@ namespace DDDNetCore.Controllers
                 }
 
                 return Ok(dto);
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
+        // PATCH: api/ConnectionRequests/pendingRequests/id/deny/
+        [HttpPatch("pendingRequests/{id}/deny")]
+        public async Task<ActionResult<AcceptRequestDto>> DenyRequest(string id)
+        {
+
+            try
+            {
+                var conR = await _service.DenyRequest(id);
+
+                if (conR == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(conR);
             }
             catch (BusinessRuleValidationException ex)
             {
