@@ -236,7 +236,7 @@ common_tags(X,List_Result):-
     common_tags_get_all_tags(All_TagsT),
 	common_tags_change_to_synonyms(All_TagsT, All_Tags),
     findall(Combination,common_tags_combination(X,All_Tags,Combination),Combinations),
-    findall(User,node(_,User,_),Users),
+    findall(UserId,node(UserId,_,_),Users),
     common_tags_users_combination(X,Users,Combinations),
     findall([Comb,ListUsers],common_tags_users(Comb,ListUsers),List_Result),
     retractall(common_tags_users(_,_)),
@@ -254,7 +254,7 @@ common_tags_users_combination(X,Users,[Combination|Combinations]):-
 
 common_tags_users_combination_aux(_,_,[],[]):-!.
 common_tags_users_combination_aux(X,Tags,[U|Users],Result):-
-    node(_,U,User_TagsT),
+    node(U,_,User_TagsT),
 	common_tags_change_to_synonyms(User_TagsT, User_Tags),
     intersection(Tags, User_Tags,Commun),
     length(Commun, Size),

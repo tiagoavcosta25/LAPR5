@@ -20,13 +20,13 @@ namespace DDDSample1.Domain.Players
 
         Task<ChangeEmotionalStatusDto> ChangeEmotionalStatusAsync(ChangeEmotionalStatusDto dto);
 
-        Task<GetPlayerDto> GetByEmailAsync(string email);
+        Task<PlayerDto> GetByEmailAsync(string email);
 
-        Task<List<GetPlayerDto>> GetByNameAsync(string name);
+        Task<List<PlayerDto>> GetByNameAsync(string name);
 
-        Task<List<GetPlayerDto>> GetByPhoneAsync(string phoneNumber);
+        Task<List<PlayerDto>> GetByPhoneAsync(string phoneNumber);
 
-        Task<List<GetPlayerDto>> GetByTagAsync(string tag);
+        Task<List<PlayerDto>> GetByTagAsync(string tag);
 
         ICollection<string> GetFilters();
         

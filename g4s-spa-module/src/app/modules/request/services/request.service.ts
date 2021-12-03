@@ -4,7 +4,9 @@ import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AcceptRequest } from 'src/shared/models/requests/accept-request.model';
 import { ApproveRequest } from 'src/shared/models/requests/approve-request.model';
-import { ConnectionRequest } from 'src/shared/models/requests/connection-request.model';
+import { IntroductionRequest } from 'src/shared/models/requests/introduction-request.model';
+import { CreatingDirectRequest } from 'src/shared/models/requests/creating-direct-request.model';
+import { DirectRequest } from 'src/shared/models/requests/direct-request.model';
 import { TargetPendingRequest } from 'src/shared/models/requests/target-pending-request.model';
 
 @Injectable({
@@ -35,23 +37,30 @@ export class RequestService {
     );
   }
 
-    /** PATCH: deny request */
-    denyRequest(id:string): Observable<AcceptRequest> {
-      return this.http.patch<AcceptRequest>(this.requestUrl + 'pendingRequests/' + id + '/deny', this.httpOptions).pipe(
-        catchError(this.handleError)
-      );
-    }
+  /** PATCH: deny request */
+  denyRequest(id:string): Observable<AcceptRequest> {
+    return this.http.patch<AcceptRequest>(this.requestUrl + 'pendingRequests/' + id + '/deny', this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  //** POST: adds direct request to servidor */
+  sendDirectRequest(p: CreatingDirectRequest): Observable<DirectRequest> {
+    return this.http.post<DirectRequest>(this.requestUrl + 'dir', p, this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
 
     /** GET: returns requests from server */
-  getMiddleManRequests(email: string): Observable<ConnectionRequest[]> {
-    return this.http.get<ConnectionRequest[]>(this.requestUrl + 'middleManRequests/' + email).pipe(
+  getMiddleManRequests(email: string): Observable<IntroductionRequest[]> {
+    return this.http.get<IntroductionRequest[]>(this.requestUrl + 'middleManRequests/' + email).pipe(
       catchError(this.handleError)
     );
   }
 
   /** PATCH: deny request */
-  approveRequest(id:string, request: ApproveRequest): Observable<ConnectionRequest> {
-    return this.http.patch<ConnectionRequest>(this.requestUrl + 'approve/' + id , request, this.httpOptions).pipe(
+  approveRequest(id:string, request: ApproveRequest): Observable<IntroductionRequest> {
+    return this.http.patch<IntroductionRequest>(this.requestUrl + 'approve/' + id , request, this.httpOptions).pipe(
       catchError(this.handleError)
     );
   }

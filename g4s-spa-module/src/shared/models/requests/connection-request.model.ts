@@ -1,4 +1,4 @@
-export class ConnectionRequest {
+export abstract class ConnectionRequest {
     id: string;
     player: string;
     target: string;
@@ -6,7 +6,4 @@ export class ConnectionRequest {
     currentStatus: string;
     strength: number;    
     tags: string[];
-    middleMan: string;
-    playerToMiddleManMessage: string;
-    middleManToTargetMessage: string;
 }
