@@ -1,0 +1,223 @@
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            
+            <form>
+                <div [formGroup]="playerForm" class="mb-3" ngNativeValidate>
+                    <label for="inputName" class="form-label">Name</label>
+                    <input [ngClass]="{ 'is-invalid': f['name'].errors && (f['name'].dirty || f['name'].touched) }" 
+                        type="text" class="form-control" formControlName="name" id="inputName">
+                    <div *ngIf="f['name'].invalid" class="invalid-feedback">
+                        <div *ngIf="f['name'].errors?.['required'] && (f['name'].dirty || f['name'].touched)">{{ getErrorMessageNameRequired() }}</div>
+                    </div>
+                </div>
+
+                <div class="row justify-content-between">
+                    <div class="col-7">
+                        <div [formGroup]="playerForm" class="mb-3">
+                            <label for="inputEmail" class="form-label">Email</label>
+                            <input [ngClass]="{ 'is-invalid': f['email'].errors && (f['email'].dirty || f['email'].touched) }" 
+                                type="email" class="form-control" formControlName="email" id="inputEmail">
+                            <div *ngIf="f['email'].errors" class="invalid-feedback">
+                                <div *ngIf="f['email'].errors?.['required'] && (f['email'].dirty || f['email'].touched)">{{ getErrorMessageEmailRequired() }}</div>
+                                <div *ngIf="f['email'].errors?.['pattern']">{{ getErrorMessageEmailInvalid() }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-5">
+                        <div [formGroup]="playerForm" class="mb-3">
+                            <label for="inputPassword" class="form-label">Password</label>
+                            <input [ngClass]="{ 'is-invalid': f['password'].errors && (f['password'].dirty || f['password'].touched) }" 
+                                type="password" class="form-control" formControlName="password" id="inputPassword">
+                            <div *ngIf="f['password'].errors" class="invalid-feedback">
+                                <div *ngIf="f['password'].errors?.['required'] && (f['password'].dirty || f['password'].touched)">{{ getErrorMessagePasswordRequired() }}</div>
+                                <div *ngIf="f['password'].errors?.['minlength']">{{ getErrorMessagePasswordInvalid() }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row justify-content-between">
+
+                    <div class="col-md-4">
+
+                        <div [formGroup]="playerForm" class="mb-3">
+                            <label for="inputDay" class="form-label">Day</label>
+                            <input [ngClass]="{ 'is-invalid': f['day'].errors && (f['day'].dirty || f['day'].touched) }" 
+                                type="number" class="form-control" formControlName="day" id="inputDay">
+                            <div *ngIf="f['day'].errors" class="invalid-feedback">
+                                <div *ngIf="f['day'].errors?.['required'] && (f['day'].dirty || f['day'].touched)">{{ getErrorMessageDayRequired() }}</div>
+                                <div *ngIf="f['day'].errors?.['min'] || f['day'].errors?.['max']">{{ getErrorMessageDayInvalid() }}</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+                        
+                        <div [formGroup]="playerForm" class="mb-3">
+                            <label for="inputMonth" class="form-label">Month</label>
+                            <input [ngClass]="{ 'is-invalid': f['month'].errors && (f['month'].dirty || f['month'].touched) }" 
+                                type="number" class="form-control" formControlName="month" id="inputMonth">
+                            <div *ngIf="f['month'].errors" class="invalid-feedback">
+                                <div *ngIf="f['month'].errors?.['required'] && (f['month'].dirty || f['month'].touched)">{{ getErrorMessageMonthRequired() }}</div>
+                                <div *ngIf="f['month'].errors?.['min'] || f['month'].errors?.['max']">{{ getErrorMessageMonthInvalid() }}</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <div [formGroup]="playerForm" class="mb-3">
+                            <label for="inputYear" class="form-label">Year</label>
+                            <input [ngClass]="{ 'is-invalid': f['year'].errors && (f['year'].dirty || f['year'].touched) }" 
+                                type="number" class="form-control" formControlName="year" id="inputYear">
+                            <div *ngIf="f['year'].errors" class="invalid-feedback">
+                                <div *ngIf="f['year'].errors?.['required'] && (f['year'].dirty || f['year'].touched)">{{ getErrorMessageYearRequired() }}</div>
+                                <div *ngIf="f['year'].errors?.['min'] || f['year'].errors?.['max']">{{ getErrorMessageYearInvalid() }}</div>
+                            </div>
+                        </div>
+
+                    </div>                    
+                </div>
+
+                <div class="row justify-content-between">
+                    <div class="col-6">
+                        
+                        <div [formGroup]="playerForm" class="mb-3">
+                            <label for="inputPhoneNumber" class="form-label">Phone Number</label>
+                            <input [ngClass]="{ 'is-invalid': f['phoneNumber'].errors && (f['phoneNumber'].dirty || f['phoneNumber'].touched) }" 
+                                type="text" class="form-control" formControlName="phoneNumber" id="inputPhoneNumber">
+                            <div *ngIf="f['phoneNumber'].errors" class="invalid-feedback">
+                                <div *ngIf="f['phoneNumber'].errors?.['required'] && (f['phoneNumber'].dirty || f['phoneNumber'].touched)">{{ getErrorMessagePhoneNumberRequired() }}</div>
+                                <div *ngIf="f['phoneNumber'].errors?.['pattern']">{{ getErrorMessagePhoneNumberInvalid() }}</div>
+                            </div>
+                        </div>
+    
+                    </div>
+    
+                    <div class="col-6">
+                            
+                        <div [formGroup]="playerForm" class="mb-3">
+                            <label for="inputEmotionalStatus" class="form-label">Emotional status</label>
+
+                            <select [ngClass]="{ 'is-invalid': f['emotionalStatus'].errors && (f['emotionalStatus'].dirty || f['emotionalStatus'].touched) }"
+                                class="form-select form-control" aria-label="Default select example" formControlName="emotionalStatus" id="inputEmotionalStatus">
+                                <option *ngFor="let emotion of emotions" value={{emotion}}> {{ emotion }} </option>
+                            </select>
+                            <div *ngIf="f['emotionalStatus'].errors" class="invalid-feedback">
+                                <div *ngIf="f['emotionalStatus'].errors?.['required'] && (f['emotionalStatus'].dirty || f['emotionalStatus'].touched)">{{ getErrorMessageEmotionalStatusRequired() }}</div>
+                            </div>
+                            
+                            <div *ngIf="f['month'].errors" class="invalid-feedback">
+                                <div *ngIf="f['month'].errors?.['required'] && (f['month'].dirty || f['month'].touched)">{{ getErrorMessageMonthRequired() }}</div>
+                                <div *ngIf="f['month'].errors?.['min'] || f['month'].errors?.['max']">{{ getErrorMessageMonthInvalid() }}</div>
+                            </div>
+                        </div>
+    
+                    </div>
+                </div>
+
+
+
+                <div class="row justify-content-between">
+                    <div class="col-6">
+                        <div [formGroup]="playerForm" class="mb-3">
+                            <label for="inputFacebook" class="form-label">Facebook</label>
+                            <input type="url" class="form-control" formControlName="facebook" id="inputFacebook">
+                        </div>
+                    </div>
+    
+                    <div class="col-6">
+                        <div [formGroup]="playerForm" class="mb-3">
+                            <label for="inputLinkedIn" class="form-label">LinkedIn</label>
+                            <input type="url" class="form-control" formControlName="linkedIn" id="inputLinkedIn">
+                        </div>
+                    </div>
+                </div>
+
+                <div [formGroup]="playerForm" class="mb-3">
+                <div class="card mt-2r">
+                    <div class="card-header ">
+                      <div class="header-container">
+                        <span class="product-header">
+                          Add Tags
+                        </span>
+                        <div class="position-absolute top-0 end-0 my-2 mx-2">
+                            <svg style="cursor:pointer" (click)="addTag()" width="25" height="25" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z" />
+                            </svg>
+                        </div>
+                        
+                      </div>
+        
+        
+                    </div>
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-12">
+        
+                          <ul class="list-group">
+                            <li class="list-group-item" formArrayName="tags" *ngFor="let tagF of tagsFormGroups['controls']; let i = index;">
+                              <div [formGroupName]="i" class="row">
+                                <div class="col-6">
+
+                                    <input [ngClass]="{ 'is-invalid': tagF.get('tag')?.errors && (tagF.dirty || tagF.touched) }" 
+                                    type="text" class="form-control" formControlName="tag" id="inputTag">
+
+                                    <div *ngIf="tagF.get('tag')?.invalid" class="invalid-feedback">
+                                        <div *ngIf="tagF.get('tag')?.errors?.['required'] && (tagF.get('tag')?.dirty || tagF.get('tag')?.touched)">
+                                            {{ getErrorMessageTagRequired() }}</div>
+                                    </div>
+                                </div>
+        
+                                <div class="col-2">
+                                    <div class="position-absolute my-1">
+                                  <svg style="cursor:pointer" (click)="removeTag(tagF.get('tag')?.value)" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                    class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                    <path
+                                      d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
+                                  </svg>
+                                </div>
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+                <button type="submit" class="btn btn-primary" (click)="save()" [disabled]="playerForm.invalid">Update Account</button>
+
+            </form>
+            
+            <div class="my-3">
+                <div *ngIf="success!=undefined">
+                    <div *ngIf="success">
+                        <div class="alert alert-success" role="alert">
+                            {{ successMessage }}
+                        </div>
+                    </div>
+                    <div *ngIf="!success">
+                        <div class="alert alert-danger" role="alert">
+                            {{ errorMessage }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+        </div>
+    </div>
+</div>
+
+
+<ngx-spinner></ngx-spinner>
