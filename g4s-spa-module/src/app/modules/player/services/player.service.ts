@@ -71,6 +71,14 @@ export class PlayerService {
     );
   }
 
+
+  /** POST: update data's player to the database */
+  updatePlayer(player: Player): Observable<Player> {
+    return this.http.put<Player>(this.playerUrl, player, this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   private handleError(err: HttpErrorResponse) {
     console.error('An error occurred: ', err.error.errors.message);
     if (err.error instanceof ErrorEvent) {
