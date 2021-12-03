@@ -1,15 +1,18 @@
 app-header{
     position: absolute;
-    top: 0;
     width: 100%;
     max-height: 35px;
 }
 
 .dashboard-container {
     position: absolute;
+    height: 92%;
+    max-height: 92%;
+    min-height: 92%;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
     bottom: 0;
-    left: 0;
-    right: 0;
   }
 
 mat-drawer {
@@ -45,6 +48,10 @@ mat-drawer:hover mat-nav-list h4 {
     align-items: center;
     justify-content: center;
 } */
+
+.dashboard-content{
+    max-height: 50%;
+}
 
 button{
     padding: 0;

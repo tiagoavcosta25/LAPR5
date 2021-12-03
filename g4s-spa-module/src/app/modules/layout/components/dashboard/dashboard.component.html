@@ -3,7 +3,7 @@
 	<mat-drawer #drawer mode="side" disableClose="true" opened="true">
 		<mat-nav-list>
 			
-			<button (click)="openRegisterPlayer()">
+			<button (click)="openGetPlayers()">
 				<mat-list-item>
 					<mat-icon mat-list-icon color="accent">check_circle</mat-icon>
 					<h4>Approve Requests</h4>
@@ -41,6 +41,7 @@
 	</mat-drawer>
 
 	<div class="dashboard-content">
+		<app-get-players *ngIf=this.showGetPlayers></app-get-players>
 		<app-register-player *ngIf=this.showRegisterPlayer></app-register-player>
 		<app-login *ngIf=this.showLogin></app-login>
 	</div>
