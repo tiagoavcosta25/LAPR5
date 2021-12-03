@@ -22,7 +22,7 @@ import { SafestRouteComponent } from './modules/network/components/safest-route/
 import { SharedModule } from '../shared/shared.module';
 import { GetPlayersComponent } from './modules/player/components/get-players/get-players.component';
 import { RequestComponent } from './modules/request/request.component';
-import { CreateIntRequestComponent } from './modules/request/components/create-int-request/create-int-request.component';
+import { RequestIntroductionComponent } from './modules/request/components/request-introduction/request-introduction.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ConnectionComponent } from './modules/connection/connection.component';
 import { EditConnectionComponent } from './modules/connection/components/edit-connection/edit-connection.component';
@@ -48,7 +48,7 @@ import { AcceptRequestComponent } from './modules/request/components/accept-requ
     SafestRouteComponent,
     GetPlayersComponent,
     RequestComponent,
-    CreateIntRequestComponent,
+    RequestIntroductionComponent,
     ConnectionComponent,
     EditConnectionComponent,
     AcceptRequestComponent
