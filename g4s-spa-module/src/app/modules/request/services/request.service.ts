@@ -3,7 +3,9 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AcceptRequest } from 'src/shared/models/requests/accept-request.model';
+import { ConnectionRequest } from 'src/shared/models/requests/connection-request.model';
 import { TargetPendingRequest } from 'src/shared/models/requests/target-pending-request.model';
+import { CreatingConnectionRequest } from '../models/creating-connection-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +24,13 @@ export class RequestService {
   /** GET: returns requests from server */
   getRequests(email: string): Observable<TargetPendingRequest[]> {
     return this.http.get<TargetPendingRequest[]>(this.requestUrl + 'pendingRequests/' + email).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  /** POST: add a new request to the database */
+  registerIntroductionRequest(request: CreatingConnectionRequest): Observable<ConnectionRequest> {
+    return this.http.post<ConnectionRequest>(this.requestUrl + 'intr/', request, this.httpOptions).pipe(
       catchError(this.handleError)
     );
   }

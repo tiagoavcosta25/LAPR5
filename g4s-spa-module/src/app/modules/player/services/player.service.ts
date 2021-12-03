@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Player } from 'src/shared/models/player/player.model';
 import { CreatingPlayer } from '../models/creating-player.model';
 
@@ -11,7 +12,7 @@ import { CreatingPlayer } from '../models/creating-player.model';
 })
 export class PlayerService {
 
-  playerUrl: string = "https://socialnetworkapi51.azurewebsites.net/api/players";  // URL to web api
+  playerUrl: string = environment.apiUrl + '/players/';  // URL to web api
 
   httpOptions = {
     headers: new HttpHeaders({
