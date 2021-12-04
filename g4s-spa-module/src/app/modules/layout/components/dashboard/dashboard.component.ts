@@ -15,6 +15,7 @@ export class DashboardComponent implements OnInit {
   showAcceptRequest: boolean = false;
   showApproveRequest: boolean = false;
   showGetNetwork: boolean = false;
+  showSearchPlayer: boolean = false;
 
   constructor() { }
 
@@ -27,6 +28,7 @@ export class DashboardComponent implements OnInit {
     this.showAcceptRequest = false;
     this.showApproveRequest = false;
     this.showGetNetwork = false;
+    this.showSearchPlayer = false;
   }
 
   openGetPlayers(){
@@ -38,6 +40,7 @@ export class DashboardComponent implements OnInit {
     this.showAcceptRequest = false;
     this.showApproveRequest = false;
     this.showGetNetwork = false;
+    this.showSearchPlayer = false;
   }
 
   openRegisterPlayer(){
@@ -49,6 +52,7 @@ export class DashboardComponent implements OnInit {
     this.showAcceptRequest = false;
     this.showApproveRequest = false;
     this.showGetNetwork = false;
+    this.showSearchPlayer = false;
   }
 
   openLogin(){
@@ -60,6 +64,7 @@ export class DashboardComponent implements OnInit {
     this.showAcceptRequest = false;
     this.showApproveRequest = false;
     this.showGetNetwork = false;
+    this.showSearchPlayer = false;
   }
 
   openRequestIntroduction(){
@@ -71,6 +76,7 @@ export class DashboardComponent implements OnInit {
     this.showAcceptRequest = false;
     this.showApproveRequest = false;
     this.showGetNetwork = false;
+    this.showSearchPlayer = false;
   }
 
   openUpdatePlayer(){
@@ -82,6 +88,7 @@ export class DashboardComponent implements OnInit {
     this.showAcceptRequest = false;
     this.showApproveRequest = false;
     this.showGetNetwork = false;
+    this.showSearchPlayer = false;
   }
 
   openAcceptRequest(){
@@ -93,6 +100,7 @@ export class DashboardComponent implements OnInit {
     this.showAcceptRequest = true;
     this.showApproveRequest = false;
     this.showGetNetwork = false;
+    this.showSearchPlayer = false;
   }
 
   openApproveRequest(){
@@ -104,6 +112,7 @@ export class DashboardComponent implements OnInit {
     this.showAcceptRequest = false;
     this.showApproveRequest = true;
     this.showGetNetwork = false;
+    this.showSearchPlayer = false;
   }
 
   openGetNetwork(){
@@ -115,6 +124,19 @@ export class DashboardComponent implements OnInit {
     this.showAcceptRequest = false;
     this.showApproveRequest = false;
     this.showGetNetwork = true;
+    this.showSearchPlayer = false;
+  }
+
+  openSearchPlayer(){
+    this.showGetPlayers = false;
+    this.showRequestIntroduction = false;
+    this.showRegisterPlayer = false;
+    this.showLogin = false;
+    this.showUpdatePlayer = false;
+    this.showAcceptRequest = false;
+    this.showApproveRequest = false;
+    this.showGetNetwork = false;
+    this.showSearchPlayer = true;
   }
 
 }

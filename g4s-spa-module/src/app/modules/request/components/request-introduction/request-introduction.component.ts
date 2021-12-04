@@ -137,22 +137,19 @@ export class RequestIntroductionComponent implements OnInit {
           this.error = true;
         }
       });
-      /*let friend = new Player();
-      friend.email = "email1@gmail.com";
-      friend.name = "user1";
-      friend.id = "a0164888-d6af-4fd5-ba01-ffce1d1cd0a0"
-      this.mutualFriends = [friend];*/
       this.spinner.hide();
     }
 
     createRequest() {
       console.log(this.reachablePlayerIdSelected);
-      this.c.player = this.reachablePlayerIdSelected;
+      this.c.player = this.playerEmail;
       this.c.playerToTargetMessage = this.requestForm.value.targetMessage;
       this.c.playerToMiddleManMessage = this.requestForm.value.middleManMessage;
       this.c.middleManToTargetMessage = "";
       this.c.middleMan = this.mutualFriendIdSelected;
+      this.c.target = this.reachablePlayerIdSelected;
       this.c.currentStatus = "introduction_pending";
+      this.c.strength = this.requestForm.value.connectionStrength;
       this.c.tags = [];
       for(let tag of this.requestForm.value.tags)
       {

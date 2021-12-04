@@ -188,7 +188,7 @@ safest_routePrepare(Request, Path) :-
 	retractall(node(_,_,_)).
 
 
-%======== Safest route between two players (Core) ========%
+%======== Safest path between two players (Core) ========%
 
 safest_dfs(Orig, Dest, Threshold, Strength, Path):- safest_dfsAux(Orig, Dest, [Orig], Threshold, 0, Strength, Path).
 
@@ -234,6 +234,7 @@ safest_updateRoute(Strength, PathList):-
 suggest_compute(Request) :-
     cors_enable(Request, [methods([get])]),
     suggest_prepare(Request, SuggestedPlayersList),
+    write(SuggestedPlayersList),
     prolog_to_json(SuggestedPlayersList, JSONObject),
     reply_json(JSONObject, [json_object(dict)]).
 
@@ -242,7 +243,7 @@ suggest_prepare(Request, SuggestedPlayersList) :-
     addPlayers(),
     addConnections(),
     getPlayerName(EmailPlayer, PlayerName),
-    safest_route(PlayerName, Scope, SuggestedPlayersList),
+    suggest_players(PlayerName, Scope, SuggestedPlayersList),
     retractall(connection(_,_,_,_)),
     retractall(node(_,_,_)).
 
@@ -255,7 +256,7 @@ suggest_players(Player, Level, SuggestedPlayersList):-
 		suggest_getRelatedPlayers(Player, CandidateList, RelatedPlayersList),
 		suggest_checkSuggestedPaths(Player, RelatedPlayersList, SuggestedPlayersList).
 
-network_getNetworkByLevel(_, _, [antonio, beatriz, carlos, eduardo, isabel, jose]):-!.
+network_getNetworkByLevel(_, _, [jane, james]):-!.
 
 suggest_removeFriends(_, [ ], []).
 suggest_removeFriends(Player, [CurrentPlayer | NetworkList], CandidateList):-
@@ -445,7 +446,7 @@ common_tags_combination(N,[_|T],Comb):-N>0,common_tags_combination(N,T,Comb).
 
 comon_tags_list_length([], 0).
 comon_tags_list_length([_|TAIL], N) :- comon_tags_list_length(TAIL, N1), N is N1 + 1.
-	
+
 common_tags_change_to_synonyms([],[]).
 common_tags_change_to_synonyms([Tag|All_Tags],Tags):-
     common_tags_change_to_synonyms(All_Tags,Tags1),!,
