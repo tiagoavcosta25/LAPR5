@@ -11,14 +11,16 @@ import { RequestIntroductionComponent } from './modules/request/components/reque
 import { ApproveRequestComponent } from './modules/request/components/approve-request/approve-request.component';
 import { UpdatePlayerComponent } from './modules/player/components/update-player/update-player.component';
 import { SearchPlayerComponent } from './modules/player/components/search-player/search-player.component';
+import { GetNetworkComponent } from './modules/network/components/get-network/get-network.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'request-introduction', pathMatch: 'full' },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'login',  component: LoginComponent },
   { path: 'header',  component: HeaderComponent },
   { path: 'dashboard',  component: DashboardComponent },
   { path: 'register-player',  component: RegisterPlayerComponent },
   { path: 'get-players',  component: GetPlayersComponent },
+  { path: 'get-network',  component: GetNetworkComponent },
   { path: 'request-introduction',  component: RequestIntroductionComponent },
   { path: 'edit-connection',  component: EditConnectionComponent },
   { path: 'accept-request',  component: AcceptRequestComponent },
