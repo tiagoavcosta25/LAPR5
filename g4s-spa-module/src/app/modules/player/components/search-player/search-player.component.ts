@@ -19,9 +19,6 @@ import { GettingConnection } from 'src/shared/models/connection/getting-connecti
 export class SearchPlayerComponent implements OnInit {
 
   // TODO: Remover isto
-  playerid: string;
-
-  // TODO: Remover isto
   currentPlayer: Player;
 
   error: boolean;
@@ -66,13 +63,14 @@ export class SearchPlayerComponent implements OnInit {
   ngOnInit(): void {
     this.r = new DirectRequest;
     this.friends = [];
+    this.currentPlayerUpdate();
   }
 
   // TODO: Remover
   currentPlayerUpdate(): void {
     this.spinner.show();
-    this.pService.getPlayerById(this.playerid).subscribe({ next: data => {
-      this.currentPlayer = data;
+    this.pService.getPlayerByEmail('email1@gmail.com').subscribe({ next: data => {
+      this.currentPlayer = data[0];
       this.getFriends();
       this.spinner.hide();
     },
@@ -154,7 +152,7 @@ export class SearchPlayerComponent implements OnInit {
   }
 
   createDirectRequest() {
-    this.r.player = this.playerid;
+    this.r.player = this.currentPlayer.id;
     this.r.target = this.chosenPlayer.id;
     this.r.strength = this.requestForm.value.connectionStrength;
     this.r.tags = [];
@@ -169,8 +167,8 @@ export class SearchPlayerComponent implements OnInit {
     this.spinner.show();
     this.pService.searchPlayers(this.requestForm.value.filter, this.requestForm.value.value).subscribe({ next: data => {
       this.players = data;
-      this.players.filter(obj => obj.id !== this.playerid);
-      let index = this.players.findIndex( e => e.id == this.playerid);
+      this.players.filter(obj => obj.id !== this.currentPlayer.id);
+      let index = this.players.findIndex( e => e.id == this.currentPlayer.id);
       if (index != -1) {
         this.players.splice(index, 1);
       }

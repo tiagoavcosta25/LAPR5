@@ -165,6 +165,7 @@ namespace DDDSample1.Controllers
             {
                 case UserSearchFilterEnum.email :
                     var dto = await _service.GetByEmailAsync(value);
+                    if (dto == null) return new List<PlayerDto>();
                     List<PlayerDto> list = new()
                     {
                         dto

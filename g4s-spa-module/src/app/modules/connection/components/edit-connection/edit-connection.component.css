@@ -54,6 +54,6 @@
 
 .btn.back:hover{
     color: white;
-    border: #ff00ea;
+    border: 2px solid #ff00ea;
     background: #ff00ea;
   }

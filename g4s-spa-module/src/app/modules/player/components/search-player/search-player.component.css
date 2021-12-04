@@ -37,7 +37,6 @@
     }
     
     .btn.back{
-      border:0;
       background: none;
       display: block;
       margin: auto;
@@ -54,6 +53,6 @@
   
   .btn.back:hover{
       color: white;
-      border: #ff00ea;
+      border: 2px solid #ff00ea;
       background: #ff00ea;
     }
