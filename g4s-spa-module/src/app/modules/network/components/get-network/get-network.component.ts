@@ -5,6 +5,8 @@ import { ConnectionService } from 'src/app/modules/connection/services/connectio
 import { PlayerService } from 'src/app/modules/player/services/player.service';
 import { Connection } from 'src/shared/models/connection/connection.model';
 import { Player } from 'src/shared/models/player/player.model';
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 @Component({
   selector: 'app-get-network',
@@ -73,7 +75,6 @@ export class GetNetworkComponent implements OnInit {
     con2.connectionStrength = 4;
     this.network = [con1, con2];
     con2.tags = ['music', 'coding'];
-    console.log(this.network);
   }
 
   getPlayers(){
@@ -113,13 +114,73 @@ export class GetNetworkComponent implements OnInit {
   }
 
   get f() { return this.getNetworkForm.controls; }
+  
+  scene: THREE.Scene;
+  renderer: THREE.WebGLRenderer;
+  camera: THREE.PerspectiveCamera;
+  controls: OrbitControls;
 
   initializeGraph(){
     this.showForm = false;
     this.showGraph = true;
 
-    console.log(this.players);
+    // Create a scene
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xffffff);
 
-  }
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    document.body.appendChild( renderer.domElement );
+
+    const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
+
+    const controls = new OrbitControls( camera, renderer.domElement );
+
+    camera.position.set( 0, 20, 100 );
+    controls.update();
+
+    let nodes = [], colors = [0xa93226, 0x884ea0, 0x5b2c6f, 0x2e86c1, 0x5dade2, 0x17a589, 0x27ae60, 
+      0x0e6655, 0xf1c40f, 0x9c640c, 0xe67e22, 0x5d6d7e, 0xde3163, 0xff00ff];
+    const geometry = new THREE.CircleGeometry(2, 32);
+
+    for(let i=0; i<this.playersIds.length;i++){
+      let maxH = 25, minH = -25, maxW = 25, minW = -25;
+      let material = new THREE.MeshBasicMaterial( { color: colors[Math.floor(Math.random()*colors.length)]  } );
+      let circle = new THREE.Mesh( geometry, material );
+      if(i==0){
+        circle.position.x = 0;
+        circle.position.y = 0;
+        circle.position.z = 0;
+      }else{
+        circle.position.x = Math.random() * (maxW - minW) + minW;
+        circle.position.y = Math.random() * (maxH - minH) + minH;
+        circle.position.z = 0;
+      }
+      scene.add(circle);
+      nodes.push(circle);
+    }
+
+    for(let i=0; i<this.network.length;i++){
+      let connections = [];
+      for(let j=0; j<this.playersIds.length;j++){
+        if(this.network[i].player == this.playersIds[j] || this.network[i].friend == this.playersIds[j] ){
+          connections.push( new THREE.Vector3(nodes[j].position.x, nodes[j].position.y, -1) );
+          if(connections.length >= 2){
+            break;
+          } 
+        }
+      }
+
+      const materialConnections = new THREE.LineBasicMaterial( { color: 0x000 } );
+      const geometryConnections = new THREE.BufferGeometry().setFromPoints( connections );
+      
+      const line = new THREE.Line( geometryConnections, materialConnections );
+
+      scene.add( line );
+
+    }
+
+    renderer.render( scene, camera );    
+    }
 
 }
