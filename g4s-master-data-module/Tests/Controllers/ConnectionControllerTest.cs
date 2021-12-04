@@ -49,12 +49,12 @@ namespace DDDNetCore.Tests.Controllers
             string playerEmail = "test2@email.com";
 
             var mockServ = new Mock<IConnectionService>();
-            mockServ.Setup(serv => serv.GetMutualFriends(playerEmail, dto))
+            mockServ.Setup(serv => serv.GetMutualFriends(playerEmail, "test@email.com"))
                 .ReturnsAsync(lst).Verifiable();
             var controller = new ConnectionsController(mockServ.Object);
 
             // Act
-            var result = await controller.GetMutualFriends(playerEmail, dto);
+            var result = await controller.GetMutualFriends(playerEmail, "test@email.com");
 
             // Assert
             var returnValue = Assert.IsType<List<PlayerDto>>(result.Value);
@@ -73,12 +73,12 @@ namespace DDDNetCore.Tests.Controllers
             string playerEmail = "test2@email.com";
 
             var mockServ = new Mock<IConnectionService>();
-            mockServ.Setup(serv => serv.GetNetwork(playerEmail, dto))
+            mockServ.Setup(serv => serv.GetNetwork(playerEmail, 2))
                 .ReturnsAsync(lst).Verifiable();
             var controller = new ConnectionsController(mockServ.Object);
 
             // Act
-            var result = await controller.GetNetwork(playerEmail, dto);
+            var result = await controller.GetNetwork(playerEmail, 2);
 
             // Assert
             var returnValue = Assert.IsType<List<ConnectionDto>>(result.Value);

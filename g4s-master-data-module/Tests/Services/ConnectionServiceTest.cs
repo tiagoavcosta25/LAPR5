@@ -94,7 +94,7 @@ namespace DDDNetCore.Tests.Services
             var service = new ConnectionService(mockUnity.Object, mockRepo.Object, mockRepoPl.Object);
 
             // Act
-            var result = await service.GetMutualFriends(plyr.Email.address.ToString(), dto);
+            var result = await service.GetMutualFriends(plyr.Email.address.ToString(), plyr3.Email.address.ToString());
 
             // Assert            
             var returnValue = Assert.IsType<List<PlayerDto>>(result);
@@ -139,7 +139,7 @@ namespace DDDNetCore.Tests.Services
             var service = new ConnectionService(mockUnity.Object, mockRepo.Object, mockRepoPl.Object);
 
             // Act
-            var result = await service.GetNetwork(plyr.Email.address.ToString(), dto);
+            var result = await service.GetNetwork(plyr.Email.address.ToString(), 2);
 
             // Assert            
             var returnValue = Assert.IsType<List<ConnectionDto>>(result);
