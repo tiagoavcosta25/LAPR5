@@ -84,63 +84,64 @@ connection(1,51,6,2).
 connection(51,61,7,3).
 connection(61,200,2,4).
 
+% Secundary knowledge base
+:- dynamic shortest_currentRoute/2.
+:- dynamic safest_currentRoute/2.
+
 % aux methods
 
 intersect([ ],_,[ ]).
 intersect([X|L1],L2,[X|LI]):-member(X,L2),!,intersect(L1,L2,LI).
 intersect([_|L1],L2, LI):- intersect(L1,L2,LI).
 
-% shortest path
+%======== Shortest route between two players (Core) ========%
 
-:-dynamic shortest_current_path/2.
-
-all_dfs(Player1,Player2,PathList):-get_time(T1),
-    findall(Path,dfs(Player1,Player2,Path),PathList),
-    length(PathList,PathLength),
+shortest_allDfs(Player1, Player2, PathList):- get_time(T1),
+    findall(Path, shortest_dfs(Player1, Player2, Path), PathList),
+    length(PathList, PathLength),
     get_time(T2),
     write(PathLength),write(' paths found in '),
     T is T2-T1,write(T),write(' seconds'),nl,
     write('Possible Path List: '),write(PathList),nl,nl.
 
-dfs(Orig,Dest,Path):-dfs2(Orig,Dest,[Orig],Path).
+shortest_dfs(Orig, Dest, Path):- shortest_dfsAux(Orig, Dest, [Orig], Path).
 
-dfs2(Dest,Dest,LA,Path):-!,reverse(LA,Path).
-dfs2(Current,Dest,LA,Path):-node(CurrentID,Current,_),(connection(CurrentID,NX,_,_);connection(NX,CurrentID,_,_)),
-    node(NX,X,_),\+ member(X,LA),dfs2(X,Dest,[X|LA],Path).
+shortest_dfsAux(Dest, Dest, LA, Path):- !, reverse(LA, Path).
+shortest_dfsAux(Current, Dest, LA, Path):-
+    (connection(Current, X, _, _);
+    connection(X, Current, _, _)),
+    \+ member(X,LA),
+    shortest_dfsAux(X,Dest,[X|LA],Path).
 
 
-shortest_path(Orig,Dest,ShortestPathList):-
+shortest_route(Orig, Dest, ShortestPathList):-
 		get_time(Ti),
-		(find_shortest_path(Orig,Dest);true),
-		retract(shortest_current_path(ShortestPathList,_)),
+		(shortest_findRoute(Orig, Dest); true),
+		retract(shortest_currentRoute(ShortestPathList, _)),
 		get_time(Tf),
 		T is Tf-Ti,
-		write('Solution generation time:'),write(T),nl.
+		write('Solution generation time:'), write(T), nl.
 
-find_shortest_path(Orig,Dest):-
-		asserta(shortest_current_path(_,10000)),
-		dfs(Orig,Dest,PathList),
-		update_shortest_path(PathList),
+shortest_findRoute(Orig, Dest):-
+		asserta(shortest_currentRoute(_,10000)),
+		shortest_dfs(Orig, Dest, PathList),
+		shortest_updateRoute(PathList),
 		fail.
 
-update_shortest_path(PathList):-
-		shortest_current_path(_,N),
-		length(PathList,P),
-                P<N,retract(shortest_current_path(_,_)),
-		asserta(shortest_current_path(PathList,P)).
+shortest_updateRoute(PathList):-
+		shortest_currentRoute(_, CurrentPathLength),
+		length(PathList, PathLength),
+	PathLength < CurrentPathLength, retract(shortest_currentRoute(_,_)),
+		asserta(shortest_currentRoute(PathList, PathLength)).
 
 % safest route
-
-:-dynamic safest_currentRoute/2.
 
 safest_dfs(Orig, Dest, Threshold, Strength, Path):- safest_dfsAux(Orig, Dest, [Orig], Threshold, 0, Strength, Path).
 
 safest_dfsAux(Dest, Dest, AuxList, _ , Strength, Strength, Path):-!, reverse(AuxList,Path).
 safest_dfsAux(Current, Dest, AuxList, Threshold, Strength, ReturnStrength, Path):-
-		node(CurrentID,Current,_),
-		(connection(CurrentID, FriendID, StrengthA, StrengthB);
-		connection(FriendID, CurrentID, StrengthA, StrengthB)),
-		node(FriendID, Friend, _),
+		(connection(Current, Friend, StrengthA, StrengthB);
+		connection(Friend, Current, StrengthA, StrengthB)),
 		\+ member(Friend, AuxList),
 		StrengthA >= Threshold,
 		StrengthB >= Threshold,
@@ -175,27 +176,26 @@ safest_updateRoute(Strength, PathList):-
 :-dynamic suggest_currentPath/2.
 
 suggest_players(Player, Level, SuggestedPlayersList):-
-		network_getNetworkByLevel(Player, Level, NetworkList),
+		network_getNetworkByLevel(Player, Level, NetworkList, _),
+                write(NetworkList),nl,
 		suggest_removeFriends(Player, NetworkList, CandidateList),
+                write(CandidateList),nl,
 		suggest_getRelatedPlayers(Player, CandidateList, RelatedPlayersList),
+                write(RelatedPlayersList),nl,
 		suggest_checkSuggestedPaths(Player, RelatedPlayersList, SuggestedPlayersList).
-
-network_getNetworkByLevel(_, _, [friend, friend2, fof1, fof2, fof3]):-!.
 
 suggest_removeFriends(_, [ ], []).
 suggest_removeFriends(Player, [CurrentPlayer | NetworkList], CandidateList):-
-		node(CurrentID, CurrentPlayer, _),
-		node(PlayerID,Player,_),
-		(connection(PlayerID, CurrentID, _, _);
-		connection(CurrentID, PlayerID, _, _)), !,
+		(connection(Player, CurrentPlayer, _, _);
+		connection(CurrentPlayer, Player, _, _)), !,
 		suggest_removeFriends(Player, NetworkList, CandidateList).
 suggest_removeFriends(Player, [CurrentPlayer | NetworkList], [CurrentPlayer | CandidateList]):-
 		suggest_removeFriends(Player, NetworkList, CandidateList).
 
 suggest_getRelatedPlayers(_, [ ], []).
 suggest_getRelatedPlayers(Player, [NetworkPlayer | Network], [ NetworkPlayer | RelatedPlayersList]):-
-		node(_,Player,PlayerTagList),
-		node(_, NetworkPlayer,NetworkPlayerTagList),
+		node(Player,_,PlayerTagList),
+		node(NetworkPlayer, _,NetworkPlayerTagList),
 		intersect(PlayerTagList, NetworkPlayerTagList, CommonTagList),
 		CommonTagList=[_|_], !,
 		suggest_getRelatedPlayers(Player, Network, RelatedPlayersList).
@@ -205,8 +205,8 @@ suggest_getRelatedPlayers(Player, [_ | Network], RelatedPlayersList):-
 
 suggest_checkSuggestedPaths(_, [], []).
 suggest_checkSuggestedPaths(Player, [CurrentPlayer | RelatedPlayersList], [CurrentPlayer | SuggestedPlayersList]):-
-		node(_, CurrentPlayer, CurrentPlayerTagList),
-		node(_, Player, PlayerTagList),
+		node(CurrentPlayer, _, CurrentPlayerTagList),
+		node(Player, _, PlayerTagList),
 		intersect(PlayerTagList, CurrentPlayerTagList, CommonTagList),
 		suggest_findPathByPlayer(Player, CurrentPlayer, CommonTagList, Paths),
 		Paths=[_|_], !,
@@ -243,13 +243,53 @@ suggest_dfs(Orig,Dest, Tag, Path):-suggest_dfsAux(Orig,Dest,[Orig], Tag, Path).
 
 suggest_dfsAux(Dest,Dest,AuxList, _, Path):-!,reverse(AuxList,Path).
 suggest_dfsAux(Current,Dest,AuxList, Tag, Path):-
-		node(CurrentID, Current, _),
-		(connection(CurrentID, FriendID, _, _);
-		connection(FriendID, CurrentID, _, _)),
-		node(FriendID, Friend, FriendTagList),
+		node(Current, _, _),
+		(connection(Current, Friend, _, _);
+		connection(Friend, Current, _, _)),
+		node(Friend, _, FriendTagList),
 		\+ member(Friend, AuxList),
 		member(Tag, FriendTagList),
 		suggest_dfsAux(Friend, Dest, [Friend | AuxList], Tag, Path).
+
+
+% strongest route
+
+:-dynamic strongest_currentRoute/2.
+
+strongest_dfs(Orig, Dest, Strength, Path):- strongest_dfsAux(Orig, Dest, [Orig], Strength, Path).
+
+strongest_dfsAux(Dest, Dest, AuxList, 0, Path):-!,reverse(AuxList, Path).
+strongest_dfsAux(Current, Dest, AuxList, Strength, Path):-
+	node(CurrentID, Current, _),
+	(connection(CurrentID, FriendID, StrengthA, StrengthB);
+	connection(FriendID, CurrentID, StrengthA, StrengthB)),
+	node(FriendID, Friend, _),
+	\+ member(Friend, AuxList),
+	strongest_dfsAux(Friend, Dest, [Friend | AuxList], SX, Path),
+	Strength is (SX + StrengthA + StrengthB).
+
+strongest_route(Orig, Dest, StrongestPath):-
+	get_time(Initial_Time),
+    (strongest_findRoute(Orig, Dest); true),
+    retract(strongest_currentRoute(StrongestPath, Strength)),
+    get_time(End_Time),
+    T is End_Time - Initial_Time,
+    write('Time:'),write(T),nl,
+    write('Strength:'),write(Strength),nl,
+    write('Solution path:'),write(StrongestPath),nl.
+
+strongest_findRoute(Orig, Dest):-
+    asserta(strongest_currentRoute(_, 0)),
+    strongest_dfs(Orig, Dest, Strength, PathList),
+    strongest_updateRoute(Strength, PathList),
+    fail.
+
+strongest_updateRoute(Strength, PathList):-
+    strongest_currentRoute(_, Current_Strength),
+    Strength > Current_Strength, retract(strongest_currentRoute(_,_)),
+    asserta(strongest_currentRoute(PathList, Strength)).
+
+
 % common_tags
 
 :- dynamic common_tags_users/2.
@@ -257,9 +297,9 @@ suggest_dfsAux(Current,Dest,AuxList, Tag, Path):-
 common_tags(X,List_Result):-
     get_time(T1),
     common_tags_get_all_tags(All_TagsT),
-    common_tags_change_to_synonyms(All_TagsT, All_Tags),
+	common_tags_change_to_synonyms(All_TagsT, All_Tags),
     findall(Combination,common_tags_combination(X,All_Tags,Combination),Combinations),
-    findall(User,node(_,User,_),Users),
+    findall(UserId,node(UserId,_,_),Users),
     common_tags_users_combination(X,Users,Combinations),
     findall([Comb,ListUsers],common_tags_users(Comb,ListUsers),List_Result),
     retractall(common_tags_users(_,_)),
@@ -272,13 +312,13 @@ common_tags_users_combination(X,Users,[Combination|Combinations]):-
     common_tags_users_combination_aux(X,Combination,Users,Users_With_Tags),
     common_tags_users_combination(X,Users,Combinations),
     !,
-    comon_tags_list_length(Users_With_Tags, L),
-    ( L > 1-> assertz(common_tags_users(Combination,Users_With_Tags)) ; ! ).
+	comon_tags_list_length(Users_With_Tags, L),
+	( L > 1-> assertz(common_tags_users(Combination,Users_With_Tags)) ; ! ).
 
 common_tags_users_combination_aux(_,_,[],[]):-!.
 common_tags_users_combination_aux(X,Tags,[U|Users],Result):-
-    node(_,U,User_TagsT),
-    common_tags_change_to_synonyms(User_TagsT, User_Tags),
+    node(U,_,User_TagsT),
+	common_tags_change_to_synonyms(User_TagsT, User_Tags),
     intersection(Tags, User_Tags,Commun),
     length(Commun, Size),
     Size >= X, !,
@@ -304,10 +344,41 @@ common_tags_combination(N,[_|T],Comb):-N>0,common_tags_combination(N,T,Comb).
 
 comon_tags_list_length([], 0).
 comon_tags_list_length([_|TAIL], N) :- comon_tags_list_length(TAIL, N1), N is N1 + 1.
-    
+
 common_tags_change_to_synonyms([],[]).
 common_tags_change_to_synonyms([Tag|All_Tags],Tags):-
     common_tags_change_to_synonyms(All_Tags,Tags1),!,
-    (synonym(Tag, Sign) ->
-        union([Sign], Tags1, Tags);
-        union([Tag], Tags1, Tags)).
+	(synonym(Tag, Sign) ->
+		union([Sign], Tags1, Tags);
+		union([Tag], Tags1, Tags)).
+
+
+
+
+    % getNetworkByLevel
+
+:-dynamic user_visited/1.
+
+network_getNetworkByLevel(Orig,Level,L, Total):-
+    retractall(userVisited(_)),
+    findall(Orig,dfs(Orig,Level),_),
+    findall(User,userVisited(User),L),
+    retractall(userVisited(_)),
+    length(L,Total).
+
+
+dfs(Orig,Level):-
+    dfs2(Orig,Level,[Orig]).
+
+
+dfs2(_,0,_):-!.
+
+
+dfs2(Act,Level,LA):-
+    Level > 0,
+    (connection(Act,X,_,_);connection(X,Act,_,_)),
+    \+userVisited(X),
+    \+ member(X,LA),
+    Level1 is Level-1,
+    asserta(userVisited(X)),
+    dfs2(X,Level1,[X|LA]).
