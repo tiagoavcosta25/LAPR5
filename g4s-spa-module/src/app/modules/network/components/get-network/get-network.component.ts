@@ -118,6 +118,7 @@ export class GetNetworkComponent implements OnInit {
   scene: THREE.Scene;
   renderer: THREE.WebGLRenderer;
   camera: THREE.PerspectiveCamera;
+  miniMapCamera: THREE.OrthographicCamera;
   controls: OrbitControls;
 
   initializeGraph(){
@@ -133,6 +134,10 @@ export class GetNetworkComponent implements OnInit {
     document.body.appendChild( renderer.domElement );
 
     const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
+
+    //creating mini-map camera
+    const miniMapCamera = new THREE.OrthographicCamera(-60, 60, 60, -60);
+    miniMapCamera.position.z = 10;
 
     const controls = new OrbitControls( camera, renderer.domElement );
     controls.enableZoom = true;
@@ -184,6 +189,20 @@ export class GetNetworkComponent implements OnInit {
     }
 
     renderer.render( scene, camera );    
+
+    // Create Square
+    renderer.setScissorTest(true);
+    renderer.setScissor(window.innerWidth - 221, 100, 202, 202);
+    renderer.setClearColor(0x000000, 1); // border color
+    renderer.clearColor();
+
+    // Create Mini-Graph
+    renderer.setViewport(window.innerWidth - 221, 101, 200, 200);
+    renderer.setScissor(window.innerWidth - 220, 101, 200, 200);
+    renderer.setScissorTest(true);
+    miniMapCamera.updateProjectionMatrix();
+    renderer.render(scene, miniMapCamera);
+
     }
 
     animate() {
