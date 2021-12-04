@@ -1,11 +1,10 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Connection } from 'src/shared/models/connection/connection.model';
 import { GettingConnection } from 'src/shared/models/connection/getting-connection.model';
 import { UpdatingConnection } from 'src/shared/models/connection/updating-connection.model';
-import { GetMutualFriends } from 'src/shared/models/player/get-mutual-friends.model';
 import { Player } from 'src/shared/models/player/player.model';
 
 
@@ -45,8 +44,9 @@ export class ConnectionService {
   }
 
   /** GET: returns mutual friends from server */
-  getMutualFriends(email: string, emailTarget: GetMutualFriends): Observable<Player> {
-    return this.http.get<Player>(this.connectionUrl + 'mutualFriends/' + email, this.httpOptions).pipe(
+  getMutualFriends(playerEmail: string, friendEmail: string): Observable<Player[]> {
+    let params = new HttpParams().set('friendEmail', friendEmail);
+    return this.http.get<Player[]>(this.connectionUrl + 'mutualFriends/' + playerEmail, {params}).pipe(
       catchError(this.handleError)
     );
   }
