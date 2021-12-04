@@ -181,12 +181,17 @@ namespace DDDNetCore.Domain.Connections
             List<PlayerId> friendsList = await _repo.GetFriendsList(player.Id);
 
             List<Player> reachableUsersList = new List<Player>();
+            List<PlayerId> lstTotal = new List<PlayerId>();
 
             foreach(PlayerId id in friendsList){
                 var lst = await _repo.GetFriendsList(id);
-                lst.Remove(player.Id);
-                reachableUsersList.AddRange(await _repoPl.GetByIdsAsync(lst));
+                foreach(PlayerId temp in lst){
+                    if(!lstTotal.Contains(temp) && temp != player.Id){
+                        lstTotal.Add(temp);
+                    }
+                }
             }
+            reachableUsersList.AddRange(await _repoPl.GetByIdsAsync(lstTotal));
 
             return reachableUsersList.ConvertAll<PlayerDto>(plyr =>
                 new PlayerDto(plyr.Id.AsGuid(),plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, 
