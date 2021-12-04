@@ -1,67 +1,61 @@
-<app-header></app-header>
-<mat-drawer-container class="dashboard-container mat-typography">
-	<mat-drawer #drawer mode="side" disableClose="true" opened="true">
-		<mat-nav-list>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-2">
+			<mat-drawer-container class="dashboard-container mat-typography">
+				<mat-drawer #drawer mode="side" disableClose="true" opened="true">
+					<mat-nav-list>
+						
+						<button [routerLink]="['/get-players']">
+							<mat-list-item>
+								<mat-icon mat-list-icon color="accent">people</mat-icon>
+								<h4>Leaderboard</h4>
+							</mat-list-item>
+						</button>
 			
-			<button (click)="openGetPlayers()">
-				<mat-list-item>
-					<mat-icon mat-list-icon color="accent">people</mat-icon>
-					<h4>Leaderboard</h4>
-				</mat-list-item>
-			</button>
-
-			<button (click)="openApproveRequest()">
-				<mat-list-item>
-					<mat-icon mat-list-icon color="accent">check_circle</mat-icon>
-					<h4>Approve Requests</h4>
-				</mat-list-item>
-			</button>
-
-			<button (click)="openAcceptRequest()">
-				<mat-list-item>
-					<mat-icon mat-list-icon color="accent">check_circle_outline</mat-icon>
-					<h4>Accept Requests</h4>
-				</mat-list-item>
-			</button>
-
-			<button (click)="openRequestIntroduction()">
-				<mat-list-item>
-					<mat-icon mat-list-icon color="accent">compare_arrows</mat-icon>
-					<h4>Introduction Request</h4>
-				</mat-list-item>
-			</button>
-
-			<button (click)="openGetNetwork()">
-				<mat-list-item>
-					<mat-icon mat-list-icon color="accent">linear_scale</mat-icon>
-					<h4>Network</h4>
-				</mat-list-item>
-			</button>
-
-			<button (click)="openRegisterPlayer()">
-				<mat-list-item>
-					<mat-icon mat-list-icon color="accent">person</mat-icon>
-					<h4>New Account</h4>
-				</mat-list-item>
-			</button>
-
-			<button (click)="openUpdatePlayer()">
-				<mat-list-item>
-					<mat-icon mat-list-icon color="accent">account_circle</mat-icon>
-					<h4>My Profile</h4>
-				</mat-list-item>
-			</button>
-		</mat-nav-list>
-	</mat-drawer>
-
-	<div class="dashboard-content">
-		<app-get-players *ngIf=this.showGetPlayers></app-get-players>
-		<app-update-player *ngIf=this.showUpdatePlayer></app-update-player>
-		<app-register-player *ngIf=this.showRegisterPlayer></app-register-player>
-		<app-request-introduction *ngIf=this.showRequestIntroduction></app-request-introduction>
-		<app-approve-request *ngIf=this.showApproveRequest></app-approve-request>
-		<app-accept-request *ngIf=this.showAcceptRequest></app-accept-request>
-		<app-login *ngIf=this.showLogin></app-login>
-		<app-get-network *ngIf=this.showGetNetwork></app-get-network>
+						<button [routerLink]="['/approve-request']">
+							<mat-list-item>
+								<mat-icon mat-list-icon color="accent">check_circle</mat-icon>
+								<h4>Approve Requests</h4>
+							</mat-list-item>
+						</button>
+			
+						<button [routerLink]="['/accept-request']">
+							<mat-list-item>
+								<mat-icon mat-list-icon color="accent">check_circle_outline</mat-icon>
+								<h4>Accept Requests</h4>
+							</mat-list-item>
+						</button>
+			
+						<button [routerLink]="['/request-introduction']">
+							<mat-list-item>
+								<mat-icon mat-list-icon color="accent">compare_arrows</mat-icon>
+								<h4>Introduction Request</h4>
+							</mat-list-item>
+						</button>
+			
+						<button [routerLink]="['/get-network']">
+							<mat-list-item>
+								<mat-icon mat-list-icon color="accent">linear_scale</mat-icon>
+								<h4>Network</h4>
+							</mat-list-item>
+						</button>
+			
+						<button [routerLink]="['/register-player']">
+							<mat-list-item>
+								<mat-icon mat-list-icon color="accent">person</mat-icon>
+								<h4>New Account</h4>
+							</mat-list-item>
+						</button>
+			
+						<button [routerLink]="['/update-player']">
+							<mat-list-item>
+								<mat-icon mat-list-icon color="accent">account_circle</mat-icon>
+								<h4>My Profile</h4>
+							</mat-list-item>
+						</button>
+					</mat-nav-list>
+				</mat-drawer>
+			</mat-drawer-container>
+		</div>
 	</div>
-</mat-drawer-container>
+</div>

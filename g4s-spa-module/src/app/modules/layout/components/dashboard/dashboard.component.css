@@ -1,23 +1,18 @@
-app-header{
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 10%;
-    width: 100%;
-    max-height: 65px;
-}
-
 .dashboard-container {
     position: absolute;
-    height: 90%;
-    max-height: 90%;
-    min-height: 90%;
-    width: 100%;
-    min-width: 100%;
-    max-width: 100%;
-    bottom: 0;
-    top: 65px;
+    height: 100%;
+    width: 61px;
+    background-color: #ffffff;
+    transition: width 0.4s;
   }
+
+.dashboard-container:hover {
+    width: 12%;
+}
+
+  .container-fluid{
+    padding: 0;
+ }
 
 mat-drawer {
     background-color: #eee;

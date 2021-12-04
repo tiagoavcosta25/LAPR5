@@ -12,22 +12,25 @@ import { ApproveRequestComponent } from './modules/request/components/approve-re
 import { UpdatePlayerComponent } from './modules/player/components/update-player/update-player.component';
 import { SearchPlayerComponent } from './modules/player/components/search-player/search-player.component';
 import { GetNetworkComponent } from './modules/network/components/get-network/get-network.component';
+import { LayoutComponent } from './modules/layout/layout.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-  { path: 'login',  component: LoginComponent },
-  { path: 'header',  component: HeaderComponent },
-  { path: 'dashboard',  component: DashboardComponent },
-  { path: 'register-player',  component: RegisterPlayerComponent },
-  { path: 'get-players',  component: GetPlayersComponent },
-  { path: 'get-network',  component: GetNetworkComponent },
-  { path: 'request-introduction',  component: RequestIntroductionComponent },
-  { path: 'edit-connection',  component: EditConnectionComponent },
-  { path: 'accept-request',  component: AcceptRequestComponent },
-  { path: 'approve-request',  component: ApproveRequestComponent },
-  { path: 'update-player',  component: UpdatePlayerComponent },
-  { path: 'search-player', component: SearchPlayerComponent},
-  { path: 'login',  component: LoginComponent }
+  { path: '', redirectTo: 'get-players', pathMatch: 'full' },
+  { path: '', 
+    component: LayoutComponent,
+    children: [
+      { path: 'register-player',  component: RegisterPlayerComponent },
+      { path: 'get-players',  component: GetPlayersComponent },
+      { path: 'get-network',  component: GetNetworkComponent },
+      { path: 'request-introduction',  component: RequestIntroductionComponent },
+      { path: 'edit-connection',  component: EditConnectionComponent },
+      { path: 'accept-request',  component: AcceptRequestComponent },
+      { path: 'approve-request',  component: ApproveRequestComponent },
+      { path: 'update-player',  component: UpdatePlayerComponent },
+      { path: 'search-player', component: SearchPlayerComponent},
+    ]
+  },
+  { path: 'header',  component: HeaderComponent }
 ];
 
 @NgModule({
