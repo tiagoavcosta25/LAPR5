@@ -38,6 +38,13 @@
 				</mat-list-item>
 			</button>
 
+			<button (click)="openSearchPlayer()">
+				<mat-list-item>
+					<mat-icon mat-list-icon color="accent">search</mat-icon>
+					<h4>Search Player</h4>
+				</mat-list-item>
+			</button>
+
 			<button (click)="openRegisterPlayer()">
 				<mat-list-item>
 					<mat-icon mat-list-icon color="accent">person</mat-icon>
@@ -63,5 +70,6 @@
 		<app-accept-request *ngIf=this.showAcceptRequest></app-accept-request>
 		<app-login *ngIf=this.showLogin></app-login>
 		<app-get-network *ngIf=this.showGetNetwork></app-get-network>
+		<app-search-player *ngIf=this.showSearchPlayer></app-search-player>
 	</div>
 </mat-drawer-container>
