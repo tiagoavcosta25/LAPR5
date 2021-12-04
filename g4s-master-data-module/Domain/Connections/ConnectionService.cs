@@ -181,12 +181,17 @@ namespace DDDNetCore.Domain.Connections
             List<PlayerId> friendsList = await _repo.GetFriendsList(player.Id);
 
             List<Player> reachableUsersList = new List<Player>();
+            List<PlayerId> lstTotal = new List<PlayerId>();
 
             foreach(PlayerId id in friendsList){
                 var lst = await _repo.GetFriendsList(id);
-                lst.Remove(player.Id);
-                reachableUsersList.AddRange(await _repoPl.GetByIdsAsync(lst));
+                foreach(PlayerId temp in lst){
+                    if(!lstTotal.Contains(temp) && temp != player.Id){
+                        lstTotal.Add(temp);
+                    }
+                }
             }
+            reachableUsersList.AddRange(await _repoPl.GetByIdsAsync(lstTotal));
 
             return reachableUsersList.ConvertAll<PlayerDto>(plyr =>
                 new PlayerDto(plyr.Id.AsGuid(),plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, 
@@ -194,10 +199,10 @@ namespace DDDNetCore.Domain.Connections
                 plyr.Facebook.Url, plyr.LinkedIn.Url, plyr.Tags.Select(t => t.tagName).ToList()));
         }
 
-        public async Task<List<PlayerDto>> GetMutualFriends(string playerEmail, GetMutualFriendsDto targetDto)
+        public async Task<List<PlayerDto>> GetMutualFriends(string playerEmail, string friendEmail)
         {
             var player = await _repoPl.GetByEmailAsync(playerEmail);
-            var target = await _repoPl.GetByEmailAsync(targetDto.Email);
+            var target = await _repoPl.GetByEmailAsync(friendEmail);
 
             var lst = await _repo.GetMutualFriends(player.Id, target.Id);
 
@@ -210,12 +215,12 @@ namespace DDDNetCore.Domain.Connections
 
         }
         
-        public async Task<List<ConnectionDto>> GetNetwork(string playerEmail, GetNetworkDto dto){
+        public async Task<List<ConnectionDto>> GetNetwork(string playerEmail, int scope){
 
             var player = await _repoPl.GetByEmailAsync(playerEmail);
             
             List<Connection> lst = new List<Connection>();
-            lst = await this.GetNetwork(player.Id, dto.Scope, lst);
+            lst = await this.GetNetwork(player.Id, scope, lst);
 
             List<ConnectionDto> lstDto = lst.ConvertAll<ConnectionDto>(con =>
                 new ConnectionDto(con.Id.AsString(), con.Player.AsString(), con.Friend.AsString(), con.ConnectionStrength.Strength, con.Tags.Select(t => t.tagName).ToList()));

@@ -29,8 +29,8 @@ namespace DDDNetCore.Domain.Connections
 
         Task<List<PlayerDto>> GetReachablePlayers(string playerEmail);
 
-        Task<List<PlayerDto>> GetMutualFriends(string playerEmail, GetMutualFriendsDto targetDto);
+        Task<List<PlayerDto>> GetMutualFriends(string playerEmail, string friendEmail);
 
-        Task<List<ConnectionDto>> GetNetwork(string playerEmail, GetNetworkDto dto);
+        Task<List<ConnectionDto>> GetNetwork(string playerEmail, int scope);
     }
 }

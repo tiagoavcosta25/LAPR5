@@ -58,7 +58,7 @@ export class RequestIntroductionComponent implements OnInit {
       this.c = new CreatingConnectionRequest;
       this.reachablePlayer = new Player;
       this.mutualFriend = new Player;
-      this.playerEmail = 'jane@email.com';
+      this.playerEmail = 'email1@gmail.com';
       this.getReachablePlayers();
     }
 
@@ -127,10 +127,8 @@ export class RequestIntroductionComponent implements OnInit {
     }
 
     getMutualFriends(target: Player): void {
-      let dto = new GetMutualFriends();
-      dto.email = target.email;
       this.spinner.show();
-      /*this.cService.getMutualFriends(this.playerEmail, dto).subscribe({ next: data => {
+      this.cService.getMutualFriends(this.playerEmail, target.email).subscribe({ next: data => {
         this.mutualFriends = data;
         this.spinner.hide();
       },
@@ -138,12 +136,12 @@ export class RequestIntroductionComponent implements OnInit {
           this.spinner.hide();
           this.error = true;
         }
-      });*/
-      let friend = new Player();
+      });
+      /*let friend = new Player();
       friend.email = "email1@gmail.com";
       friend.name = "user1";
       friend.id = "a0164888-d6af-4fd5-ba01-ffce1d1cd0a0"
-      this.mutualFriends = [friend];
+      this.mutualFriends = [friend];*/
       this.spinner.hide();
     }
 

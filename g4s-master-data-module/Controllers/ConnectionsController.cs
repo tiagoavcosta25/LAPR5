@@ -193,18 +193,18 @@ namespace DDDNetCore.Controllers
             return await _service.GetReachablePlayers(playerEmail);
         }
 
-        // GET: api/Connections/reachableUsers/email
+        // GET: api/Connections/reachableUsers/?playerEmail={{playerEmail}}&friendEmail={{friendEmail}}
         [HttpGet("mutualFriends/{playerEmail}")]
-        public async Task<ActionResult<IEnumerable<PlayerDto>>> GetMutualFriends(string playerEmail, GetMutualFriendsDto dto)
+        public async Task<ActionResult<IEnumerable<PlayerDto>>> GetMutualFriends(string playerEmail, string friendEmail)
         {
-            return await _service.GetMutualFriends(playerEmail, dto);
+            return await _service.GetMutualFriends(playerEmail, friendEmail);
         }
 
-        // GET: api/Connections/network
+        // GET: api/Connections/network?playerEmail={{email}}&scope={{scope}}
         [HttpGet("network/{playerEmail}")]
-        public async Task<ActionResult<IEnumerable<ConnectionDto>>> GetNetwork(string playerEmail, GetNetworkDto dto)
+        public async Task<ActionResult<IEnumerable<ConnectionDto>>> GetNetwork(string playerEmail, int scope)
         {
-            return await _service.GetNetwork(playerEmail, dto);
+            return await _service.GetNetwork(playerEmail, scope);
         }
 
     }
