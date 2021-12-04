@@ -135,6 +135,9 @@ export class GetNetworkComponent implements OnInit {
     const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
 
     const controls = new OrbitControls( camera, renderer.domElement );
+    controls.enableZoom = true;
+    controls.zoomSpeed = 1.2;
+		controls.panSpeed = 0.8;
 
     camera.position.set( 0, 20, 100 );
     controls.update();
@@ -181,6 +184,17 @@ export class GetNetworkComponent implements OnInit {
     }
 
     renderer.render( scene, camera );    
+    }
+
+    animate() {
+
+      requestAnimationFrame( this.animate );
+    
+      // required if controls.enableDamping or controls.autoRotate are set to true
+      this.controls.update();
+    
+      this.renderer.render( this.scene, this.camera );
+    
     }
 
 }
