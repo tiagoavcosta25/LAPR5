@@ -53,7 +53,8 @@ export class ConnectionService {
 
   /** GET: returns connections from server */
   getNetwork(email: string, scope: number): Observable<Connection[]> {
-    return this.http.get<Connection[]>(this.connectionUrl + 'network/' + email).pipe(
+    let params = new HttpParams().set('scope', scope);
+    return this.http.get<Connection[]>(this.connectionUrl + 'network/' + email, {params}).pipe(
       catchError(this.handleError)
     );
   }
