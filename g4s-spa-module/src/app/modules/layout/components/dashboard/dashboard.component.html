@@ -31,7 +31,7 @@
 				</mat-list-item>
 			</button>
 
-			<button (click)="openLogin()">
+			<button (click)="openGetNetwork()">
 				<mat-list-item>
 					<mat-icon mat-list-icon color="accent">linear_scale</mat-icon>
 					<h4>Network</h4>
@@ -62,5 +62,6 @@
 		<app-approve-request *ngIf=this.showApproveRequest></app-approve-request>
 		<app-accept-request *ngIf=this.showAcceptRequest></app-accept-request>
 		<app-login *ngIf=this.showLogin></app-login>
+		<app-get-network *ngIf=this.showGetNetwork></app-get-network>
 	</div>
 </mat-drawer-container>

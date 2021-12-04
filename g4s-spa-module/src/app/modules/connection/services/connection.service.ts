@@ -51,6 +51,13 @@ export class ConnectionService {
     );
   }
 
+  /** GET: returns connections from server */
+  getNetwork(email: string, scope: number): Observable<Connection[]> {
+    return this.http.get<Connection[]>(this.connectionUrl + 'network/' + email).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   private handleError(err: HttpErrorResponse) {
     console.error('An error occurred: ', err.error.errors.message);
     if (err.error instanceof ErrorEvent) {

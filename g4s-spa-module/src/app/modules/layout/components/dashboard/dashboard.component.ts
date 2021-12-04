@@ -14,6 +14,7 @@ export class DashboardComponent implements OnInit {
   showUpdatePlayer: boolean = false;
   showAcceptRequest: boolean = false;
   showApproveRequest: boolean = false;
+  showGetNetwork: boolean = false;
 
   constructor() { }
 
@@ -25,6 +26,7 @@ export class DashboardComponent implements OnInit {
     this.showUpdatePlayer = false;
     this.showAcceptRequest = false;
     this.showApproveRequest = false;
+    this.showGetNetwork = false;
   }
 
   openGetPlayers(){
@@ -35,6 +37,7 @@ export class DashboardComponent implements OnInit {
     this.showUpdatePlayer = false;
     this.showAcceptRequest = false;
     this.showApproveRequest = false;
+    this.showGetNetwork = false;
   }
 
   openRegisterPlayer(){
@@ -45,6 +48,7 @@ export class DashboardComponent implements OnInit {
     this.showUpdatePlayer = false;
     this.showAcceptRequest = false;
     this.showApproveRequest = false;
+    this.showGetNetwork = false;
   }
 
   openLogin(){
@@ -55,6 +59,7 @@ export class DashboardComponent implements OnInit {
     this.showUpdatePlayer = false;
     this.showAcceptRequest = false;
     this.showApproveRequest = false;
+    this.showGetNetwork = false;
   }
 
   openRequestIntroduction(){
@@ -65,6 +70,7 @@ export class DashboardComponent implements OnInit {
     this.showUpdatePlayer = false;
     this.showAcceptRequest = false;
     this.showApproveRequest = false;
+    this.showGetNetwork = false;
   }
 
   openUpdatePlayer(){
@@ -75,6 +81,7 @@ export class DashboardComponent implements OnInit {
     this.showUpdatePlayer = true;
     this.showAcceptRequest = false;
     this.showApproveRequest = false;
+    this.showGetNetwork = false;
   }
 
   openAcceptRequest(){
@@ -85,6 +92,7 @@ export class DashboardComponent implements OnInit {
     this.showUpdatePlayer = false;
     this.showAcceptRequest = true;
     this.showApproveRequest = false;
+    this.showGetNetwork = false;
   }
 
   openApproveRequest(){
@@ -95,6 +103,18 @@ export class DashboardComponent implements OnInit {
     this.showUpdatePlayer = false;
     this.showAcceptRequest = false;
     this.showApproveRequest = true;
+    this.showGetNetwork = false;
+  }
+
+  openGetNetwork(){
+    this.showGetPlayers = false;
+    this.showRequestIntroduction = false;
+    this.showRegisterPlayer = false;
+    this.showLogin = false;
+    this.showUpdatePlayer = false;
+    this.showAcceptRequest = false;
+    this.showApproveRequest = false;
+    this.showGetNetwork = true;
   }
 
 }
