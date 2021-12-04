@@ -452,3 +452,52 @@ common_tags_change_to_synonyms([Tag|All_Tags],Tags):-
 	(synonym(Tag, Sign) ->
 		union([Sign], Tags1, Tags);
 		union([Tag], Tags1, Tags)).
+		%======== Network By Level ========%
+
+:- http_handler('/api/network/size', network_levelCompute, []).
+
+network_levelCompute(Request) :-
+    cors_enable(Request, [methods([get])]),
+    network_levelPrepare(Request, Path, Size),
+    prolog_to_json(Path, JSONObject),
+    prolog_to_json(Size, JSONObject2),
+    reply_json([JSONObject, JSONObject2], [json_object(dict)]).
+
+network_levelPrepare(Request, Path, Size) :-
+    http_parameters(Request, [email(Email, [string]) ,level(Level, [number])]),
+    addPlayers(),
+    addConnections(),
+    getPlayerName(Email, PlayerName),
+    node(PlayerId, PlayerName, _),
+    network_getNetworkByLevel(PlayerId, Level, Path, Size),
+    retractall(connection(_,_,_,_)),
+    retractall(node(_,_,_)).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+:-dynamic user_visited/1.
+
+network_getNetworkByLevel(Orig,Level,L, Total):-
+    retractall(userVisited(_)),
+    findall(Orig,dfs(Orig,Level),_),
+    findall(User,userVisited(User),L),
+    retractall(userVisited(_)),
+    length(L,Total).
+
+
+dfs(Orig,Level):-
+    dfs2(Orig,Level,[Orig]).
+
+
+dfs2(_,0,_):-!.
+
+
+dfs2(Act,Level,LA):-
+    Level > 0,
+    (connection(Act,X,_,_);connection(X,Act,_,_)),
+    \+userVisited(X),
+    \+ member(X,LA),
+    Level1 is Level-1,
+    asserta(userVisited(X)),
+    dfs2(X,Level1,[X|LA]).
