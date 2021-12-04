@@ -39,6 +39,8 @@ import { UpdatePlayerComponent } from './modules/player/components/update-player
 import { ApproveRequestComponent } from './modules/request/components/approve-request/approve-request.component';
 import { LayoutComponent } from './modules/layout/layout.component';
 import { SuggestPlayersComponent } from './modules/network/components/suggest-players/suggest-players.component';
+import { StrongestRouteComponent } from './modules/ai/components/strongest-route/strongest-route.component';
+import { CommonTagsComponent } from './modules/ai/components/common-tags/common-tags.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +63,9 @@ import { SuggestPlayersComponent } from './modules/network/components/suggest-pl
     UpdatePlayerComponent,
     ApproveRequestComponent,
     LayoutComponent,
-    SuggestPlayersComponent
+    SuggestPlayersComponent,
+    StrongestRouteComponent,
+    CommonTagsComponent
   ],
   imports: [
     BrowserModule,

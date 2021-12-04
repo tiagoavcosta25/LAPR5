@@ -14,6 +14,7 @@ connection(2,4,2,6).
 connection(2,5,-3,-2).
 connection(2,6,-3,-2).
 connection(1,3,-3,-2).
+connection(1,4,-3,-2).
 connection(3,5,-3,-2).
 
 
@@ -288,3 +289,32 @@ common_tags_change_to_synonyms([Tag|All_Tags],Tags):-
 	(synonym(Tag, Sign) ->
 		union([Sign], Tags1, Tags);
 		union([Tag], Tags1, Tags)).
+
+
+% getNetworkByLevel
+
+:-dynamic user_visited/1.
+
+network_getNetworkByLevel(Orig,Level,L, Total):-
+    retractall(userVisited(_)),
+    findall(Orig,dfs(Orig,Level),_),
+    findall(User,userVisited(User),L),
+    retractall(userVisited(_)),
+    length(L,Total).
+
+
+dfs(Orig,Level):-
+    dfs2(Orig,Level,[Orig]).
+
+
+dfs2(_,0,_):-!.
+
+
+dfs2(Act,Level,LA):-
+    Level > 0,
+    (connection(Act,X,_,_);connection(X,Act,_,_)),
+    \+userVisited(X),
+    \+ member(X,LA),
+    Level1 is Level-1,
+    asserta(userVisited(X)),
+    dfs2(X,Level1,[X|LA]).
