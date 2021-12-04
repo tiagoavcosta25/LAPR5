@@ -37,6 +37,7 @@ import { AcceptRequestComponent } from './modules/request/components/accept-requ
 import { SearchPlayerComponent } from './modules/player/components/search-player/search-player.component'
 import { UpdatePlayerComponent } from './modules/player/components/update-player/update-player.component';
 import { ApproveRequestComponent } from './modules/request/components/approve-request/approve-request.component';
+import { SuggestPlayersComponent } from './modules/network/components/suggest-players/suggest-players.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { ApproveRequestComponent } from './modules/request/components/approve-re
     AcceptRequestComponent,
     SearchPlayerComponent,
     UpdatePlayerComponent,
-    ApproveRequestComponent
+    ApproveRequestComponent,
+    SuggestPlayersComponent
   ],
   imports: [
     BrowserModule,
