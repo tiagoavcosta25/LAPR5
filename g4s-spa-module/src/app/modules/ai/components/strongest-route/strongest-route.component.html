@@ -1,0 +1,81 @@
+<div *ngIf="players==undefined; else defined">
+    
+</div>
+
+<div *ngIf="error">
+    <div class="container">
+        <div class="row justify-content-center">
+            <h1 class="font-weight-bold my-5 mb-3 text-center">There was an error trying to obtain the strongest path, please try again later.</h1>
+            <p></p>
+            <div class="col-4">
+                <button class="btn back btn-primary w-100" (click)="goBack()">Go back!</button>
+            </div>
+            <div class="col-4">
+            <button class="btn back btn-primary w-100" (click)="refresh()">Try again now!</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #defined>
+    <div class="container my-5">
+        <div *ngIf="players.length; else noConnections">
+            <h2>Strongest path between you and {{ getLastPlayerName() }}</h2>
+            <mat-accordion class="example-headers-align">
+                <mat-expansion-panel *ngFor="let p of players; let i = index" [expanded]="step === i" (opened)="setStep(i)" (closed)="setStep(-1)" hideToggle>
+                  <mat-expansion-panel-header>
+                      <div class="up-down-sign">
+                        <div class="down-sign">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray" class="bi bi-arrow-down" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
+                            </svg> 
+                          </div>
+    
+                      </div>
+                      
+
+
+                    <mat-panel-title>
+                      {{ p.name }}
+                    </mat-panel-title>
+                    <mat-panel-description>
+                      {{ p.email }}
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+
+                  <div class="container-4">
+                    <p  style="font-size: 14px; margin: 5px;">Phone number: {{ p.phoneNumber }}</p>
+                  </div>
+
+                  <div class="container-4 mb-4" style="display: flex;">
+                      <span class="badge rounded-pill bg-success" style="margin: 5px; font-size: 14px;" *ngFor="let tag of p.tags">{{ tag }}</span>
+                  </div>
+
+                </mat-expansion-panel>              
+              </mat-accordion>
+        </div>
+            <ng-template #noConnections>
+                <h1 class="font-weight-bold my-5 mb-4 text-center">There's no possible path.</h1>
+                <p></p>
+                <button class="btn back btn-primary w-30" (click)="goBack()">Go back!</button>
+            </ng-template>
+    </div>
+</ng-template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ngx-spinner></ngx-spinner>

@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from './modules/layout/components/dashboard/dashboard.component';
 import { RegisterPlayerComponent } from './modules/player/components/register-player/register-player.component';
 import { GetPlayersComponent } from './modules/player/components/get-players/get-players.component';
 import { LoginComponent } from './modules/login/login.component';
-import { HeaderComponent } from './modules/layout/components/header/header.component';
 import { EditConnectionComponent } from './modules/connection/components/edit-connection/edit-connection.component';
 import { AcceptRequestComponent } from './modules/request/components/accept-request/accept-request.component';
 import { RequestIntroductionComponent } from './modules/request/components/request-introduction/request-introduction.component';
@@ -13,6 +11,8 @@ import { UpdatePlayerComponent } from './modules/player/components/update-player
 import { SearchPlayerComponent } from './modules/player/components/search-player/search-player.component';
 import { GetNetworkComponent } from './modules/network/components/get-network/get-network.component';
 import { LayoutComponent } from './modules/layout/layout.component';
+import { StrongestRouteComponent } from './modules/ai/components/strongest-route/strongest-route.component';
+import { CommonTagsComponent } from './modules/ai/components/common-tags/common-tags.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'get-players', pathMatch: 'full' },
@@ -28,9 +28,10 @@ const routes: Routes = [
       { path: 'approve-request',  component: ApproveRequestComponent },
       { path: 'update-player',  component: UpdatePlayerComponent },
       { path: 'search-player', component: SearchPlayerComponent},
+      { path: 'strongest-route', component: StrongestRouteComponent}
     ]
   },
-  { path: 'header',  component: HeaderComponent }
+  { path: 'login',  component: LoginComponent },
 ];
 
 @NgModule({

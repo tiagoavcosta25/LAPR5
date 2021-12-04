@@ -343,32 +343,32 @@ strongest_routePrepare(Request, Path) :-
 	addConnections(),
 	getPlayerName(EmailPlayer, PlayerName),
 	getPlayerName(EmailTarget, TargetName),
-	strongest_route(PlayerName, TargetName, Path),
+	node(PlayerId, PlayerName, _),
+	node(TargetId, TargetName, _),
+	strongest_route(PlayerId, TargetId, Path),
 	retractall(connection(_,_,_,_)),
 	retractall(node(_,_,_)).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-strongest_dfs(Orig, Dest, Strength, Path):- strongest_dfsAux(Orig, Dest, [Orig], Strength, Path).
+strongest_dfs(OrigId, DestId, Strength, Path):- strongest_dfsAux(OrigId, DestId, [OrigId], Strength, Path).
 
-strongest_dfsAux(Dest, Dest, AuxList, 0, Path):-!,reverse(AuxList, Path).
-strongest_dfsAux(Current, Dest, AuxList, Strength, Path):-
-	node(CurrentID, Current, _),
-	(connection(CurrentID, FriendID, StrengthA, StrengthB);
-	connection(FriendID, CurrentID, StrengthA, StrengthB)),
-	node(FriendID, Friend, _),
-	\+ member(Friend, AuxList),
-	strongest_dfsAux(Friend, Dest, [Friend | AuxList], SX, Path),
+strongest_dfsAux(DestId, DestId, AuxList, 0, Path):-!,reverse(AuxList, Path).
+strongest_dfsAux(CurrentId, DestId, AuxList, Strength, Path):-
+	(connection(CurrentId, FriendID, StrengthA, StrengthB);
+	connection(FriendID, CurrentId, StrengthA, StrengthB)),
+	\+ member(FriendID, AuxList),
+	strongest_dfsAux(FriendID, DestId, [FriendID | AuxList], SX, Path),
 	Strength is (SX + StrengthA + StrengthB).
 
-strongest_route(Orig, Dest, StrongestPath):-
-    (strongest_findRoute(Orig, Dest); true),
+strongest_route(OrigId, DestId, StrongestPath):-
+    (strongest_findRoute(OrigId, DestId); true),
     retract(strongest_currentRoute(StrongestPath, _)).
 
-strongest_findRoute(Orig, Dest):-
+strongest_findRoute(OrigId, DestId):-
     asserta(strongest_currentRoute(_, 0)),
-    strongest_dfs(Orig, Dest, Strength, PathList),
+    strongest_dfs(OrigId, DestId, Strength, PathList),
     strongest_updateRoute(Strength, PathList),
     fail.
 

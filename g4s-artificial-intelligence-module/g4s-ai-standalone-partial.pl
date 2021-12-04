@@ -14,6 +14,7 @@ connection(2,4,2,6).
 connection(2,5,-3,-2).
 connection(2,6,-3,-2).
 connection(1,3,-3,-2).
+connection(1,4,-3,-2).
 connection(3,5,-3,-2).
 
 

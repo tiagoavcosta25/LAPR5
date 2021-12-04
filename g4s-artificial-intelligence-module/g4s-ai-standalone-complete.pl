@@ -290,6 +290,7 @@ strongest_updateRoute(Strength, PathList):-
     Strength > Current_Strength, retract(strongest_currentRoute(_,_)),
     asserta(strongest_currentRoute(PathList, Strength)).
 
+
 % common_tags
 
 :- dynamic common_tags_users/2.
