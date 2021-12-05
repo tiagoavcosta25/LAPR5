@@ -49,7 +49,9 @@ export class GetNetworkComponent implements OnInit {
     this.network = [];
     this.playersIds = [];
     this.players = [];
-    this.email = "email1@gmail.com";
+    //this.email = "email1@gmail.com";
+    this.email = localStorage.getItem('currentPlayer')!.trim();
+    console.log(this.email);
   }
 
   getPlayersByScope(){
@@ -151,8 +153,6 @@ export class GetNetworkComponent implements OnInit {
     document.body.appendChild( labelRenderer.domElement );
     
     const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
-    console.log(window.innerWidth);
-    console.log(window.innerHeight);
 
     //creating mini-map camera
     const miniMapCamera = new THREE.OrthographicCamera(-60, 60, 60, -60);

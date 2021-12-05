@@ -41,7 +41,7 @@ export class UpdatePlayerComponent implements OnInit {
               private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    this.email = "email1@gmail.com";
+    this.email = localStorage.getItem('currentPlayer')!.trim();
     this.p = new DobPlayer();
     this.getPlayerByEmail();
   }
