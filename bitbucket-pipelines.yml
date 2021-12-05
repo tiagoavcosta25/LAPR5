@@ -16,3 +16,12 @@ pipelines:
               - export PROJECT_MD=g4s-master-data-module
               - dotnet restore ./g4s-master-data-module
               - dotnet build $PROJECT_MD
+        - step:
+            name: Build andd Test SPA
+            image: node:14.17.1
+            caches:
+                - node
+            script: 
+               - npm install
+                - npm install -g @angular/cli
+                - ng build --prod
