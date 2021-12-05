@@ -15,6 +15,7 @@ import { ShortestRouteComponent } from './modules/ai/components/shortest-route/s
 import { StrongestRouteComponent } from './modules/ai/components/strongest-route/strongest-route.component';
 import { UpdateEmotionalStatusComponent } from './modules/player/components/update-emotional-status/update-emotional-status.component';
 import { SafestRouteComponent } from './modules/ai/components/safest-route/safest-route.component';
+import { SuggestPlayersComponent } from './modules/ai/components/suggest-players/suggest-players.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'get-players', pathMatch: 'full' },
@@ -33,7 +34,7 @@ const routes: Routes = [
       { path: 'safest-route', component: SafestRouteComponent},
       { path: 'shortest-route', component: ShortestRouteComponent},
       { path: 'strongest-route', component: StrongestRouteComponent},
-      { path: 'strongest-route', component: StrongestRouteComponent},
+      { path: 'suggest-players', component: SuggestPlayersComponent},
       { path: 'update-emotional-status', component: UpdateEmotionalStatusComponent}
     ]
   },

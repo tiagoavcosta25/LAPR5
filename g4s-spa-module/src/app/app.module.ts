@@ -38,7 +38,7 @@ import { SearchPlayerComponent } from './modules/player/components/search-player
 import { UpdatePlayerComponent } from './modules/player/components/update-player/update-player.component';
 import { ApproveRequestComponent } from './modules/request/components/approve-request/approve-request.component';
 import { LayoutComponent } from './modules/layout/layout.component';
-import { SuggestPlayersComponent } from './modules/network/components/suggest-players/suggest-players.component';
+import { SuggestPlayersComponent } from './modules/ai/components/suggest-players/suggest-players.component';
 import { StrongestRouteComponent } from './modules/ai/components/strongest-route/strongest-route.component';
 import { CommonTagsComponent } from './modules/ai/components/common-tags/common-tags.component';
 import { ShortestRouteComponent } from './modules/ai/components/shortest-route/shortest-route.component';
