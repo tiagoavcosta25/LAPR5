@@ -183,7 +183,9 @@ safest_routePrepare(Request, Path) :-
 	addConnections(),
 	getPlayerName(EmailPlayer, PlayerName),
 	getPlayerName(EmailTarget, TargetName),
-	safest_route(PlayerName, TargetName, Threshold, Path),
+  node(PlayerId, PlayerName, _),
+  node(TargetId, PlayerName, _),
+	safest_route(PlayerId, TargetId, Threshold, Path),
 	retractall(connection(_,_,_,_)),
 	retractall(node(_,_,_)).
 
