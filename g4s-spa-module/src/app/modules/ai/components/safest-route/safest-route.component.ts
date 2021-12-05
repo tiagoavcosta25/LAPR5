@@ -33,6 +33,8 @@ export class SafestRouteComponent implements OnInit {
     let email = localStorage.getItem('currentPlayer');
     if(email != null){
       this.getSafestRoute(email.trim(), "email3@gmail.com", 0);
+    } else{
+      this.error = true;
     }
   }
 
