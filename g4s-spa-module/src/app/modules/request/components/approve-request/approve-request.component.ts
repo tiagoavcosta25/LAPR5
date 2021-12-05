@@ -5,6 +5,9 @@ import { ApproveRequest } from 'src/shared/models/requests/approve-request.model
 import { RequestService } from '../../services/request.service';
 import { Location } from '@angular/common';
 import { IntroductionRequest } from 'src/shared/models/requests/introduction-request.model';
+import { PlayerService } from 'src/app/modules/player/services/player.service';
+import { Player } from 'src/shared/models/player/player.model';
+import { MiddleManIntroductionRequest } from 'src/shared/models/requests/middleman-introduction-pending-request.mode';
 
 
 @Component({
@@ -29,6 +32,7 @@ export class ApproveRequestComponent implements OnInit {
   step: number;
 
   requests: IntroductionRequest[];
+  fullRequests: MiddleManIntroductionRequest[];
 
   chosenRequest: IntroductionRequest;
 
@@ -41,13 +45,17 @@ export class ApproveRequestComponent implements OnInit {
   })
 
   constructor(private rService: RequestService,
+    private pService: PlayerService,
     private spinner: NgxSpinnerService,
     private location: Location,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder) { 
+      this.requests = [];
+      this.fullRequests = [];}
 
     ngOnInit(): void {
       this.r = new ApproveRequest;
-      this.getMiddleManRequests('email1@gmail.com');
+      let playerEmail = localStorage.getItem('currentPlayer')!.trim();
+      this.getMiddleManRequests(playerEmail);
     }
 
     setStep(index: number) {
@@ -65,6 +73,43 @@ export class ApproveRequestComponent implements OnInit {
       }
     }
 
+    getPlayers(lstReq:IntroductionRequest[]){
+      if(lstReq.length <= 0){
+        return;
+      }
+      let req = lstReq.pop()!;
+
+        this.pService.getPlayerById(req.player).subscribe({ next: data => {
+          let player = data;
+  
+          this.pService.getPlayerById(req.target).subscribe({ next: data => {
+            let target = data;
+    
+            let tempReq = new MiddleManIntroductionRequest();
+            tempReq.id = req.id;
+            tempReq.player = player;
+            tempReq.target = target;
+            tempReq.playerToMiddleManMessage = req.playerToMiddleManMessage;
+
+            this.fullRequests.push(tempReq);
+
+            this.getPlayers(lstReq);
+    
+            return;
+          },
+            error: _error => {
+            }
+          });
+  
+          return;
+        },
+          error: _error => {
+          }
+        });
+      return;
+      
+    }
+
     createUpdatedConnection(status: string) {
       this.r.middleManToTargetMessage = this.requestForm.value.middleManToTargetMessage;
       this.r.status = status;
@@ -74,6 +119,7 @@ export class ApproveRequestComponent implements OnInit {
       this.spinner.show();
       this.rService.getMiddleManRequests(email).subscribe({ next: data => {
         this.requests = data;
+        this.getPlayers(this.requests);
         this.spinner.hide();
       },
         error: _error => {
