@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { DobPlayer } from 'src/app/modules/player/models/dob-player.model copy';
 import { PlayerService } from 'src/app/modules/player/services/player.service';
 import { Player } from 'src/shared/models/player/player.model';
 import { AiService } from '../../services/ai.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-suggest-players',
@@ -18,15 +20,17 @@ export class SuggestPlayersComponent implements OnInit {
 
   email: string;
   success: any;
-  player: Player;
+  player: DobPlayer;
   suggestedIdList: string[];
   suggestedList: Player[];
   showForm: boolean = true;
   showList: boolean = false;
+  step: number;
 
   constructor(
     private spinner: NgxSpinnerService,
     private aService: AiService,
+    private location: Location,
     private pService: PlayerService,
     private fb: FormBuilder) { 
 
@@ -37,20 +41,20 @@ export class SuggestPlayersComponent implements OnInit {
   ngOnInit(): void {
     this.suggestedIdList = [];
     this.suggestedList = [];
-    this.player = new Player;
-    this.email = "john@email.com";
+    this.player = new DobPlayer;
+    this.email = "email1@gmail.com";
   }
 
   getSuggestedPlayers(){
     this.spinner.show();
     this.pService.getOnlyPlayerByEmail(this.email).subscribe({ next: data => {
       this.player = data;
-      console.log(this.player);
       this.aService.getSuggestedPlayers(this.email, this.suggestPlayersForm.value.scope).subscribe({ next: data => {
       this.suggestedIdList = data;
+      console.log(this.suggestedIdList);
       let temp = new Player;
       for(let id of this.suggestedIdList){
-        this.pService.getOnlyPlayerByEmail(this.email).subscribe({ next: data => {
+        this.pService.getPlayerById(id).subscribe({ next: data => {
           temp = data;
           this.suggestedList.push(temp);
           this.showForm = false;
@@ -89,5 +93,17 @@ export class SuggestPlayersComponent implements OnInit {
   }
 
   get f() { return this.suggestPlayersForm.controls; }
+
+  setStep(index: number) {
+    this.step = index;
+  }
+
+  goBack(): void {
+    this.location.back();
+  }
+
+  refresh(): void {
+    window.location.reload();
+  }
 
 }
