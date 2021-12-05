@@ -138,7 +138,9 @@ export class GetNetworkComponent implements OnInit {
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xffffff);
 
+    const headerSize = 110;
     const renderer = new THREE.WebGLRenderer();
+    // TODO: Set height as window.innerHeight - headerSize to fit the page size
     renderer.setSize( window.innerWidth, window.innerHeight);
     document.body.appendChild( renderer.domElement );
     
@@ -150,9 +152,14 @@ export class GetNetworkComponent implements OnInit {
     
     const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
 
-    //creating mini-map camera
-    const miniMapCamera = new THREE.OrthographicCamera(-60, 60, 60, -60);
-    miniMapCamera.position.z = 10;
+    // Creating miniMap camera with absolute parameters big enough to see the whole graph
+    const miniMapCamera = new THREE.OrthographicCamera(-50, 50, 50, -50);
+
+    // Looking at (0, 0, 0) by default
+    //miniMapCamera.lookAt(new THREE.Vector3(0, 0, 0));
+
+    // Change z position enough to be able to see the objects
+    miniMapCamera.position.set(0, 0, 1);
 
     const controls = new OrbitControls( camera, renderer.domElement );
     controls.enableZoom = true;
@@ -220,16 +227,49 @@ export class GetNetworkComponent implements OnInit {
     
     renderer.render( scene, camera );    
 
-    // Create Square
+    const miniMapBorderColor = 0x000000;
+    const miniMapWidth = 200;
+    const miniMapHeight = miniMapWidth;
+    const borderSize = 1;
+    const paddingX = 55;
+
+    // Affect only chosen setScissor pixels
     renderer.setScissorTest(true);
-    renderer.setScissor(window.innerWidth - 221, 100, 202, 202);
-    renderer.setClearColor(0x000000, 1); // border color
+
+    // Pixels for square border of 200 + 2 ( 2 = 1 for each border side) of width and height
+    // Position chosen -> bottom right corner of the screen
+    //                      
+    //                      ^  _______________  ^
+    //                      | |     header    | |
+    //                      | |_______________| | headerSize
+    //                      | | |             | v
+    //   window.innerHeight | | |             |
+    //                      | | |             | 
+    //                      | | |          <->| paddingX (for display purpose, to push it further from the end of the screen)
+    //                      | | |           x | minimap location
+    //                      | |_|_____________| 
+    //                      v
+    //                        <---------------> window.innerWidth
+    //
+    //
+    renderer.setScissor(window.innerWidth - miniMapWidth - paddingX, headerSize,
+      miniMapWidth + ( 2 * borderSize ), miniMapHeight + ( 2 * borderSize ));
+
+    // Create miniMap border with given color
+    renderer.setClearColor(miniMapBorderColor, 1);
     renderer.clearColor();
 
-    // Create Mini-Graph
-    renderer.setViewport(window.innerWidth - 221, 101, 200, 200);
-    renderer.setScissor(window.innerWidth - 220, 101, 200, 200);
-    renderer.setScissorTest(true);
+    // Set viewport inside miniMap border ( Border has size 1, so if border starts in x = 200 and y = 200, viewport should start in
+    // x = 201 and y = 201), with miniMap given width and height
+    renderer.setViewport(window.innerWidth - miniMapWidth - paddingX + borderSize, headerSize + borderSize, 
+      miniMapWidth, miniMapHeight);
+
+    // Pixels for miniMap of 200 of width and height
+    // Position chosen -> bottom right corner of the screen
+    renderer.setScissor(window.innerWidth - miniMapWidth - paddingX + borderSize, headerSize + borderSize, 
+      miniMapWidth, miniMapHeight);
+
+    // UpdateMatrix and render graph
     miniMapCamera.updateProjectionMatrix();
     renderer.render(scene, miniMapCamera);
 
