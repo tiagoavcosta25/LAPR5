@@ -22,6 +22,5 @@ pipelines:
             caches:
                 - node
             script: 
-               - npm install
                 - npm install -g @angular/cli
                 - ng build --prod
