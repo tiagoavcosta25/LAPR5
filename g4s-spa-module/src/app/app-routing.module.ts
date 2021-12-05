@@ -13,6 +13,7 @@ import { GetNetworkComponent } from './modules/network/components/get-network/ge
 import { LayoutComponent } from './modules/layout/layout.component';
 import { StrongestRouteComponent } from './modules/ai/components/strongest-route/strongest-route.component';
 import { UpdateEmotionalStatusComponent } from './modules/player/components/update-emotional-status/update-emotional-status.component';
+import { SafestRouteComponent } from './modules/ai/components/safest-route/safest-route.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'get-players', pathMatch: 'full' },
@@ -28,6 +29,7 @@ const routes: Routes = [
       { path: 'approve-request',  component: ApproveRequestComponent },
       { path: 'update-player',  component: UpdatePlayerComponent },
       { path: 'search-player', component: SearchPlayerComponent},
+      { path: 'safest-route', component: SafestRouteComponent},
       { path: 'strongest-route', component: StrongestRouteComponent},
       { path: 'update-emotional-status', component: UpdateEmotionalStatusComponent}
     ]

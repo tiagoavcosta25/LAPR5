@@ -18,7 +18,7 @@ import { HeaderComponent } from './modules/layout/components/header/header.compo
 import { PlayerComponent } from './modules/player/player.component';
 import { GetNetworkComponent } from './modules/network/components/get-network/get-network.component';
 import { NetworkComponent } from './modules/network/network.component';
-import { SafestRouteComponent } from './modules/network/components/safest-route/safest-route.component';
+import { SafestRouteComponent } from './modules/ai/components/safest-route/safest-route.component';
 import { SharedModule } from '../shared/shared.module';
 import { GetPlayersComponent } from './modules/player/components/get-players/get-players.component';
 import { RequestComponent } from './modules/request/request.component';
