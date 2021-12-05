@@ -30,7 +30,7 @@ export class SafestRouteComponent implements OnInit {
     private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
-    this.getSafestRoute("john@email.com", "james@email.com", 1);
+    this.getSafestRoute("email1@gmail.com", "email3@gmail.com", 0);
   }
 
   setStep(index: number) {
