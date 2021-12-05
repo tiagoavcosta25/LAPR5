@@ -14,17 +14,14 @@
       text-decoration-style: initial !important;
       text-decoration-color: initial !important;
     }
-
     .example-headers-align .mat-expansion-panel-header-title,
     .example-headers-align .mat-expansion-panel-header-description {
       flex-basis: 0;
     }
-
     button.primary{
       background-color: green;
       color: white;
     }
-    
     button.reject{
       background-color: red;
       color: white;
@@ -45,7 +42,7 @@
       margin: auto;
       text-align: center;
       font-weight: 510;
-      border: 2px solid #3498db;
+      border: 2px solid #00CED1;
       padding: 14px 40px;
       outline: none;
       border-radius: 24px;
@@ -56,6 +53,6 @@
   
   .btn.back:hover{
       color: white;
-      border: 2px solid #ff00ea;
-      background: #ff00ea;
+      border: 2px solid #F069B4;
+      background: #F069B4;
     }

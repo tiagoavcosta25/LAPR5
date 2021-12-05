@@ -11,8 +11,11 @@ import { UpdatePlayerComponent } from './modules/player/components/update-player
 import { SearchPlayerComponent } from './modules/player/components/search-player/search-player.component';
 import { GetNetworkComponent } from './modules/network/components/get-network/get-network.component';
 import { LayoutComponent } from './modules/layout/layout.component';
+import { ShortestRouteComponent } from './modules/ai/components/shortest-route/shortest-route.component';
 import { StrongestRouteComponent } from './modules/ai/components/strongest-route/strongest-route.component';
 import { UpdateEmotionalStatusComponent } from './modules/player/components/update-emotional-status/update-emotional-status.component';
+import { SafestRouteComponent } from './modules/ai/components/safest-route/safest-route.component';
+import { SuggestPlayersComponent } from './modules/ai/components/suggest-players/suggest-players.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'get-players', pathMatch: 'full' },
@@ -28,7 +31,10 @@ const routes: Routes = [
       { path: 'approve-request',  component: ApproveRequestComponent },
       { path: 'update-player',  component: UpdatePlayerComponent },
       { path: 'search-player', component: SearchPlayerComponent},
+      { path: 'safest-route', component: SafestRouteComponent},
+      { path: 'shortest-route', component: ShortestRouteComponent},
       { path: 'strongest-route', component: StrongestRouteComponent},
+      { path: 'suggest-players', component: SuggestPlayersComponent},
       { path: 'update-emotional-status', component: UpdateEmotionalStatusComponent}
     ]
   },

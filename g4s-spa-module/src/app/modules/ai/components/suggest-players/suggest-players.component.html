@@ -1,0 +1,36 @@
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            
+            <form *ngIf=this.showForm>
+                <div [formGroup]="suggestPlayersForm" class="mb-3" ngNativeValidate>
+                    <label for="inputScope" class="form-label">Scope</label>
+                    <input [ngClass]="{ 'is-invalid': f['scope'].errors && (f['scope'].dirty || f['scope'].touched) }" 
+                        type="text" class="form-control" formControlName="scope" id="inputScope">
+                    <div *ngIf="f['scope'].invalid" class="invalid-feedback">
+                        <div *ngIf="f['scope'].errors?.['required'] && (f['scope'].dirty || f['scope'].touched)">{{ getErrorMessageScopeRequired() }}</div>
+                        <div *ngIf="f['scope'].errors?.['min'] || f['scope'].errors?.['max']">{{ getErrorMessageScopeInvalid() }}</div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" (click)="getSuggestedPlayers()" [disabled]="suggestPlayersForm.invalid">Suggest Players</button>
+
+            </form>
+
+            <div *ngIf=this.showList>
+                <h2>Suggested Players</h2>
+              
+                <ul class="list-group">
+                  <li class="list-group-item" *ngFor="let player of suggestedList">
+                      <span class="badge">{{ player.name }}</span>{{ player.email }}
+                  </li>
+                </ul>
+              </div>
+            
+
+        </div>
+    </div>
+</div>
+
+
+<ngx-spinner></ngx-spinner>

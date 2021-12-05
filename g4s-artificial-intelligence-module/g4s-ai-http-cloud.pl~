@@ -112,20 +112,22 @@ intersect([_|L1],L2, LI):- intersect(L1,L2,LI).
 :- http_handler('/api/shortest-route', shortest_compute, []).
 
 shortest_compute(Request) :-
-	cors_enable(Request, [methods([get])]),
-    shortest_prepare(Request, Path),
-	prolog_to_json(Path, JSONObject),
-    reply_json(JSONObject, [json_object(dict)]).
+cors_enable(Request, [methods([get])]),
+  shortest_prepare(Request, Path),
+prolog_to_json(Path, JSONObject),
+  reply_json(JSONObject, [json_object(dict)]).
 
 shortest_prepare(Request, Path) :-
-    http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string])]),
-	addPlayers(),
-	addConnections(),
-	getPlayerName(EmailPlayer, PlayerName),
-	getPlayerName(EmailTarget, TargetName),
-	shortest_route(PlayerName, TargetName, Path),
-	retractall(connection(_,_,_,_)),
-	retractall(node(_,_,_)).
+http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string])]),
+addPlayers(),
+addConnections(),
+getPlayerName(EmailPlayer, PlayerName),
+getPlayerName(EmailTarget, TargetName),
+    node(PlayerId, PlayerName, _),
+    node(TargetId, TargetName, _),
+shortest_route(PlayerId, TargetId, Path),
+retractall(connection(_,_,_,_)),
+retractall(node(_,_,_)).
 
 
 %======== Shortest route between two players (Core) ========%
@@ -142,8 +144,10 @@ shortest_dfs(Orig, Dest, Path):- shortest_dfsAux(Orig, Dest, [Orig], Path).
 
 shortest_dfsAux(Dest, Dest, LA, Path):- !, reverse(LA, Path).
 shortest_dfsAux(Current, Dest, LA, Path):-
-    node(CurrentID, Current,_), (connection(CurrentID, NX, _, _); connection(NX, CurrentID, _, _)),
-    node(NX,X,_),\+ member(X,LA), shortest_dfsAux(X,Dest,[X|LA],Path).
+    (connection(Current, X, _, _);
+    connection(X, Current, _, _)),
+    \+ member(X,LA),
+    shortest_dfsAux(X,Dest,[X|LA],Path).
 
 
 shortest_route(Orig, Dest, ShortestPathList):-
@@ -152,6 +156,7 @@ shortest_route(Orig, Dest, ShortestPathList):-
 		retract(shortest_currentRoute(ShortestPathList, _)),
 		get_time(Tf),
 		T is Tf-Ti,
+                write(ShortestPathList),
 		write('Solution generation time:'), write(T), nl.
 
 shortest_findRoute(Orig, Dest):-
@@ -182,7 +187,9 @@ safest_routePrepare(Request, Path) :-
 	addConnections(),
 	getPlayerName(EmailPlayer, PlayerName),
 	getPlayerName(EmailTarget, TargetName),
-	safest_route(PlayerName, TargetName, Threshold, Path),
+        node(PlayerId, PlayerName, _),
+        node(TargetId, TargetName, _),
+	safest_route(PlayerId, TargetId, Threshold, Path),
 	retractall(connection(_,_,_,_)),
 	retractall(node(_,_,_)).
 
@@ -193,10 +200,8 @@ safest_dfs(Orig, Dest, Threshold, Strength, Path):- safest_dfsAux(Orig, Dest, [O
 
 safest_dfsAux(Dest, Dest, AuxList, _ , Strength, Strength, Path):-!, reverse(AuxList,Path).
 safest_dfsAux(Current, Dest, AuxList, Threshold, Strength, ReturnStrength, Path):-
-		node(CurrentID,Current,_),
-		(connection(CurrentID, FriendID, StrengthA, StrengthB);
-		connection(FriendID, CurrentID, StrengthA, StrengthB)),
-		node(FriendID, Friend, _),
+		(connection(Current, Friend, StrengthA, StrengthB);
+		connection(Friend, Current, StrengthA, StrengthB)),
 		\+ member(Friend, AuxList),
 		StrengthA >= Threshold,
 		StrengthB >= Threshold,
@@ -233,17 +238,16 @@ safest_updateRoute(Strength, PathList):-
 suggest_compute(Request) :-
     cors_enable(Request, [methods([get])]),
     suggest_prepare(Request, SuggestedPlayersList),
-    write(SuggestedPlayersList),
     prolog_to_json(SuggestedPlayersList, JSONObject),
     reply_json(JSONObject, [json_object(dict)]).
 
 suggest_prepare(Request, SuggestedPlayersList) :-
-    http_parameters(Request, [emailPlayer(EmailPlayer, [string]), scope(Scope, [integer])]),
+    http_parameters(Request, [emailPlayer(EmailPlayer, [string]), scope(Scope, [string])]),
     addPlayers(),
     addConnections(),
     getPlayerName(EmailPlayer, PlayerName),
-    write(PlayerName),
-    suggest_players(PlayerName, Scope, SuggestedPlayersList),
+    node(PlayerId, PlayerName, _),
+    suggest_players(PlayerId, Scope, SuggestedPlayersList),
     retractall(connection(_,_,_,_)),
     retractall(node(_,_,_)).
 
@@ -251,27 +255,23 @@ suggest_prepare(Request, SuggestedPlayersList) :-
 %======== Suggest Players (Core) ========%
 
 suggest_players(Player, Level, SuggestedPlayersList):-
-		network_getNetworkByLevel(Player, Level, NetworkList),
+		network_getNetworkByLevel(Player, Level, NetworkList, _),
 		suggest_removeFriends(Player, NetworkList, CandidateList),
 		suggest_getRelatedPlayers(Player, CandidateList, RelatedPlayersList),
 		suggest_checkSuggestedPaths(Player, RelatedPlayersList, SuggestedPlayersList).
 
-network_getNetworkByLevel(_, _, [jane, john, james]):-!.
-
 suggest_removeFriends(_, [ ], []).
 suggest_removeFriends(Player, [CurrentPlayer | NetworkList], CandidateList):-
-		node(CurrentID, CurrentPlayer, _),
-		node(PlayerID,Player,_),
-		(connection(PlayerID, CurrentID, _, _);
-		connection(CurrentID, PlayerID, _, _)), !,
+		(connection(Player, CurrentPlayer, _, _);
+		connection(CurrentPlayer, Player, _, _)), !,
 		suggest_removeFriends(Player, NetworkList, CandidateList).
 suggest_removeFriends(Player, [CurrentPlayer | NetworkList], [CurrentPlayer | CandidateList]):-
 		suggest_removeFriends(Player, NetworkList, CandidateList).
 
 suggest_getRelatedPlayers(_, [ ], []).
 suggest_getRelatedPlayers(Player, [NetworkPlayer | Network], [ NetworkPlayer | RelatedPlayersList]):-
-		node(_,Player,PlayerTagList),
-		node(_, NetworkPlayer,NetworkPlayerTagList),
+		node(Player,_,PlayerTagList),
+		node(NetworkPlayer, _,NetworkPlayerTagList),
 		intersect(PlayerTagList, NetworkPlayerTagList, CommonTagList),
 		CommonTagList=[_|_], !,
 		suggest_getRelatedPlayers(Player, Network, RelatedPlayersList).
@@ -281,8 +281,8 @@ suggest_getRelatedPlayers(Player, [_ | Network], RelatedPlayersList):-
 
 suggest_checkSuggestedPaths(_, [], []).
 suggest_checkSuggestedPaths(Player, [CurrentPlayer | RelatedPlayersList], [CurrentPlayer | SuggestedPlayersList]):-
-		node(_, CurrentPlayer, CurrentPlayerTagList),
-		node(_, Player, PlayerTagList),
+		node(CurrentPlayer, _, CurrentPlayerTagList),
+		node(Player, _, PlayerTagList),
 		intersect(PlayerTagList, CurrentPlayerTagList, CommonTagList),
 		suggest_findPathByPlayer(Player, CurrentPlayer, CommonTagList, Paths),
 		Paths=[_|_], !,
@@ -294,7 +294,7 @@ suggest_checkSuggestedPaths(Player, [_ | RelatedPlayersList], SuggestedPlayersLi
 suggest_findPathByPlayer(_, _, [], []).
 suggest_findPathByPlayer(Player, SuggestedPlayer, [CurrentTag | CommonTagList], [SuggestedPath | Paths]):-
 		(suggest_findPathByTag(Player, SuggestedPlayer, CurrentTag);true),
-		retract(suggest_currentRoute(SuggestedPath, SuggestedPathLength)),
+		retract(suggest_currentPath(SuggestedPath, SuggestedPathLength)),
 		\+ SuggestedPathLength = 10000,!,
 		suggest_findPathByPlayer(Player, SuggestedPlayer, CommonTagList, Paths).
 suggest_findPathByPlayer(Player, SuggestedPlayer, [_ | CommonTagList], Paths):-
@@ -303,31 +303,31 @@ suggest_findPathByPlayer(Player, SuggestedPlayer, [_ | CommonTagList], Paths):-
 
 suggest_findPathByTag(_, _, []).
 suggest_findPathByTag(Player, SuggestedPlayer, Tag):-
-		asserta(suggest_currentRoute(_, 10000)),
+		asserta(suggest_currentPath(_, 10000)),
 		suggest_dfs(Player, SuggestedPlayer, Tag, PathList),
 		suggest_updateRoute(PathList),
 		fail.
 
 suggest_updateRoute(PathList):-
-		suggest_currentRoute(_, CurrentLength),
+		suggest_currentPath(_, CurrentLength),
 		length(PathList, PathListLength),
 		PathListLength < CurrentLength,
-		retract(suggest_currentRoute(_,_)),
-		asserta(suggest_currentRoute(PathList, PathListLength)).
+		retract(suggest_currentPath(_,_)),
+		asserta(suggest_currentPath(PathList, PathListLength)).
 
 suggest_dfs(Orig,Dest, Tag, Path):-suggest_dfsAux(Orig,Dest,[Orig], Tag, Path).
 
 suggest_dfsAux(Dest,Dest,AuxList, _, Path):-!,reverse(AuxList,Path).
 suggest_dfsAux(Current,Dest,AuxList, Tag, Path):-
-		node(CurrentID, Current, _),
-		(connection(CurrentID, FriendID, _, _);
-		connection(FriendID, CurrentID, _, _)),
-		node(FriendID, Friend, FriendTagList),
+		node(Current, _, _),
+		(connection(Current, Friend, _, _);
+		connection(Friend, Current, _, _)),
+		node(Friend, _, FriendTagList),
 		\+ member(Friend, AuxList),
 		member(Tag, FriendTagList),
 		suggest_dfsAux(Friend, Dest, [Friend | AuxList], Tag, Path).
 
-%======== Strongest path between two players ========%
+%======== Strongest route between two players ========%
 
 :- http_handler('/api/strongest-route', strongest_routeCompute, []).
 
@@ -343,32 +343,32 @@ strongest_routePrepare(Request, Path) :-
 	addConnections(),
 	getPlayerName(EmailPlayer, PlayerName),
 	getPlayerName(EmailTarget, TargetName),
-	strongest_route(PlayerName, TargetName, Path),
+	node(PlayerId, PlayerName, _),
+	node(TargetId, TargetName, _),
+	strongest_route(PlayerId, TargetId, Path),
 	retractall(connection(_,_,_,_)),
 	retractall(node(_,_,_)).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-strongest_dfs(Orig, Dest, Strength, Path):- strongest_dfsAux(Orig, Dest, [Orig], Strength, Path).
+strongest_dfs(OrigId, DestId, Strength, Path):- strongest_dfsAux(OrigId, DestId, [OrigId], Strength, Path).
 
-strongest_dfsAux(Dest, Dest, AuxList, 0, Path):-!,reverse(AuxList, Path).
-strongest_dfsAux(Current, Dest, AuxList, Strength, Path):-
-	node(CurrentID, Current, _),
-	(connection(CurrentID, FriendID, StrengthA, StrengthB);
-	connection(FriendID, CurrentID, StrengthA, StrengthB)),
-	node(FriendID, Friend, _),
-	\+ member(Friend, AuxList),
-	strongest_dfsAux(Friend, Dest, [Friend | AuxList], SX, Path),
+strongest_dfsAux(DestId, DestId, AuxList, 0, Path):-!,reverse(AuxList, Path).
+strongest_dfsAux(CurrentId, DestId, AuxList, Strength, Path):-
+	(connection(CurrentId, FriendID, StrengthA, StrengthB);
+	connection(FriendID, CurrentId, StrengthA, StrengthB)),
+	\+ member(FriendID, AuxList),
+	strongest_dfsAux(FriendID, DestId, [FriendID | AuxList], SX, Path),
 	Strength is (SX + StrengthA + StrengthB).
 
-strongest_route(Orig, Dest, StrongestPath):-
-    (strongest_findRoute(Orig, Dest); true),
+strongest_route(OrigId, DestId, StrongestPath):-
+    (strongest_findRoute(OrigId, DestId); true),
     retract(strongest_currentRoute(StrongestPath, _)).
 
-strongest_findRoute(Orig, Dest):-
+strongest_findRoute(OrigId, DestId):-
     asserta(strongest_currentRoute(_, 0)),
-    strongest_dfs(Orig, Dest, Strength, PathList),
+    strongest_dfs(OrigId, DestId, Strength, PathList),
     strongest_updateRoute(Strength, PathList),
     fail.
 
@@ -378,7 +378,6 @@ strongest_updateRoute(Strength, PathList):-
     asserta(strongest_currentRoute(PathList, Strength)).
 
 
-%====================================================%
 
 %======== Players with X common tags ========%
 
@@ -454,3 +453,52 @@ common_tags_change_to_synonyms([Tag|All_Tags],Tags):-
 	(synonym(Tag, Sign) ->
 		union([Sign], Tags1, Tags);
 		union([Tag], Tags1, Tags)).
+		%======== Network By Level ========%
+
+:- http_handler('/api/network/size', network_levelCompute, []).
+
+network_levelCompute(Request) :-
+    cors_enable(Request, [methods([get])]),
+    network_levelPrepare(Request, Path, Size),
+    prolog_to_json(Path, JSONObject),
+    prolog_to_json(Size, JSONObject2),
+    reply_json([JSONObject, JSONObject2], [json_object(dict)]).
+
+network_levelPrepare(Request, Path, Size) :-
+    http_parameters(Request, [email(Email, [string]) ,level(Level, [number])]),
+    addPlayers(),
+    addConnections(),
+    getPlayerName(Email, PlayerName),
+    node(PlayerId, PlayerName, _),
+    network_getNetworkByLevel(PlayerId, Level, Path, Size),
+    retractall(connection(_,_,_,_)),
+    retractall(node(_,_,_)).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+:-dynamic user_visited/1.
+
+network_getNetworkByLevel(Orig,Level,L, Total):-
+    retractall(userVisited(_)),
+    findall(Orig,dfs(Orig,Level),_),
+    findall(User,userVisited(User),L),
+    retractall(userVisited(_)),
+    length(L,Total).
+
+
+dfs(Orig,Level):-
+    dfs2(Orig,Level,[Orig]).
+
+
+dfs2(_,0,_):-!.
+
+
+dfs2(Act,Level,LA):-
+    Level > 0,
+    (connection(Act,X,_,_);connection(X,Act,_,_)),
+    \+userVisited(X),
+    \+ member(X,LA),
+    Level1 is Level-1,
+    asserta(userVisited(X)),
+    dfs2(X,Level1,[X|LA]).

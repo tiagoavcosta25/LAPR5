@@ -21,27 +21,6 @@ export class NetworkService {
     private http: HttpClient) {
   }
 
-  /** GET: searches for players from server */
-  getSafestRoute(emailPlayer: string, emailTarget: string, threshold: number): Observable<string[]> {
-    const params = new HttpParams()
-    .set('emailPlayer', emailPlayer)
-    .set('emailTarget', emailTarget)
-    .set('threshold', threshold);
-    return this.http.get<string[]>(this.networkUrl + '/safest-route/', { params: params }).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  /** GET: searches for players from server */
-  getSuggestedPlayers(emailPlayer: string, scope: number): Observable<string[]> {
-    const params = new HttpParams()
-    .set('emailPlayer', emailPlayer)
-    .set('scope', scope);
-    return this.http.get<string[]>(this.networkUrl, { params: params }).pipe(
-      catchError(this.handleError)
-    );
-  }
-
   private handleError(err: HttpErrorResponse) {
     console.error('An error occurred: ', err.error.errors.message);
     if (err.error instanceof ErrorEvent) {
