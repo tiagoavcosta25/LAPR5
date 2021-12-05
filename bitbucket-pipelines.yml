@@ -16,3 +16,11 @@ pipelines:
               - export PROJECT_MD=g4s-master-data-module
               - dotnet restore ./g4s-master-data-module
               - dotnet build $PROJECT_MD
+        - step:
+            name: Build andd Test SPA
+            image: node:17.2.0
+            caches:
+              - node
+            script: 
+               - npm install
+               - npm build:prod
