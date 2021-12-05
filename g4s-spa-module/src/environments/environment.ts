@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://socialnetworkapi51.azurewebsites.net/api',
-  aiUrl: 'http://socialnetworkai.westeurope.cloudapp.azure.com:4999'
+  apiUrl: 'https://localhost:5001/api',
+  aiUrl: 'http://localhost:4999'
 };
 
 /*
