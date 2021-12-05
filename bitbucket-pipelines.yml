@@ -22,5 +22,4 @@ pipelines:
             caches:
               - node
             script: 
-               - npm install
                - npm build:prod
