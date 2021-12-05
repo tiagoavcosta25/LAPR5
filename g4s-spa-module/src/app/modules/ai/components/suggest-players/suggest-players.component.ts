@@ -44,7 +44,8 @@ export class SuggestPlayersComponent implements OnInit {
     this.suggestedIdList = [];
     this.suggestedList = [];
     this.player = new DobPlayer;
-    this.email = "email1@gmail.com";
+    //this.email = "email1@gmail.com";
+    this.email = localStorage.getItem('currentPlayer')!;
   }
 
   getSuggestedPlayers(){
