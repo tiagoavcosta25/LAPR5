@@ -25,6 +25,7 @@ export class GetNetworkComponent implements OnInit {
   email: string;
   success: any;
   playersIds: string[];
+  playersTempIds: string[];
   players: Player[];
   network: Connection[];
   showForm: boolean = true;
@@ -40,6 +41,7 @@ export class GetNetworkComponent implements OnInit {
       this.showGraph = false;
       this.players = [];
       this.playersIds = [];
+      this.playersTempIds = [];
       this.network = [];
     }
 
@@ -47,7 +49,7 @@ export class GetNetworkComponent implements OnInit {
     this.network = [];
     this.playersIds = [];
     this.players = [];
-    this.email = "jane@email.com";
+    this.email = "email1@gmail.com";
   }
 
   getPlayersByScope(){
@@ -56,10 +58,11 @@ export class GetNetworkComponent implements OnInit {
       this.cService.getNetwork(this.email, this.getNetworkForm.value.scope).subscribe({ next: data => {
         this.network = data;
 
-        //this.getPlayers(this.network);
-        this.initializeGraph();
+        this.getPlayersIds();
+        this.getPlayers(this.playersTempIds);
+        //this.initializeGraph();
         //this.animate();
-      this.spinner.hide();
+        //this.spinner.hide();
   
         
       },
@@ -69,43 +72,40 @@ export class GetNetworkComponent implements OnInit {
       });
   }
 
-  getPlayers(lstCon:Connection[]){
-    if(lstCon.length <= 0){
+  getPlayersIds(){
+    
+    for(let c of this.network){
+      if(!this.playersIds.includes(c.player)){
+        this.playersIds.push(c.player);
+        this.playersTempIds.push(c.player);
+      }
+      if(!this.playersIds.includes(c.friend)){
+        this.playersIds.push(c.friend);
+        this.playersTempIds.push(c.friend);
+      }
+    }
+    
+  }
+
+  getPlayers(lstIds:string[]){
+    if(lstIds.length <= 0){
+      console.log(this.playersIds);
       this.initializeGraph();
       this.spinner.hide();
-      console.log(this.playersIds);
       return;
     }
-    let con = lstCon.pop()!;
+    let id = lstIds.pop()!;
 
-    if(!this.playersIds.includes(con.player)){
-      this.playersIds.push(con.player);
-      this.pService.getPlayerById(con.player).subscribe({ next: data => {
+      this.pService.getPlayerById(id).subscribe({ next: data => {
         let player = data;
-        console.log(player);
-        if(!this.playersIds.includes(con.friend)){
-          this.playersIds.push(con.friend);
-          this.pService.getPlayerById(con.friend).subscribe({ next: data => {
-            let friend = data;
-  
-            this.players.push(friend);
-  
-            this.getPlayers(lstCon);
-    
-            return;
-          },
-            error: _error => {
-            }
-          });
-        }
-        this.getPlayers(lstCon);
+        this.players.push(player); 
+        this.getPlayers(lstIds);
+
         return;
       },
         error: _error => {
         }
       });
-    }
-    this.getPlayers(lstCon);
     return;
     
   }
@@ -151,6 +151,8 @@ export class GetNetworkComponent implements OnInit {
     document.body.appendChild( labelRenderer.domElement );
     
     const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
+    console.log(window.innerWidth);
+    console.log(window.innerHeight);
 
     //creating mini-map camera
     const miniMapCamera = new THREE.OrthographicCamera(-60, 60, 60, -60);
@@ -187,7 +189,7 @@ export class GetNetworkComponent implements OnInit {
 
       const div = document.createElement( 'div' );
       div.className = 'label';
-      div.textContent = this.playersIds[i];
+      div.textContent = this.players[i].name;
       div.style.color = '0x000';
       const playerLabel = new CSS2DObject( div );
       playerLabel.position.setX( 0 );
