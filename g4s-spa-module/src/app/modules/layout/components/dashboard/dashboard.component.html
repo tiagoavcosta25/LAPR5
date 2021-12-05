@@ -11,6 +11,30 @@
 								<h4>Leaderboard</h4>
 							</mat-list-item>
 						</button>
+						<button [routerLink]="['/suggest-players']">
+							<mat-list-item>
+								<mat-icon mat-list-icon color="accent">person_add</mat-icon>
+								<h4>Suggest Players</h4>
+							</mat-list-item>
+						</button>
+						<button [routerLink]="['/shortest-route']">
+							<mat-list-item>
+								<mat-icon mat-list-icon color="accent">timer</mat-icon>
+								<h4>Shortest Route</h4>
+							</mat-list-item>
+						</button>
+						<button [routerLink]="['/safest-route']">
+							<mat-list-item>
+								<mat-icon mat-list-icon color="accent">lock</mat-icon>
+								<h4>Safest Route</h4>
+							</mat-list-item>
+						</button>
+						<button [routerLink]="['/strongest-route']">
+							<mat-list-item>
+								<mat-icon mat-list-icon color="accent">directions</mat-icon>
+								<h4>Strongest Route</h4>
+							</mat-list-item>
+						</button>
 						<button [routerLink]="['/approve-request']">
 							<mat-list-item>
 								<mat-icon mat-list-icon color="accent">check_circle</mat-icon>
@@ -31,11 +55,23 @@
 								<h4>Introduction Request</h4>
 							</mat-list-item>
 						</button>
-			
 						<button [routerLink]="['/get-network']">
 							<mat-list-item>
 								<mat-icon mat-list-icon color="accent">linear_scale</mat-icon>
 								<h4>Network</h4>
+							</mat-list-item>
+						</button>
+						<button [routerLink]="['/edit-connection']">
+							<mat-list-item>
+								<mat-icon mat-list-icon color="accent">settings_ethernet</mat-icon>
+								<h4>Edit Connection</h4>
+							</mat-list-item>
+						</button>
+
+						<button [routerLink]="['/search-player']">
+							<mat-list-item>
+								<mat-icon mat-list-icon color="accent">search</mat-icon>
+								<h4>Search Players</h4>
 							</mat-list-item>
 						</button>
 			
@@ -43,6 +79,12 @@
 							<mat-list-item>
 								<mat-icon mat-list-icon color="accent">person</mat-icon>
 								<h4>New Account</h4>
+							</mat-list-item>
+						</button>
+						<button [routerLink]="['/update-emotional-status']">
+							<mat-list-item>
+								<mat-icon mat-list-icon color="accent">sentiment_very_satisfied</mat-icon>
+								<h4>Update Status</h4>
 							</mat-list-item>
 						</button>
 			
