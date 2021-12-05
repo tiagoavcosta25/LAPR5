@@ -30,7 +30,12 @@ export class ShortestRouteComponent implements OnInit {
     private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
-    this.getshortestRoute("email1@gmail.com", "email3@gmail.com");
+    let email = localStorage.getItem('currentPlayer');
+    if(email != null){
+      this.getshortestRoute(email.trim(), "email3@gmail.com");
+    } else{
+      this.error = true;
+    }
   }
 
   setStep(index: number) {
