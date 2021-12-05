@@ -113,11 +113,8 @@ safest_updateRoute(Strength, PathList):-
 
 suggest_players(Player, Level, SuggestedPlayersList):-
 		network_getNetworkByLevel(Player, Level, NetworkList, _),
-                write(NetworkList),nl,
 		suggest_removeFriends(Player, NetworkList, CandidateList),
-                write(CandidateList),nl,
 		suggest_getRelatedPlayers(Player, CandidateList, RelatedPlayersList),
-                write(RelatedPlayersList),nl,
 		suggest_checkSuggestedPaths(Player, RelatedPlayersList, SuggestedPlayersList).
 
 suggest_removeFriends(_, [ ], []).

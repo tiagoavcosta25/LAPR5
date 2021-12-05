@@ -14,7 +14,6 @@ connection(2,4,2,6).
 connection(2,5,-3,-2).
 connection(2,6,-3,-2).
 connection(1,3,-3,-2).
-connection(1,4,-3,-2).
 connection(3,5,-3,-2).
 
 
@@ -45,8 +44,10 @@ shortest_dfs(Orig, Dest, Path):- shortest_dfsAux(Orig, Dest, [Orig], Path).
 
 shortest_dfsAux(Dest, Dest, LA, Path):- !, reverse(LA, Path).
 shortest_dfsAux(Current, Dest, LA, Path):-
-    node(CurrentID, Current,_), (connection(CurrentID, NX, _, _); connection(NX, CurrentID, _, _)),
-    node(NX,X,_),\+ member(X,LA), shortest_dfsAux(X,Dest,[X|LA],Path).
+    (connection(Current, X, _, _);
+    connection(X, Current, _, _)),
+    \+ member(X,LA),
+    shortest_dfsAux(X,Dest,[X|LA],Path).
 
 
 shortest_route(Orig, Dest, ShortestPathList):-
@@ -75,10 +76,8 @@ safest_dfs(Orig, Dest, Threshold, Strength, Path):- safest_dfsAux(Orig, Dest, [O
 
 safest_dfsAux(Dest, Dest, AuxList, _ , Strength, Strength, Path):-!, reverse(AuxList,Path).
 safest_dfsAux(Current, Dest, AuxList, Threshold, Strength, ReturnStrength, Path):-
-		node(CurrentID,Current,_),
-		(connection(CurrentID, FriendID, StrengthA, StrengthB);
-		connection(FriendID, CurrentID, StrengthA, StrengthB)),
-		node(FriendID, Friend, _),
+		(connection(Current, Friend, StrengthA, StrengthB);
+		connection(Friend, Current, StrengthA, StrengthB)),
 		\+ member(Friend, AuxList),
 		StrengthA >= Threshold,
 		StrengthB >= Threshold,
