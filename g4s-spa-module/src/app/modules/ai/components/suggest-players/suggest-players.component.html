@@ -1,3 +1,17 @@
+<div *ngIf="error">
+    <div class="container">
+        <div class="row justify-content-center">
+            <h1 class="font-weight-bold my-5 mb-3 text-center">There was an error trying to suggest players, please try again later.</h1>
+            <p></p>
+            <div class="col-4">
+                <button class="btn back btn-primary w-100" (click)="goBack()">Go back!</button>
+            </div>
+            <div class="col-4">
+            <button class="btn back btn-primary w-100" (click)="refresh()">Try again now!</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container my-5">
     <div class="row justify-content-center">
         <div class="col-md-6">

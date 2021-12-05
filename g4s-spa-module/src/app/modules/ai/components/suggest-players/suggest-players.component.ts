@@ -27,6 +27,8 @@ export class SuggestPlayersComponent implements OnInit {
   showList: boolean = false;
   step: number;
 
+  error: boolean;
+
   constructor(
     private spinner: NgxSpinnerService,
     private aService: AiService,
@@ -52,31 +54,47 @@ export class SuggestPlayersComponent implements OnInit {
       this.aService.getSuggestedPlayers(this.email, this.suggestPlayersForm.value.scope).subscribe({ next: data => {
       this.suggestedIdList = data;
       console.log(this.suggestedIdList);
-      let temp = new Player;
-      for(let id of this.suggestedIdList){
-        this.pService.getPlayerById(id).subscribe({ next: data => {
-          temp = data;
-          this.suggestedList.push(temp);
-          this.showForm = false;
-          this.showList = true;
-          this.spinner.hide();
-        },
-          error: _error => {
-            this.spinner.hide();
-          }
-        });
-      }
+      this.getPlayers(this.suggestedIdList);
       
     },
       error: _error => {
+        this.showForm = false;
+        this.error = true;
         this.spinner.hide();
       }
     });
     },
       error: _error => {
+        this.showForm = false;
+        this.error = true;
         this.spinner.hide();
       }
     });
+  }
+
+  getPlayers(lstIds:string[]){
+    if(lstIds.length <= 0){
+      this.showForm = false;
+      this.spinner.hide();
+      return;
+    }
+    let id = lstIds.pop()!;
+
+      this.pService.getPlayerById(id).subscribe({ next: data => {
+        let player = data;
+        this.suggestedList.push(player);
+        this.getPlayers(lstIds);
+
+        return;
+      },
+        error: _error => {
+          this.error = true;
+          this.showForm = false;
+          this.spinner.hide();
+        }
+      });
+    return;
+    
   }
 
   getErrorMessageScopeRequired() {
