@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { Player } from 'src/shared/models/player/player.model';
 import { CreatingPlayer } from '../models/creating-player.model';
 import { ChangeEmotionalStatus } from 'src/shared/models/player/change-emotional-status.model';
+import { DobPlayer } from '../models/dob-player.model copy';
 
 @Injectable({
   providedIn: 'root'
@@ -42,8 +43,8 @@ export class PlayerService {
   }
 
     /* GET players by email */
-    getOnlyPlayerByEmail(email: string): Observable<Player> {
-      return this.http.get<Player>(this.playerUrl + "email/" + email).pipe(
+    getOnlyPlayerByEmail(email: string): Observable<DobPlayer> {
+      return this.http.get<DobPlayer>(this.playerUrl + "email/" + email).pipe(
         catchError(this.handleError)
       );
     }
@@ -80,8 +81,9 @@ export class PlayerService {
 
 
   /** POST: update data's player to the database */
-  updatePlayer(player: Player): Observable<Player> {
-    return this.http.put<Player>(this.playerUrl, player, this.httpOptions).pipe(
+  updatePlayer(player: DobPlayer): Observable<DobPlayer> {
+    console.log(player);
+    return this.http.put<DobPlayer>(this.playerUrl, player, this.httpOptions).pipe(
       catchError(this.handleError)
     );
   }
