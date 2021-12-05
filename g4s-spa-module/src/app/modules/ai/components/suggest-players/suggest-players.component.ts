@@ -53,7 +53,6 @@ export class SuggestPlayersComponent implements OnInit {
       this.player = data;
       this.aService.getSuggestedPlayers(this.email, this.suggestPlayersForm.value.scope).subscribe({ next: data => {
       this.suggestedIdList = data;
-      console.log(this.suggestedIdList);
       this.getPlayers(this.suggestedIdList);
       
     },
@@ -75,6 +74,8 @@ export class SuggestPlayersComponent implements OnInit {
   getPlayers(lstIds:string[]){
     if(lstIds.length <= 0){
       this.showForm = false;
+      this.showList = true;
+      console.log(this.suggestedList);
       this.spinner.hide();
       return;
     }

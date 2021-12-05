@@ -30,10 +30,8 @@
                 <button type="submit" class="btn btn-primary" (click)="getSuggestedPlayers()" [disabled]="suggestPlayersForm.invalid">Get Suggested Players</button>
 
             </form>
-
-            <ng-template #defined>
-                <div class="container my-5">
-                    <div *ngIf="suggestedList.length; else noSugestions">
+            <div *ngIf=this.showList>
+                    <div *ngIf="suggestedList.length; else noSuggestions">
                         <h2>Suggested Players</h2>
                         <mat-accordion class="example-headers-align">
                             <mat-expansion-panel *ngFor="let p of suggestedList; let i = index" [expanded]="step === i" (opened)="setStep(i)" (closed)="setStep(-1)" hideToggle>
@@ -56,7 +54,7 @@
                               </mat-expansion-panel-header>
             
                               <div class="container-4">
-                                <p  style="font-size: 14px; margin: 5px;">Phone number: {{ p.phoneNumber }}</p>
+                                <p  style="font-size: 14px; margin: 5px;">EmotionalStatus: {{ p.emotionalStatus }}</p>
                               </div>
             
                               <div class="container-4 mb-4" style="display: flex;">
@@ -66,14 +64,12 @@
                             </mat-expansion-panel>              
                           </mat-accordion>
                     </div>
-                        <ng-template #noSugestions>
+                        <ng-template #noSuggestions>
                             <h1 class="font-weight-bold my-5 mb-4 text-center">There is no players to suggest.</h1>
                             <p></p>
                             <button class="btn back btn-primary w-30" (click)="goBack()">Go back!</button>
                         </ng-template>
                 </div>
-            </ng-template>
-            
 
         </div>
     </div>
