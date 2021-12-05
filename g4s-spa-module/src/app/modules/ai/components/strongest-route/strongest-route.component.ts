@@ -30,7 +30,7 @@ export class StrongestRouteComponent implements OnInit {
     private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
-    this.getStrongestRoute("email1@gmail.com", "email3@gmail.com");
+    this.getStrongestRoute(localStorage.getItem("currentPlayer")!.trim(), "email3@gmail.com");
   }
 
   setStep(index: number) {

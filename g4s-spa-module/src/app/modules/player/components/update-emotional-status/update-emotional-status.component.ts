@@ -38,7 +38,7 @@ export class UpdateEmotionalStatusComponent implements OnInit {
 
   ngOnInit(): void {
     this.ces = new ChangeEmotionalStatus;
-    this.getCurrentPlayer("email1@gmail.com");
+    this.getCurrentPlayer(localStorage.getItem("currentPlayer")!.trim());
   }
 
   getCurrentPlayer(email: string): void {
@@ -58,7 +58,7 @@ export class UpdateEmotionalStatusComponent implements OnInit {
   save(): void {
     this.createEmotionalStatus();
     this.spinner.show();
-    this.pService.updateEmotionalStatus("email1@gmail.com", this.ces)
+    this.pService.updateEmotionalStatus(this.currentPlayer.email, this.ces)
     .subscribe({ next: data => {
       if(data) {
         this.success = true;

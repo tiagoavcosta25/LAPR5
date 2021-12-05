@@ -69,7 +69,7 @@ export class SearchPlayerComponent implements OnInit {
   // TODO: Remover
   currentPlayerUpdate(): void {
     this.spinner.show();
-    this.pService.getPlayerByEmail('email1@gmail.com').subscribe({ next: data => {
+    this.pService.getPlayerByEmail(localStorage.getItem("currentPlayer")!.trim()).subscribe({ next: data => {
       this.currentPlayer = data[0];
       this.getFriends();
       this.spinner.hide();
