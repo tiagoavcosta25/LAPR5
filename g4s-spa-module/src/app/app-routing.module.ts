@@ -11,6 +11,7 @@ import { UpdatePlayerComponent } from './modules/player/components/update-player
 import { SearchPlayerComponent } from './modules/player/components/search-player/search-player.component';
 import { GetNetworkComponent } from './modules/network/components/get-network/get-network.component';
 import { LayoutComponent } from './modules/layout/layout.component';
+import { ShortestRouteComponent } from './modules/ai/components/shortest-route/shortest-route.component';
 import { StrongestRouteComponent } from './modules/ai/components/strongest-route/strongest-route.component';
 import { CommonTagsComponent } from './modules/ai/components/common-tags/common-tags.component';
 
@@ -28,6 +29,7 @@ const routes: Routes = [
       { path: 'approve-request',  component: ApproveRequestComponent },
       { path: 'update-player',  component: UpdatePlayerComponent },
       { path: 'search-player', component: SearchPlayerComponent},
+      { path: 'shortest-route', component: ShortestRouteComponent},
       { path: 'strongest-route', component: StrongestRouteComponent}
     ]
   },

@@ -41,6 +41,7 @@ import { LayoutComponent } from './modules/layout/layout.component';
 import { SuggestPlayersComponent } from './modules/network/components/suggest-players/suggest-players.component';
 import { StrongestRouteComponent } from './modules/ai/components/strongest-route/strongest-route.component';
 import { CommonTagsComponent } from './modules/ai/components/common-tags/common-tags.component';
+import { ShortestRouteComponent } from './modules/ai/components/shortest-route/shortest-route.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { CommonTagsComponent } from './modules/ai/components/common-tags/common-
     LayoutComponent,
     SuggestPlayersComponent,
     StrongestRouteComponent,
-    CommonTagsComponent
+    CommonTagsComponent,
+    ShortestRouteComponent
   ],
   imports: [
     BrowserModule,
