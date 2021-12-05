@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormControl } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { observable, Observable } from 'rxjs';
 import { ConnectionService } from 'src/app/modules/connection/services/connection.service';
 import { PlayerService } from 'src/app/modules/player/services/player.service';
 import { Connection } from 'src/shared/models/connection/connection.model';
@@ -36,7 +37,10 @@ export class GetNetworkComponent implements OnInit {
     private fb: FormBuilder) { 
 
       this.showForm = true;
-      this.showGraph = false
+      this.showGraph = false;
+      this.players = [];
+      this.playersIds = [];
+      this.network = [];
     }
 
   ngOnInit(): void {
@@ -49,63 +53,61 @@ export class GetNetworkComponent implements OnInit {
   getPlayersByScope(){
       this.spinner.show();
 
-      /*this.cService.getNetwork(this.email, this.getNetworkForm.value.scope).subscribe({ next: data => {
+      this.cService.getNetwork(this.email, this.getNetworkForm.value.scope).subscribe({ next: data => {
         this.network = data;
 
-        this.getPlayers();
-  
+        //this.getPlayers(this.network);
         this.initializeGraph();
+        //this.animate();
+      this.spinner.hide();
   
-        this.spinner.hide();
+        
+      },
+        error: _error => {
+          this.spinner.hide();
+        }
+      });
+  }
+
+  getPlayers(lstCon:Connection[]){
+    if(lstCon.length <= 0){
+      this.initializeGraph();
+      this.spinner.hide();
+      console.log(this.playersIds);
+      return;
+    }
+    let con = lstCon.pop()!;
+
+    if(!this.playersIds.includes(con.player)){
+      this.playersIds.push(con.player);
+      this.pService.getPlayerById(con.player).subscribe({ next: data => {
+        let player = data;
+        console.log(player);
+        if(!this.playersIds.includes(con.friend)){
+          this.playersIds.push(con.friend);
+          this.pService.getPlayerById(con.friend).subscribe({ next: data => {
+            let friend = data;
+  
+            this.players.push(friend);
+  
+            this.getPlayers(lstCon);
+    
+            return;
+          },
+            error: _error => {
+            }
+          });
+        }
+        this.getPlayers(lstCon);
+        return;
       },
         error: _error => {
         }
-      });*/
-
-      this.mockGetNetwork();
-
-      this.getPlayers();
-  
-      this.initializeGraph();
-
-     this.spinner.hide();
-  }
-
-  mockGetNetwork(){
-    let con1 = new Connection();
-    con1.player = '26535db8-c77d-4685-9cb8-906118be935d';
-    con1.friend = '2faace0a-429b-4d29-bf95-537354ba190e';
-    con1.connectionStrength = 4;
-    con1.tags = ['gaming', 'coding'];
-    let con2 = new Connection();
-    con2.player = '2faace0a-429b-4d29-bf95-537354ba190e';
-    con2.friend = '8e215eed-1882-4622-ad0b-efe77379cf3c';
-    con2.connectionStrength = 4;
-    this.network = [con1, con2];
-    con2.tags = ['music', 'coding'];
-  }
-
-  getPlayers(){
-    for(let c of this.network){
-      if(!this.playersIds.includes(c.player)){
-        this.playersIds.push(c.player);
-        this.pService.getPlayerById(c.player).subscribe({ next: data => {
-          this.players.push(data);
-        },
-          error: _error => {
-          }
-        });
-      }
-      if(!this.playersIds.includes(c.friend)){
-        this.playersIds.push(c.friend);
-        this.pService.getPlayerById(c.friend).subscribe({ next: data => {
-          this.players.push(data);
-        },
-          error: _error => {
-          }
-        });
-      }
+      });
     }
+    this.getPlayers(lstCon);
+    return;
+    
   }
 
   getErrorMessageScopeRequired() {
@@ -154,13 +156,13 @@ export class GetNetworkComponent implements OnInit {
     const miniMapCamera = new THREE.OrthographicCamera(-60, 60, 60, -60);
     miniMapCamera.position.z = 10;
 
-    const controls = new OrbitControls( camera, renderer.domElement );
-    controls.enableZoom = true;
-    controls.zoomSpeed = 1.2;
-		controls.panSpeed = 0.8;
+    this.controls = new OrbitControls( camera, renderer.domElement );
+    this.controls.enableZoom = true;
+    this.controls.zoomSpeed = 1.2;
+		this.controls.panSpeed = 0.8;
 
     camera.position.set( 0, 20, 100 );
-    controls.update();
+    this.controls.update();
 
     let nodes = [], groups = [], colors = [0xa93226, 0x884ea0, 0x5b2c6f, 0x2e86c1, 0x5dade2, 0x17a589, 0x27ae60, 
       0x0e6655, 0xf1c40f, 0x9c640c, 0xe67e22, 0x5d6d7e, 0xde3163, 0xff00ff];
@@ -185,7 +187,7 @@ export class GetNetworkComponent implements OnInit {
 
       const div = document.createElement( 'div' );
       div.className = 'label';
-      div.textContent = 'Player' + i;
+      div.textContent = this.playersIds[i];
       div.style.color = '0x000';
       const playerLabel = new CSS2DObject( div );
       playerLabel.position.setX( 0 );
