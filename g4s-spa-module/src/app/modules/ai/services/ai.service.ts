@@ -37,6 +37,29 @@ export class AiService {
       );
     }
 
+  /** GET: returns safest route from server */
+  getSafestRoute(emailPlayer: string, emailTarget: string, threshold: number): Observable<string[]> {
+    const params = new HttpParams()
+      .set('emailPlayer', emailPlayer)
+      .set('emailTarget', emailTarget)
+      .set('threshold', threshold);
+    const url = this.aiUrl + '/api/safest-route';
+    return this.http.get<string[]>(url, { params: params }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  /** GET: searches for players from server */
+  getSuggestedPlayers(emailPlayer: string, scope: number): Observable<string[]> {
+    const params = new HttpParams()
+    .set('emailPlayer', emailPlayer)
+    .set('scope', scope);
+    const url = this.aiUrl + '/api/safest-route';
+    return this.http.get<string[]>(url, { params: params }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   private handleError(err: HttpErrorResponse) {
     console.error('An error occurred: ', err.error.errors.message);
     if (err.error instanceof ErrorEvent) {
