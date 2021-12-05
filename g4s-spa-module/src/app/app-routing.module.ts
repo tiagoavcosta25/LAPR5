@@ -18,13 +18,12 @@ import { SafestRouteComponent } from './modules/ai/components/safest-route/safes
 import { SuggestPlayersComponent } from './modules/ai/components/suggest-players/suggest-players.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'get-players', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '', 
     component: LayoutComponent,
     children: [
       { path: 'register-player',  component: RegisterPlayerComponent },
       { path: 'get-players',  component: GetPlayersComponent },
-      { path: 'get-network',  component: GetNetworkComponent },
       { path: 'request-introduction',  component: RequestIntroductionComponent },
       { path: 'edit-connection',  component: EditConnectionComponent },
       { path: 'accept-request',  component: AcceptRequestComponent },
@@ -35,7 +34,8 @@ const routes: Routes = [
       { path: 'shortest-route', component: ShortestRouteComponent},
       { path: 'strongest-route', component: StrongestRouteComponent},
       { path: 'suggest-players', component: SuggestPlayersComponent},
-      { path: 'update-emotional-status', component: UpdateEmotionalStatusComponent}
+      { path: 'update-emotional-status', component: UpdateEmotionalStatusComponent},
+      { path: 'get-network',  component: GetNetworkComponent }
     ]
   },
   { path: 'login',  component: LoginComponent },

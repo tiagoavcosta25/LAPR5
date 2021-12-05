@@ -15,12 +15,9 @@ export class LoginComponent implements OnInit {
     password: ['']
   });
 
-  router: Router;
-
   constructor(
     private fb: FormBuilder,
-    private r: Router) { 
-      this.router = r;
+    private router: Router) { 
     }
 
   ngOnInit(): void {
@@ -28,7 +25,7 @@ export class LoginComponent implements OnInit {
 
   login(){
     localStorage.setItem('currentPlayer', this.loginForm.value.email);
-    console.log(localStorage.getItem('currentPlayer'));
+    this.router.navigate(['/get-players']);
   }
 
   get f() { return this.loginForm.controls; }
