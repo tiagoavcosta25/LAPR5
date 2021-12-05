@@ -13,6 +13,9 @@ pipelines:
             caches:
               - dotnetcore
             script:
-              - export PROJECT_NAME=g4s-master-data-module
+              - export PROJECT_MD=g4s-master-data-module
               - dotnet restore ./g4s-master-data-module
-              - dotnet build $PROJECT_NAME
+              - dotnet build $PROJECT_MD
+              - export PROJECT_SPA=g4s-spa-module
+              - dotnet restore ./g4s-master-data-module
+              - dotnet build $PROJECT_SPA
