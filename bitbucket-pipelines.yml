@@ -22,5 +22,6 @@ pipelines:
             caches:
                 - node
             script: 
+                - npm install
                 - npm install -g @angular/cli
-                - ng build --prod
+                - ng build ./g4s-spa-module
