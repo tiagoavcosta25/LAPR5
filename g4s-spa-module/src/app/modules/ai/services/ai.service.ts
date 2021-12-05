@@ -27,6 +27,17 @@ export class AiService {
     );
   }
 
+  /** GET: returns connections from server */
+  getshortestRoute(emailPlayer: string, emailTarget: string): Observable<string[]> {
+    const params = new HttpParams()
+      .set('emailPlayer', emailPlayer)
+      .set('emailTarget', emailTarget);
+    const url = this.aiUrl + '/api/shortest-route';
+    return this.http.get<string[]>(url, { params: params }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
     /** GET: returns connections from server */
     getUsersWithXCommonTags(x: number): Observable<[[][]]> {
       const params = new HttpParams()
