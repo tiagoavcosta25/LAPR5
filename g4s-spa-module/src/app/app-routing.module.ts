@@ -12,7 +12,7 @@ import { SearchPlayerComponent } from './modules/player/components/search-player
 import { GetNetworkComponent } from './modules/network/components/get-network/get-network.component';
 import { LayoutComponent } from './modules/layout/layout.component';
 import { StrongestRouteComponent } from './modules/ai/components/strongest-route/strongest-route.component';
-import { CommonTagsComponent } from './modules/ai/components/common-tags/common-tags.component';
+import { UpdateEmotionalStatusComponent } from './modules/player/components/update-emotional-status/update-emotional-status.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'get-players', pathMatch: 'full' },
@@ -28,7 +28,8 @@ const routes: Routes = [
       { path: 'approve-request',  component: ApproveRequestComponent },
       { path: 'update-player',  component: UpdatePlayerComponent },
       { path: 'search-player', component: SearchPlayerComponent},
-      { path: 'strongest-route', component: StrongestRouteComponent}
+      { path: 'strongest-route', component: StrongestRouteComponent},
+      { path: 'update-emotional-status', component: UpdateEmotionalStatusComponent}
     ]
   },
   { path: 'login',  component: LoginComponent },

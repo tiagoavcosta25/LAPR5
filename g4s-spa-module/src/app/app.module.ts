@@ -41,6 +41,7 @@ import { LayoutComponent } from './modules/layout/layout.component';
 import { SuggestPlayersComponent } from './modules/network/components/suggest-players/suggest-players.component';
 import { StrongestRouteComponent } from './modules/ai/components/strongest-route/strongest-route.component';
 import { CommonTagsComponent } from './modules/ai/components/common-tags/common-tags.component';
+import { UpdateEmotionalStatusComponent } from './modules/player/components/update-emotional-status/update-emotional-status.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { CommonTagsComponent } from './modules/ai/components/common-tags/common-
     LayoutComponent,
     SuggestPlayersComponent,
     StrongestRouteComponent,
-    CommonTagsComponent
+    CommonTagsComponent,
+    UpdateEmotionalStatusComponent
   ],
   imports: [
     BrowserModule,
@@ -90,6 +92,7 @@ import { CommonTagsComponent } from './modules/ai/components/common-tags/common-
     MatInputModule,
     MatSelectModule,
     MatDatepickerModule
+
   ],
   bootstrap: [AppComponent]
 })
