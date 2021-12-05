@@ -29,7 +29,7 @@ export class SearchPlayerComponent implements OnInit {
   
   successMessageAccept: string = "Request accepted sucessfully! Refreshing in 2 seconds.";
 
-  successMessageDeny: string = "Request accepted sucessfully! Refreshing in 2 seconds.";
+  successMessageDeny: string = "Request denied sucessfully! Refreshing in 2 seconds.";
   
   errorMessage: string = "There was an error with the request!";
 

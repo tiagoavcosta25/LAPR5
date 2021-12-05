@@ -42,6 +42,7 @@ import { SuggestPlayersComponent } from './modules/network/components/suggest-pl
 import { StrongestRouteComponent } from './modules/ai/components/strongest-route/strongest-route.component';
 import { CommonTagsComponent } from './modules/ai/components/common-tags/common-tags.component';
 import { ShortestRouteComponent } from './modules/ai/components/shortest-route/shortest-route.component';
+import { UpdateEmotionalStatusComponent } from './modules/player/components/update-emotional-status/update-emotional-status.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { ShortestRouteComponent } from './modules/ai/components/shortest-route/s
     SuggestPlayersComponent,
     StrongestRouteComponent,
     CommonTagsComponent,
-    ShortestRouteComponent
+    ShortestRouteComponent,
+    UpdateEmotionalStatusComponent
   ],
   imports: [
     BrowserModule,
@@ -92,6 +94,7 @@ import { ShortestRouteComponent } from './modules/ai/components/shortest-route/s
     MatInputModule,
     MatSelectModule,
     MatDatepickerModule
+
   ],
   bootstrap: [AppComponent]
 })

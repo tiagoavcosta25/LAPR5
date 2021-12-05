@@ -112,20 +112,22 @@ intersect([_|L1],L2, LI):- intersect(L1,L2,LI).
 :- http_handler('/api/shortest-route', shortest_compute, []).
 
 shortest_compute(Request) :-
-	cors_enable(Request, [methods([get])]),
-    shortest_prepare(Request, Path),
-	prolog_to_json(Path, JSONObject),
-    reply_json(JSONObject, [json_object(dict)]).
+cors_enable(Request, [methods([get])]),
+  shortest_prepare(Request, Path),
+prolog_to_json(Path, JSONObject),
+  reply_json(JSONObject, [json_object(dict)]).
 
 shortest_prepare(Request, Path) :-
-    http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string])]),
-	addPlayers(),
-	addConnections(),
-	getPlayerName(EmailPlayer, PlayerName),
-	getPlayerName(EmailTarget, TargetName),
-	shortest_route(PlayerName, TargetName, Path),
-	retractall(connection(_,_,_,_)),
-	retractall(node(_,_,_)).
+http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string])]),
+addPlayers(),
+addConnections(),
+getPlayerName(EmailPlayer, PlayerName),
+getPlayerName(EmailTarget, TargetName),
+    node(PlayerId, PlayerName, _),
+    node(TargetId, TargetName, _),
+shortest_route(PlayerId, TargetId, Path),
+retractall(connection(_,_,_,_)),
+retractall(node(_,_,_)).
 
 
 %======== Shortest route between two players (Core) ========%
@@ -142,17 +144,15 @@ shortest_dfs(Orig, Dest, Path):- shortest_dfsAux(Orig, Dest, [Orig], Path).
 
 shortest_dfsAux(Dest, Dest, LA, Path):- !, reverse(LA, Path).
 shortest_dfsAux(Current, Dest, LA, Path):-
-    node(CurrentID, Current,_), (connection(CurrentID, NX, _, _); connection(NX, CurrentID, _, _)),
-    node(NX,X,_),\+ member(X,LA), shortest_dfsAux(X,Dest,[X|LA],Path).
+    (connection(Current, X, _, _);
+    connection(X, Current, _, _)),
+    \+ member(X,LA),
+    shortest_dfsAux(X,Dest,[X|LA],Path).
 
 
 shortest_route(Orig, Dest, ShortestPathList):-
-		get_time(Ti),
 		(shortest_findRoute(Orig, Dest); true),
-		retract(shortest_currentRoute(ShortestPathList, _)),
-		get_time(Tf),
-		T is Tf-Ti,
-		write('Solution generation time:'), write(T), nl.
+		retract(shortest_currentRoute(ShortestPathList, _)).
 
 shortest_findRoute(Orig, Dest):-
 		asserta(shortest_currentRoute(_,10000)),
@@ -182,7 +182,9 @@ safest_routePrepare(Request, Path) :-
 	addConnections(),
 	getPlayerName(EmailPlayer, PlayerName),
 	getPlayerName(EmailTarget, TargetName),
-	safest_route(PlayerName, TargetName, Threshold, Path),
+        node(PlayerId, PlayerName, _),
+        node(TargetId, TargetName, _),
+	safest_route(PlayerId, TargetId, Threshold, Path),
 	retractall(connection(_,_,_,_)),
 	retractall(node(_,_,_)).
 
@@ -193,10 +195,8 @@ safest_dfs(Orig, Dest, Threshold, Strength, Path):- safest_dfsAux(Orig, Dest, [O
 
 safest_dfsAux(Dest, Dest, AuxList, _ , Strength, Strength, Path):-!, reverse(AuxList,Path).
 safest_dfsAux(Current, Dest, AuxList, Threshold, Strength, ReturnStrength, Path):-
-		node(CurrentID,Current,_),
-		(connection(CurrentID, FriendID, StrengthA, StrengthB);
-		connection(FriendID, CurrentID, StrengthA, StrengthB)),
-		node(FriendID, Friend, _),
+		(connection(Current, Friend, StrengthA, StrengthB);
+		connection(Friend, Current, StrengthA, StrengthB)),
 		\+ member(Friend, AuxList),
 		StrengthA >= Threshold,
 		StrengthB >= Threshold,
@@ -233,16 +233,16 @@ safest_updateRoute(Strength, PathList):-
 suggest_compute(Request) :-
     cors_enable(Request, [methods([get])]),
     suggest_prepare(Request, SuggestedPlayersList),
-    write(SuggestedPlayersList),
     prolog_to_json(SuggestedPlayersList, JSONObject),
     reply_json(JSONObject, [json_object(dict)]).
 
 suggest_prepare(Request, SuggestedPlayersList) :-
-    http_parameters(Request, [emailPlayer(EmailPlayer, [string]), scope(Scope, [integer])]),
+    http_parameters(Request, [emailPlayer(EmailPlayer, [string]), scope(Scope, [string])]),
     addPlayers(),
     addConnections(),
     getPlayerName(EmailPlayer, PlayerName),
-    suggest_players(PlayerName, Scope, SuggestedPlayersList),
+    node(PlayerId, PlayerName, _),
+    suggest_players(PlayerId, Scope, SuggestedPlayersList),
     retractall(connection(_,_,_,_)),
     retractall(node(_,_,_)).
 
