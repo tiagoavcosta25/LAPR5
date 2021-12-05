@@ -18,8 +18,10 @@ pipelines:
               - dotnet build $PROJECT_MD
         - step:
             name: Build andd Test SPA
-            image: node:17.2.0
+            image: node:8
             caches:
-              - node
+                - node
             script: 
-               - npm build:prod
+               - npm install
+                - npm install -g @angular/cli
+                - ng build --prod
