@@ -8,11 +8,11 @@ pipelines:
   default:
     - parallel:
         - step:
-            name: Build and Test
+            name: Build and Test Master Date
             image: mcr.microsoft.com/dotnet/sdk:5.0
             caches:
               - dotnetcore
             script:
-              - export PROJECT_NAME=g4s-master-data-module
+              - export PROJECT_MD=g4s-master-data-module
               - dotnet restore ./g4s-master-data-module
-              - dotnet build $PROJECT_NAME
+              - dotnet build $PROJECT_MD

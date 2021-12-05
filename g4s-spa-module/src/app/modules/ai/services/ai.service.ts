@@ -65,7 +65,9 @@ export class AiService {
     const params = new HttpParams()
     .set('emailPlayer', emailPlayer)
     .set('scope', scope);
-    const url = this.aiUrl + '/api/safest-route';
+    console.log(emailPlayer);
+    console.log(scope);
+    const url = this.aiUrl + '/api/suggest-players';
     return this.http.get<string[]>(url, { params: params }).pipe(
       catchError(this.handleError)
     );

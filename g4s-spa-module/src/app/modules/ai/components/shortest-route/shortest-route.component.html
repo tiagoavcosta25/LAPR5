@@ -20,7 +20,7 @@
 <ng-template #defined>
     <div class="container my-5">
         <div *ngIf="players.length; else noConnections">
-            <h2>Shostest path between you and {{ getLastPlayerName() }}</h2>
+            <h2>Shortest path between you and {{ getLastPlayerName() }}</h2>
             <mat-accordion class="example-headers-align">
                 <mat-expansion-panel *ngFor="let p of players; let i = index" [expanded]="step === i" (opened)="setStep(i)" (closed)="setStep(-1)" hideToggle>
                   <mat-expansion-panel-header>

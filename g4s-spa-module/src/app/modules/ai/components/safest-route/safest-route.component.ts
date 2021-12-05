@@ -32,7 +32,8 @@ export class SafestRouteComponent implements OnInit {
   ngOnInit(): void {
     let email = localStorage.getItem('currentPlayer');
     if(email != null){
-      this.getSafestRoute(email.trim(), "email3@gmail.com", 0);
+      //this.getSafestRoute(email.trim(), "email3@gmail.com", 0);
+      this.getSafestRoute('email1@gmail.com', "email3@gmail.com", 0);
     } else{
       this.error = true;
     }
