@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormControl } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { observable, Observable } from 'rxjs';
 import { ConnectionService } from 'src/app/modules/connection/services/connection.service';
 import { PlayerService } from 'src/app/modules/player/services/player.service';
 import { Connection } from 'src/shared/models/connection/connection.model';
 import { Player } from 'src/shared/models/player/player.model';
 import * as THREE from 'three';
-import { Group, Vector4 } from 'three';
+import { Vector4 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
+import { Router, Event, NavigationEnd } from '@angular/router';
+import { Location } from '@angular/common';
+
 
 @Component({
   selector: 'app-get-network',
@@ -30,12 +32,15 @@ export class GetNetworkComponent implements OnInit {
   network: Connection[];
   showForm: boolean = true;
   showGraph: boolean = false;
+  idRFrame: any;
 
   constructor(
     private spinner: NgxSpinnerService,
     private cService: ConnectionService,
     private pService: PlayerService,
-    private fb: FormBuilder) { 
+    private fb: FormBuilder, 
+    private location: Location,
+    private router: Router) { 
 
       this.showForm = true;
       this.showGraph = false;
@@ -52,6 +57,13 @@ export class GetNetworkComponent implements OnInit {
     //this.email = "email1@gmail.com";
     this.email = localStorage.getItem('currentPlayer')!.trim();
     console.log(this.email);
+    
+    this.router.events.subscribe((event: Event) => {
+      if( event instanceof NavigationEnd ) {
+        console.log("teste");
+        window.location.reload();
+      }
+    })
   }
 
   getPlayersByScope(){
@@ -62,9 +74,6 @@ export class GetNetworkComponent implements OnInit {
 
         this.getPlayersIds();
         this.getPlayers(this.playersTempIds);
-        //this.initializeGraph();
-        //this.animate();
-        //this.spinner.hide();
   
         
       },
@@ -133,6 +142,7 @@ export class GetNetworkComponent implements OnInit {
   camera: THREE.PerspectiveCamera;
   miniMapCamera: THREE.OrthographicCamera;
   controls: OrbitControls;
+  controls2: OrbitControls;
 
 
   initializeGraph(){
@@ -146,22 +156,43 @@ export class GetNetworkComponent implements OnInit {
     this.renderer = new THREE.WebGLRenderer();
     this.renderer.setSize( window.innerWidth, window.innerHeight);
     document.body.appendChild( this.renderer.domElement );
-    //document.appendChild( this.renderer.domElement);
     this.labelRenderer = new CSS2DRenderer();
     this.labelRenderer.setSize( window.innerWidth, window.innerHeight);
     this.labelRenderer.domElement.style.position = 'absolute';
     this.labelRenderer.domElement.style.top = '0px';
     document.body.appendChild( this.labelRenderer.domElement );
+  
     
-    const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
+    this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
 
-    this.controls = new OrbitControls( camera, this.renderer.domElement );
-    this.controls.enableZoom = false;
-    this.controls.zoomSpeed = 1.2;
-		this.controls.panSpeed = 0.8;
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.controls.enableZoom = true;
+    this.controls.enablePan = true;
+    this.controls.enableRotate = false;
+    this.controls.enableDamping = true;
+    this.controls.screenSpacePanning = false;
+    this.controls.minZoom = 0.2;
+    this.controls.maxZoom = 12;
+    this.controls.zoomSpeed = 2;
+    
 
-    camera.position.set( 0, 20, 100 );
+    this.camera.position.set( 0, 20, 100 );
+
     this.controls.update();
+
+    
+    this.controls2 = new OrbitControls(this.camera, this.labelRenderer.domElement);
+    this.controls2.enableZoom = true;
+    this.controls2.enablePan = true;
+    this.controls2.enableRotate = false;
+    this.controls2.enableDamping = true;
+    this.controls2.screenSpacePanning = false;
+    this.controls2.minZoom = 0.2;
+    this.controls2.maxZoom = 12;
+    this.controls2.zoomSpeed = 2;
+
+
+    this.controls2.update();
 
     let nodes = [], groups = [], colors = [0xa93226, 0x884ea0, 0x5b2c6f, 0x2e86c1, 0x5dade2, 0x17a589, 0x27ae60, 
       0x0e6655, 0xf1c40f, 0x9c640c, 0xe67e22, 0x5d6d7e, 0xde3163, 0xff00ff];
@@ -216,43 +247,25 @@ export class GetNetworkComponent implements OnInit {
 
     }
 
-    this.renderer.render( this.scene, camera );
-    this.labelRenderer.render( this.scene, camera );  
-    
-    this.renderMiniMap();
-
-    window.addEventListener('wheel', (event) => {
-      event.preventDefault(); /// prevent scrolling
-      
-      let zoom = camera.zoom; // take current zoom value
-      zoom += event.deltaY * -0.01; /// adjust it
-      zoom = Math.min(Math.max(.010, zoom), 4); /// clamp the value
-    
-      camera.zoom = zoom /// assign new zoom value
-      camera.updateProjectionMatrix(); /// make the changes take effect
-      this.renderer.render( this.scene, camera );
-      this.labelRenderer.render( this.scene, camera );  
-      this.renderMiniMap();
-    }, { passive: false });
-
     window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
+      this.camera.aspect = window.innerWidth / window.innerHeight;
+      this.camera.updateProjectionMatrix();
       this.renderer.setSize(window.innerWidth, window.innerHeight);
-      this.renderer.render( this.scene, camera );
-      this.labelRenderer.render( this.scene, camera );  
-      this.renderMiniMap();
     })
+    this.spinner.hide();
+    
+    this.animate();
 
     }
 
     animate() {
-
-      requestAnimationFrame( this.animate );
-      // required if controls.enableDamping or controls.autoRotate are set to true
-      this.controls.update();
-      this.renderer.render( this.scene, this.camera );
-    
+        requestAnimationFrame( this.animate.bind(this) );
+        // required if controls.enableDamping or controls.autoRotate are set to true
+        this.controls.update();
+        this.renderer.render( this.scene, this.camera );
+        this.labelRenderer.render( this.scene, this.camera );
+        this.renderMiniMap();
+        console.log("animate");
     }
 
     renderMiniMap() {
