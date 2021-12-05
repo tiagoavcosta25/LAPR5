@@ -1,3 +1,18 @@
+body{
+    margin: 0;
+    font-family: 'Roboto', Arial, sans-serif;
+}
+
 .header {
     width: 101%;
+}
+
+.navbar-brand{
+    color: #fff; 
+}
+
+.nav-item a:hover{
+    fill-opacity: 30%;
+    color: #fff;
+    
 }

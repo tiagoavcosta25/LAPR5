@@ -6,7 +6,9 @@ import { PlayerService } from 'src/app/modules/player/services/player.service';
 import { Connection } from 'src/shared/models/connection/connection.model';
 import { Player } from 'src/shared/models/player/player.model';
 import * as THREE from 'three';
+import { Group } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
 
 @Component({
   selector: 'app-get-network',
@@ -49,6 +51,12 @@ export class GetNetworkComponent implements OnInit {
 
       /*this.cService.getNetwork(this.email, this.getNetworkForm.value.scope).subscribe({ next: data => {
         this.network = data;
+
+        this.getPlayers();
+  
+        this.initializeGraph();
+  
+        this.spinner.hide();
       },
         error: _error => {
         }
@@ -57,21 +65,21 @@ export class GetNetworkComponent implements OnInit {
       this.mockGetNetwork();
 
       this.getPlayers();
-
+  
       this.initializeGraph();
 
-      this.spinner.hide();
+     this.spinner.hide();
   }
 
   mockGetNetwork(){
     let con1 = new Connection();
-    con1.player = '115ac456-8a98-4e60-9966-02c38dd0ee64';
-    con1.friend = 'a0164888-d6af-4fd5-ba01-ffce1d1cd0a0';
+    con1.player = '26535db8-c77d-4685-9cb8-906118be935d';
+    con1.friend = '2faace0a-429b-4d29-bf95-537354ba190e';
     con1.connectionStrength = 4;
     con1.tags = ['gaming', 'coding'];
     let con2 = new Connection();
-    con2.player = 'a0164888-d6af-4fd5-ba01-ffce1d1cd0a0';
-    con2.friend = '873277b7-6e1d-482f-9a71-e899ceaebfbd';
+    con2.player = '2faace0a-429b-4d29-bf95-537354ba190e';
+    con2.friend = '8e215eed-1882-4622-ad0b-efe77379cf3c';
     con2.connectionStrength = 4;
     this.network = [con1, con2];
     con2.tags = ['music', 'coding'];
@@ -117,6 +125,7 @@ export class GetNetworkComponent implements OnInit {
   
   scene: THREE.Scene;
   renderer: THREE.WebGLRenderer;
+  labelRenderer: CSS2DRenderer;
   camera: THREE.PerspectiveCamera;
   miniMapCamera: THREE.OrthographicCamera;
   controls: OrbitControls;
@@ -130,9 +139,15 @@ export class GetNetworkComponent implements OnInit {
     scene.background = new THREE.Color(0xffffff);
 
     const renderer = new THREE.WebGLRenderer();
-    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setSize( window.innerWidth, window.innerHeight);
     document.body.appendChild( renderer.domElement );
-
+    
+    const labelRenderer = new CSS2DRenderer();
+    labelRenderer.setSize( window.innerWidth, window.innerHeight );
+    labelRenderer.domElement.style.position = 'absolute';
+    labelRenderer.domElement.style.top = '0px';
+    document.body.appendChild( labelRenderer.domElement );
+    
     const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
 
     //creating mini-map camera
@@ -147,12 +162,12 @@ export class GetNetworkComponent implements OnInit {
     camera.position.set( 0, 20, 100 );
     controls.update();
 
-    let nodes = [], colors = [0xa93226, 0x884ea0, 0x5b2c6f, 0x2e86c1, 0x5dade2, 0x17a589, 0x27ae60, 
+    let nodes = [], groups = [], colors = [0xa93226, 0x884ea0, 0x5b2c6f, 0x2e86c1, 0x5dade2, 0x17a589, 0x27ae60, 
       0x0e6655, 0xf1c40f, 0x9c640c, 0xe67e22, 0x5d6d7e, 0xde3163, 0xff00ff];
     const geometry = new THREE.CircleGeometry(2, 32);
 
     for(let i=0; i<this.playersIds.length;i++){
-      let maxH = 25, minH = -25, maxW = 25, minW = -25;
+      let maxH = 35, minH = -15, maxW = 25, minW = -25;
       let material = new THREE.MeshBasicMaterial( { color: colors[Math.floor(Math.random()*colors.length)]  } );
       let circle = new THREE.Mesh( geometry, material );
       if(i==0){
@@ -164,8 +179,20 @@ export class GetNetworkComponent implements OnInit {
         circle.position.y = Math.random() * (maxH - minH) + minH;
         circle.position.z = 0;
       }
-      scene.add(circle);
+
       nodes.push(circle);
+      scene.add(circle);
+
+      const div = document.createElement( 'div' );
+      div.className = 'label';
+      div.textContent = 'Player' + i;
+      div.style.color = '0x000';
+      const playerLabel = new CSS2DObject( div );
+      playerLabel.position.setX( 0 );
+      playerLabel.position.setY( -11 );
+      playerLabel.position.setZ( 0 );
+      circle.add( playerLabel );
+
     }
 
     for(let i=0; i<this.network.length;i++){
@@ -188,6 +215,9 @@ export class GetNetworkComponent implements OnInit {
 
     }
 
+    renderer.render( scene, camera );
+    labelRenderer.render( scene, camera );  
+    
     renderer.render( scene, camera );    
 
     // Create Square
@@ -208,10 +238,8 @@ export class GetNetworkComponent implements OnInit {
     animate() {
 
       requestAnimationFrame( this.animate );
-    
       // required if controls.enableDamping or controls.autoRotate are set to true
       this.controls.update();
-    
       this.renderer.render( this.scene, this.camera );
     
     }
