@@ -4,6 +4,7 @@ import { PlayerService } from '../../services/player.service';
 import { Validators, FormBuilder, FormControl, FormArray } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { emotionalStatusEnum } from 'src/shared/models/player/emotional-status-enum.model';
+import { DobPlayer } from '../../models/dob-player.model copy';
 
 @Component({
   selector: 'app-update-player',
@@ -13,13 +14,13 @@ import { emotionalStatusEnum } from 'src/shared/models/player/emotional-status-e
 export class UpdatePlayerComponent implements OnInit {
 
   success: any;
-  successMessage: string = "Player created sucessfully!";
-  errorMessage: string = "There was an error creating a player!";
+  successMessage: string = "Player updated sucessfully!";
+  errorMessage: string = "There was an error updating a player!";
 
   playerForm = this.fb.group({
     name: ['', Validators.required],
     email: ['', [Validators.required, Validators.pattern(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)]],
-    password: ['', [Validators.required, Validators.minLength(8)]],
+    password: ['', [Validators.minLength(8)]],
     day: ['', [Validators.required, Validators.min(1), Validators.max(31)]],
     month: ['', [Validators.required, Validators.min(1), Validators.max(12)]],
     year: ['', [Validators.required, Validators.min(1900), Validators.max(2100)]],
@@ -30,9 +31,9 @@ export class UpdatePlayerComponent implements OnInit {
     tags: this.fb.array([])
   });
 
-  p: Player;
+  p: DobPlayer;
 
-  id: string;
+  email: string;
 
   constructor(
               private spinner: NgxSpinnerService,
@@ -40,38 +41,37 @@ export class UpdatePlayerComponent implements OnInit {
               private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    this.id = "115ac456-8a98-4e60-9966-02c38dd0ee64";
-    this.p = new Player();
-    this.getPlayerById(this.id);
+    this.email = "email1@gmail.com";
+    this.p = new DobPlayer();
+    this.getPlayerByEmail();
   }
 
-  getPlayerById(id: string){
+  getPlayerByEmail(){
     this.spinner.show();
-    
-    console.log(id);
 
-      this.service.getPlayerById(id).subscribe({ next: data => {
+      this.service.getOnlyPlayerByEmail(this.email).subscribe({ next: data => {
         this.p = data;
+        let date = new Date(this.p.dateOfBirth);
+        this.playerForm.controls['name'].setValue(this.p.name);
+        this.playerForm.controls['email'].setValue(this.p.email);
+        this.playerForm.controls['day'].setValue(date.getDate());
+        this.playerForm.controls['month'].setValue(date.getMonth());
+        this.playerForm.controls['year'].setValue(date.getFullYear());
+        this.playerForm.controls['phoneNumber'].setValue(this.p.phoneNumber);
+        this.playerForm.controls['emotionalStatus'].setValue(this.p.emotionalStatus);
+        this.playerForm.controls['facebook'].setValue(this.p.facebook);
+        this.playerForm.controls['linkedIn'].setValue(this.p.linkedIn);
+        for(let tag of this.p.tags)
+        {
+          if(!this.playerForm.value.tags.includes(tag))
+            this.playerForm.value.tags.push(tag);
+        }
+        this.spinner.hide();
       },
         error: _error => {
+          this.spinner.hide();
         }
       });
-      this.playerForm.controls['name'].setValue(this.p.name);
-      this.playerForm.controls['email'].setValue(this.p.email);
-      this.playerForm.controls['day'].setValue(this.p.day);
-      this.playerForm.controls['month'].setValue(this.p.month);
-      this.playerForm.controls['year'].setValue(this.p.year);
-      this.playerForm.controls['phoneNumber'].setValue(this.p.phoneNumber);
-      this.playerForm.controls['emotionalStatus'].setValue(this.p.emotionalStatus);
-      this.playerForm.controls['facebook'].setValue(this.p.facebook);
-      this.playerForm.controls['linkedIn'].setValue(this.p.linkedIn);
-      for(let tag of this.p.tags)
-    {
-      if(!this.playerForm.value.tags.includes(tag))
-        this.playerForm.value.tags.push(tag);
-    }
-    console.log(this.p);
-    this.spinner.hide();
   }
 
   addTag(){
@@ -93,9 +93,11 @@ export class UpdatePlayerComponent implements OnInit {
   updatePlayer() {
     this.p.name = this.playerForm.value.name;
     this.p.email = this.playerForm.value.email;
-    this.p.day = Number(this.playerForm.value.day);
-    this.p.month = Number(this.playerForm.value.month);
-    this.p.year = Number(this.playerForm.value.year);
+    let date = new Date();
+    date.setDate(this.playerForm.value.day);
+    date.setMonth(this.playerForm.value.month);
+    date.setFullYear(this.playerForm.value.year);
+    this.p.dateOfBirth = this.playerForm.value.year + '-' + this.playerForm.value.month + '-' + this.playerForm.value.day + 'T00:00:00';
     this.p.phoneNumber = Number(this.playerForm.value.phoneNumber);
     this.p.emotionalStatus = this.playerForm.value.emotionalStatus;
     this.p.facebook = this.playerForm.value.facebook;
@@ -105,7 +107,6 @@ export class UpdatePlayerComponent implements OnInit {
       if(!this.p.tags.includes(tag.tag))
         this.p.tags.push(tag.tag);
     }
-    console.log(this.p.name);
   }
 
   getErrorMessageNameRequired() {
@@ -118,10 +119,6 @@ export class UpdatePlayerComponent implements OnInit {
 
   getErrorMessageEmailInvalid() {
     return this.playerForm.controls['email'].hasError('pattern') ? 'Email is not valid' : '';
-  }
-
-  getErrorMessagePasswordRequired() {
-    return this.playerForm.controls['password'].hasError('required') ? 'Password is required' : '';
   }
 
   getErrorMessagePasswordInvalid() {
@@ -182,14 +179,13 @@ export class UpdatePlayerComponent implements OnInit {
         for(let tagT of this.p.tags) {
           tags.removeAt(tags.value.findIndex((tag: { tag: string; }) => tag.tag === tagT))
         }
-        this.playerForm.reset();
-        this.p = new Player;
+        this.p = new DobPlayer;
       }
       this.spinner.hide();
     },
       error: _error => {
         this.success = false;
-        this.p = new Player;
+        this.p = new DobPlayer;
         this.spinner.hide();
       }
     });

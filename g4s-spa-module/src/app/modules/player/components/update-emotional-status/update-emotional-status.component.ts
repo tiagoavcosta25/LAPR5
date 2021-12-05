@@ -6,6 +6,7 @@ import { Player } from 'src/shared/models/player/player.model';
 import { PlayerService } from '../../services/player.service';
 import { Location } from '@angular/common';
 import { emotionalStatusEnum } from 'src/shared/models/player/emotional-status-enum.model';
+import { DobPlayer } from '../../models/dob-player.model copy';
 
 @Component({
   selector: 'app-update-emotional-status',
@@ -22,7 +23,7 @@ export class UpdateEmotionalStatusComponent implements OnInit {
   
   errorMessage: string = "There was an error updating the emotional status!";
 
-  currentPlayer: Player;
+  currentPlayer: DobPlayer;
 
   ces: ChangeEmotionalStatus;
 

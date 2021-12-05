@@ -31,7 +31,6 @@
                             <input [ngClass]="{ 'is-invalid': f['password'].errors && (f['password'].dirty || f['password'].touched) }" 
                                 type="password" class="form-control" formControlName="password" id="inputPassword">
                             <div *ngIf="f['password'].errors" class="invalid-feedback">
-                                <div *ngIf="f['password'].errors?.['required'] && (f['password'].dirty || f['password'].touched)">{{ getErrorMessagePasswordRequired() }}</div>
                                 <div *ngIf="f['password'].errors?.['minlength']">{{ getErrorMessagePasswordInvalid() }}</div>
                             </div>
                         </div>
