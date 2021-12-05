@@ -193,10 +193,8 @@ safest_dfs(Orig, Dest, Threshold, Strength, Path):- safest_dfsAux(Orig, Dest, [O
 
 safest_dfsAux(Dest, Dest, AuxList, _ , Strength, Strength, Path):-!, reverse(AuxList,Path).
 safest_dfsAux(Current, Dest, AuxList, Threshold, Strength, ReturnStrength, Path):-
-		node(CurrentID,Current,_),
-		(connection(CurrentID, FriendID, StrengthA, StrengthB);
-		connection(FriendID, CurrentID, StrengthA, StrengthB)),
-		node(FriendID, Friend, _),
+		(connection(Current, Friend, StrengthA, StrengthB);
+		connection(Friend, Current, StrengthA, StrengthB)),
 		\+ member(Friend, AuxList),
 		StrengthA >= Threshold,
 		StrengthB >= Threshold,
