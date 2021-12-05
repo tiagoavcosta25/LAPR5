@@ -54,7 +54,8 @@ export class ApproveRequestComponent implements OnInit {
 
     ngOnInit(): void {
       this.r = new ApproveRequest;
-      this.getMiddleManRequests('jane@email.com');
+      let playerEmail = localStorage.getItem('currentPlayer')!.trim();
+      this.getMiddleManRequests(playerEmail);
     }
 
     setStep(index: number) {

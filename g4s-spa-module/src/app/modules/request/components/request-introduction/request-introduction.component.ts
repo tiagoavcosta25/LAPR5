@@ -64,7 +64,7 @@ export class RequestIntroductionComponent implements OnInit {
       this.player = new DobPlayer;
       this.mutualFriend = new Player;
       this.mutualFriends = [];
-      this.playerEmail = 'email1@gmail.com';
+      this.playerEmail = localStorage.getItem('currentPlayer')!.trim();
       this.getReachablePlayers();
     }
 

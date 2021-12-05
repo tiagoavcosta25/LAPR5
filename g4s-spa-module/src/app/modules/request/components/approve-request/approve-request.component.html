@@ -20,7 +20,7 @@
 <ng-template #defined>
     <div class="container my-5">
         <div *ngIf="fullRequests.length; else noRequests">
-            <h2>Choose the request to accept</h2>
+            <h2>Choose the request to approve</h2>
             <mat-accordion class="example-headers-align">
                 <mat-expansion-panel *ngFor="let r of fullRequests; let i = index" [expanded]="step === i" (opened)="setStep(i);getConnectionById(r.id);clearSuccess()" (closed)="setStep(-1)" hideToggle>
                   <mat-expansion-panel-header>
