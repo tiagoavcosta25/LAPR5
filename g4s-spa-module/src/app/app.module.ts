@@ -40,7 +40,6 @@ import { ApproveRequestComponent } from './modules/request/components/approve-re
 import { LayoutComponent } from './modules/layout/layout.component';
 import { SuggestPlayersComponent } from './modules/ai/components/suggest-players/suggest-players.component';
 import { StrongestRouteComponent } from './modules/ai/components/strongest-route/strongest-route.component';
-import { CommonTagsComponent } from './modules/ai/components/common-tags/common-tags.component';
 import { ShortestRouteComponent } from './modules/ai/components/shortest-route/shortest-route.component';
 import { UpdateEmotionalStatusComponent } from './modules/player/components/update-emotional-status/update-emotional-status.component';
 
@@ -67,7 +66,6 @@ import { UpdateEmotionalStatusComponent } from './modules/player/components/upda
     LayoutComponent,
     SuggestPlayersComponent,
     StrongestRouteComponent,
-    CommonTagsComponent,
     ShortestRouteComponent,
     UpdateEmotionalStatusComponent
   ],
