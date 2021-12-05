@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormControl } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { observable, Observable } from 'rxjs';
 import { ConnectionService } from 'src/app/modules/connection/services/connection.service';
 import { PlayerService } from 'src/app/modules/player/services/player.service';
 import { Connection } from 'src/shared/models/connection/connection.model';
 import { Player } from 'src/shared/models/player/player.model';
 import * as THREE from 'three';
-import { Group } from 'three';
+import { Group, Vector4 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
 
@@ -24,6 +25,7 @@ export class GetNetworkComponent implements OnInit {
   email: string;
   success: any;
   playersIds: string[];
+  playersTempIds: string[];
   players: Player[];
   network: Connection[];
   showForm: boolean = true;
@@ -36,76 +38,78 @@ export class GetNetworkComponent implements OnInit {
     private fb: FormBuilder) { 
 
       this.showForm = true;
-      this.showGraph = false
+      this.showGraph = false;
+      this.players = [];
+      this.playersIds = [];
+      this.playersTempIds = [];
+      this.network = [];
     }
 
   ngOnInit(): void {
     this.network = [];
     this.playersIds = [];
     this.players = [];
-    this.email = "jane@email.com";
+    //this.email = "email1@gmail.com";
+    this.email = localStorage.getItem('currentPlayer')!.trim();
+    console.log(this.email);
   }
 
   getPlayersByScope(){
       this.spinner.show();
 
-      /*this.cService.getNetwork(this.email, this.getNetworkForm.value.scope).subscribe({ next: data => {
+      this.cService.getNetwork(this.email, this.getNetworkForm.value.scope).subscribe({ next: data => {
         this.network = data;
 
-        this.getPlayers();
+        this.getPlayersIds();
+        this.getPlayers(this.playersTempIds);
+        //this.initializeGraph();
+        //this.animate();
+        //this.spinner.hide();
   
-        this.initializeGraph();
-  
-        this.spinner.hide();
+        
       },
         error: _error => {
+          this.spinner.hide();
         }
-      });*/
-
-      this.mockGetNetwork();
-
-      this.getPlayers();
-  
-      this.initializeGraph();
-
-     this.spinner.hide();
+      });
   }
 
-  mockGetNetwork(){
-    let con1 = new Connection();
-    con1.player = '26535db8-c77d-4685-9cb8-906118be935d';
-    con1.friend = '2faace0a-429b-4d29-bf95-537354ba190e';
-    con1.connectionStrength = 4;
-    con1.tags = ['gaming', 'coding'];
-    let con2 = new Connection();
-    con2.player = '2faace0a-429b-4d29-bf95-537354ba190e';
-    con2.friend = '8e215eed-1882-4622-ad0b-efe77379cf3c';
-    con2.connectionStrength = 4;
-    this.network = [con1, con2];
-    con2.tags = ['music', 'coding'];
-  }
-
-  getPlayers(){
+  getPlayersIds(){
+    
     for(let c of this.network){
       if(!this.playersIds.includes(c.player)){
         this.playersIds.push(c.player);
-        this.pService.getPlayerById(c.player).subscribe({ next: data => {
-          this.players.push(data);
-        },
-          error: _error => {
-          }
-        });
+        this.playersTempIds.push(c.player);
       }
       if(!this.playersIds.includes(c.friend)){
         this.playersIds.push(c.friend);
-        this.pService.getPlayerById(c.friend).subscribe({ next: data => {
-          this.players.push(data);
-        },
-          error: _error => {
-          }
-        });
+        this.playersTempIds.push(c.friend);
       }
     }
+    
+  }
+
+  getPlayers(lstIds:string[]){
+    if(lstIds.length <= 0){
+      console.log(this.playersIds);
+      this.initializeGraph();
+      this.spinner.hide();
+      return;
+    }
+    let id = lstIds.pop()!;
+
+      this.pService.getPlayerById(id).subscribe({ next: data => {
+        let player = data;
+        this.players.push(player); 
+        this.getPlayers(lstIds);
+
+        return;
+      },
+        error: _error => {
+        }
+      });
+    return;
+    
   }
 
   getErrorMessageScopeRequired() {
@@ -130,37 +134,34 @@ export class GetNetworkComponent implements OnInit {
   miniMapCamera: THREE.OrthographicCamera;
   controls: OrbitControls;
 
+
   initializeGraph(){
     this.showForm = false;
     this.showGraph = true;
 
     // Create a scene
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xffffff);
+    this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color(0xffffff);
 
-    const renderer = new THREE.WebGLRenderer();
-    renderer.setSize( window.innerWidth, window.innerHeight);
-    document.body.appendChild( renderer.domElement );
-    
-    const labelRenderer = new CSS2DRenderer();
-    labelRenderer.setSize( window.innerWidth, window.innerHeight );
-    labelRenderer.domElement.style.position = 'absolute';
-    labelRenderer.domElement.style.top = '0px';
-    document.body.appendChild( labelRenderer.domElement );
+    this.renderer = new THREE.WebGLRenderer();
+    this.renderer.setSize( window.innerWidth, window.innerHeight);
+    document.body.appendChild( this.renderer.domElement );
+    //document.appendChild( this.renderer.domElement);
+    this.labelRenderer = new CSS2DRenderer();
+    this.labelRenderer.setSize( window.innerWidth, window.innerHeight);
+    this.labelRenderer.domElement.style.position = 'absolute';
+    this.labelRenderer.domElement.style.top = '0px';
+    document.body.appendChild( this.labelRenderer.domElement );
     
     const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
 
-    //creating mini-map camera
-    const miniMapCamera = new THREE.OrthographicCamera(-60, 60, 60, -60);
-    miniMapCamera.position.z = 10;
-
-    const controls = new OrbitControls( camera, renderer.domElement );
-    controls.enableZoom = true;
-    controls.zoomSpeed = 1.2;
-		controls.panSpeed = 0.8;
+    this.controls = new OrbitControls( camera, this.renderer.domElement );
+    this.controls.enableZoom = false;
+    this.controls.zoomSpeed = 1.2;
+		this.controls.panSpeed = 0.8;
 
     camera.position.set( 0, 20, 100 );
-    controls.update();
+    this.controls.update();
 
     let nodes = [], groups = [], colors = [0xa93226, 0x884ea0, 0x5b2c6f, 0x2e86c1, 0x5dade2, 0x17a589, 0x27ae60, 
       0x0e6655, 0xf1c40f, 0x9c640c, 0xe67e22, 0x5d6d7e, 0xde3163, 0xff00ff];
@@ -181,11 +182,11 @@ export class GetNetworkComponent implements OnInit {
       }
 
       nodes.push(circle);
-      scene.add(circle);
+      this.scene.add(circle);
 
       const div = document.createElement( 'div' );
       div.className = 'label';
-      div.textContent = 'Player' + i;
+      div.textContent = this.players[i].name;
       div.style.color = '0x000';
       const playerLabel = new CSS2DObject( div );
       playerLabel.position.setX( 0 );
@@ -211,27 +212,37 @@ export class GetNetworkComponent implements OnInit {
       
       const line = new THREE.Line( geometryConnections, materialConnections );
 
-      scene.add( line );
+      this.scene.add( line );
 
     }
 
-    renderer.render( scene, camera );
-    labelRenderer.render( scene, camera );  
+    this.renderer.render( this.scene, camera );
+    this.labelRenderer.render( this.scene, camera );  
     
-    renderer.render( scene, camera );    
+    this.renderMiniMap();
 
-    // Create Square
-    renderer.setScissorTest(true);
-    renderer.setScissor(window.innerWidth - 221, 100, 202, 202);
-    renderer.setClearColor(0x000000, 1); // border color
-    renderer.clearColor();
+    window.addEventListener('wheel', (event) => {
+      event.preventDefault(); /// prevent scrolling
+      
+      let zoom = camera.zoom; // take current zoom value
+      zoom += event.deltaY * -0.01; /// adjust it
+      zoom = Math.min(Math.max(.010, zoom), 4); /// clamp the value
+    
+      camera.zoom = zoom /// assign new zoom value
+      camera.updateProjectionMatrix(); /// make the changes take effect
+      this.renderer.render( this.scene, camera );
+      this.labelRenderer.render( this.scene, camera );  
+      this.renderMiniMap();
+    }, { passive: false });
 
-    // Create Mini-Graph
-    renderer.setViewport(window.innerWidth - 221, 101, 200, 200);
-    renderer.setScissor(window.innerWidth - 220, 101, 200, 200);
-    renderer.setScissorTest(true);
-    miniMapCamera.updateProjectionMatrix();
-    renderer.render(scene, miniMapCamera);
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
+      this.renderer.render( this.scene, camera );
+      this.labelRenderer.render( this.scene, camera );  
+      this.renderMiniMap();
+    })
 
     }
 
@@ -242,6 +253,78 @@ export class GetNetworkComponent implements OnInit {
       this.controls.update();
       this.renderer.render( this.scene, this.camera );
     
+    }
+
+    renderMiniMap() {
+    
+      // Creating miniMap camera with absolute parameters big enough to see the whole graph
+      const miniMapCamera = new THREE.OrthographicCamera(-50, 50, 50, -50);
+
+      // Looking at (0, 0, 0) by default
+      //miniMapCamera.lookAt(new THREE.Vector3(0, 0, 0));
+  
+      // Change z position enough to be able to see the objects
+      miniMapCamera.position.set(0, 0, 1);
+      const miniMapBorderColor = 0x000000;
+      const miniMapWidth = 200;
+      const miniMapHeight = miniMapWidth;
+      const borderSize = 1;
+      const paddingX = 55;
+      const paddingY = 125;
+
+      // Affect only chosen setScissor pixels
+      this.renderer.setScissorTest(true);
+
+      // Pixels for square border of 200 + 2 ( 2 = 1 for each border side) of width and height
+      // Position chosen -> bottom right corner of the screen
+      //                      
+      //                      ^  _______________  
+      //                      | |     header    | 
+      //                      | |_______________| 
+      //                      | | |             | 
+      //   window.innerHeight | | |             |
+      //                      | | |             | 
+      //                      | | |          <->| paddingX (for display purpose, to push it further from the end of the screen)
+      //                      | | |           x | minimap location
+      //                      | | |             |
+      //                      | | |             |
+      //                      | | |             |^
+      //                      | | |             || paddingY (for display purpose, to push it further from the end of the screen)
+      //                      | |_|_____________|v
+      //                      v
+      //                        <---------------> window.innerWidth
+      //
+      //
+      this.renderer.setScissor(window.innerWidth - miniMapWidth - paddingX, paddingY,
+        miniMapWidth + ( 2 * borderSize ), miniMapHeight + ( 2 * borderSize ));
+
+      // Create miniMap border with given color
+      this.renderer.setClearColor(miniMapBorderColor, 1);
+      this.renderer.clearColor();
+
+      // Save default viewport
+      let vp: Vector4 = new Vector4; 
+      this.renderer.getCurrentViewport(vp);
+      
+      // Set viewport inside miniMap border ( Border has size 1, so if for example border starts in x = 200 and y = 200, viewport should start in
+      // x = 201 and y = 201), with miniMap given width and height
+      this.renderer.setViewport(window.innerWidth - miniMapWidth - paddingX + borderSize, paddingY + borderSize, 
+        miniMapWidth, miniMapHeight);
+
+      // Pixels for miniMap of 200 of width and height
+      // Position chosen -> bottom right corner of the screen
+      this.renderer.setScissor(window.innerWidth - miniMapWidth - paddingX + borderSize, paddingY + borderSize, 
+        miniMapWidth, miniMapHeight);
+
+      // UpdateMatrix and render graph
+      miniMapCamera.updateProjectionMatrix();
+      this.renderer.render(this.scene, miniMapCamera);
+      
+      // Deactivate ScissorTest
+      this.renderer.setScissorTest(false);
+      
+      // Set default viewport
+      this.renderer.setViewport(vp);
     }
 
 }

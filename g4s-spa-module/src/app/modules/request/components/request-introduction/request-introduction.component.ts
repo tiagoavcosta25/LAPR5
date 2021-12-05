@@ -7,6 +7,8 @@ import { Location } from '@angular/common';
 import { Player } from 'src/shared/models/player/player.model';
 import { GetMutualFriends } from 'src/shared/models/player/get-mutual-friends.model';
 import { CreatingConnectionRequest } from '../../models/creating-connection-request.model';
+import { PlayerService } from 'src/app/modules/player/services/player.service';
+import { DobPlayer } from 'src/app/modules/player/models/dob-player.model copy';
 
 @Component({
   selector: 'app-request-introduction',
@@ -34,6 +36,7 @@ export class RequestIntroductionComponent implements OnInit {
 
   reachablePlayer: Player;
   mutualFriend: Player;
+  player: DobPlayer;
 
   mutualFriends: Player[];
 
@@ -50,6 +53,7 @@ export class RequestIntroductionComponent implements OnInit {
 
   constructor(private cService: ConnectionService,
     private rService: RequestService,
+    private pService: PlayerService,
     private spinner: NgxSpinnerService,
     private location: Location,
     private fb: FormBuilder) { }
@@ -57,8 +61,10 @@ export class RequestIntroductionComponent implements OnInit {
     ngOnInit(): void {
       this.c = new CreatingConnectionRequest;
       this.reachablePlayer = new Player;
+      this.player = new DobPlayer;
       this.mutualFriend = new Player;
-      this.playerEmail = 'email1@gmail.com';
+      this.mutualFriends = [];
+      this.playerEmail = localStorage.getItem('currentPlayer')!.trim();
       this.getReachablePlayers();
     }
 
@@ -142,7 +148,7 @@ export class RequestIntroductionComponent implements OnInit {
 
     createRequest() {
       console.log(this.reachablePlayerIdSelected);
-      this.c.player = this.playerEmail;
+      this.c.player = this.player.id;
       this.c.playerToTargetMessage = this.requestForm.value.targetMessage;
       this.c.playerToMiddleManMessage = this.requestForm.value.middleManMessage;
       this.c.middleManToTargetMessage = "";
@@ -159,23 +165,32 @@ export class RequestIntroductionComponent implements OnInit {
     }
 
     registerRequest(): void {
-      this.createRequest();
-      console.log(this.c);
       this.spinner.show();
-      this.rService.registerIntroductionRequest(this.c)
-      .subscribe({ next: data => {
-        if(data) {
-          this.success = true;
-          this.successMessage = this.successMessage;
-          this.c = new CreatingConnectionRequest;
-        }
+      this.pService.getOnlyPlayerByEmail(this.playerEmail).subscribe({ next: data => {
+        this.player = data;
+        this.createRequest();
+        console.log(this.c);
+        this.rService.registerIntroductionRequest(this.c)
+        .subscribe({ next: data => {
+          if(data) {
+            this.success = true;
+            this.successMessage = this.successMessage;
+            this.c = new CreatingConnectionRequest;
+          }
+          this.spinner.hide();
+          this.refreshOnTime();
+        },
+          error: _error => {
+            this.success = false;
+            this.c = new CreatingConnectionRequest;
+            this.spinner.hide();
+          }
+        });
         this.spinner.hide();
-        this.refreshOnTime();
       },
         error: _error => {
-          this.success = false;
-          this.c = new CreatingConnectionRequest;
           this.spinner.hide();
+          this.error = true;
         }
       });
     }

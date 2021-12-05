@@ -1,9 +1,9 @@
-<div class="container my-5">
+<div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
             
             <form *ngIf=this.showForm>
-                <div [formGroup]="getNetworkForm" class="mb-3" ngNativeValidate>
+                <div [formGroup]="getNetworkForm" class="mb-3 my-5" ngNativeValidate>
                     <label for="inputScope" class="form-label">Scope</label>
                     <input [ngClass]="{ 'is-invalid': f['scope'].errors && (f['scope'].dirty || f['scope'].touched) }" 
                         type="text" class="form-control" formControlName="scope" id="inputScope">

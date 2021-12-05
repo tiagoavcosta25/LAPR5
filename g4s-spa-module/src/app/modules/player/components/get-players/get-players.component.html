@@ -1,9 +1,12 @@
-<div>
-  <h2>Players</h2>
-
-  <ul class="players">
-    <li *ngFor="let player of players">
-        <span class="badge">{{ player.name }}</span>{{ player.email }}
-    </li>
-  </ul>
+<h2>Leaderboard</h2>
+<div> 
+  <mat-list>
+    <mat-list-item *ngFor="let player of players">
+      <mat-icon matListIcon>person</mat-icon>
+      <h3 matLine> {{player.name}} </h3>
+      <p matLine>
+        <span> {{player.email}} </span>
+      </p>
+    </mat-list-item>
+  </mat-list>
 </div>

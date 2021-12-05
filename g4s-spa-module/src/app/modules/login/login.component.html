@@ -25,15 +25,15 @@
                 </div>
                 <div class="align-self-center w-100 px-lg-5 py-lg-4 p-4">
                     <h1 class="font-weight-bold mb-4 text-center">Welcome back</h1>
-                    <form class="mb-5">
-                        <div class="mb-4">
-                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+                    <form class="mb-5" [formGroup]="loginForm">
+                        <div class="mb-4" >
+                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email" formControlName="email">
                         </div>
                         <div class="mb-4">
-                            <input type="password" class="form-control mb-3" placeholder="Password" id="exampleInputPassword1">
+                            <input type="password" class="form-control mb-3" placeholder="Password" id="exampleInputPassword1" formControlName="password">
                             <a href="" class="form-text text-muted text-decoration-none">Forgot your password?</a>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                            <button type="submit" class="btn btn-primary w-100" (click)="login()">Login</button>
                     </form>
                 </div>
                 <div class="text-center px-lg-5 pt-lg-3 pb-lg-4 p-4 mt-auto w-100">

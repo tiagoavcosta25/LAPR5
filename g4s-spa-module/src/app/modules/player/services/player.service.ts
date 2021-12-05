@@ -7,6 +7,8 @@ import { throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Player } from 'src/shared/models/player/player.model';
 import { CreatingPlayer } from '../models/creating-player.model';
+import { ChangeEmotionalStatus } from 'src/shared/models/player/change-emotional-status.model';
+import { DobPlayer } from '../models/dob-player.model copy';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +17,6 @@ export class PlayerService {
 
   playerUrl: string = environment.apiUrl + '/players/';  // URL to web api
 
-  connectionUrl = environment.apiUrl + '/players/';
-  
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
@@ -42,6 +42,13 @@ export class PlayerService {
     );
   }
 
+    /* GET players by email */
+    getOnlyPlayerByEmail(email: string): Observable<DobPlayer> {
+      return this.http.get<DobPlayer>(this.playerUrl + "email/" + email).pipe(
+        catchError(this.handleError)
+      );
+    }
+
   /** POST: add a new player to the database */
   registerPlayer(player: CreatingPlayer): Observable<Player> {
     return this.http.post<Player>(this.playerUrl, player, this.httpOptions).pipe(
@@ -57,7 +64,7 @@ export class PlayerService {
 
   /** GET: get player by id */
   getPlayerById(id: string): Observable<Player> {
-    return this.http.get<Player>(this.connectionUrl + id).pipe(
+    return this.http.get<Player>(this.playerUrl + id).pipe(
       catchError(this.handleError)
     );
   }
@@ -67,15 +74,23 @@ export class PlayerService {
     const params = new HttpParams()
     .set('filter', filter)
     .set('value', value);
-    return this.http.get<Player[]>(this.connectionUrl + 'search', { params: params }).pipe(
+    return this.http.get<Player[]>(this.playerUrl + 'search', { params: params }).pipe(
       catchError(this.handleError)
     );
   }
 
 
   /** POST: update data's player to the database */
-  updatePlayer(player: Player): Observable<Player> {
-    return this.http.put<Player>(this.playerUrl, player, this.httpOptions).pipe(
+  updatePlayer(player: DobPlayer): Observable<DobPlayer> {
+    console.log(player);
+    return this.http.put<DobPlayer>(this.playerUrl, player, this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  /** PATCH: updates emotional status */
+  updateEmotionalStatus(email:string, emotionalStatus: ChangeEmotionalStatus): Observable<ChangeEmotionalStatus> {
+    return this.http.patch<ChangeEmotionalStatus>(this.playerUrl + "emotionalStatus/" + email , emotionalStatus, this.httpOptions).pipe(
       catchError(this.handleError)
     );
   }

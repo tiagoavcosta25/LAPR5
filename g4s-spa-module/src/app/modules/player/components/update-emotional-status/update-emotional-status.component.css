@@ -1,0 +1,61 @@
+* {
+    font-family: 'Spartan', sans-serif;
+    font-weight: 600;
+  }
+  
+  .my-center-text {
+      text-align: center;
+      width: 100%;
+    }
+    .text-decoration-none {
+      text-decoration: none !important;
+      text-decoration-line: none !important;
+      text-decoration-thickness: initial !important;
+      text-decoration-style: initial !important;
+      text-decoration-color: initial !important;
+    }
+
+    .example-headers-align .mat-expansion-panel-header-title,
+    .example-headers-align .mat-expansion-panel-header-description {
+      flex-basis: 0;
+    }
+
+    button.primary{
+      background-color: green;
+      color: white;
+    }
+    
+    button.reject{
+      background-color: red;
+      color: white;
+    }
+    
+    .example-headers-align .mat-expansion-panel-header-description {
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .example-headers-align .mat-form-field + .mat-form-field {
+      margin-left: 8px;
+    }
+    
+    .btn.back{
+      background: none;
+      display: block;
+      margin: auto;
+      text-align: center;
+      font-weight: 510;
+      border: 2px solid #3498db;
+      padding: 14px 40px;
+      outline: none;
+      border-radius: 24px;
+      transition: 0.25s;
+      cursor: pointer;
+      color: black;
+    }
+  
+  .btn.back:hover{
+      color: white;
+      border: 2px solid #ff00ea;
+      background: #ff00ea;
+    }

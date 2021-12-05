@@ -22,6 +22,9 @@ node(200,sara,[natureza,moda,musica,sw,coimbra]).
 node(51,rodolfo,[natureza,musica,sw]).
 node(61,rita,[moda,tecnologia,cinema]).
 
+synonym(tecnologia, jogos).
+synonym(teatro, musica).
+
 
 connection(1,11,10,8).
 connection(1,12,2,6).

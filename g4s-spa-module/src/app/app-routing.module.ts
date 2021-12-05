@@ -11,24 +11,31 @@ import { UpdatePlayerComponent } from './modules/player/components/update-player
 import { SearchPlayerComponent } from './modules/player/components/search-player/search-player.component';
 import { GetNetworkComponent } from './modules/network/components/get-network/get-network.component';
 import { LayoutComponent } from './modules/layout/layout.component';
+import { ShortestRouteComponent } from './modules/ai/components/shortest-route/shortest-route.component';
 import { StrongestRouteComponent } from './modules/ai/components/strongest-route/strongest-route.component';
-import { CommonTagsComponent } from './modules/ai/components/common-tags/common-tags.component';
+import { UpdateEmotionalStatusComponent } from './modules/player/components/update-emotional-status/update-emotional-status.component';
+import { SafestRouteComponent } from './modules/ai/components/safest-route/safest-route.component';
+import { SuggestPlayersComponent } from './modules/ai/components/suggest-players/suggest-players.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'get-players', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '', 
     component: LayoutComponent,
     children: [
       { path: 'register-player',  component: RegisterPlayerComponent },
       { path: 'get-players',  component: GetPlayersComponent },
-      { path: 'get-network',  component: GetNetworkComponent },
       { path: 'request-introduction',  component: RequestIntroductionComponent },
       { path: 'edit-connection',  component: EditConnectionComponent },
       { path: 'accept-request',  component: AcceptRequestComponent },
       { path: 'approve-request',  component: ApproveRequestComponent },
       { path: 'update-player',  component: UpdatePlayerComponent },
       { path: 'search-player', component: SearchPlayerComponent},
-      { path: 'strongest-route', component: StrongestRouteComponent}
+      { path: 'safest-route', component: SafestRouteComponent},
+      { path: 'shortest-route', component: ShortestRouteComponent},
+      { path: 'strongest-route', component: StrongestRouteComponent},
+      { path: 'suggest-players', component: SuggestPlayersComponent},
+      { path: 'update-emotional-status', component: UpdateEmotionalStatusComponent},
+      { path: 'get-network',  component: GetNetworkComponent }
     ]
   },
   { path: 'login',  component: LoginComponent },

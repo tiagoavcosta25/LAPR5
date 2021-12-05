@@ -27,6 +27,17 @@ export class AiService {
     );
   }
 
+  /** GET: returns connections from server */
+  getshortestRoute(emailPlayer: string, emailTarget: string): Observable<string[]> {
+    const params = new HttpParams()
+      .set('emailPlayer', emailPlayer)
+      .set('emailTarget', emailTarget);
+    const url = this.aiUrl + '/api/shortest-route';
+    return this.http.get<string[]>(url, { params: params }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
     /** GET: returns connections from server */
     getUsersWithXCommonTags(x: number): Observable<[[][]]> {
       const params = new HttpParams()
@@ -36,6 +47,29 @@ export class AiService {
         catchError(this.handleError)
       );
     }
+
+  /** GET: returns safest route from server */
+  getSafestRoute(emailPlayer: string, emailTarget: string, threshold: number): Observable<string[]> {
+    const params = new HttpParams()
+      .set('emailPlayer', emailPlayer)
+      .set('emailTarget', emailTarget)
+      .set('threshold', threshold);
+    const url = this.aiUrl + '/api/safest-route';
+    return this.http.get<string[]>(url, { params: params }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  /** GET: searches for players from server */
+  getSuggestedPlayers(emailPlayer: string, scope: number): Observable<string[]> {
+    const params = new HttpParams()
+    .set('emailPlayer', emailPlayer)
+    .set('scope', scope);
+    const url = this.aiUrl + '/api/safest-route';
+    return this.http.get<string[]>(url, { params: params }).pipe(
+      catchError(this.handleError)
+    );
+  }
 
   private handleError(err: HttpErrorResponse) {
     console.error('An error occurred: ', err.error.errors.message);

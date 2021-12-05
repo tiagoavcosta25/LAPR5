@@ -18,7 +18,7 @@ import { HeaderComponent } from './modules/layout/components/header/header.compo
 import { PlayerComponent } from './modules/player/player.component';
 import { GetNetworkComponent } from './modules/network/components/get-network/get-network.component';
 import { NetworkComponent } from './modules/network/network.component';
-import { SafestRouteComponent } from './modules/network/components/safest-route/safest-route.component';
+import { SafestRouteComponent } from './modules/ai/components/safest-route/safest-route.component';
 import { SharedModule } from '../shared/shared.module';
 import { GetPlayersComponent } from './modules/player/components/get-players/get-players.component';
 import { RequestComponent } from './modules/request/request.component';
@@ -38,9 +38,11 @@ import { SearchPlayerComponent } from './modules/player/components/search-player
 import { UpdatePlayerComponent } from './modules/player/components/update-player/update-player.component';
 import { ApproveRequestComponent } from './modules/request/components/approve-request/approve-request.component';
 import { LayoutComponent } from './modules/layout/layout.component';
-import { SuggestPlayersComponent } from './modules/network/components/suggest-players/suggest-players.component';
+import { SuggestPlayersComponent } from './modules/ai/components/suggest-players/suggest-players.component';
 import { StrongestRouteComponent } from './modules/ai/components/strongest-route/strongest-route.component';
 import { CommonTagsComponent } from './modules/ai/components/common-tags/common-tags.component';
+import { ShortestRouteComponent } from './modules/ai/components/shortest-route/shortest-route.component';
+import { UpdateEmotionalStatusComponent } from './modules/player/components/update-emotional-status/update-emotional-status.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +67,9 @@ import { CommonTagsComponent } from './modules/ai/components/common-tags/common-
     LayoutComponent,
     SuggestPlayersComponent,
     StrongestRouteComponent,
-    CommonTagsComponent
+    CommonTagsComponent,
+    ShortestRouteComponent,
+    UpdateEmotionalStatusComponent
   ],
   imports: [
     BrowserModule,
@@ -90,6 +94,7 @@ import { CommonTagsComponent } from './modules/ai/components/common-tags/common-
     MatInputModule,
     MatSelectModule,
     MatDatepickerModule
+
   ],
   bootstrap: [AppComponent]
 })
