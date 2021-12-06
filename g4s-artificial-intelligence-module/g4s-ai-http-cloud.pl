@@ -1,5 +1,7 @@
 % Libraries
 :- use_module(library(http/thread_httpd)).
+:- use_module(library(http/http_ssl_plugin)).
+:- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_parameters)).
 :- use_module(library(http/http_open)).
@@ -28,8 +30,16 @@
 
 % HTTP Server setup at 'Port'
 startServer(Port) :-
-        http_server(http_dispatch, [port(Port)]),
+		http_server(http_dispatch,
+                    [ port(Port),
+                      ssl([ certificate_file('C:/Users/Administrador/Desktop/g4s_ai/g4s-artificial-intelligence-module/socialaicert.crt'),
+                            key_file('C:/Users/Administrador/Desktop/g4s_ai/g4s-artificial-intelligence-module/socialaikey.key')
+                          ])
+                    ]),
         asserta(port(Port)).
+		
+		
+
 
 % Cors setup
 :- set_setting(http:cors, [*]).

@@ -1,0 +1,1 @@
+openssl req -x509 -new -nodes -days 720 -keyout socialaikey.key -out socialaicert.crt -config openssl.cnf
