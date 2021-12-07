@@ -153,13 +153,19 @@ export class GetNetworkComponent implements OnInit {
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(0xffffff);
 
-    this.renderer = new THREE.WebGLRenderer();
+    this.renderer = new THREE.WebGLRenderer( { alpha: true } );
+    this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.setSize( window.innerWidth, window.innerHeight);
+    this.renderer.domElement.style.position = 'absolute';
+    this.renderer.domElement.style.top = '0px';
+    this.renderer.domElement.style.left = '0px';
+    this.renderer.domElement.style.zIndex = '1';
     document.body.appendChild( this.renderer.domElement );
     this.labelRenderer = new CSS2DRenderer();
     this.labelRenderer.setSize( window.innerWidth, window.innerHeight);
     this.labelRenderer.domElement.style.position = 'absolute';
     this.labelRenderer.domElement.style.top = '0px';
+    this.renderer.domElement.style.left = '0px';
     document.body.appendChild( this.labelRenderer.domElement );
   
     
@@ -221,7 +227,7 @@ export class GetNetworkComponent implements OnInit {
       div.style.color = '0x000';
       const playerLabel = new CSS2DObject( div );
       playerLabel.position.setX( 0 );
-      playerLabel.position.setY( -11 );
+      playerLabel.position.setY( -5 );
       playerLabel.position.setZ( 0 );
       circle.add( playerLabel );
 

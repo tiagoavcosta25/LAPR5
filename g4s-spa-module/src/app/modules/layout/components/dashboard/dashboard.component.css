@@ -1,13 +1,12 @@
 .dashboard-container {
-    position: absolute;
+    position: fixed;
     height: 100%;
     width: 61px;
-    background-color: #ffffff;
-    transition: width 0.4s;
+    transition: width 0.3s;
   }
 
 .dashboard-container:hover {
-    width: 12%;
+    width: 180px;
 }
 
   .container-fluid{
