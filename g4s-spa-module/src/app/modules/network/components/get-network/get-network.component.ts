@@ -56,11 +56,9 @@ export class GetNetworkComponent implements OnInit {
     this.players = [];
     //this.email = "email1@gmail.com";
     this.email = localStorage.getItem('currentPlayer')!.trim();
-    console.log(this.email);
     
     this.router.events.subscribe((event: Event) => {
       if( event instanceof NavigationEnd ) {
-        console.log("teste");
         window.location.reload();
       }
     })
@@ -100,7 +98,6 @@ export class GetNetworkComponent implements OnInit {
 
   getPlayers(lstIds:string[]){
     if(lstIds.length <= 0){
-      console.log(this.playersIds);
       this.initializeGraph();
       this.spinner.hide();
       return;
@@ -142,8 +139,6 @@ export class GetNetworkComponent implements OnInit {
   camera: THREE.PerspectiveCamera;
   miniMapCamera: THREE.OrthographicCamera;
   controls: OrbitControls;
-  controls2: OrbitControls;
-
 
   initializeGraph(){
     this.showForm = false;
@@ -167,8 +162,13 @@ export class GetNetworkComponent implements OnInit {
     this.renderer.domElement.style.left = '0px';
     document.body.appendChild( this.labelRenderer.domElement );
   
-    
     this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
+         
+    // Creating miniMap camera with absolute parameters big enough to see the whole graph
+    this.miniMapCamera = new THREE.OrthographicCamera(-50, 50, 50, -50);
+    
+    // Looking at (0, 0, 0) by default
+    //miniMapCamera.lookAt(new THREE.Vector3(0, 0, 0));
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enableZoom = true;
@@ -184,20 +184,6 @@ export class GetNetworkComponent implements OnInit {
     this.camera.position.set( 0, 20, 100 );
 
     this.controls.update();
-
-    
-    this.controls2 = new OrbitControls(this.camera, this.labelRenderer.domElement);
-    this.controls2.enableZoom = true;
-    this.controls2.enablePan = true;
-    this.controls2.enableRotate = false;
-    this.controls2.enableDamping = true;
-    this.controls2.screenSpacePanning = false;
-    this.controls2.minZoom = 0.2;
-    this.controls2.maxZoom = 12;
-    this.controls2.zoomSpeed = 2;
-
-
-    this.controls2.update();
 
     let nodes = [], groups = [], colors = [0xa93226, 0x884ea0, 0x5b2c6f, 0x2e86c1, 0x5dade2, 0x17a589, 0x27ae60, 
       0x0e6655, 0xf1c40f, 0x9c640c, 0xe67e22, 0x5d6d7e, 0xde3163, 0xff00ff];
@@ -256,6 +242,7 @@ export class GetNetworkComponent implements OnInit {
       this.camera.aspect = window.innerWidth / window.innerHeight;
       this.camera.updateProjectionMatrix();
       this.renderer.setSize(window.innerWidth, window.innerHeight);
+      this.labelRenderer.setSize(window.innerWidth, window.innerHeight);
     })
     this.spinner.hide();
     
@@ -270,19 +257,11 @@ export class GetNetworkComponent implements OnInit {
         this.renderer.render( this.scene, this.camera );
         this.labelRenderer.render( this.scene, this.camera );
         this.renderMiniMap();
-        console.log("animate");
     }
 
     renderMiniMap() {
-    
-      // Creating miniMap camera with absolute parameters big enough to see the whole graph
-      const miniMapCamera = new THREE.OrthographicCamera(-50, 50, 50, -50);
-
-      // Looking at (0, 0, 0) by default
-      //miniMapCamera.lookAt(new THREE.Vector3(0, 0, 0));
-  
       // Change z position enough to be able to see the objects
-      miniMapCamera.position.set(0, 0, 1);
+      this.miniMapCamera.position.set(0, 0, 1);
       const miniMapBorderColor = 0x000000;
       const miniMapWidth = 200;
       const miniMapHeight = miniMapWidth;
@@ -335,8 +314,8 @@ export class GetNetworkComponent implements OnInit {
         miniMapWidth, miniMapHeight);
 
       // UpdateMatrix and render graph
-      miniMapCamera.updateProjectionMatrix();
-      this.renderer.render(this.scene, miniMapCamera);
+      this.miniMapCamera.updateProjectionMatrix();
+      this.renderer.render(this.scene, this.miniMapCamera);
       
       // Deactivate ScissorTest
       this.renderer.setScissorTest(false);
