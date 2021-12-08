@@ -1,4 +1,4 @@
-% Libraries
+﻿% Libraries
 :- use_module(library(http/thread_httpd)).
 :- use_module(library(http/http_ssl_plugin)).
 :- use_module(library(http/http_dispatch)).
@@ -32,8 +32,8 @@
 startServer(Port) :-
 		http_server(http_dispatch,
                     [ port(Port),
-                      ssl([ certificate_file('C:/Users/Administrador/Desktop/g4s_ai/g4s-artificial-intelligence-module/socialaicert.crt'),
-                            key_file('C:/Users/Administrador/Desktop/g4s_ai/g4s-artificial-intelligence-module/socialaikey.key')
+                      ssl([ certificate_file('C:/Users/Administrador/Desktop/g4s_ai/g4s-artificial-intelligence-module/certificate.crt'),
+                            key_file('C:/Users/Administrador/Desktop/g4s_ai/g4s-artificial-intelligence-module/private.key')
                           ])
                     ]),
         asserta(port(Port)).

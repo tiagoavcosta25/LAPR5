@@ -154,7 +154,6 @@ export class GetNetworkComponent implements OnInit {
     this.scene.background = new THREE.Color(0xffffff);
 
     this.renderer = new THREE.WebGLRenderer( { alpha: true } );
-    this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.setSize( window.innerWidth, window.innerHeight);
     this.renderer.domElement.style.position = 'absolute';
     this.renderer.domElement.style.top = '0px';
