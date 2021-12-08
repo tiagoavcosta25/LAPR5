@@ -151,14 +151,14 @@ export class GetNetworkComponent implements OnInit {
     this.renderer = new THREE.WebGLRenderer( { alpha: true } );
     this.renderer.setSize( window.innerWidth, window.innerHeight);
     this.renderer.domElement.style.position = 'absolute';
-    this.renderer.domElement.style.top = '0px';
+    this.renderer.domElement.style.top = '30px';
     this.renderer.domElement.style.left = '0px';
     this.renderer.domElement.style.zIndex = '1';
     document.body.appendChild( this.renderer.domElement );
     this.labelRenderer = new CSS2DRenderer();
     this.labelRenderer.setSize( window.innerWidth, window.innerHeight);
     this.labelRenderer.domElement.style.position = 'absolute';
-    this.labelRenderer.domElement.style.top = '0px';
+    this.labelRenderer.domElement.style.top = '30px';
     this.renderer.domElement.style.left = '0px';
     document.body.appendChild( this.labelRenderer.domElement );
   

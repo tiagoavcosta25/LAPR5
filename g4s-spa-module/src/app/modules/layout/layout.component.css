@@ -1,5 +1,17 @@
-.container-fluid{
+.header{
     padding: 0;
     position: fixed;
     z-index: 999;
  }
+.dashboard {
+    padding: 0;
+    position: fixed;
+    top: 71px;
+    z-index: 998;
+}
+
+.content {
+    padding: 0;
+    position: relative;
+    top: 71px;
+}

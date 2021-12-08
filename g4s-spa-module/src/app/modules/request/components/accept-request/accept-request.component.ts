@@ -109,6 +109,14 @@ export class AcceptRequestComponent implements OnInit {
       return null;
     }
 
+    getTargetMessageShort(request: TargetPendingRequest): string | null {
+      var intr = <TargetIntroductionPendingRequest>request;
+      if(intr.playerToTargetMessage != undefined) {
+        return intr.playerToTargetMessage.substring(0,50) + "...";
+      }
+      return null;
+    }
+
     getMiddleMan(request: TargetPendingRequest): Player | null {
       var intr = <TargetIntroductionPendingRequest>request;
       if(intr.middleManToTargetMessage != undefined) {
