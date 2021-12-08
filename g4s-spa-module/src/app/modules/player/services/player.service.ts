@@ -31,23 +31,11 @@ export class PlayerService {
   }
 
   /* GET players by email */
-  getPlayerByEmail(email: string): Observable<Player[]> {
-    email = email.trim();
-
-    // Add safe, URL encoded search parameter if there is a search term
-    const options = email ?
-     { params: new HttpParams().set('email', email) } : {};
-    return this.http.get<Player[]>(this.playerUrl).pipe(
-      catchError(this.handleError)
+  getOnlyPlayerByEmail(email: string): Observable<DobPlayer> {
+    return this.http.get<DobPlayer>(this.playerUrl + "email/" + email).pipe(
+    catchError(this.handleError)
     );
   }
-
-    /* GET players by email */
-    getOnlyPlayerByEmail(email: string): Observable<DobPlayer> {
-      return this.http.get<DobPlayer>(this.playerUrl + "email/" + email).pipe(
-        catchError(this.handleError)
-      );
-    }
 
   /** POST: add a new player to the database */
   registerPlayer(player: CreatingPlayer): Observable<Player> {

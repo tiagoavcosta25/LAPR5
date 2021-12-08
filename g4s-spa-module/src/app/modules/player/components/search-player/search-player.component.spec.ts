@@ -11,6 +11,7 @@ import { Player } from 'src/shared/models/player/player.model';
 import { DebugElement } from '@angular/core';
 import { GettingConnection } from 'src/shared/models/connection/getting-connection.model';
 import { CreatingDirectRequest } from 'src/shared/models/requests/creating-direct-request.model';
+import { DobPlayer } from '../../models/dob-player.model copy';
 
 
 describe('SearchPlayerComponent', () => {
@@ -27,8 +28,12 @@ describe('SearchPlayerComponent', () => {
   let spy4: jasmine.Spy;
   let de: DebugElement;
 
-  let p = new Player();
-  let p2 = new Player();
+  let p = new DobPlayer();
+  let p2 = new DobPlayer();
+
+  let p3 = new Player();
+  let p4 = new Player();
+
   let dr = new DirectRequest();
   let c = new GettingConnection();
 
@@ -50,21 +55,26 @@ describe('SearchPlayerComponent', () => {
     rService = de.injector.get<RequestService>(RequestService);
     cService = de.injector.get<ConnectionService>(ConnectionService);
 
-    p.id = "1", p.name = "user1", p.email = "email1@gmail.com", p.year = 1,
-    p.month = 1, p.day = 1, p.phoneNumber = 1, p.emotionalStatus = "joyful", p.facebook = "facebook.com",
+    p.id = "1", p.name = "user1", p.email = "email1@gmail.com", p.dateOfBirth ="1", p.phoneNumber = 1, p.emotionalStatus = "joyful", p.facebook = "facebook.com",
     p.linkedIn = "linedIn.com", p.tags = [];
     p2 = p;
     p2.id = "2";
 
-    c.id = "1", c.player = p, c.friend = p, c.connectionStrength = 1, c.tags = [];
+    p3.id = p.id, p3.name = p.name, p3.email = p.email, p3.day = 1, p3.month = 1, p3.year = 1, p3.emotionalStatus = p.emotionalStatus, p3.facebook = p.facebook,
+    p3.linkedIn = p.linkedIn, p3.tags = p.tags;
+
+    p4.id = p2.id, p4.name = p2.name, p4.email = p2.email, p4.day = 1, p4.month = 1, p4.year = 1, p4.emotionalStatus = p2.emotionalStatus, p4.facebook = p2.facebook,
+    p4.linkedIn = p2.linkedIn, p4.tags = p2.tags;
+
+    c.id = "1", c.player = p3, c.friend = p4, c.connectionStrength = 1, c.tags = [];
 
     dr.id = "1", dr.player = "1", dr.target = "2", dr.playerToTargetMessage = "asd", dr.currentStatus = "request_pending", dr.strength = 3, dr.tags = []; 
 
-    spy = spyOn(pService, 'getPlayerByEmail').and.returnValue(of([p]));
+    spy = spyOn(pService, 'getOnlyPlayerByEmail').and.returnValue(of(p));
 
     spy2 = spyOn(cService, 'getConnections').and.returnValue(of([c]));
 
-    spy3 = spyOn(pService, 'searchPlayers').and.returnValue(of([p2]));
+    spy3 = spyOn(pService, 'searchPlayers').and.returnValue(of([p4]));
 
     spy4 = spyOn(rService, 'sendDirectRequest').and.returnValue(of(dr));
     
@@ -108,7 +118,7 @@ describe('SearchPlayerComponent', () => {
   });
 
   it('friends should be p', () =>{
-    expect(component.friends).toEqual([p])
+    expect(component.friends).toEqual([p3])
   });
 
   it('chosenPlayer should be unnedefined', () =>{
@@ -144,7 +154,7 @@ describe('SearchPlayerComponent', () => {
   it('sendRequest should return success', () => {
     component.timeLeft = 10000;
     component.currentPlayer = p;
-    component.chosenPlayer = p2;
+    component.chosenPlayer = p4;
     component.sendRequest();
     expect(spy4).toHaveBeenCalled();
     expect(component.success).toEqual(true),

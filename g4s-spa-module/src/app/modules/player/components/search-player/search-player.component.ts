@@ -9,7 +9,7 @@ import { DirectRequest } from 'src/shared/models/requests/direct-request.model';
 import { RequestService } from 'src/app/modules/request/services/request.service';
 import { CreatingDirectRequest } from 'src/shared/models/requests/creating-direct-request.model';
 import { ConnectionService } from 'src/app/modules/connection/services/connection.service';
-import { GettingConnection } from 'src/shared/models/connection/getting-connection.model';
+import { DobPlayer } from '../../models/dob-player.model copy';
 
 @Component({
   selector: 'app-search-player',
@@ -17,9 +17,8 @@ import { GettingConnection } from 'src/shared/models/connection/getting-connecti
   styleUrls: ['./search-player.component.css']
 })
 export class SearchPlayerComponent implements OnInit {
-
   // TODO: Remover isto
-  currentPlayer: Player;
+  currentPlayer: DobPlayer;
 
   error: boolean;
 
@@ -69,8 +68,8 @@ export class SearchPlayerComponent implements OnInit {
   // TODO: Remover
   currentPlayerUpdate(): void {
     this.spinner.show();
-    this.pService.getPlayerByEmail(localStorage.getItem("currentPlayer")!.trim()).subscribe({ next: data => {
-      this.currentPlayer = data[0];
+    this.pService.getOnlyPlayerByEmail(localStorage.getItem("currentPlayer")!.trim()).subscribe({ next: data => {
+      this.currentPlayer = data;
       this.getFriends();
       this.spinner.hide();
     },
@@ -255,5 +254,4 @@ export class SearchPlayerComponent implements OnInit {
   refresh(): void {
     window.location.reload();
   }
-
 }
