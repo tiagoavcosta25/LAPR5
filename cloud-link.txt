@@ -1,3 +1,3 @@
-URL: http://socialnetworkapi51.azurewebsites.net/
-
-Exemplo de Utilização: http://socialnetworkapi51.azurewebsites.net/api/players
+Frontend URL: https://socialnetworkspa51.web.app
+Backend URL: http://socialnetworkapi51.azurewebsites.net
+Artificial Intelligence URL: https://socialnetwork51ai.westeurope.cloudapp.azure.com:4999
