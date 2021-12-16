@@ -139,6 +139,12 @@ export class GetNetworkComponent implements OnInit {
   camera: THREE.PerspectiveCamera;
   miniMapCamera: THREE.OrthographicCamera;
   controls: OrbitControls;
+  controlsMiniMap: OrbitControls;
+  miniCamXMin: number;
+  miniCamYMin: number;
+  miniCamXMax: number;
+  miniCamYMax: number;
+  mousePosition: any;
 
   initializeGraph(){
     this.showForm = false;
@@ -184,6 +190,21 @@ export class GetNetworkComponent implements OnInit {
     this.camera.position.set( 0, 20, 100 );
 
     this.controls.update();
+
+
+    this.controlsMiniMap = new OrbitControls(this.miniMapCamera, this.renderer.domElement);
+    this.controlsMiniMap.enableZoom = true;
+    this.controlsMiniMap.enablePan = true;
+    this.controlsMiniMap.enableRotate = false;
+    this.controlsMiniMap.enableDamping = true;
+    this.controlsMiniMap.screenSpacePanning = false;
+    this.controlsMiniMap.minZoom = 0.2;
+    this.controlsMiniMap.maxZoom = 12;
+    this.controlsMiniMap.zoomSpeed = 2;
+
+    this.miniMapCamera.position.set( 0, 0, 100 );
+
+    this.controlsMiniMap.update();
 
     let nodes = [], groups = [], colors = [0xa93226, 0x884ea0, 0x5b2c6f, 0x2e86c1, 0x5dade2, 0x17a589, 0x27ae60, 
       0x0e6655, 0xf1c40f, 0x9c640c, 0xe67e22, 0x5d6d7e, 0xde3163, 0xff00ff];
@@ -244,6 +265,20 @@ export class GetNetworkComponent implements OnInit {
       this.renderer.setSize(window.innerWidth, window.innerHeight);
       this.labelRenderer.setSize(window.innerWidth, window.innerHeight);
     })
+
+    this.renderer.domElement.addEventListener('mousemove', event => {
+      this.mousePosition = new THREE.Vector2(event.clientX, window.innerHeight - event.clientY + 30);
+      if( ( event.clientX >= this.miniCamXMin && event.clientX <= this.miniCamXMax ) &&
+       ( window.innerHeight - event.clientY + 30 >= this.miniCamYMin && window.innerHeight - event.clientY + 30 <= this.miniCamYMax ) ) {
+        this.controls.enabled = false;
+        this.controlsMiniMap.enabled = true;
+      }
+      else {
+        this.controls.enabled = true;
+        this.controlsMiniMap.enabled = false;
+      }
+    });
+
     this.spinner.hide();
     
     this.animate();
@@ -254,6 +289,7 @@ export class GetNetworkComponent implements OnInit {
         requestAnimationFrame( this.animate.bind(this) );
         // required if controls.enableDamping or controls.autoRotate are set to true
         this.controls.update();
+        this.controlsMiniMap.update();
         this.renderer.render( this.scene, this.camera );
         this.labelRenderer.render( this.scene, this.camera );
         this.renderMiniMap();
@@ -261,7 +297,7 @@ export class GetNetworkComponent implements OnInit {
 
     renderMiniMap() {
       // Change z position enough to be able to see the objects
-      this.miniMapCamera.position.set(0, 0, 1);
+      //this.miniMapCamera.position.set(0, 0, 1);
       const miniMapBorderColor = 0x000000;
       const miniMapWidth = 200;
       const miniMapHeight = miniMapWidth;
@@ -308,6 +344,11 @@ export class GetNetworkComponent implements OnInit {
       this.renderer.setViewport(window.innerWidth - miniMapWidth - paddingX + borderSize, paddingY + borderSize, 
         miniMapWidth, miniMapHeight);
 
+      this.miniCamXMin = window.innerWidth - miniMapWidth - paddingX + borderSize;
+      this.miniCamYMin = paddingY + borderSize;
+      this.miniCamXMax = this.miniCamXMin + miniMapWidth; 
+      this.miniCamYMax = this.miniCamYMin + miniMapHeight;
+
       // Pixels for miniMap of 200 of width and height
       // Position chosen -> bottom right corner of the screen
       this.renderer.setScissor(window.innerWidth - miniMapWidth - paddingX + borderSize, paddingY + borderSize, 
@@ -323,5 +364,4 @@ export class GetNetworkComponent implements OnInit {
       // Set default viewport
       this.renderer.setViewport(vp);
     }
-
 }
