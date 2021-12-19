@@ -22,6 +22,9 @@ node(200,sara,[natureza,moda,musica,sw,coimbra]).
 node(51,rodolfo,[natureza,musica,sw]).
 node(61,rita,[moda,tecnologia,cinema]).
 
+synonym(tecnologia, jogos).
+synonym(teatro, musica).
+
 
 connection(1,11,10,8).
 connection(1,12,2,6).
@@ -177,11 +180,8 @@ safest_updateRoute(Strength, PathList):-
 
 suggest_players(Player, Level, SuggestedPlayersList):-
 		network_getNetworkByLevel(Player, Level, NetworkList, _),
-                write(NetworkList),nl,
 		suggest_removeFriends(Player, NetworkList, CandidateList),
-                write(CandidateList),nl,
 		suggest_getRelatedPlayers(Player, CandidateList, RelatedPlayersList),
-                write(RelatedPlayersList),nl,
 		suggest_checkSuggestedPaths(Player, RelatedPlayersList, SuggestedPlayersList).
 
 suggest_removeFriends(_, [ ], []).
@@ -382,3 +382,25 @@ dfs2(Act,Level,LA):-
     Level1 is Level-1,
     asserta(userVisited(X)),
     dfs2(X,Level1,[X|LA]).
+
+%
+%
+aStar(Orig,Dest,Cam,Custo, N):- aStar2(0, Dest,[(_,0,[Orig])],Cam,Custo, N).
+aStar2(N, Dest,[(_,Custo,[Dest|T])|_],Cam,Custo, N):- reverse([Dest|T],Cam).
+aStar2(M, Dest,[(_,Ca,LA)|Outros],Cam,Custo, N):-
+    LA=[Act|_],
+    findall((CEX,CaX,[X|LA]),
+    (Dest\==Act,
+    (connection(Act,X,CustoX, _);
+    connection(X, Act, _, CustoX)),
+    \+ member(X,LA),
+    CaX is CustoX + Ca,
+    estimativa(N,M,EstX),
+    CEX is CaX + EstX),
+    Novos),
+    append(Outros,Novos,Todos),
+    sort(Todos,TodosOrd),
+    M1 is M + 1,
+    aStar2(M1, Dest,TodosOrd,Cam,Custo, N).
+estimativa(N,M,Estimativa):-
+    Estimativa is 100 * (N - M).
