@@ -16,6 +16,5 @@ pipelines:
             caches:
               - node
             script:
-              - export PROJECT_SPA=g4s-spa-module
               - npm install
-              - npm run build $PROJECT_SPA --prod
+              - npm run build:prod
