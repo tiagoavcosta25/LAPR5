@@ -9,15 +9,15 @@ pipelines:
               - dotnetcore
             script:
               - REPORTS_PATH=./test-reports/build_${BITBUCKET_BUILD_NUMBER}
-              - dotnet restore Project.sln
-              - dotnet build Project.sln --no-restore --configuration Release
-              - dotnet test Project.sln --no-build --configuration Release --test-adapter-path:. --logger:"junit;LogFilePath=$REPORTS_PATH/junit.xml"
+              - dotnet restore ./g4s-master-data-module/DDDNetCore.sln
+              - dotnet build ./g4s-master-data-module/DDDNetCore.sln --no-restore --configuration Release
+              - dotnet test ./g4s-master-data-module/DDDNetCore.sln --no-build --configuration Release --test-adapter-path:. --logger:"junit;LogFilePath=$REPORTS_PATH/junit.xml"
         - step:
             name: Lint the code
             caches:
               - dotnetcore
             script:
-              - export SOLUTION_NAME=Project
+              - export SOLUTION_NAME=g4s-master-data-module
               - export REPORTS_PATH=linter-reports
               - dotnet new tool-manifest
               - dotnet tool install JetBrains.ReSharper.GlobalTools
@@ -32,13 +32,11 @@ pipelines:
               - node
             script:
               - npm install
+              - npm install -g @angular/cli
             artifacts:
               - node_modules/** # Save modules for next steps
-        - step: 
-            name: Lint
-            script: 
-              - npm run lint
         - step:
             name: Build
+            image: node:17.3.0
             script:
-            - npm run build:production
+              - ng build --prod
