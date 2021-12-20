@@ -12,7 +12,7 @@ pipelines:
               - dotnet build $PROJECT_MD
         - step:
             name: Build and Test SPA
-            image: node:7
+            image: node:16.4.2
             caches:
               - node
             script:
