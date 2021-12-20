@@ -180,8 +180,6 @@ export class GetNetworkComponent implements OnInit {
     this.controls.enableZoom = true;
     this.controls.enablePan = true;
     this.controls.enableRotate = false;
-    this.controls.enableDamping = true;
-    this.controls.screenSpacePanning = false;
     this.controls.minZoom = 0.2;
     this.controls.maxZoom = 12;
     this.controls.zoomSpeed = 2;
@@ -196,13 +194,12 @@ export class GetNetworkComponent implements OnInit {
     this.controlsMiniMap.enableZoom = true;
     this.controlsMiniMap.enablePan = true;
     this.controlsMiniMap.enableRotate = false;
-    this.controlsMiniMap.enableDamping = true;
-    this.controlsMiniMap.screenSpacePanning = false;
     this.controlsMiniMap.minZoom = 0.2;
     this.controlsMiniMap.maxZoom = 12;
     this.controlsMiniMap.zoomSpeed = 2;
+    this.controlsMiniMap.panSpeed = 4;
 
-    this.miniMapCamera.position.set( 0, 0, 100 );
+    this.miniMapCamera.position.set( 0, 0, 2 );
 
     this.controlsMiniMap.update();
 

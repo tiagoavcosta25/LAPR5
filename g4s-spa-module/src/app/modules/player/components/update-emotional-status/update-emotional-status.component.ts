@@ -38,7 +38,7 @@ export class UpdateEmotionalStatusComponent implements OnInit {
 
   ngOnInit(): void {
     this.ces = new ChangeEmotionalStatus;
-    this.getCurrentPlayer(localStorage.getItem("currentPlayer")!.trim());
+    this.getCurrentPlayer(localStorage.getItem("currentPlayer")!);
   }
 
   getCurrentPlayer(email: string): void {

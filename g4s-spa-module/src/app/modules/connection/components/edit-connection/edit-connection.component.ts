@@ -45,7 +45,7 @@ export class EditConnectionComponent implements OnInit {
 
     ngOnInit(): void {
       this.c = new UpdatingConnection;
-      this.getConnections(localStorage.getItem("currentPlayer")!.trim());
+      this.getConnections(localStorage.getItem("currentPlayer")!);
     }
 
     setStep(index: number) {

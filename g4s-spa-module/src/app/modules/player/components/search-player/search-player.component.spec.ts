@@ -109,10 +109,6 @@ describe('SearchPlayerComponent', () => {
     expect(component.successMessageDeny).toBe("Request denied sucessfully! Refreshing in 2 seconds.")
   });
 
-  it('step should be undefined', () =>{
-    expect(component.step).toBeUndefined
-  });
-
   it('players should be unnedefined', () =>{
     expect(component.players).toBeUndefined()
   });
