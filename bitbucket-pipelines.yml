@@ -1,30 +1,15 @@
-image: mcr.microsoft.com/dotnet/sdk:5.0
-
 pipelines:
   default:
     - parallel:
         - step:
-            name: Build and Test MasterData
+            name: Build and Test Master Date
+            image: mcr.microsoft.com/dotnet/sdk:5.0
             caches:
               - dotnetcore
             script:
-              - REPORTS_PATH=./test-reports/build_${BITBUCKET_BUILD_NUMBER}
-              - dotnet restore ./g4s-master-data-module/DDDNetCore.sln
-              - dotnet build ./g4s-master-data-module/DDDNetCore.sln --no-restore --configuration Release
-              - dotnet test ./g4s-master-data-module/DDDNetCore.sln --no-build --configuration Release --test-adapter-path:. --logger:"junit;LogFilePath=$REPORTS_PATH/junit.xml"
-        - step:
-            name: Lint the code
-            caches:
-              - dotnetcore
-            script:
-              - export SOLUTION_NAME=g4s-master-data-module
-              - export REPORTS_PATH=linter-reports
-              - dotnet new tool-manifest
-              - dotnet tool install JetBrains.ReSharper.GlobalTools
-              - dotnet tool restore
-              - dotnet jb inspectcode ${SOLUTION_NAME}.sln --output="${REPORTS_PATH}/jb-${BITBUCKET_BUILD_NUMBER}.xml"
-            artifacts:
-              - linter-reports/**
+              - export PROJECT_MD=g4s-master-data-module
+              - dotnet restore ./g4s-master-data-module
+              - dotnet build $PROJECT_MD
         - step:
             name: Build and Test SPA
             image: node:12.13.0
@@ -36,6 +21,6 @@ pipelines:
               - node_modules/** # Save modules for next steps
         - step:
             name: Build
-            image: node:17.3.0
+            image: node:12.13.0
             script:
-              - ng build --prod
+              - ng build
