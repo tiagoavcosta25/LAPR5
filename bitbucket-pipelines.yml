@@ -2,7 +2,7 @@ pipelines:
   default:
     - parallel:
         - step:
-            name: Build and Test Master Date
+            name: Build and Test Master Data
             image: mcr.microsoft.com/dotnet/sdk:5.0
             caches:
               - dotnetcore
@@ -11,16 +11,11 @@ pipelines:
               - dotnet restore ./g4s-master-data-module
               - dotnet build $PROJECT_MD
         - step:
-            name: Build and Test SPA
+            name: Install node
             image: node:12.13.0
             caches:
               - node
             script:
+              - export PROJECT_SPA=g4s-spa-module
               - npm install
-            artifacts:
-              - node_modules/** # Save modules for next steps
-        - step:
-            name: Build
-            image: node:12.13.0
-            script:
-              - ng build
+              - ng build $PROJECT_SPA
