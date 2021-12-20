@@ -20,6 +20,7 @@ describe('ApproveRequestComponent', () => {
     fixture = TestBed.createComponent(ApproveRequestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    localStorage.setItem('currentPlayer', 'email1@gmail.com');
   });
 
   it('should create', () => {
