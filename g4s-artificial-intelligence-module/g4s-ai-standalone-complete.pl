@@ -382,3 +382,25 @@ dfs2(Act,Level,LA):-
     Level1 is Level-1,
     asserta(userVisited(X)),
     dfs2(X,Level1,[X|LA]).
+
+%======== A-Star (Core) ========%
+
+aStar(N, Orig,Dest,Cam,Custo, N):- aStar2(0, N, Dest,[(_,0,[Orig])],Cam,Custo).
+aStar2(N, N, Dest,[(_,Custo,[Dest|T])|_],Cam,Custo):- reverse([Dest|T],Cam).
+aStar2(M, N, Dest,[(_,Ca,LA)|Outros],Cam,Custo):-
+    LA=[Act|_],
+    findall((CEX,CaX,[X|LA]),
+    (Dest\==Act,
+    (connection(Act,X,CustoX, _);
+    connection(X, Act, _, CustoX)),
+    \+ member(X,LA),
+    CaX is CustoX + Ca,
+    estimativa(N,M,EstX),
+    CEX is CaX + EstX),
+    Novos),
+    append(Outros,Novos,Todos),
+    sort(Todos,TodosOrd),
+    M1 is M + 1,
+    aStar2(M1, Dest,TodosOrd,Cam,Custo, N).
+estimativa(N,M,Estimativa):-
+    Estimativa is 100 * (N - M).

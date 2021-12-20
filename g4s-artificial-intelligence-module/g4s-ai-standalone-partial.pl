@@ -11,10 +11,10 @@ node(6,michelle,[movies]).
 
 connection(1,2,10,8).
 connection(2,4,2,6).
-connection(2,5,-3,-2).
-connection(2,6,-3,-2).
-connection(1,3,-3,-2).
-connection(3,5,-3,-2).
+connection(2,5,19,-19).
+connection(2,6,4,0).
+connection(1,3,11,3).
+connection(3,5,12,-2).
 
 
 synonym('c#', csharp).
@@ -313,3 +313,29 @@ dfs2(Act,Level,LA):-
     Level1 is Level-1,
     asserta(userVisited(X)),
     dfs2(X,Level1,[X|LA]).
+
+
+%======== A-Star (Core) ========%
+
+aStar(N, Orig,Dest,Cam,Custo):- aStar2(0, N, Dest,[(_,0,[Orig])],Cam,Custo).
+aStar2(M, N, Dest,[(_,Custo,[Dest|T])|_],Cam,Custo):- M >= N,reverse([Dest|T],Cam).
+aStar2(M, N, Dest,[(_,Ca,LA)|Outros],Cam,Custo):-
+    LA=[Act|_],
+    findall((CEX,CaX,[X|LA]),
+    (Dest\==Act,
+    (connection(Act,X,CustoX, _);
+    connection(X, Act, _, CustoX)),
+    \+ member(X,LA),
+    CaX is CustoX + Ca,
+    estimate(N,M,EstX),
+    CEX is CaX + EstX),
+    Novos),
+    append(Outros,Novos,Todos),
+    sort(Todos,TodosOrd),
+    M1 is M + 1,
+    aStar2(M1, N, Dest,TodosOrd,Cam,Custo).
+
+estimate(N,M,Estimativa):-
+    Estimativa is 100 * (N - M).
+
+aStar_sort(List, ResultList):- sort(0,  @>=, List,  ResultList).
