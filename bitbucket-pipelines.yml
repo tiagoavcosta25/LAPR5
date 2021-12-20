@@ -12,11 +12,12 @@ pipelines:
               - dotnet build $PROJECT_MD
         - step:
             name: Install node
-            image: node:12.13.0
+            image: node:12
             caches:
               - node
             script:
               - npm --prefix ./g4s-spa-module install
+              - npm --prefix ./g4s-spa-module install @angular/cli -g
               - npm --prefix ./g4s-spa-module run build
             artifacts:
               - node_modules/** # Save modules for next steps
