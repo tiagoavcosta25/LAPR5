@@ -1,18 +1,44 @@
-#  Template .NET Core build
-
-#  This template allows you to validate your .NET Core package.
-#  The workflow allows running tests and code linting on the default branch.
-
+image: mcr.microsoft.com/dotnet/sdk:5.0
 
 pipelines:
   default:
     - parallel:
         - step:
-            name: Build and Test Master Date
-            image: mcr.microsoft.com/dotnet/sdk:5.0
+            name: Build and Test MasterData
             caches:
               - dotnetcore
             script:
-              - export PROJECT_MD=g4s-master-data-module
-              - dotnet restore ./g4s-master-data-module
-              - dotnet build $PROJECT_MD
+              - REPORTS_PATH=./test-reports/build_${BITBUCKET_BUILD_NUMBER}
+              - dotnet restore Project.sln
+              - dotnet build Project.sln --no-restore --configuration Release
+              - dotnet test Project.sln --no-build --configuration Release --test-adapter-path:. --logger:"junit;LogFilePath=$REPORTS_PATH/junit.xml"
+        - step:
+            name: Lint the code
+            caches:
+              - dotnetcore
+            script:
+              - export SOLUTION_NAME=Project
+              - export REPORTS_PATH=linter-reports
+              - dotnet new tool-manifest
+              - dotnet tool install JetBrains.ReSharper.GlobalTools
+              - dotnet tool restore
+              - dotnet jb inspectcode ${SOLUTION_NAME}.sln --output="${REPORTS_PATH}/jb-${BITBUCKET_BUILD_NUMBER}.xml"
+            artifacts:
+              - linter-reports/**
+        - step:
+            name: Build and Test SPA
+            image: node:17.3.0
+            caches:
+              - node
+            script:
+              - npm install
+            artifacts:
+              - node_modules/** # Save modules for next steps
+        - step: 
+            name: Lint
+            script: 
+              - npm run lint
+        - step:
+            name: Build
+            script:
+            - npm run build:production
