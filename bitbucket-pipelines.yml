@@ -24,4 +24,4 @@ pipelines:
             caches:
               - node
             script:
-              - npm --prefix ./g4s-spa-module run build --prod
+              - npm --prefix ./g4s-spa-module run build
