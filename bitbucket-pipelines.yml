@@ -11,8 +11,8 @@ pipelines:
               - dotnet restore ./g4s-master-data-module
               - dotnet build $PROJECT_MD
         - step:
-            name: Install node
-            image: node:12
+            name: Build and Test SPA
+            image: node:7
             caches:
               - node
             script:
