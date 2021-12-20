@@ -27,12 +27,11 @@ pipelines:
               - linter-reports/**
         - step:
             name: Build and Test SPA
-            image: node:17.3.0
+            image: node:12.13.0
             caches:
               - node
             script:
               - npm install
-              - npm install -g @angular/cli
             artifacts:
               - node_modules/** # Save modules for next steps
         - step:
