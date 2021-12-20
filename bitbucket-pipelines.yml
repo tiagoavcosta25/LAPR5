@@ -18,4 +18,4 @@ pipelines:
             script:
               - export PROJECT_SPA=g4s-spa-module
               - npm install
-              - ng build $PROJECT_SPA
+              - npm run build $PROJECT_SPA --prod
