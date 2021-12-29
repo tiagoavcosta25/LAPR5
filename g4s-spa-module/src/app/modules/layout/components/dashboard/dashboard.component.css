@@ -18,6 +18,7 @@ mat-drawer {
 }
   
 mat-nav-list {
+    margin-top: 65px;
     width: 60px;
     overflow: hidden;
     transition: width 0.3s;

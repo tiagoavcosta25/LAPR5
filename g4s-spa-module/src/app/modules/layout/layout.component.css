@@ -6,7 +6,6 @@
 .dashboard {
     padding: 0;
     position: fixed;
-    top: 71px;
     z-index: 998;
 }
 
