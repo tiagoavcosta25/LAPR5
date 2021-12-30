@@ -173,16 +173,16 @@ export class GetNetworkComponent implements OnInit {
     this.scene.background = new THREE.Color(0xffffff);
 
     this.renderer = new THREE.WebGLRenderer( { alpha: true } );
-    this.renderer.setSize( window.innerWidth, window.innerHeight);
+    this.renderer.setSize( window.innerWidth, window.innerHeight-70);
     this.renderer.domElement.style.position = 'absolute';
-    this.renderer.domElement.style.top = '30px';
+    this.renderer.domElement.style.top = '70px';
     this.renderer.domElement.style.left = '0px';
     this.renderer.domElement.style.zIndex = '1';
     document.body.appendChild( this.renderer.domElement );
     this.labelRenderer = new CSS2DRenderer();
-    this.labelRenderer.setSize( window.innerWidth, window.innerHeight);
+    this.labelRenderer.setSize( window.innerWidth, window.innerHeight-70);
     this.labelRenderer.domElement.style.position = 'absolute';
-    this.labelRenderer.domElement.style.top = '30px';
+    this.labelRenderer.domElement.style.top = '70px';
     this.renderer.domElement.style.left = '0px';
     document.body.appendChild( this.labelRenderer.domElement );
   
@@ -205,6 +205,7 @@ export class GetNetworkComponent implements OnInit {
     this.camera.position.set( 0, 20, 150 );
 
     this.controls.update();
+    this.controls.enabled = true;
 
     this.controlsMiniMap = new OrbitControls(this.miniMapCamera, this.renderer.domElement);
     this.controlsMiniMap.enableZoom = true;
@@ -218,6 +219,7 @@ export class GetNetworkComponent implements OnInit {
     this.miniMapCamera.position.set( 0, 0, 150 );
 
     this.controlsMiniMap.update();
+    this.controlsMiniMap.enabled = false;
 
     let nodes = [];
 
@@ -229,7 +231,7 @@ export class GetNetworkComponent implements OnInit {
       let angleIncrement = this.calculateAngleIncrement(scope);
       if(scope.player.id == this.id){
         material = new THREE.MeshBasicMaterial( { color: 0xe67e22  } );
-        geometry = new THREE.SphereGeometry(4, 32);
+        geometry = new THREE.SphereGeometry(4, 32, 16);
         scope.player.setMesh( geometry, material );
         scope.player.sphere.position.x = 0;
         scope.player.sphere.position.y = 0;
@@ -256,7 +258,7 @@ export class GetNetworkComponent implements OnInit {
       let angle = 0;
       for(let scopeFriend of scope.friends) {
         material = new THREE.MeshBasicMaterial( { color: 0x2e86c1  } );
-        geometry = new THREE.SphereGeometry(2, 32);
+        geometry = new THREE.SphereGeometry(2, 32, 16);
         scope.player.setMesh( geometry, material );
         scopeFriend.setMesh(geometry, material);
         scopeFriend.sphere.position.x = scopex + radius * Math.cos(angle);
@@ -289,8 +291,8 @@ export class GetNetworkComponent implements OnInit {
     window.addEventListener('resize', () => {
       this.camera.aspect = window.innerWidth / window.innerHeight;
       this.camera.updateProjectionMatrix();
-      this.renderer.setSize(window.innerWidth, window.innerHeight);
-      this.labelRenderer.setSize(window.innerWidth, window.innerHeight);
+      this.renderer.setSize(window.innerWidth, window.innerHeight-70);
+      this.labelRenderer.setSize(window.innerWidth, window.innerHeight-70);
     })
 
     this.renderer.domElement.addEventListener('mousemove', event => {
@@ -363,7 +365,7 @@ export class GetNetworkComponent implements OnInit {
     const miniMapHeight = miniMapWidth;
     const borderSize = 1;
     const paddingX = 55;
-    const paddingY = 125;
+    const paddingY = 55;
 
     // Affect only chosen setScissor pixels
     this.renderer.setScissorTest(true);
