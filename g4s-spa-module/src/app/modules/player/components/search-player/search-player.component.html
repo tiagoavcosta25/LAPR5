@@ -58,7 +58,7 @@
         <div *ngIf="players?.length; else noPlayers">
             <h2>Players with {{ f['value'].value }} as their {{ f['filter'].value }}</h2>
             <mat-accordion class="example-headers-align">
-                <mat-expansion-panel *ngFor="let p of players; let i = index" [expanded]="step === i" (opened)="setStep(i);clearSuccess()" (closed)="setStep(-1)" hideToggle>
+                <mat-expansion-panel *ngFor="let p of players; let i = index" [expanded]="step === i" (opened)="setStep(i);clearSuccess();getPlayerById(p.id)" (closed)="setStep(-1)" hideToggle>
                   <mat-expansion-panel-header>
                       <div class="up-down-sign">
                         <div class="down-sign" *ngIf="step != i">

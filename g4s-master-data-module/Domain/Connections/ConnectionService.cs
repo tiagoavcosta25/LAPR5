@@ -219,8 +219,9 @@ namespace DDDNetCore.Domain.Connections
 
             var player = await _repoPl.GetByEmailAsync(playerEmail);
             
-            List<Connection> lst = new List<Connection>();
-            lst = await this.GetNetwork(player.Id, scope, lst);
+            List<Connection> lst = new();
+            List<PlayerId> lstIds = new();
+            lst = await this.GetNetwork(player.Id, scope, lst, lstIds);
 
             List<ConnectionDto> lstDto = lst.ConvertAll<ConnectionDto>(con =>
                 new ConnectionDto(con.Id.AsString(), con.Player.AsString(), con.Friend.AsString(), con.ConnectionStrength.Strength, con.Tags.Select(t => t.tagName).ToList()));
@@ -228,18 +229,24 @@ namespace DDDNetCore.Domain.Connections
             return lstDto;
         }
 
-        private async Task<List<Connection>> GetNetwork(PlayerId id, int scope, List<Connection> lst){
+        private async Task<List<Connection>> GetNetwork(PlayerId id, int scope, List<Connection> lst, List<PlayerId> lstIds){
             
-            if(scope < 1){
+            if(scope < 1 || lstIds.Contains(id)){
                 return lst;
             }
 
+            lstIds.Add(id);
+
             List<Connection> lstFriends = await this._repo.GetAllUserConnectionsAsync(id);
 
-            lst.AddRange(lstFriends);
+            foreach(Connection con in lstFriends) {
+                if (!lst.Exists(x => x.Player.AsString().Equals(con.Friend.AsString()))) {
+                    lst.Add(con);
+                }
+            }
             
             foreach(Connection c in lstFriends){
-                await this.GetNetwork(c.Friend, scope - 1, lst);
+                await this.GetNetwork(c.Friend, scope - 1, lst, lstIds);
             }
 
             return lst;

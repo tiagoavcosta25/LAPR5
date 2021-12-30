@@ -49,7 +49,7 @@ export class AcceptRequestComponent implements OnInit {
 
     ngOnInit(): void {
       this.r = new AcceptRequest;
-      this.getRequests('email1@gmail.com');
+      this.getRequests(localStorage.getItem("currentPlayer")!);
     }
 
     setStep(index: number) {

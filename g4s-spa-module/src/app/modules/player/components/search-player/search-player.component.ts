@@ -153,6 +153,7 @@ export class SearchPlayerComponent implements OnInit {
   createDirectRequest() {
     this.r.player = this.currentPlayer.id;
     this.r.target = this.chosenPlayer.id;
+    this.r.playerToTargetMessage = this.requestForm.value.playerToTargetMessage;
     this.r.strength = this.requestForm.value.connectionStrength;
     this.r.tags = [];
     for(let tag of this.requestForm.value.tags)

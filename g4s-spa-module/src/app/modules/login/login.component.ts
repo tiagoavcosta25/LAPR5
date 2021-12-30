@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(){
+    localStorage.clear();
     localStorage.setItem('currentPlayer', this.loginForm.value.email);
     this.router.navigate(['/get-players']);
   }
