@@ -5,6 +5,12 @@
 				<mat-drawer #drawer mode="side" disableClose="true" opened="true">
 					<mat-nav-list>
 						
+						<button [routerLink]="['/get-feed']">
+							<mat-list-item>
+								<mat-icon mat-list-icon color="accent">notifications_active</mat-icon>
+								<h4>Activity Feed</h4>
+							</mat-list-item>
+						</button>
 						<button [routerLink]="['/get-players']">
 							<mat-list-item>
 								<mat-icon mat-list-icon color="accent">people</mat-icon>
@@ -15,6 +21,12 @@
 							<mat-list-item>
 								<mat-icon mat-list-icon color="accent">person_add</mat-icon>
 								<h4>Suggest Players</h4>
+							</mat-list-item>
+						</button>
+						<button [routerLink]="['/a-star']">
+							<mat-list-item>
+								<mat-icon mat-list-icon color="accent">stars</mat-icon>
+								<h4>A-Star</h4>
 							</mat-list-item>
 						</button>
 						<button [routerLink]="['/shortest-route']">
@@ -75,6 +87,13 @@
 							</mat-list-item>
 						</button>
 			
+						<button [routerLink]="['/create-post']">
+							<mat-list-item>
+								<mat-icon mat-list-icon color="accent">share</mat-icon>
+								<h4>Create Post</h4>
+							</mat-list-item>
+						</button>
+
 						<button [routerLink]="['/register-player']">
 							<mat-list-item>
 								<mat-icon mat-list-icon color="accent">person</mat-icon>
