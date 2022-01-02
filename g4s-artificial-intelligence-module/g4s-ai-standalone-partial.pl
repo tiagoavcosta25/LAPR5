@@ -317,25 +317,25 @@ dfs2(Act,Level,LA):-
 
 %======== A-Star (Core) ========%
 
-aStar(N, Orig,Dest,Cam,Custo):- aStar2(0, N, Dest,[(_,0,[Orig])],Cam,Custo).
-aStar2(M, N, Dest,[(_,Custo,[Dest|T])|_],Cam,Custo):- M >= N,reverse([Dest|T],Cam).
-aStar2(M, N, Dest,[(_,Ca,LA)|Outros],Cam,Custo):-
+aStar_find(Threshold, Orig, Dest, Path, Cost):- aStar_aux(0, Threshold, Dest,[(_,0,[Orig])],Path,Cost).
+aStar_aux(M, N, Dest,[(_,Cost,[Dest|T])|_],Path,Cost):- M >= N,reverse([Dest|T],Path).
+aStar_aux(M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
     LA=[Act|_],
     findall((CEX,CaX,[X|LA]),
     (Dest\==Act,
-    (connection(Act,X,CustoX, _);
-    connection(X, Act, _, CustoX)),
+    (connection(Act,X,CostX, _);
+    connection(X, Act, _, CostX)),
     \+ member(X,LA),
-    CaX is CustoX + Ca,
+    CaX is CostX + Ca,
     estimate(N,M,EstX),
     CEX is CaX + EstX),
-    Novos),
-    append(Outros,Novos,Todos),
-    sort(Todos,TodosOrd),
+    New),
+    append(Others,New,All),
+    sort(All,AllOrd),
     M1 is M + 1,
-    aStar2(M1, N, Dest,TodosOrd,Cam,Custo).
+    aStar_aux(M1, N, Dest,AllOrd,Path,Cost).
 
-estimate(N,M,Estimativa):-
-    Estimativa is 100 * (N - M).
+estimate(N,M,Est):-
+    Est is 100 * (N - M).
 
 aStar_sort(List, ResultList):- sort(0,  @>=, List,  ResultList).
