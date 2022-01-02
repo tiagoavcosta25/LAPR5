@@ -296,9 +296,9 @@ export class GetNetworkComponent implements OnInit {
     })
 
     this.renderer.domElement.addEventListener('mousemove', event => {
-      this.mousePosition = new THREE.Vector2(event.clientX, window.innerHeight - event.clientY + 30);
+      this.mousePosition = new THREE.Vector2(event.clientX, window.innerHeight - event.clientY);
       if( ( event.clientX >= this.miniCamXMin && event.clientX <= this.miniCamXMax ) &&
-       ( window.innerHeight - event.clientY + 30 >= this.miniCamYMin && window.innerHeight - event.clientY + 30 <= this.miniCamYMax ) ) {
+       ( window.innerHeight - event.clientY >= this.miniCamYMin && window.innerHeight - event.clientY <= this.miniCamYMax ) ) {
         this.controls.enabled = false;
         this.controlsMiniMap.enabled = true;
       }
