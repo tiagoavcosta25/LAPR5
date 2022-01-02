@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Player } from 'src/shared/models/player/player.model';
 import { PlayerService } from '../../services/player.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-get-players',
@@ -11,15 +12,26 @@ export class GetPlayersComponent implements OnInit {
 
   players: Player[] = [];
 
-  constructor(private playersService: PlayerService) {}
+  constructor(private playersService: PlayerService,
+    private spinner: NgxSpinnerService) {}
 
   ngOnInit() {
     this.getPlayers();
   }
 
   getPlayers(): void {
+    this.spinner.show();
     this.playersService.getPlayers()
-      .subscribe(players => (this.players = players));
+      .subscribe({ next: data => {
+        if(data) {
+          this.players = data;
+        }
+        this.spinner.hide();
+      },
+        error: _error => {
+          this.spinner.hide();
+        }
+      });
   }
 
 }

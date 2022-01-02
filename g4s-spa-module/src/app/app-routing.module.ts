@@ -15,7 +15,10 @@ import { ShortestRouteComponent } from './modules/ai/components/shortest-route/s
 import { StrongestRouteComponent } from './modules/ai/components/strongest-route/strongest-route.component';
 import { UpdateEmotionalStatusComponent } from './modules/player/components/update-emotional-status/update-emotional-status.component';
 import { SafestRouteComponent } from './modules/ai/components/safest-route/safest-route.component';
+import { AStarComponent } from './modules/ai/components/a-star/a-star.component';
 import { SuggestPlayersComponent } from './modules/ai/components/suggest-players/suggest-players.component';
+import { CreatePostComponent } from './modules/feed/components/create-post/create-post.component';
+import { GetFeedComponent } from './modules/feed/components/get-feed/get-feed.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -23,6 +26,8 @@ const routes: Routes = [
     component: LayoutComponent,
     children: [
       { path: 'register-player',  component: RegisterPlayerComponent },
+      { path: 'create-post',  component: CreatePostComponent },
+      { path: 'get-feed',  component: GetFeedComponent },
       { path: 'get-players',  component: GetPlayersComponent },
       { path: 'request-introduction',  component: RequestIntroductionComponent },
       { path: 'edit-connection',  component: EditConnectionComponent },
@@ -31,6 +36,7 @@ const routes: Routes = [
       { path: 'update-player',  component: UpdatePlayerComponent },
       { path: 'search-player', component: SearchPlayerComponent},
       { path: 'safest-route', component: SafestRouteComponent},
+      { path: 'a-star', component: AStarComponent},
       { path: 'shortest-route', component: ShortestRouteComponent},
       { path: 'strongest-route', component: StrongestRouteComponent},
       { path: 'suggest-players', component: SuggestPlayersComponent},

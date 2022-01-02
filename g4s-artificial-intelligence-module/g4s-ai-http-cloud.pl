@@ -37,8 +37,8 @@ startServer(Port) :-
                           ])
                     ]),
         asserta(port(Port)).
-		
-		
+
+
 
 
 % Cors setup
@@ -507,3 +507,53 @@ dfs2(Act,Level,LA):-
     Level1 is Level-1,
     asserta(userVisited(X)),
     dfs2(X,Level1,[X|LA]).
+
+
+
+%======== A-Star (HTTP) ========%
+
+:- http_handler('/api/a-star', safest_routeCompute, []).
+
+aStar_compute(Request) :-
+	cors_enable(Request, [methods([get])]),
+    aStar_prepare(Request, Path, _),
+	prolog_to_json(Path, JSONObject),
+    reply_json(JSONObject, [json_object(dict)]).
+
+aStar_prepare(Request, Path, Cost) :-
+    http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string]),
+    threshold(Threshold, [integer])]),
+	addPlayers(),
+	addConnections(),
+	getPlayerName(EmailPlayer, PlayerName),
+	getPlayerName(EmailTarget, TargetName),
+        node(PlayerId, PlayerName, _),
+        node(TargetId, TargetName, _),
+	aStar_find(Threshold, PlayerId, TargetId, Path, Cost),
+	retractall(connection(_,_,_,_)),
+	retractall(node(_,_,_)).
+
+%======== A-Star (Core) ========%
+
+aStar_find(Threshold, Orig, Dest, Path, Cost):- aStar_aux(0, Threshold, Dest,[(_,0,[Orig])],Path,Cost).
+aStar_aux(M, N, Dest,[(_,Cost,[Dest|T])|_],Path,Cost):- M >= N,reverse([Dest|T],Path).
+aStar_aux(M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
+    LA=[Act|_],
+    findall((CEX,CaX,[X|LA]),
+    (Dest\==Act,
+    (connection(Act,X,CostX, _);
+    connection(X, Act, _, CostX)),
+    \+ member(X,LA),
+    CaX is CostX + Ca,
+    estimate(N,M,EstX),
+    CEX is CaX + EstX),
+    New),
+    append(Others,New,All),
+    sort(All,AllOrd),
+    M1 is M + 1,
+    aStar_aux(M1, N, Dest,AllOrd,Path,Cost).
+
+estimate(N,M,Est):-
+    Est is 100 * (N - M).
+
+aStar_sort(List, ResultList):- sort(0,  @>=, List,  ResultList).
