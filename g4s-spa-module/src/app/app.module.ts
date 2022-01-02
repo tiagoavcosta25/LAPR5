@@ -19,6 +19,7 @@ import { PlayerComponent } from './modules/player/player.component';
 import { GetNetworkComponent } from './modules/network/components/get-network/get-network.component';
 import { NetworkComponent } from './modules/network/network.component';
 import { SafestRouteComponent } from './modules/ai/components/safest-route/safest-route.component';
+import { AStarComponent } from './modules/ai/components/a-star/a-star.component';
 import { SharedModule } from '../shared/shared.module';
 import { GetPlayersComponent } from './modules/player/components/get-players/get-players.component';
 import { RequestComponent } from './modules/request/request.component';
@@ -42,6 +43,9 @@ import { SuggestPlayersComponent } from './modules/ai/components/suggest-players
 import { StrongestRouteComponent } from './modules/ai/components/strongest-route/strongest-route.component';
 import { ShortestRouteComponent } from './modules/ai/components/shortest-route/shortest-route.component';
 import { UpdateEmotionalStatusComponent } from './modules/player/components/update-emotional-status/update-emotional-status.component';
+import { FeedComponent } from './modules/feed/feed.component';
+import { CreatePostComponent } from './modules/feed/components/create-post/create-post.component';
+import { GetFeedComponent } from './modules/feed/components/get-feed/get-feed.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +58,7 @@ import { UpdateEmotionalStatusComponent } from './modules/player/components/upda
     GetNetworkComponent,
     NetworkComponent,
     SafestRouteComponent,
+    AStarComponent,
     GetPlayersComponent,
     RequestComponent,
     RequestIntroductionComponent,
@@ -67,7 +72,10 @@ import { UpdateEmotionalStatusComponent } from './modules/player/components/upda
     SuggestPlayersComponent,
     StrongestRouteComponent,
     ShortestRouteComponent,
-    UpdateEmotionalStatusComponent
+    UpdateEmotionalStatusComponent,
+    FeedComponent,
+    CreatePostComponent,
+    GetFeedComponent
   ],
   imports: [
     BrowserModule,
