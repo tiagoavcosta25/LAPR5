@@ -1,0 +1,54 @@
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            
+            <form>
+
+                <div class="row justify-content-between">
+                    <div class="card-body">
+                        <div class="row">
+                    <div class="col-12">
+                        <div [formGroup]="postForm" class="mb-3">
+                            <label for="inputContent" class="form-label">Post</label>
+                            <textarea [ngClass]="{ 'is-invalid': f['content'].errors && (f['content'].dirty || f['content'].touched) }" 
+                                type="content" class="form-control" formControlName="content" id="inputcontent" placeholder="What's on your mind? Share it..."></textarea>
+                            <div *ngIf="f['content'].errors" class="invalid-feedback">
+                                <div *ngIf="f['content'].errors?.['required'] && (f['content'].dirty || f['content'].touched)">{{ getErrorMessageContentRequired() }}</div>
+                                <div *ngIf="f['content'].errors?.['min'] || f['content'].errors?.['max']">{{ getErrorMessageContentInvalid() }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+
+
+
+                <button type="submit" class="btn btn-primary" (click)="save()" [disabled]="postForm.invalid">Create Post</button>
+
+            </form>
+            
+            <div class="my-3">
+                <div *ngIf="success!=undefined">
+                    <div *ngIf="success">
+                        <div class="alert alert-success" role="alert">
+                            {{ successMessage }}
+                        </div>
+                    </div>
+                    <div *ngIf="!success">
+                        <div class="alert alert-danger" role="alert">
+                            {{ errorMessage }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+
+        </div>
+    </div>
+</div>
+
+
+<ngx-spinner></ngx-spinner>
