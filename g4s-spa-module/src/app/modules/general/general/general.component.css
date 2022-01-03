@@ -1,0 +1,11 @@
+.header{
+    padding: 0;
+    position: fixed;
+    z-index: 999;
+ }
+
+.content {
+    padding: 5%;
+    position: relative;
+    top: 71px;
+}
