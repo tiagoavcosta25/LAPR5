@@ -19,6 +19,8 @@ import { AStarComponent } from './modules/ai/components/a-star/a-star.component'
 import { SuggestPlayersComponent } from './modules/ai/components/suggest-players/suggest-players.component';
 import { CreatePostComponent } from './modules/feed/components/create-post/create-post.component';
 import { GetFeedComponent } from './modules/feed/components/get-feed/get-feed.component';
+import { GeneralComponent } from './modules/general/general.component';
+import { TermsAndCondComponent } from './modules/general/components/terms-and-cond/terms-and-cond.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -45,6 +47,12 @@ const routes: Routes = [
     ]
   },
   { path: 'login',  component: LoginComponent },
+  { path: '', 
+    component: GeneralComponent,
+    children: [
+      { path: 'terms-and-cond',  component: TermsAndCondComponent }
+    ]
+  },
 ];
 
 @NgModule({
