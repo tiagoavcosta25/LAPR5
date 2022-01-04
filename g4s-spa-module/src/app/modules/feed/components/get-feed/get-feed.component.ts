@@ -38,6 +38,8 @@ export class GetFeedComponent implements OnInit {
   step: number;
 
   postForm = this.fb.group({
+    comment: ['', [Validators.min(1), Validators.max(100)]],
+
   })
 
   ngOnInit(): void {

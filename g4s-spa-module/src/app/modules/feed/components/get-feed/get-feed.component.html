@@ -41,11 +41,8 @@
 
 
                     <mat-panel-title>
-                      {{ p.creatorId }}
+                      {{ p.content }}
                     </mat-panel-title>
-                    <mat-panel-description>
-                      {{ p.date }}
-                    </mat-panel-description>
                   </mat-expansion-panel-header>
 
                   
@@ -53,9 +50,12 @@
     
                     
     
-                    <div class="row justify-content-center">
+                    <div class="row justify-content-center" [formGroup]="postForm">
                       <div class="col-12 my-5">
-                        <p >{{ p.content }}</p>
+                        <p >This post was made by {{ p.creatorId }} at {{ p.date }}</p>
+                        <label class="form-label">Comment this Post:</label>
+                        <input 
+                            type="text" class="form-control">
                       </div>
                         <div class="col-3">
                             <button type ="submit" class="btn back btn-primary w-100" (click)="like()" [disabled]="postForm.invalid">Like</button>

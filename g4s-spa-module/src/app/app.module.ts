@@ -46,6 +46,8 @@ import { UpdateEmotionalStatusComponent } from './modules/player/components/upda
 import { FeedComponent } from './modules/feed/feed.component';
 import { CreatePostComponent } from './modules/feed/components/create-post/create-post.component';
 import { GetFeedComponent } from './modules/feed/components/get-feed/get-feed.component';
+import { GeneralComponent } from './modules/general/general.component';
+import { TermsAndCondComponent } from './modules/general/components/terms-and-cond/terms-and-cond.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +77,9 @@ import { GetFeedComponent } from './modules/feed/components/get-feed/get-feed.co
     UpdateEmotionalStatusComponent,
     FeedComponent,
     CreatePostComponent,
-    GetFeedComponent
+    GetFeedComponent,
+    GeneralComponent,
+    TermsAndCondComponent
   ],
   imports: [
     BrowserModule,
