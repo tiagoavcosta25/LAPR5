@@ -107,12 +107,14 @@
 							</mat-list-item>
 						</button>
 			
-						<button [routerLink]="['/update-player']">
-							<mat-list-item>
-								<mat-icon mat-list-icon color="accent">account_circle</mat-icon>
-								<h4>My Profile</h4>
-							</mat-list-item>
-						</button>
+						<a href="/profile/{{ currentPlayerEmail }}">
+							<button>
+								<mat-list-item>
+									<mat-icon mat-list-icon color="accent">account_circle</mat-icon>
+									<h4>My Profile</h4>
+								</mat-list-item>
+							</button>
+						</a>
 					</mat-nav-list>
 				</mat-drawer>
 			</mat-drawer-container>

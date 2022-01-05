@@ -18,7 +18,7 @@
          <div class="profile-header-info mb-5">
             <h4 class="m-t-10 m-b-5"> {{ player.name }} </h4>
             <p class="m-b-10"> {{ player.email }}</p>
-            <button *ngIf="ownProfile" type="button" class="btn btn-primary mt-2">Edit profile</button>
+            <button *ngIf="ownProfile" [routerLink]="['/update-player']" type="button" class="btn btn-primary mt-2">Edit profile</button>
             <div *ngIf="isFriend==undefined; else isFriendDefined">
             </div>
             <ng-template #isFriendDefined>
