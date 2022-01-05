@@ -21,9 +21,16 @@ import { CreatePostComponent } from './modules/feed/components/create-post/creat
 import { GetFeedComponent } from './modules/feed/components/get-feed/get-feed.component';
 import { GeneralComponent } from './modules/general/general.component';
 import { TermsAndCondComponent } from './modules/general/components/terms-and-cond/terms-and-cond.component';
+import { ProfileComponent } from './modules/player/components/profile/profile.component';
+import { ProfileTimelineComponent } from './modules/player/components/profile/profile-timeline/profile-timeline.component';
+import { ProfileFriendsComponent } from './modules/player/components/profile/profile-friends/profile-friends.component';
+import { ProfileAboutComponent } from './modules/player/components/profile/profile-about/profile-about.component';
+import { ProfileTagCloudComponent } from './modules/player/components/profile/profile-tag-cloud/profile-tag-cloud.component';
+import { ProfileCommonFriendsComponent } from './modules/player/components/profile/profile-common-friends/profile-common-friends.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'profile/:email', redirectTo: 'profile/:email/profile-timeline'},
   { path: '', 
     component: LayoutComponent,
     children: [
@@ -43,7 +50,14 @@ const routes: Routes = [
       { path: 'strongest-route', component: StrongestRouteComponent},
       { path: 'suggest-players', component: SuggestPlayersComponent},
       { path: 'update-emotional-status', component: UpdateEmotionalStatusComponent},
-      { path: 'get-network',  component: GetNetworkComponent }
+      { path: 'get-network',  component: GetNetworkComponent },
+      { path: 'profile/:email', component: ProfileComponent, children: [
+        { path: 'profile-timeline', component: ProfileTimelineComponent },
+        { path: 'profile-about', component: ProfileAboutComponent },
+        { path: 'profile-tag-cloud',  component: ProfileTagCloudComponent },
+        { path: 'profile-friends',  component: ProfileFriendsComponent },
+        { path: 'profile-common-friends',  component: ProfileCommonFriendsComponent }
+      ]}
     ]
   },
   { path: 'login',  component: LoginComponent },
@@ -56,7 +70,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {
+    paramsInheritanceStrategy: 'always'
+  })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

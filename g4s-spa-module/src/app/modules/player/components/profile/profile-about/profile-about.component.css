@@ -1,0 +1,22 @@
+.about-body {
+    margin-left: 23%;
+    margin-right: 17%;
+    background: #eee;
+    position: relative;
+    padding: 20px 25px;
+    border-radius: 6px
+}
+
+.about-body-title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.about-body-content {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.nounderline {
+    text-decoration: none !important
+  }

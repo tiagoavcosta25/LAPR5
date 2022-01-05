@@ -68,7 +68,6 @@ export class GetNetworkComponent implements OnInit {
       this.cService.getNetwork(this.email, this.getNetworkForm.value.scope).subscribe({ next: async data => {
         this.id = await this.getCurrentPlayerId();
         for(let con of data) {
-          console.log(con);
           let netCon = new NetworkConnection(con.id, con.player, con.friend, con.connectionStrength);
           let tempPlayer = await this.getPlayer(netCon.player.id);
           netCon.player.setEmailAndName(tempPlayer.email, tempPlayer.name);

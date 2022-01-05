@@ -48,6 +48,14 @@ import { CreatePostComponent } from './modules/feed/components/create-post/creat
 import { GetFeedComponent } from './modules/feed/components/get-feed/get-feed.component';
 import { GeneralComponent } from './modules/general/general.component';
 import { TermsAndCondComponent } from './modules/general/components/terms-and-cond/terms-and-cond.component';
+import { ProfileComponent } from './modules/player/components/profile/profile.component';
+import { ProfileHeaderComponent } from './modules/player/components/profile/profile-header/profile-header.component';
+import { ProfileTimelineComponent } from './modules/player/components/profile/profile-timeline/profile-timeline.component';
+import { ProfileFriendsComponent } from './modules/player/components/profile/profile-friends/profile-friends.component';
+import { ProfileAboutComponent } from './modules/player/components/profile/profile-about/profile-about.component';
+import { TagCloudModule } from 'angular-tag-cloud-module';
+import { ProfileTagCloudComponent } from './modules/player/components/profile/profile-tag-cloud/profile-tag-cloud.component';
+import { ProfileCommonFriendsComponent } from './modules/player/components/profile/profile-common-friends/profile-common-friends.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +87,14 @@ import { TermsAndCondComponent } from './modules/general/components/terms-and-co
     CreatePostComponent,
     GetFeedComponent,
     GeneralComponent,
-    TermsAndCondComponent
+    TermsAndCondComponent,
+    ProfileComponent,
+    ProfileHeaderComponent,
+    ProfileTimelineComponent,
+    ProfileFriendsComponent,
+    ProfileAboutComponent,
+    ProfileTagCloudComponent,
+    ProfileCommonFriendsComponent
   ],
   imports: [
     BrowserModule,
@@ -103,7 +118,8 @@ import { TermsAndCondComponent } from './modules/general/components/terms-and-co
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    TagCloudModule
 
   ],
   bootstrap: [AppComponent]
