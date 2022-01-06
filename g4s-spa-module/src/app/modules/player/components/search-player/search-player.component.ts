@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { FormArray, FormBuilder, Validators, } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Player } from 'src/shared/models/player/player.model';

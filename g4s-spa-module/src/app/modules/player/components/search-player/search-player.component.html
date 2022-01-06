@@ -73,11 +73,10 @@
                               </svg>
                           </div>
                       </div>
-                      
-
-
                     <mat-panel-title>
-                      {{ p.name }}
+                        <a href="/profile/{{ p.email }}">
+                            {{ p.name }}
+                        </a>
                     </mat-panel-title>
                     <mat-panel-description>
                       {{ p.email }}

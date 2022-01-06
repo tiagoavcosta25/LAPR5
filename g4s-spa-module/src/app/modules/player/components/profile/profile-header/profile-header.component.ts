@@ -5,12 +5,14 @@ import { ConnectionService } from 'src/app/modules/connection/services/connectio
 import { DobPlayer } from '../../../models/dob-player.model copy';
 import { PlayerService } from '../../../services/player.service';
 
+declare var $:any;
+
 @Component({
   selector: 'app-profile-header',
   templateUrl: './profile-header.component.html',
   styleUrls: ['./profile-header.component.css']
 })
-export class ProfileHeaderComponent implements OnInit {
+export class ProfileHeaderComponent implements OnInit{
 
   currentPlayer: string;
 
@@ -31,6 +33,7 @@ export class ProfileHeaderComponent implements OnInit {
     private router: Router) { }
 
   async ngOnInit(): Promise<void> {
+    $('[data-bs-toggle="tooltip"]').tooltip();
     this.checkCurrentTab();
     this.currentPlayer = localStorage.getItem("currentPlayer")!;
     this.activatedRoute.params.subscribe(params => {
@@ -101,5 +104,43 @@ export class ProfileHeaderComponent implements OnInit {
       error: _error => {
       }
     });
+  }
+
+  getStatus(): string {
+    switch(this.player.emotionalStatus) {
+      case "joyful": {
+        return "😄";
+      }
+      case "distressed": {
+        return "😖";
+      }
+      case "hopeful": {
+        return "😇";
+      }
+      case "fearful": {
+        return "😧";
+      }
+      case "relieve": {
+        return "😪";
+      }
+      case "disappointed": {
+        return "😔";
+      }
+      case "proud": {
+        return "🥰";
+      }
+      case "remorseful": {
+        return "🤥";
+      }
+      case "grateful": {
+        return "🤗";
+      }
+      case "angry": {
+        return "😡";
+      }
+      default: {
+        return "👾";
+      }
+    }
   }
 }

@@ -41,7 +41,9 @@
 
 
                     <mat-panel-title>
-                      {{ c.friend.name }}
+                      <a href="/profile/{{ c.friend.email }}">
+                        {{ c.friend.name }}
+                      </a>
                     </mat-panel-title>
                     <mat-panel-description>
                       {{ c.friend.email }}

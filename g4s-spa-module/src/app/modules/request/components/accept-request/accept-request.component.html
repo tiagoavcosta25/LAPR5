@@ -41,7 +41,9 @@
 
 
                     <mat-panel-title>
-                      {{ r.player.name }}
+                      <a href="/profile/{{ r.player.email }}">
+                        {{ r.player.name }}
+                      </a>
                     </mat-panel-title>
                     <mat-panel-description>
                       {{ r.player.email }}

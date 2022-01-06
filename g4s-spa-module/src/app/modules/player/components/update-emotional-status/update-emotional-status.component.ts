@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ChangeEmotionalStatus } from 'src/shared/models/player/change-emotional-status.model';
@@ -13,7 +13,7 @@ import { DobPlayer } from '../../models/dob-player.model copy';
   templateUrl: './update-emotional-status.component.html',
   styleUrls: ['./update-emotional-status.component.css']
 })
-export class UpdateEmotionalStatusComponent implements OnInit {
+export class UpdateEmotionalStatusComponent implements OnInit, OnDestroy {
 
   error: boolean;
 
@@ -27,6 +27,8 @@ export class UpdateEmotionalStatusComponent implements OnInit {
 
   ces: ChangeEmotionalStatus;
 
+  interval: any;
+
   emotionForm = this.fb.group({
     emotionalStatus: ['', Validators.required]
   })
@@ -36,10 +38,18 @@ export class UpdateEmotionalStatusComponent implements OnInit {
     private location: Location,
     private fb: FormBuilder) { }
 
+  ngOnDestroy(): void {
+    if(this.interval) {
+      clearInterval(this.interval);
+    }
+  }
+
   ngOnInit(): void {
     this.ces = new ChangeEmotionalStatus;
     this.getCurrentPlayer(localStorage.getItem("currentPlayer")!);
   }
+
+
 
   getCurrentPlayer(email: string): void {
     this.spinner.show();
@@ -65,6 +75,7 @@ export class UpdateEmotionalStatusComponent implements OnInit {
         this.currentPlayer.emotionalStatus = this.ces.emotionalStatus;
         this.ces = new ChangeEmotionalStatus;
       }
+      this.goBackInTime(1);
       this.spinner.hide();
     },
       error: _error => {
@@ -86,6 +97,12 @@ export class UpdateEmotionalStatusComponent implements OnInit {
 
   goBack(): void {
     this.location.back();
+  }
+
+  goBackInTime(seconds: number): void {
+    this.interval = setInterval(() => {
+      this.goBack(); // api call
+   }, 1000);
   }
 
   refresh(): void {

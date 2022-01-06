@@ -181,3 +181,7 @@
 .profile-header .profile-header-tab>li>a.active {
     color: #ff0080
 }
+
+.edit-status{
+    cursor: pointer;
+}
