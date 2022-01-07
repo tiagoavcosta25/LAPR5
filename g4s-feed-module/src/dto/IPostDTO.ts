@@ -1,5 +1,6 @@
 
-export interface IPostDTO {
-  title: string;
-  content: string
+export default interface IPostDTO {
+  id: string;
+  content: string;
+  creatorId: string
 }
