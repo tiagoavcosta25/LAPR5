@@ -1,11 +1,12 @@
 import { Service, Inject } from 'typedi';
 import config from "../../config";
+import IPostDTO from '../dto/IPostDTO';
 import { Post } from "../domain/post";
-import IPostRepo from './IRepos/IPostRepo';
+import IPostRepo from '../services/IRepos/IPostRepo';
 import IPostService from './IServices/IPostService';
 import { Result } from "../core/logic/Result";
 import { PostMap } from "../mappers/PostMap";
-import { IPostDTO } from '../dto/IPostDTO';
+import { PostContent } from '../domain/postContent';
 
 @Service()
 export default class PostService implements IPostService {
@@ -58,7 +59,8 @@ export default class PostService implements IPostService {
         return Result.fail<IPostDTO>("Post not found");
       }
       else {
-        post.content = postDTO.content;
+        post.content = PostContent.create(postDTO.content).getValue();
+        post.creatorId = postDTO.creatorId;
         await this.postRepo.save(post);
 
         const postDTOResult = PostMap.toDTO( post ) as IPostDTO;
