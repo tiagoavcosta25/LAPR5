@@ -1,13 +1,12 @@
 import { Service, Inject } from 'typedi';
 
-import { Document, Model } from 'mongoose';
-import { IPostPersistence } from '../dataschema/IPostPersistence';
-
 import IPostRepo from "../services/IRepos/IPostRepo";
 import { Post } from "../domain/post";
 import { PostId } from "../domain/postId";
-import { PostContent } from "../domain/postContent";
 import { PostMap } from "../mappers/PostMap";
+
+import { Document, FilterQuery, Model } from 'mongoose';
+import { IPostPersistence } from '../dataschema/IPostPersistence';
 
 @Service()
 export default class PostRepo implements IPostRepo {
@@ -15,8 +14,7 @@ export default class PostRepo implements IPostRepo {
 
   constructor(
     @Inject('postSchema') private postSchema : Model<IPostPersistence & Document>,
-    @Inject('logger') private logger
-  ) { }
+  ) {}
 
   private createBaseQuery (): any {
     return {
@@ -24,18 +22,18 @@ export default class PostRepo implements IPostRepo {
     }
   }
 
-  public async exists (postId: PostId | string): Promise<boolean> {
-
-    const idX = postId instanceof PostId ? (<PostId>postId).id.toValue() : postId;
+  public async exists(post: Post): Promise<boolean> {
+    
+    const idX = post.id instanceof PostId ? (<PostId>post.id).toValue() : post.id;
 
     const query = { domainId: idX}; 
-    const postDocument = await this.postSchema.findOne( query );
+    const postDocument = await this.postSchema.findOne( query as FilterQuery<IPostPersistence & Document>);
 
     return !!postDocument === true;
   }
 
   public async save (post: Post): Promise<Post> {
-    const query = { domainId: post.id.toString() }; 
+    const query = { domainId: post.id.toString()}; 
 
     const postDocument = await this.postSchema.findOne( query );
 
@@ -47,7 +45,8 @@ export default class PostRepo implements IPostRepo {
 
         return PostMap.toDomain(postCreated);
       } else {
-        postDocument.content = post.content;
+        postDocument.content = post.content.value;
+        postDocument.creatorId = post.creatorId;
         await postDocument.save();
 
         return post;
@@ -57,8 +56,8 @@ export default class PostRepo implements IPostRepo {
     }
   }
 
-  public async findByContent (content: PostContent | string): Promise<Post> {
-    const query = { content: content.toString() };
+  public async findByCreatorId (creatorId: string | string): Promise<Post> {
+    const query = { creatorId: creatorId.toString() };
     const postRecord = await this.postSchema.findOne( query );
 
     if( postRecord != null) {
@@ -69,11 +68,8 @@ export default class PostRepo implements IPostRepo {
   }
 
   public async findById (postId: PostId | string): Promise<Post> {
-
-    const idX = postId instanceof PostId ? (<PostId>postId).id.toValue() : postId;
-
-    const query = { domainId: idX }; 
-    const postRecord = await this.postSchema.findOne( query );
+    const query = { domainId: postId};
+    const postRecord = await this.postSchema.findOne( query as FilterQuery<IPostPersistence & Document> );
 
     if( postRecord != null) {
       return PostMap.toDomain(postRecord);
