@@ -13,7 +13,8 @@ export class PostMap extends Mapper<Post> {
   public static toDTO( post: Post): IPostDTO {
     return {
       id: post.id.toString(),
-      content: post.content,
+      content: post.content.value,
+      creatorId: post.creatorId,
     } as IPostDTO;
   }
 
@@ -31,7 +32,8 @@ export class PostMap extends Mapper<Post> {
   public static toPersistence (post: Post): any {
     return {
       domainId: post.id.toString(),
-      content: post.content
+      content: post.content.value.toString(),
+      creatorId: post.creatorId.toString()
     }
   }
 }
