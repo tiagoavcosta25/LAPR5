@@ -1,28 +1,48 @@
-import { Response, Request } from 'express';
+import { Request, Response, NextFunction } from 'express';
+import { Inject, Service } from 'typedi';
+import config from "../../config";
 
-import { Container} from 'typedi';
+import IPostController from "./IControllers/IPostController";
+import IPostService from '../services/IServices/IPostService';
+import IPostDTO from '../dto/IPostDTO';
 
-import config from '../../config';
+import { Result } from "../core/logic/Result";
 
-import IPostRepo from '../services/IRepos/IPostRepo';
+@Service()
+export default class PostController implements IPostController /* TODO: extends ../core/infra/BaseController */ {
+  constructor(
+      @Inject(config.services.post.name) private postServiceInstance : IPostService
+  ) {}
 
-import { PostMap } from "../mappers/PostMap";
-import { IPostDTO } from '../dto/IPostDTO';
+  public async createPost(req: Request, res: Response, next: NextFunction) {
+    try {
+      const postOrError = await this.postServiceInstance.createPost(req.body as IPostDTO) as Result<IPostDTO>;
+        
+      if (postOrError.isFailure) {
+        return res.status(402).send();
+      }
 
+      const postDTO = postOrError.getValue();
+      return res.json( postDTO ).status(201);
+    }
+    catch (e) {
+      return next(e);
+    }
+  };
 
-exports.getMe = async function(req, res: Response) {
-  
-    // NB: a arquitetura ONION não está a ser seguida aqui
+  public async updatePost(req: Request, res: Response, next: NextFunction) {
+    try {
+      const postOrError = await this.postServiceInstance.updatePost(req.body as IPostDTO) as Result<IPostDTO>;
 
-    const postRepo = Container.get(config.repos.post.name) as IPostRepo
+      if (postOrError.isFailure) {
+        return res.status(404).send();
+      }
 
-    if( !req.token || req.token == undefined )
-        return res.json( new Error("Inexistent or invalid Token")).status(401);
-
-    const post = await postRepo.findById( req.token.id );
-    if (!post)
-        return res.json( new Error("Post not registered")).status(401);
-
-    const postDTO = PostMap.toDTO( post ) as IPostDTO;
-    return res.json( postDTO ).status(200);
+      const postDTO = postOrError.getValue();
+      return res.status(201).json( postDTO );
+    }
+    catch (e) {
+      return next(e);
+    }
+  };
 }
