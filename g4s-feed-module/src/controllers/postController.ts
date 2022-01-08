@@ -7,6 +7,7 @@ import IPostService from '../services/IServices/IPostService';
 import IPostDTO from '../dto/IPostDTO';
 
 import { Result } from "../core/logic/Result";
+import IReactionDTO from '../dto/IReactionDTO';
 
 @Service()
 export default class PostController implements IPostController /* TODO: extends ../core/infra/BaseController */ {
@@ -33,6 +34,38 @@ export default class PostController implements IPostController /* TODO: extends 
   public async updatePost(req: Request, res: Response, next: NextFunction) {
     try {
       const postOrError = await this.postServiceInstance.updatePost(req.body as IPostDTO) as Result<IPostDTO>;
+
+      if (postOrError.isFailure) {
+        return res.status(404).send();
+      }
+
+      const postDTO = postOrError.getValue();
+      return res.status(201).json( postDTO );
+    }
+    catch (e) {
+      return next(e);
+    }
+  };
+
+  public async likePost(req: Request, res: Response, next: NextFunction) {
+    try {
+      const postOrError = await this.postServiceInstance.likePost(req.body as IReactionDTO) as Result<IPostDTO>;
+
+      if (postOrError.isFailure) {
+        return res.status(404).send();
+      }
+
+      const postDTO = postOrError.getValue();
+      return res.status(201).json( postDTO );
+    }
+    catch (e) {
+      return next(e);
+    }
+  };
+
+  public async dislikePost(req: Request, res: Response, next: NextFunction) {
+    try {
+      const postOrError = await this.postServiceInstance.dislikePost(req.body as IReactionDTO) as Result<IPostDTO>;
 
       if (postOrError.isFailure) {
         return res.status(404).send();
