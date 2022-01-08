@@ -18,9 +18,68 @@
                             </div>
                         </div>
                     </div>
+                </div> 
                 </div>
-            </div>
-            </div>
+                </div>
+
+                <div [formGroup]="postForm" class="mb-3">
+                    <div class="card mt-2r">
+                        <div class="card-header ">
+                          <div class="header-container">
+                            <span class="product-header">
+                              Add Tags
+                            </span>
+                            <div class="position-absolute top-0 end-0 my-2 mx-2">
+                                <svg style="cursor:pointer" (click)="addTag()" width="25" height="25" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+                                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z" />
+                                </svg>
+                            </div>
+                            
+                          </div>
+            
+            
+                        </div>
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-12">
+            
+                              <ul class="list-group">
+                                <li class="list-group-item" formArrayName="tags" *ngFor="let tagF of tagsFormGroups['controls']; let i = index;">
+                                  <div [formGroupName]="i" class="row">
+                                    <div class="col-6">
+    
+                                        <input [ngClass]="{ 'is-invalid': tagF.get('tag')?.errors && (tagF.dirty || tagF.touched) }" 
+                                        type="text" class="form-control" formControlName="tag" id="inputTag">
+    
+                                        <div *ngIf="tagF.get('tag')?.invalid" class="invalid-feedback">
+                                            <div *ngIf="tagF.get('tag')?.errors?.['required'] && (tagF.get('tag')?.dirty || tagF.get('tag')?.touched)">
+                                                {{ getErrorMessageTagRequired() }}</div>
+                                        </div>
+                                    </div>
+            
+                                    <div class="col-2">
+                                        <div class="position-absolute my-1">
+                                      <svg style="cursor:pointer" (click)="removeTag(tagF.get('tag')?.value)" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                        class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                        <path
+                                          d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
+                                      </svg>
+                                    </div>
+                                    </div>
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+    
+                        
+                    </div>
+                </div>
+
+            
+
+            
 
 
 
