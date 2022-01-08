@@ -18,7 +18,8 @@ export default (app: Router) => {
     celebrate({
       body: Joi.object({
         content: Joi.string().required(),
-        creatorId: Joi.string().required()
+        creatorId: Joi.string().required(),
+        tags: Joi.array()
       })
     }),
     (req, res, next) => ctrl.createPost(req, res, next) );

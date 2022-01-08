@@ -120,8 +120,6 @@ export default class PostService implements IPostService {
 
         await this.postRepo.save(post);
 
-        console.log(post.id);
-
         const postDTOResult = PostMap.toDTO( post ) as IPostDTO;
         return Result.ok<IPostDTO>( postDTOResult )
         }
