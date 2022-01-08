@@ -32,4 +32,22 @@ export default (app: Router) => {
       }),
     }),
     (req, res, next) => ctrl.updatePost(req, res, next) );
+
+  route.put('/like',
+    celebrate({
+      body: Joi.object({
+        postId: Joi.string().required(),
+        playerId: Joi.string().required()
+      }),
+    }),
+    (req, res, next) => ctrl.likePost(req, res, next) );
+
+  route.put('/dislike',
+    celebrate({
+      body: Joi.object({
+        postId: Joi.string().required(),
+        playerId: Joi.string().required()
+      }),
+    }),
+    (req, res, next) => ctrl.dislikePost(req, res, next) );
 };
