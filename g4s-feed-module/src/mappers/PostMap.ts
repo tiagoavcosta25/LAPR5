@@ -15,6 +15,8 @@ export class PostMap extends Mapper<Post> {
       id: post.id.toString(),
       content: post.content.value,
       creatorId: post.creatorId,
+      likes: post.likes,
+      dislikes: post.dislikes
     } as IPostDTO;
   }
 
@@ -33,7 +35,9 @@ export class PostMap extends Mapper<Post> {
     return {
       domainId: post.id.toString(),
       content: post.content.value.toString(),
-      creatorId: post.creatorId.toString()
+      creatorId: post.creatorId.toString(),
+      likes: post.likes,
+      dislikes: post.dislikes
     }
   }
 }
