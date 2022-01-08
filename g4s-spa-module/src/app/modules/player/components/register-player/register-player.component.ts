@@ -72,7 +72,6 @@ export class RegisterPlayerComponent implements OnInit {
       if(!this.p.tags.includes(tag.tag))
         this.p.tags.push(tag.tag);
     }
-    console.log(this.p.name);
   }
 
   getErrorMessageNameRequired() {

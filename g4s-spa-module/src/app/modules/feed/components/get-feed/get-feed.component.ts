@@ -47,18 +47,15 @@ export class GetFeedComponent implements OnInit {
     this.post = new Post();
     this.post.content = "Hello friends, just wanted to thank you guys for this wonderful year. Happy New Year to everyone!";
     this.post.creatorId = "User1";
-    this.post.date = "31/12/2021";
     console.log(this.post);
     this.feed.push(this.post);
     let p2 = new Post();
     p2.content = "Just saw the new Spiderman movie at my New Year's Eve Party, it was awesome! #spoilers";
     p2.creatorId = "John";
-    p2.date = "02/01/2022";
     this.feed.push(p2);
     let p3 = new Post();
     p3.content = "I just got my first friend on here, many more to go! #g4s";
     p3.creatorId = "Jane";
-    p3.date = "11/11/2021";
     this.feed.push(p3);
   }
 

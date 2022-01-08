@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   apiUrl: 'https://localhost:5001/api',
-  aiUrl: 'http://localhost:4999'
+  aiUrl: 'http://localhost:4999',
+  feedUrl: 'http://localhost:3000/api'
 };
 
 /*

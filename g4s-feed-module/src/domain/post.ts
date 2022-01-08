@@ -89,7 +89,6 @@ export class Post extends AggregateRoot<PostProps> {
       const resContent = PostContent.create(content);
       if(resContent.isSuccess){
         const post = new Post({ content: resContent.getValue(), creatorId: creatorId, likes: likes, dislikes: dislikes, tags: tags }, id);
-        console.log(post);
         return Result.ok<Post>( post )
       }
       return Result.fail<Post>('Post content error')
