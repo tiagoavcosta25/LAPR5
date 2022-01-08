@@ -4,4 +4,5 @@ export interface IPostPersistence {
 	creatorId: string;
 	likes: string[];
 	dislikes: string[];
+	tags: string[];
   }
