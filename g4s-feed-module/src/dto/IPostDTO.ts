@@ -5,4 +5,5 @@ export default interface IPostDTO {
   creatorId: string;
 	likes: string[];
 	dislikes: string[];
+	tags: string[];
 }

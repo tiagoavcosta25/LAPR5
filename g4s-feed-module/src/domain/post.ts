@@ -12,6 +12,7 @@ interface PostProps {
   creatorId: string;
   likes: string[];
   dislikes: string[];
+  tags: string[];
 }
 
 export class Post extends AggregateRoot<PostProps> {
@@ -55,6 +56,14 @@ export class Post extends AggregateRoot<PostProps> {
     this.props.dislikes = value;
   }
 
+  get tags (): string[] {
+    return this.props.tags;
+  }
+
+  set tags ( value: string[]) {
+    this.props.tags = value;
+  }
+
   private constructor (props: PostProps, id?: UniqueEntityID) {
     super(props, id);
   }
@@ -62,17 +71,25 @@ export class Post extends AggregateRoot<PostProps> {
   public static create (postDTO: IPostDTO, id?: UniqueEntityID): Result<Post> {
     const content = postDTO.content;
     const creatorId = postDTO.creatorId;
-    const likes = postDTO.likes;
-    const dislikes = postDTO.dislikes;
+    let likes = postDTO.likes;
+    let dislikes = postDTO.dislikes;
+    const tags = postDTO.tags;
 
-    console.log(postDTO);
+    if(likes === undefined){
+      likes = [];
+    }
+
+    if(dislikes === undefined){
+      dislikes = [];
+    }
 
     if (!!content === false || !!creatorId === false || content.length === 0) {
       return Result.fail<Post>('Must provide a post content and creator')
     } else {
       const resContent = PostContent.create(content);
       if(resContent.isSuccess){
-        const post = new Post({ content: resContent.getValue(), creatorId: creatorId, likes: likes, dislikes: dislikes }, id);
+        const post = new Post({ content: resContent.getValue(), creatorId: creatorId, likes: likes, dislikes: dislikes, tags: tags }, id);
+        console.log(post);
         return Result.ok<Post>( post )
       }
       return Result.fail<Post>('Post content error')
