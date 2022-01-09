@@ -25,9 +25,9 @@ namespace DDDNetCore.Tests.Services
 
             var mockRepo = new Mock<IPlayerRepository>();
             mockRepo.Setup(repo => repo.AddAsync(obj));
-                var mockUnity = new Mock<IUnitOfWork>();
+            var mockUnity = new Mock<IUnitOfWork>();
             mockUnity.Setup(u => u.CommitAsync());
-            var service = new PlayerService(mockUnity.Object, mockRepo.Object);
+            var service = new PlayerService(mockUnity.Object, mockRepo.Object, null);
 
             // Act
             var result = await service.AddAsync(dto);
@@ -55,7 +55,7 @@ namespace DDDNetCore.Tests.Services
             .ReturnsAsync(obj).Verifiable();
                 var mockUnity = new Mock<IUnitOfWork>();
             mockUnity.Setup(u => u.CommitAsync());
-            var service = new PlayerService(mockUnity.Object, mockRepo.Object);
+            var service = new PlayerService(mockUnity.Object, mockRepo.Object, null);
 
             // Act
             var result = await service.UpdateAsync(dto);

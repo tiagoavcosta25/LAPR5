@@ -27,10 +27,15 @@ import { ProfileFriendsComponent } from './modules/player/components/profile/pro
 import { ProfileAboutComponent } from './modules/player/components/profile/profile-about/profile-about.component';
 import { ProfileTagCloudComponent } from './modules/player/components/profile/profile-tag-cloud/profile-tag-cloud.component';
 import { ProfileCommonFriendsComponent } from './modules/player/components/profile/profile-common-friends/profile-common-friends.component';
+import { TagCloudMultiComponent } from './modules/tag-cloud-multi/tag-cloud-multi.component';
+import { TagCloudUsersComponent } from './modules/tag-cloud-multi/components/tag-cloud-users/tag-cloud-users.component';
+import { TagCloudConnectionsComponent } from './modules/tag-cloud-multi/components/tag-cloud-connections/tag-cloud-connections.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'profile/:email', redirectTo: 'profile/:email/profile-timeline'},
+  { path: 'tag-cloud-multi', redirectTo: 'tag-cloud-multi/tag-cloud-connections'},
+
   { path: '', 
     component: LayoutComponent,
     children: [
@@ -57,6 +62,10 @@ const routes: Routes = [
         { path: 'profile-tag-cloud',  component: ProfileTagCloudComponent },
         { path: 'profile-friends',  component: ProfileFriendsComponent },
         { path: 'profile-common-friends',  component: ProfileCommonFriendsComponent }
+      ]},
+      { path: 'tag-cloud-multi', component: TagCloudMultiComponent, children: [
+        { path: 'tag-cloud-users', component: TagCloudUsersComponent },
+        { path: 'tag-cloud-connections', component: TagCloudConnectionsComponent }
       ]}
     ]
   },

@@ -52,5 +52,10 @@ namespace DDDSample1.Infrastructure.Players
                 .Where(x => !(x.Email.address.Equals(playerEmail)))
                 .ToListAsync();
         }
+
+        public async Task<int> GetNumberOfPlayers() {
+            var temp = await _dbplayer.ToListAsync();
+            return temp.Count;
+        }
     }
 }

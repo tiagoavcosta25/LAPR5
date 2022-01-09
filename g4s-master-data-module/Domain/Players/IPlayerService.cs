@@ -1,4 +1,3 @@
-using DDDSample1.Domain.Shared;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -29,7 +28,9 @@ namespace DDDSample1.Domain.Players
         Task<List<PlayerDto>> GetByTagAsync(string tag);
 
         ICollection<string> GetFilters();
-        
+       
         Task<List<GetPlayerSuggestionDto>> GetSuggestions(string playerEmail);
+
+        Task<int> getPlayerNumber();
     }
 }

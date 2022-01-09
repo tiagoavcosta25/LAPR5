@@ -4,6 +4,7 @@ using DDDSample1.Domain.Shared;
 using System.Linq;
 using System;
 using DDDNetCore.Domain.Shared;
+using Microsoft.AspNetCore.SignalR;
 
 namespace DDDSample1.Domain.Players
 {
@@ -11,11 +12,13 @@ namespace DDDSample1.Domain.Players
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPlayerRepository _repo;
+        private readonly IHubContext<AppHub> _hub;
 
-        public PlayerService(IUnitOfWork unitOfWork, IPlayerRepository repo)
+        public PlayerService(IUnitOfWork unitOfWork, IPlayerRepository repo, IHubContext<AppHub> hub)
         {
             this._unitOfWork = unitOfWork;
             this._repo = repo;
+            _hub = hub;
         }
 
         public async Task<List<PlayerDto>> GetAllAsync()
@@ -51,9 +54,19 @@ namespace DDDSample1.Domain.Players
 
             await this._unitOfWork.CommitAsync();
 
+            var number = await _repo.GetNumberOfPlayers();
+
+            await _hub.Clients.All.SendAsync("playerPost", number);
+
             return new PlayerDto(Player.Id.AsGuid(),Player.Name.name, Player.Email.address, Player.PhoneNumber.phoneNumber, Player.DateOfBirth.date.Year, 
             Player.DateOfBirth.date.Month, Player.DateOfBirth.date.Day, Player.EmotionalStatus.Status.ToString(), Player.Facebook.Url, Player.LinkedIn.Url,
             Player.Tags.Select(t => t.tagName).ToList());
+        }
+
+        public async Task<int> getPlayerNumber() 
+        {
+            var number = await _repo.GetNumberOfPlayers();
+            return number;
         }
 
         public async Task<PlayerDto> UpdateAsync(UpdatePlayerDto dto)

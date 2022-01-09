@@ -15,5 +15,7 @@ namespace DDDSample1.Domain.Players
         Task<List<Player>> GetByTagAsync(string tag);
 
         Task<List<Player>> GetSuggestions(string playerEmail);
+
+        Task<int> GetNumberOfPlayers();
     }
 }

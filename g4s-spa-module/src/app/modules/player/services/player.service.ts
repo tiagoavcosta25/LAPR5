@@ -26,6 +26,11 @@ export class PlayerService {
   }
 
   /** GET players from the server */
+  getPlayerNumber(): Observable<number> {
+    return this.http.get<number>(this.playerUrl + "numberOfPlayers");
+  }
+
+  /** GET players from the server */
   getPlayers(): Observable<Player[]> {
     return this.http.get<Player[]>(this.playerUrl);
   }

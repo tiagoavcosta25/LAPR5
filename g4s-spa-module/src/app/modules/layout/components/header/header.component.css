@@ -13,6 +13,13 @@ body{
 
 .nav-item a:hover{
     fill-opacity: 30%;
-    color: #fff;
-    
+    color: #fff;   
+}
+
+.user-number {
+    margin-right: 25px;
+}
+
+.logout {
+    margin-right: 15px;
 }

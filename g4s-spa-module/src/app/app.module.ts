@@ -56,6 +56,9 @@ import { ProfileAboutComponent } from './modules/player/components/profile/profi
 import { TagCloudModule } from 'angular-tag-cloud-module';
 import { ProfileTagCloudComponent } from './modules/player/components/profile/profile-tag-cloud/profile-tag-cloud.component';
 import { ProfileCommonFriendsComponent } from './modules/player/components/profile/profile-common-friends/profile-common-friends.component';
+import { TagCloudMultiComponent } from './modules/tag-cloud-multi/tag-cloud-multi.component';
+import { TagCloudUsersComponent } from './modules/tag-cloud-multi/components/tag-cloud-users/tag-cloud-users.component';
+import { TagCloudConnectionsComponent } from './modules/tag-cloud-multi/components/tag-cloud-connections/tag-cloud-connections.component';
 
 @NgModule({
   declarations: [
@@ -94,7 +97,10 @@ import { ProfileCommonFriendsComponent } from './modules/player/components/profi
     ProfileFriendsComponent,
     ProfileAboutComponent,
     ProfileTagCloudComponent,
-    ProfileCommonFriendsComponent
+    ProfileCommonFriendsComponent,
+    TagCloudMultiComponent,
+    TagCloudUsersComponent,
+    TagCloudConnectionsComponent
   ],
   imports: [
     BrowserModule,

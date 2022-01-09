@@ -1,11 +1,8 @@
-<div *ngIf="player==undefined; else defined">
+<div *ngIf="data==undefined; else defined">
     
 </div>
 
 <ng-template #defined>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Pushster&display=swap" rel="stylesheet">
 <div class="tag-cloud">
     <angular-tag-cloud [data]="data" [width]="options.width" [height]="options.height" [overflow]="options.overflow"
       [zoomOnHover]="options.zoomOnHover" [realignOnResize]="options.realignOnResize">

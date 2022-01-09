@@ -21,6 +21,12 @@ export class ConnectionService {
 
   constructor(private http: HttpClient) { }
 
+  /** GET: returns connections from server */
+  getAllConnections(): Observable<Connection[]> {
+    return this.http.get<Connection[]>(this.connectionUrl).pipe(
+      catchError(this.handleError)
+    );
+  }
 
   /** GET: returns connections from server */
   getConnections(email: string): Observable<GettingConnection[]> {

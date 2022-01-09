@@ -22,6 +22,7 @@ using DDDNetCore.Domain.Missions;
 using DDDNetCore.Infraestructure.Missions;
 using DDDNetCore.Infraestructure.ConnectionRequests;
 using DDDNetCore.Domain.ConnectionRequests;
+using DDDNetCore.Domain.Shared;
 
 namespace DDDSample1
 {
@@ -51,9 +52,11 @@ namespace DDDSample1
             {
                 option.AddDefaultPolicy(builder =>
                 {
-                    builder.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
+                    builder.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
                 });
             });
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,6 +83,7 @@ namespace DDDSample1
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<AppHub>("/signalr");
             });
         }
 

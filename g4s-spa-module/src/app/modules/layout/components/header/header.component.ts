@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { PlayerService } from 'src/app/modules/player/services/player.service';
+import { SignalrService } from '../../services/signalr.service';
 
 @Component({
   selector: 'app-header',
@@ -7,13 +9,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  constructor(public sService: SignalrService,
+    public pService: PlayerService) { }
 
   ngOnInit(): void {
+    this.sService.startConnection();
+    this.sService.addPlayerNumberListener();
+    this.getPlayer();
   }
 
   logout(){
     localStorage.removeItem('currentPlayer');
   }
 
+  getPlayer(): void {
+    this.pService.getPlayerNumber().subscribe({ next: data => {
+      this.sService.playerNumber = data;
+    },
+      error: _error => {
+        console.log(_error);
+      }
+    });
+  }
 }

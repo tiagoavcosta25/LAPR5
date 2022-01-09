@@ -4,7 +4,7 @@ import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { DobPlayer } from '../../../models/dob-player.model copy';
 import { PlayerService } from '../../../services/player.service';
-import { prepareDataForTagCloud } from './tag-cloud-data-generator';
+import { prepareDataForTagCloud } from 'src/shared/tag-cloud-data-generator';
 
 @Component({
   selector: 'app-profile-tag-cloud',
@@ -22,8 +22,8 @@ export class ProfileTagCloudComponent implements OnInit {
     height: 200,
     overflow: false,
     zoomOnHover: {
-      scale: 1.2,
-      transitionTime: 0.3,
+      scale: 2,
+      transitionTime: 0.5,
       delay: 0.3
     },
     realignOnResize: true

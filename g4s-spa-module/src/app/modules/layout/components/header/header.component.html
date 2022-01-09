@@ -29,8 +29,11 @@
           </ul>
         </li>
       </ul>
+      <div class="user-number">
+        Number of users: {{ sService.playerNumber }}
+      </div>
       <a href="#">
-        <button class="btn btn-info" type="submit" (click)="logout()">Logout</button></a>
+        <button class="btn btn-info logout" type="submit" (click)="logout()">Logout</button></a>
     </div>
   </div>
 </nav>
