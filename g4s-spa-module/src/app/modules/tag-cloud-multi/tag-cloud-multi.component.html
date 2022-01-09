@@ -1,0 +1,37 @@
+<div class="container">
+    <div class="row">
+       <div class="col-md-12">
+          <div id="content" class="content content-full-width">
+             <!-- begin profile -->
+
+                <!-- PROFILE HEADER -->
+                <div class="header">
+                    <ul class="header-tab nav nav-tabs">
+                        <li class="nav-item"><a [routerLink]="['tag-cloud-users']" class="nav-link" id="navUsers" [ngClass]="{'active' : currentTab === 'navUsers'}" (click)="changeActive($event)" data-toggle="tab">PLAYERS</a></li>
+                        <li class="nav-item"><a [routerLink]="['tag-cloud-connections']" class="nav-link" id="navConnections" [ngClass]="{'active' : currentTab === 'navConnections'}" (click)="changeActive($event)" data-toggle="tab">CONNECTIONS</a></li>
+                     </ul>
+                </div>
+             
+             <!-- end profile -->
+             <!-- begin profile-content -->
+             <div class="profile-content">
+                <!-- begin tab-content -->
+                <div class="tab-content p-0">
+                   <!-- begin #profile-post tab -->
+                   <div class="tab-pane fade active show" id="profile-post">
+                      <!-- begin timeline -->
+                      
+                        <!-- TIMELINE -->
+                        <router-outlet></router-outlet>
+
+                      <!-- end timeline -->
+                   </div>
+                   <!-- end #profile-post tab -->
+                </div>
+                <!-- end tab-content -->
+             </div>
+             <!-- end profile-content -->
+          </div>
+       </div>
+    </div>
+ </div>
