@@ -52,7 +52,7 @@ namespace DDDSample1
             {
                 option.AddDefaultPolicy(builder =>
                 {
-                    builder.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+                    builder.WithOrigins("http://localhost:4200", "https://socialnetworkspa51.web.app").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
                 });
             });
 
@@ -83,7 +83,7 @@ namespace DDDSample1
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<AppHub>("/signalr");
+                endpoints.MapHub<AppHub>("/api/signalr");
             });
         }
 

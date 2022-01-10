@@ -172,7 +172,6 @@ export class RegisterPlayerComponent implements OnInit {
     for(const emotion in emotionalStatusEnum) {
       if (isNaN(Number(emotion))){
         emots.push(emotion.toString());
-        console.log(emotion.toString());
       }
     }
     return emots;

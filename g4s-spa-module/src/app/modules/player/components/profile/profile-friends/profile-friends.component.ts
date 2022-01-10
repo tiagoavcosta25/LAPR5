@@ -32,7 +32,6 @@ export class ProfileFriendsComponent implements OnInit {
     this.activatedRoute.params.subscribe(async params => {
       this.userEmail = params['email'];
       this.userFriends = await this.getFriends(this.userEmail);
-      console.log(this.userFriends);
     })
     this.spinner.hide();
   }

@@ -13,7 +13,6 @@ export class HeaderComponent implements OnInit {
     public pService: PlayerService) { }
 
   ngOnInit(): void {
-    this.sService.startConnection();
     this.sService.addPlayerNumberListener();
     this.getPlayer();
   }
