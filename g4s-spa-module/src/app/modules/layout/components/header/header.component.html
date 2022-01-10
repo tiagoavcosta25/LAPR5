@@ -1,6 +1,3 @@
-<div *ngIf="sService.playerNumber == undefined; else defined">
-</div>
-<ng-template #defined>
   <nav class="navbar navbar-expand-lg navbar-light header" style="background-color: #F069B4;">
     <div class="container-fluid">
       <!-- Just an image -->
@@ -33,11 +30,10 @@
           </li>
         </ul>
         <div class="user-number">
-          Number of users: {{ sService.playerNumber }}
+          Number of users: {{ playerNumber }}
         </div>
         <a href="#">
           <button class="btn btn-info logout" type="submit" (click)="logout()">Logout</button></a>
       </div>
     </div>
   </nav>
-</ng-template>

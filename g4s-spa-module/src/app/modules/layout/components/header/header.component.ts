@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { NgxSpinner, NgxSpinnerService } from 'ngx-spinner';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { PlayerService } from 'src/app/modules/player/services/player.service';
 import { SignalrService } from '../../services/signalr.service';
 
@@ -10,11 +10,19 @@ import { SignalrService } from '../../services/signalr.service';
 })
 export class HeaderComponent implements OnInit {
 
+  playerNumber: any;
+
   constructor(public sService: SignalrService,
     public pService: PlayerService,
-    private spinner: NgxSpinnerService) { }
+    private spinner: NgxSpinnerService,
+    private changeDetector: ChangeDetectorRef) { }
 
   ngOnInit(): void {
+    this.sService.playerNumberObservable.subscribe((data) => {
+      this.playerNumber = data;
+      this.changeDetector.detectChanges();
+    });
+    this.sService.startConnection();
     this.sService.addPlayerNumberListener();
     this.getPlayer();
   }
@@ -26,7 +34,7 @@ export class HeaderComponent implements OnInit {
   getPlayer(): void {
     this.spinner.show();
     this.pService.getPlayerNumber().subscribe({ next: data => {
-      this.sService.playerNumber = data;
+      this.playerNumber = data;
       this.spinner.hide();
     },
       error: _error => {

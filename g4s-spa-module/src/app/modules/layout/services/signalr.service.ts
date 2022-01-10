@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as signalR from "@aspnet/signalr";
+import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -7,7 +8,11 @@ import { environment } from 'src/environments/environment';
 })
 export class SignalrService {
 
-  playerNumber: Number;
+  playerNumber: Subject<Number> = new Subject<Number>();
+
+  playerNumberObservable = this.playerNumber.asObservable();
+
+  pN: Number;
 
   hubConnection: signalR.HubConnection;
 
@@ -23,7 +28,8 @@ export class SignalrService {
 
   addPlayerNumberListener = () => {
     this.hubConnection.on('playerPost', (data) => {
-      this.playerNumber = data;
+      this.pN = data;
+      this.playerNumber.next(data);
     })
   }
 
