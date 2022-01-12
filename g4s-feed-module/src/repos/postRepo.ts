@@ -38,7 +38,7 @@ export default class PostRepo implements IPostRepo {
     const postDocument = await this.postSchema.findOne( query );
 
     try {
-      if (postDocument === null ) {
+      if (postDocument === null) {
         const rawPost: any = PostMap.toPersistence(post);
 
         const postCreated = await this.postSchema.create(rawPost);
@@ -59,9 +59,9 @@ export default class PostRepo implements IPostRepo {
     }
   }
 
-  public async findByCreatorId (creatorId: string | string): Promise<Post> {
-    const query = { creatorId: creatorId.toString() };
-    const postRecord = await this.postSchema.findOne( query );
+  public async findByDomainId (postId: PostId | string): Promise<Post> {
+    const query = { domainId: postId};
+    const postRecord = await this.postSchema.findOne( query as FilterQuery<IPostPersistence & Document> );
 
     if( postRecord != null) {
       return PostMap.toDomain(postRecord);
@@ -70,9 +70,9 @@ export default class PostRepo implements IPostRepo {
       return null;
   }
 
-  public async findById (postId: PostId | string): Promise<Post> {
-    const query = { domainId: postId};
-    const postRecord = await this.postSchema.findOne( query as FilterQuery<IPostPersistence & Document> );
+  public async findByCreatorId (creatorId: string | string): Promise<Post> {
+    const query = { creatorId: creatorId.toString() };
+    const postRecord = await this.postSchema.findOne( query );
 
     if( postRecord != null) {
       return PostMap.toDomain(postRecord);
