@@ -24,6 +24,7 @@
 :- dynamic strongest_currentRoute/2.
 :- dynamic suggest_currentRoute/2.
 :- dynamic common_tags_users/2.
+:- dynamic aStar_orderedList/1.
 
 
 % HTTP Server setup at 'Port'
@@ -107,7 +108,13 @@ intersect([ ],_,[ ]).
 intersect([X|L1],L2,[X|LI]):-member(X,L2),!,intersect(L1,L2,LI).
 intersect([_|L1],L2, LI):- intersect(L1,L2,LI).
 
-%======== Shortest route between two players (HTTP) ========%
+listUnion([ ],L,L).
+listUnion([X|L1],L2,LU):-
+    member(X,L2),
+    listUnion(L1,L2,LU).
+listUnion([X|L1],L2,[X|LU]):-
+    listUnion(L1,L2,LU).
+
 %======== Shortest route between two players (HTTP) ========%
 
 :- http_handler('/api/shortest-route', shortest_compute, []).
@@ -526,7 +533,10 @@ aStar_prepare(Request, Path, Cost) :-
 
 %======== A-Star (Core) ========%
 
-aStar_find(Threshold, Orig, Dest, Path, Cost):- aStar_aux(0, Threshold, Dest,[(_,0,[Orig])],Path,Cost).
+aStar_find(Threshold, Orig, Dest, Path, Cost):-
+    aStar_getStrengthListByPlayer(Threshold, Orig, StrengthList),
+    asserta(aStar_orderedList(StrengthList)),
+    aStar_aux(0, Threshold, Dest,[(_,0,[Orig])],Path,Cost).
 aStar_aux(M, N, Dest,[(_,Cost,[Dest|T])|_],Path,Cost):- M >= N,reverse([Dest|T],Path).
 aStar_aux(M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
     LA=[Act|_],
@@ -544,7 +554,40 @@ aStar_aux(M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
     M1 is M + 1,
     aStar_aux(M1, N, Dest,AllOrd,Path,Cost).
 
-estimate(N,M,Est):-
-    Est is 100 * (N - M).
+estimate(N,M, Est):-
+    retract(aStar_orderedList([H|List])),
+    Est is H * (N - M),
+    asserta(aStar_orderedList(List)).
 
 aStar_sort(List, ResultList):- sort(0,  @>=, List,  ResultList).
+
+aStar_getOrderedList(ReturnList):-
+    findall(FirstStrength, connection(_, _, FirstStrength, _), AllFirstList),
+    findall(SecondStrength, connection(_, _, _, SecondStrength), AllSecondList),
+    listUnion(AllFirstList, AllSecondList, AllList),
+    sort(0, @>=, AllList, ReturnList).
+
+aStar_getStrengthListByPlayer(N, PlayerId, ReturnList):-
+    aStar_getStrengthListByLevel(0, N, [PlayerId], AllList),
+    sort(0, @>=, AllList, ReturnList).
+
+aStar_getStrengthListByLevel(N, N, _, []):-!.
+aStar_getStrengthListByLevel(M, N, PlayerList, ReturnList):-
+    aStar_getStrengthListByPlayersList(PlayerList, FriendsList, StrengthList),
+    M1 is M + 1,
+    aStar_getStrengthListByLevel(M1, N, FriendsList, List),
+    listUnion(StrengthList, List, ReturnList).
+
+aStar_getStrengthListByPlayersList([], [], []):-!.
+aStar_getStrengthListByPlayersList([PlayerId | PlayerList], ReturnFriendList, ReturnList):-
+    network_getNetworkByLevel(PlayerId, 1, FriendsList, _),
+    aStar_getStrengthListByFriendsList(PlayerId, FriendsList, StrengthList),
+    aStar_getStrengthListByPlayersList(PlayerList, FList, List),
+    listUnion(FriendsList, FList, ReturnFriendList),
+    listUnion(StrengthList, List, ReturnList).
+
+aStar_getStrengthListByFriendsList(_, [], []):-!.
+aStar_getStrengthListByFriendsList(PlayerId, [FriendId|FriendList], [FirstStrength|[SecondStrength|StrengthList]]):-
+    (connection(PlayerId, FriendId, FirstStrength, SecondStrength);
+    connection(FriendId, PlayerId, FirstStrength, SecondStrength)),
+    aStar_getStrengthListByFriendsList(PlayerId, FriendList, StrengthList).
