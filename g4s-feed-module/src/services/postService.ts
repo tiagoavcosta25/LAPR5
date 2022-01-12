@@ -17,7 +17,7 @@ export default class PostService implements IPostService {
 
   public async getPost( postId: string): Promise<Result<IPostDTO>> {
     try {
-      const post = await this.postRepo.findById(postId);
+      const post = await this.postRepo.findByDomainId(postId);
 
       if (post === null) {
         return Result.fail<IPostDTO>("Post not found");
@@ -54,7 +54,7 @@ export default class PostService implements IPostService {
 
   public async updatePost(postDTO: IPostDTO): Promise<Result<IPostDTO>> {
     try {
-      const post = await this.postRepo.findById(postDTO.id);
+      const post = await this.postRepo.findByDomainId(postDTO.id);
 
       if (post === null) {
         return Result.fail<IPostDTO>("Post not found");

@@ -1,8 +1,8 @@
 export interface IPostPersistence {
-	_id: string;
+	domainId: string;
 	content: string;
 	creatorId: string;
 	likes: string[];
 	dislikes: string[];
 	tags: string[];
-  }
+}
