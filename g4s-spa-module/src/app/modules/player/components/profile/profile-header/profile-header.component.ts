@@ -33,6 +33,7 @@ export class ProfileHeaderComponent implements OnInit{
     private router: Router) { }
 
   async ngOnInit(): Promise<void> {
+    this.spinner.show();
     $('[data-bs-toggle="tooltip"]').tooltip();
     this.checkCurrentTab();
     this.currentPlayer = localStorage.getItem("currentPlayer")!;
@@ -40,6 +41,7 @@ export class ProfileHeaderComponent implements OnInit{
       this.userEmail = params['email'];
     })
     this.getPlayer();
+    this.spinner.hide();
   }
 
   getPlayer(): void {
