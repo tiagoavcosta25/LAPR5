@@ -294,6 +294,19 @@ export class GetNetworkComponent implements OnInit {
       this.createEdge(con);
     }
 
+    //Object.entries(KeyboardEvent).forEach((e) => {
+    window.addEventListener('keydown', event => {
+        switch (event.key) {
+          case 'w': this.camera.translateZ(-10); break;
+          case 's': this.camera.translateZ(10); break;
+          case 'd': this.camera.translateX(10); break;
+          case 'a': this.camera.translateX(-10); break;
+          case 'p': this.camera.translateY(10); break;
+          case 'l': this.camera.translateY(-10); break;
+          default:
+        }
+      });
+
     window.addEventListener('resize', () => {
       this.camera.aspect = window.innerWidth / window.innerHeight;
       this.camera.updateProjectionMatrix();
