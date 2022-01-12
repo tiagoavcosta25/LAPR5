@@ -383,3 +383,18 @@ aStar_getStrengthListByFriendsList(PlayerId, [FriendId|FriendList], [FirstStreng
     (connection(PlayerId, FriendId, FirstStrength, SecondStrength);
     connection(FriendId, PlayerId, FirstStrength, SecondStrength)),
     aStar_getStrengthListByFriendsList(PlayerId, FriendList, StrengthList).
+
+
+setRelValues([], []):-!.
+setRelValues([H|T], Valores):-
+	(H > 200 ->
+		HFinal is 100;
+		true),
+	(H < -200 ->
+		HFinal is 0;
+		true),
+	(var(HFinal) -> 
+		HFinal is div((H + 200), 4);
+		true),
+    changeValues2(T, Valores1),
+	append([HFinal], Valores1, Valores).    
