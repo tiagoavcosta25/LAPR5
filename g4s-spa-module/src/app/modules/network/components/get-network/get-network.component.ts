@@ -297,12 +297,12 @@ export class GetNetworkComponent implements OnInit {
     //Object.entries(KeyboardEvent).forEach((e) => {
     window.addEventListener('keydown', event => {
         switch (event.key) {
-          case 'w': this.camera.translateZ(-10); break;
-          case 's': this.camera.translateZ(10); break;
-          case 'd': this.camera.translateX(10); break;
-          case 'a': this.camera.translateX(-10); break;
-          case 'p': this.camera.translateY(10); break;
-          case 'l': this.camera.translateY(-10); break;
+          case 'w': this.camera.translateZ(-2); break;
+          case 's': this.camera.translateZ(2); break;
+          case 'd': this.camera.translateX(2); break;
+          case 'a': this.camera.translateX(-2); break;
+          case 'p': this.camera.translateY(2); break;
+          case 'l': this.camera.translateY(-2); break;
           default:
         }
       });
