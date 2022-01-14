@@ -3,7 +3,6 @@ using DDDSample1.Domain.Shared;
 using DDDNetCore.Domain.Shared;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DDDSample1.Domain.Players
 {
@@ -13,6 +12,7 @@ namespace DDDSample1.Domain.Players
         [Required]
         public PlayerName Name { get;  private set; }
         [Required]
+        [Key()]
         public PlayerEmail Email { get;  private set; }
         [Required]
         public PlayerPassword Password { get;  private set; }

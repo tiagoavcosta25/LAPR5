@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DDDNetCore.Migrations
 {
-    public partial class InitialDBCreation : Migration
+    public partial class DatabaseCreation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -25,9 +25,9 @@ namespace DDDNetCore.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Player = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Friend = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConnectionStrength_Strength = table.Column<int>(type: "int", nullable: true),
+                    Player = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false),
+                    Friend = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false),
+                    ConnectionStrength_Strength = table.Column<int>(type: "int", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -40,11 +40,11 @@ namespace DDDNetCore.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Player = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Target = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PlayerToTargetMessage_Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CurrentStatus_CurrentStatus = table.Column<int>(type: "int", nullable: true),
-                    Strength_Strength = table.Column<int>(type: "int", nullable: true),
+                    Player = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false),
+                    Target = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false),
+                    PlayerToTargetMessage_Text = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    CurrentStatus_CurrentStatus = table.Column<int>(type: "int", nullable: false),
+                    Strength_Strength = table.Column<int>(type: "int", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -70,14 +70,14 @@ namespace DDDNetCore.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    MiddleMan = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PlayerToMiddleManMessage_Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MiddleManToTargetMessage_Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Player = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Target = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PlayerToTargetMessage_Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CurrentStatus_CurrentStatus = table.Column<int>(type: "int", nullable: true),
-                    Strength_Strength = table.Column<int>(type: "int", nullable: true),
+                    MiddleMan = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false),
+                    PlayerToMiddleManMessage_Text = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    MiddleManToTargetMessage_Text = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    Player = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false),
+                    Target = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false),
+                    PlayerToTargetMessage_Text = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    CurrentStatus_CurrentStatus = table.Column<int>(type: "int", nullable: false),
+                    Strength_Strength = table.Column<int>(type: "int", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -90,10 +90,10 @@ namespace DDDNetCore.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Challenger = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Objective = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Difficulty_Difficulty = table.Column<int>(type: "int", nullable: true),
-                    CurrentStatus_CurrentStatus = table.Column<int>(type: "int", nullable: true),
+                    Challenger = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false),
+                    Objective = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false),
+                    Difficulty_Difficulty = table.Column<int>(type: "int", nullable: false),
+                    CurrentStatus_CurrentStatus = table.Column<int>(type: "int", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -107,10 +107,11 @@ namespace DDDNetCore.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name_name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email_address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateOfBirth_date = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    PhoneNumber_phoneNumber = table.Column<double>(type: "float", nullable: true),
-                    EmotionalStatus_Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email_address = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Password_password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateOfBirth_date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PhoneNumber_phoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EmotionalStatus_Status = table.Column<int>(type: "int", nullable: false),
                     Facebook_Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LinkedIn_Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Active = table.Column<bool>(type: "bit", nullable: false)
@@ -141,7 +142,7 @@ namespace DDDNetCore.Migrations
                     ConnectionId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    tagName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    tagName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -161,7 +162,7 @@ namespace DDDNetCore.Migrations
                     DirectRequestId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    tagName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    tagName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -181,7 +182,7 @@ namespace DDDNetCore.Migrations
                     IntroductionRequestId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    tagName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    tagName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -193,6 +194,32 @@ namespace DDDNetCore.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Players_Tags",
+                columns: table => new
+                {
+                    PlayerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    tagName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Players_Tags", x => new { x.PlayerId, x.Id });
+                    table.ForeignKey(
+                        name: "FK_Players_Tags_Players_PlayerId",
+                        column: x => x.PlayerId,
+                        principalTable: "Players",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Players_Email_address",
+                table: "Players",
+                column: "Email_address",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -216,7 +243,7 @@ namespace DDDNetCore.Migrations
                 name: "Missions");
 
             migrationBuilder.DropTable(
-                name: "Players");
+                name: "Players_Tags");
 
             migrationBuilder.DropTable(
                 name: "Products");
@@ -229,6 +256,9 @@ namespace DDDNetCore.Migrations
 
             migrationBuilder.DropTable(
                 name: "IntroductionRequests");
+
+            migrationBuilder.DropTable(
+                name: "Players");
         }
     }
 }

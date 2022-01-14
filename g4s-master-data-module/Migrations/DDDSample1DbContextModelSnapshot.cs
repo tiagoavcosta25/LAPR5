@@ -531,9 +531,13 @@ namespace DDDNetCore.Migrations
                                 .HasColumnType("nvarchar(450)");
 
                             b1.Property<string>("address")
-                                .HasColumnType("nvarchar(max)");
+                                .IsRequired()
+                                .HasColumnType("nvarchar(450)");
 
                             b1.HasKey("PlayerId");
+
+                            b1.HasIndex("address")
+                                .IsUnique();
 
                             b1.ToTable("Players");
 

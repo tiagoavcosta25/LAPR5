@@ -5,7 +5,7 @@ import { ConnectionService } from 'src/app/modules/connection/services/connectio
 import { PlayerService } from 'src/app/modules/player/services/player.service';
 import { Player } from 'src/shared/models/player/player.model';
 import * as THREE from 'three';
-import { BufferGeometry, Vector2, Vector3, Vector4 } from 'three';
+import { Vector2, Vector4 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
 import { Router, Event, NavigationEnd } from '@angular/router';
@@ -212,7 +212,7 @@ export class GetNetworkComponent implements OnInit {
     this.controls.maxZoom = 12;
     this.controls.zoomSpeed = 2;
     
-    this.camera.position.set( 0, 20, 150 );
+    this.camera.position.set( 0, 20, 140 );
 
     this.controls.update();
     this.controls.enabled = true;
@@ -226,7 +226,7 @@ export class GetNetworkComponent implements OnInit {
     this.controlsMiniMap.zoomSpeed = 2;
     this.controlsMiniMap.panSpeed = 4;
 
-    this.miniMapCamera.position.set( 0, 0, 150 );
+    this.miniMapCamera.position.set( 0, 0, 140 );
 
     this.controlsMiniMap.update();
     this.controlsMiniMap.enabled = false;
@@ -239,7 +239,7 @@ export class GetNetworkComponent implements OnInit {
       let radius = 35 / (scope.scope + 1);
       let angleIncrement = this.calculateAngleIncrement(scope);
       if(scope.player.id == this.id){
-        material = new THREE.MeshBasicMaterial( { color: 0xe67e22  } );
+        material  = new THREE.MeshStandardMaterial({color : 0xe67e22,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
         geometry = new THREE.SphereGeometry(4, 32, 16);
         scope.player.setMesh( geometry, material );
         scope.player.sphere.position.x = 0;
@@ -266,7 +266,7 @@ export class GetNetworkComponent implements OnInit {
       }
       let angle = 0;
       for(let scopeFriend of scope.friends) {
-        material = new THREE.MeshBasicMaterial( { color: 0x2e86c1  } );
+        material  = new THREE.MeshStandardMaterial({color : 0x2e86c1,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
         geometry = new THREE.SphereGeometry(2, 32, 16);
         scopeFriend.setMesh(geometry, material);
         scopeFriend.sphere.position.x = scopex + radius * Math.cos(angle);
@@ -294,6 +294,30 @@ export class GetNetworkComponent implements OnInit {
       this.createEdge(con);
     }
 
+    //lights
+    const colorL = 0xffffff;
+    const intensity = 1;
+    const lightA = new THREE.AmbientLight(colorL, intensity);
+    this.scene.add(lightA);
+
+    const lightP1 = new THREE.PointLight(0xffffff, 0.5);
+    lightP1.position.set(-500, 500, 50);
+    this.scene.add(lightP1);
+
+    const lightP2 = new THREE.PointLight(0xffffff, 0.5);
+    lightP2.position.set(500, -500, 50);
+    this.scene.add(lightP2);
+
+    const colorSL = 0xffffff;
+    const intensitySL = 1;
+    const lightSL = new THREE.SpotLight(colorSL, intensitySL);
+    lightSL.target = this.camera;
+    lightSL.angle = THREE.MathUtils.degToRad(1);
+    lightSL.penumbra = 0.4;
+    lightSL.position.z = 140;
+    this.camera.add(lightSL);
+    this.scene.add(this.camera);
+
     //Object.entries(KeyboardEvent).forEach((e) => {
     window.addEventListener('keydown', event => {
         switch (event.key) {
@@ -305,7 +329,7 @@ export class GetNetworkComponent implements OnInit {
           case 'l': this.camera.translateY(-2); break;
           default:
         }
-      });
+    });
 
     window.addEventListener('resize', () => {
       this.camera.aspect = window.innerWidth / window.innerHeight;
@@ -442,7 +466,7 @@ export class GetNetworkComponent implements OnInit {
         for(let obj of this.onObject) {
           if(!this.objectPressed.some(x => x.object.position == obj.object.position)) {
             if(!((<THREE.Mesh>obj.object).position.x == 0 && (<THREE.Mesh>obj.object).position.y == 0)) {
-              (<THREE.MeshBasicMaterial>(<THREE.Mesh>obj.object).material).color.set(0x2e86c1);
+              (<THREE.MeshStandardMaterial>(<THREE.Mesh>obj.object).material).color.set(0x2e86c1);
             }
           }
         }
@@ -451,7 +475,7 @@ export class GetNetworkComponent implements OnInit {
 
       for(let inter of intersects) {
         if(!((<THREE.Mesh>inter.object).position.x == 0 && (<THREE.Mesh>inter.object).position.y == 0)) {
-          (<THREE.MeshBasicMaterial>(<THREE.Mesh>inter.object).material).color.set(0xff0000);
+          (<THREE.MeshStandardMaterial>(<THREE.Mesh>inter.object).material).color.set(0xff0000);
         }
       }
   }
@@ -462,7 +486,7 @@ export class GetNetworkComponent implements OnInit {
     if(this.onObject.length > 0) {
       if(this.onCylinder.length > 0) {
         for(let obj of this.onCylinder) {
-              (<THREE.MeshBasicMaterial>(<THREE.Mesh>obj.object).material).color.set(0x80ffff);
+              (<THREE.MeshStandardMaterial>(<THREE.Mesh>obj.object).material).color.set(0x80ffff);
               for(let label of this.labelAdded) {
                 (<THREE.Mesh>obj.object).remove(label);
               }
@@ -479,7 +503,7 @@ export class GetNetworkComponent implements OnInit {
 
       if(this.onCylinder.length > 0 && intersects != this.onCylinder) {
         for(let obj of this.onCylinder) {
-              (<THREE.MeshBasicMaterial>(<THREE.Mesh>obj.object).material).color.set(0x80ffff);
+              (<THREE.MeshStandardMaterial>(<THREE.Mesh>obj.object).material).color.set(0x80ffff);
               for(let label of this.labelAdded) {
                 (<THREE.Mesh>obj.object).remove(label);
               }
@@ -488,7 +512,7 @@ export class GetNetworkComponent implements OnInit {
       this.onCylinder = intersects;
 
       for(let inter of intersects) {
-        (<THREE.MeshBasicMaterial>(<THREE.Mesh>inter.object).material).color.set(0x23afef);
+        (<THREE.MeshStandardMaterial>(<THREE.Mesh>inter.object).material).color.set(0x23afef);
 
         let con;
         for(let c of this.cylinders) {
@@ -535,7 +559,7 @@ export class GetNetworkComponent implements OnInit {
   }
 
   resetColor() {
-    (<THREE.MeshBasicMaterial>(<THREE.Mesh>this.objectPressed[0].object).material).color.set(0x2e86c1);
+    (<THREE.MeshStandardMaterial>(<THREE.Mesh>this.objectPressed[0].object).material).color.set(0x2e86c1);
   }
 
   removeButtons() {
@@ -552,7 +576,7 @@ export class GetNetworkComponent implements OnInit {
     let position1 = this.nodes[indexFriend].sphere.position;
 
     let edgeGeometry = new THREE.CylinderGeometry(0.5, 0.5, 1.0);
-    let edgeMaterial = new THREE.MeshBasicMaterial({ color: 0x80ffff });
+    let edgeMaterial  = new THREE.MeshStandardMaterial({color : 0x80ffff,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
 
     // Compute distance between nodes
     const distance = position1.distanceTo(position0);

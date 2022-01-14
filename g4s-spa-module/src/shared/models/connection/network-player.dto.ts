@@ -15,7 +15,7 @@ export class NetworkPlayer {
         this.name = name;
     } 
 
-    setMesh(geometry: THREE.SphereGeometry, material: THREE.MeshBasicMaterial) {
+    setMesh(geometry: THREE.SphereGeometry, material: THREE.MeshStandardMaterial) {
         this.sphere = new THREE.Mesh(geometry, material);
     }
 }

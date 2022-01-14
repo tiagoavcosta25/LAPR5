@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DDDNetCore.Migrations
 {
     [DbContext(typeof(DDDSample1DbContext))]
-    [Migration("20211113001809_InitialDBCreation")]
-    partial class InitialDBCreation
+    [Migration("20220114211611_Database-Creation")]
+    partial class DatabaseCreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,10 +30,14 @@ namespace DDDNetCore.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Player")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.Property<string>("Target")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.HasKey("Id");
 
@@ -49,13 +53,19 @@ namespace DDDNetCore.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("MiddleMan")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.Property<string>("Player")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.Property<string>("Target")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.HasKey("Id");
 
@@ -71,10 +81,14 @@ namespace DDDNetCore.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Friend")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.Property<string>("Player")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.HasKey("Id");
 
@@ -90,10 +104,14 @@ namespace DDDNetCore.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Challenger")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.Property<string>("Objective")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.HasKey("Id");
 
@@ -204,7 +222,9 @@ namespace DDDNetCore.Migrations
                                 .HasColumnType("nvarchar(450)");
 
                             b1.Property<string>("Text")
-                                .HasColumnType("nvarchar(max)");
+                                .IsRequired()
+                                .HasMaxLength(1000)
+                                .HasColumnType("nvarchar(1000)");
 
                             b1.HasKey("DirectRequestId");
 
@@ -225,7 +245,9 @@ namespace DDDNetCore.Migrations
                                 .UseIdentityColumn();
 
                             b1.Property<string>("tagName")
-                                .HasColumnType("nvarchar(max)");
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.HasKey("DirectRequestId", "Id");
 
@@ -235,11 +257,14 @@ namespace DDDNetCore.Migrations
                                 .HasForeignKey("DirectRequestId");
                         });
 
-                    b.Navigation("CurrentStatus");
+                    b.Navigation("CurrentStatus")
+                        .IsRequired();
 
-                    b.Navigation("PlayerToTargetMessage");
+                    b.Navigation("PlayerToTargetMessage")
+                        .IsRequired();
 
-                    b.Navigation("Strength");
+                    b.Navigation("Strength")
+                        .IsRequired();
 
                     b.Navigation("Tags");
                 });
@@ -284,7 +309,9 @@ namespace DDDNetCore.Migrations
                                 .HasColumnType("nvarchar(450)");
 
                             b1.Property<string>("Text")
-                                .HasColumnType("nvarchar(max)");
+                                .IsRequired()
+                                .HasMaxLength(1000)
+                                .HasColumnType("nvarchar(1000)");
 
                             b1.HasKey("IntroductionRequestId");
 
@@ -300,7 +327,9 @@ namespace DDDNetCore.Migrations
                                 .HasColumnType("nvarchar(450)");
 
                             b1.Property<string>("Text")
-                                .HasColumnType("nvarchar(max)");
+                                .IsRequired()
+                                .HasMaxLength(1000)
+                                .HasColumnType("nvarchar(1000)");
 
                             b1.HasKey("IntroductionRequestId");
 
@@ -316,7 +345,9 @@ namespace DDDNetCore.Migrations
                                 .HasColumnType("nvarchar(450)");
 
                             b1.Property<string>("Text")
-                                .HasColumnType("nvarchar(max)");
+                                .IsRequired()
+                                .HasMaxLength(1000)
+                                .HasColumnType("nvarchar(1000)");
 
                             b1.HasKey("IntroductionRequestId");
 
@@ -337,7 +368,9 @@ namespace DDDNetCore.Migrations
                                 .UseIdentityColumn();
 
                             b1.Property<string>("tagName")
-                                .HasColumnType("nvarchar(max)");
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.HasKey("IntroductionRequestId", "Id");
 
@@ -347,15 +380,20 @@ namespace DDDNetCore.Migrations
                                 .HasForeignKey("IntroductionRequestId");
                         });
 
-                    b.Navigation("CurrentStatus");
+                    b.Navigation("CurrentStatus")
+                        .IsRequired();
 
-                    b.Navigation("MiddleManToTargetMessage");
+                    b.Navigation("MiddleManToTargetMessage")
+                        .IsRequired();
 
-                    b.Navigation("PlayerToMiddleManMessage");
+                    b.Navigation("PlayerToMiddleManMessage")
+                        .IsRequired();
 
-                    b.Navigation("PlayerToTargetMessage");
+                    b.Navigation("PlayerToTargetMessage")
+                        .IsRequired();
 
-                    b.Navigation("Strength");
+                    b.Navigation("Strength")
+                        .IsRequired();
 
                     b.Navigation("Tags");
                 });
@@ -389,7 +427,9 @@ namespace DDDNetCore.Migrations
                                 .UseIdentityColumn();
 
                             b1.Property<string>("tagName")
-                                .HasColumnType("nvarchar(max)");
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.HasKey("ConnectionId", "Id");
 
@@ -399,7 +439,8 @@ namespace DDDNetCore.Migrations
                                 .HasForeignKey("ConnectionId");
                         });
 
-                    b.Navigation("ConnectionStrength");
+                    b.Navigation("ConnectionStrength")
+                        .IsRequired();
 
                     b.Navigation("Tags");
                 });
@@ -438,13 +479,38 @@ namespace DDDNetCore.Migrations
                                 .HasForeignKey("MissionId");
                         });
 
-                    b.Navigation("CurrentStatus");
+                    b.Navigation("CurrentStatus")
+                        .IsRequired();
 
-                    b.Navigation("Difficulty");
+                    b.Navigation("Difficulty")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DDDSample1.Domain.Players.Player", b =>
                 {
+                    b.OwnsMany("DDDNetCore.Domain.Shared.Tag", "Tags", b1 =>
+                        {
+                            b1.Property<string>("PlayerId")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int")
+                                .UseIdentityColumn();
+
+                            b1.Property<string>("tagName")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
+
+                            b1.HasKey("PlayerId", "Id");
+
+                            b1.ToTable("Players_Tags");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PlayerId");
+                        });
+
                     b.OwnsOne("DDDSample1.Domain.Players.PlayerDateOfBirth", "DateOfBirth", b1 =>
                         {
                             b1.Property<string>("PlayerId")
@@ -467,9 +533,13 @@ namespace DDDNetCore.Migrations
                                 .HasColumnType("nvarchar(450)");
 
                             b1.Property<string>("address")
-                                .HasColumnType("nvarchar(max)");
+                                .IsRequired()
+                                .HasColumnType("nvarchar(450)");
 
                             b1.HasKey("PlayerId");
+
+                            b1.HasIndex("address")
+                                .IsUnique();
 
                             b1.ToTable("Players");
 
@@ -482,8 +552,8 @@ namespace DDDNetCore.Migrations
                             b1.Property<string>("PlayerId")
                                 .HasColumnType("nvarchar(450)");
 
-                            b1.Property<string>("Status")
-                                .HasColumnType("nvarchar(max)");
+                            b1.Property<int>("Status")
+                                .HasColumnType("int");
 
                             b1.HasKey("PlayerId");
 
@@ -541,13 +611,13 @@ namespace DDDNetCore.Migrations
                                 .HasForeignKey("PlayerId");
                         });
 
-                    b.OwnsOne("DDDSample1.Domain.Players.PlayerPhoneNumber", "PhoneNumber", b1 =>
+                    b.OwnsOne("DDDSample1.Domain.Players.PlayerPassword", "Password", b1 =>
                         {
                             b1.Property<string>("PlayerId")
                                 .HasColumnType("nvarchar(450)");
 
-                            b1.Property<double>("phoneNumber")
-                                .HasColumnType("float");
+                            b1.Property<string>("password")
+                                .HasColumnType("nvarchar(max)");
 
                             b1.HasKey("PlayerId");
 
@@ -557,19 +627,47 @@ namespace DDDNetCore.Migrations
                                 .HasForeignKey("PlayerId");
                         });
 
-                    b.Navigation("DateOfBirth");
+                    b.OwnsOne("DDDSample1.Domain.Players.PlayerPhoneNumber", "PhoneNumber", b1 =>
+                        {
+                            b1.Property<string>("PlayerId")
+                                .HasColumnType("nvarchar(450)");
 
-                    b.Navigation("Email");
+                            b1.Property<string>("phoneNumber")
+                                .HasColumnType("nvarchar(max)");
 
-                    b.Navigation("EmotionalStatus");
+                            b1.HasKey("PlayerId");
 
-                    b.Navigation("Facebook");
+                            b1.ToTable("Players");
 
-                    b.Navigation("LinkedIn");
+                            b1.WithOwner()
+                                .HasForeignKey("PlayerId");
+                        });
 
-                    b.Navigation("Name");
+                    b.Navigation("DateOfBirth")
+                        .IsRequired();
 
-                    b.Navigation("PhoneNumber");
+                    b.Navigation("Email")
+                        .IsRequired();
+
+                    b.Navigation("EmotionalStatus")
+                        .IsRequired();
+
+                    b.Navigation("Facebook")
+                        .IsRequired();
+
+                    b.Navigation("LinkedIn")
+                        .IsRequired();
+
+                    b.Navigation("Name")
+                        .IsRequired();
+
+                    b.Navigation("Password")
+                        .IsRequired();
+
+                    b.Navigation("PhoneNumber")
+                        .IsRequired();
+
+                    b.Navigation("Tags");
                 });
 #pragma warning restore 612, 618
         }
