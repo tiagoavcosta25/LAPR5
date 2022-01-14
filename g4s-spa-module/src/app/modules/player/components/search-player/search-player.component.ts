@@ -255,4 +255,8 @@ export class SearchPlayerComponent implements OnInit {
   refresh(): void {
     window.location.reload();
   }
+
+  resetForm(): void {
+    this.requestForm.reset();
+  }
 }

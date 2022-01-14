@@ -50,11 +50,11 @@
       <!-- END profile-header-content -->
       <!-- BEGIN profile-header-tab -->
       <ul class="profile-header-tab nav nav-tabs">
-         <li class="nav-item"><a [routerLink]="['profile-timeline']" class="nav-link" id="navPosts" [ngClass]="{'active' : currentTab === 'navPosts'}" (click)="changeActive($event)" data-toggle="tab">POSTS</a></li>
-         <li class="nav-item"><a [routerLink]="['profile-about']" class="nav-link" id="navAbout" [ngClass]="{'active' : currentTab === 'navAbout'}" (click)="changeActive($event)" data-toggle="tab">ABOUT</a></li>
-         <li class="nav-item"><a [routerLink]="['profile-tag-cloud']" class="nav-link" id="navTagCloud" [ngClass]="{'active' : currentTab === 'navTagCloud'}" (click)="changeActive($event)" data-toggle="tab">TAG CLOUD</a></li>
-         <li class="nav-item"><a [routerLink]="['profile-friends']" class="nav-link" id="navFriends" [ngClass]="{'active' : currentTab === 'navFriends'}" (click)="changeActive($event)" data-toggle="tab">FRIENDS</a></li>
-         <li *ngIf="!ownProfile" class="nav-item"><a [routerLink]="['profile-common-friends']" class="nav-link" id="navCommonFriends" [ngClass]="{'active' : currentTab === 'navCommonFriends'}" (click)="changeActive($event)" data-toggle="tab">COMMON FRIENDS</a></li>
+         <li class="nav-item"><a [skipLocationChange]="true" [routerLink]="['profile-timeline']" class="nav-link" id="navPosts" [ngClass]="{'active' : currentTab === 'navPosts'}" (click)="changeActive($event)" data-toggle="tab">POSTS</a></li>
+         <li class="nav-item"><a [skipLocationChange]="true" [routerLink]="['profile-about']" class="nav-link" id="navAbout" [ngClass]="{'active' : currentTab === 'navAbout'}" (click)="changeActive($event)" data-toggle="tab">ABOUT</a></li>
+         <li class="nav-item"><a [skipLocationChange]="true" [routerLink]="['profile-tag-cloud']" class="nav-link" id="navTagCloud" [ngClass]="{'active' : currentTab === 'navTagCloud'}" (click)="changeActive($event)" data-toggle="tab">TAG CLOUD</a></li>
+         <li class="nav-item"><a [skipLocationChange]="true" [routerLink]="['profile-friends']" class="nav-link" id="navFriends" [ngClass]="{'active' : currentTab === 'navFriends'}" (click)="changeActive($event)" data-toggle="tab">FRIENDS</a></li>
+         <li *ngIf="!ownProfile" class="nav-item"><a [skipLocationChange]="true" [routerLink]="['profile-common-friends']" class="nav-link" id="navCommonFriends" [ngClass]="{'active' : currentTab === 'navCommonFriends'}" (click)="changeActive($event)" data-toggle="tab">COMMON FRIENDS</a></li>
       </ul>
       <!-- END profile-header-tab -->
    </div>

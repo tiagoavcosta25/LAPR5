@@ -76,6 +76,8 @@ export class ProfileHeaderComponent implements OnInit{
       this.currentTab = "navFriends";
     } else if (tab == "profile-common-friends") {
       this.currentTab = "navCommonFriends";
+    } else {
+      this.currentTab = "navPosts";
     }
   }
 

@@ -33,7 +33,6 @@ import { TagCloudConnectionsComponent } from './modules/tag-cloud-multi/componen
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'profile/:email', redirectTo: 'profile/:email/profile-timeline'},
   { path: 'tag-cloud-multi', redirectTo: 'tag-cloud-multi/tag-cloud-connections'},
 
   { path: '', 
@@ -57,6 +56,7 @@ const routes: Routes = [
       { path: 'update-emotional-status', component: UpdateEmotionalStatusComponent},
       { path: 'get-network',  component: GetNetworkComponent },
       { path: 'profile/:email', component: ProfileComponent, children: [
+        { path: '', component: ProfileTimelineComponent },
         { path: 'profile-timeline', component: ProfileTimelineComponent },
         { path: 'profile-about', component: ProfileAboutComponent },
         { path: 'profile-tag-cloud',  component: ProfileTagCloudComponent },

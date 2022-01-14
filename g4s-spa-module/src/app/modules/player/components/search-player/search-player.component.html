@@ -74,7 +74,7 @@
                           </div>
                       </div>
                     <mat-panel-title>
-                        <a href="/profile/{{ p.email }}">
+                        <a (click)="resetForm()" href="/profile/{{ p.email }}">
                             {{ p.name }}
                         </a>
                     </mat-panel-title>

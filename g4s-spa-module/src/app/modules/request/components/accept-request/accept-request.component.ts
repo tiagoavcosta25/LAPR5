@@ -112,7 +112,10 @@ export class AcceptRequestComponent implements OnInit {
     getTargetMessageShort(request: TargetPendingRequest): string | null {
       var intr = <TargetIntroductionPendingRequest>request;
       if(intr.playerToTargetMessage != undefined) {
-        return intr.playerToTargetMessage.substring(0,50) + "...";
+        if(intr.playerToTargetMessage.length <= 50) {
+          return '"' + intr.playerToTargetMessage + '"';
+        }
+        return '"' + intr.playerToTargetMessage.substring(0,50) + "..." + '"';
       }
       return null;
     }

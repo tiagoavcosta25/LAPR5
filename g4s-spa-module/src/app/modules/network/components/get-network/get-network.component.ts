@@ -332,13 +332,14 @@ export class GetNetworkComponent implements OnInit {
       this.clickIntersects();
     });
 
-    this.renderer.domElement.addEventListener('contextmenu', event => {
-      if(this.onObject) {
-        let player = this.checkWhichPlayerIs((<THREE.Mesh>this.onObject[0].object));
-        this.router.navigate(['/profile', player?.email]);
+    this.renderer.domElement.addEventListener('auxclick', event => {
+      if(event.button == 1) {
+        if(this.onObject.length > 0) {
+          let player = this.checkWhichPlayerIs((<THREE.Mesh>this.onObject[0].object));
+          this.router.navigate(['/profile', player?.email]);
+        }
       }
-    });
-
+    })
 
     this.spinner.hide();
     
