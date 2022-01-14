@@ -1,7 +1,5 @@
 .friends-body {
-    background: #eee;
     position: relative;
-    padding: 20px 25px;
     border-radius: 6px;
 }
 
@@ -18,7 +16,8 @@
     border-left: 2px solid #8d8d8d;
     border-bottom: 2px solid #8d8d8d;
     border-right: 2px solid #8d8d8d;
-    line-height: 30px
+    line-height: 30px;
+    background: #eee;
 }
 
 .friends-friend-header .userimage {
