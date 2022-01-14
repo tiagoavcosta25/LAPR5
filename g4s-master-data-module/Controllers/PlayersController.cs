@@ -222,8 +222,8 @@ namespace DDDSample1.Controllers
             return plyr;
         }
 
-        // GET: api/Players/numberOfPlayers
-        [HttpGet("numberOfPlayers")]
+        // GET: api/Players/number
+        [HttpGet("number")]
         public async Task<ActionResult<int>> getPlayerNumber()
         {
             var message = await _service.getPlayerNumber();

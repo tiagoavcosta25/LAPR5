@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { PlayerService } from 'src/app/modules/player/services/player.service';
 import { SignalrService } from '../../services/signalr.service';
 
@@ -13,7 +14,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(public sService: SignalrService,
     public pService: PlayerService,
-    private changeDetector: ChangeDetectorRef) { }
+    private changeDetector: ChangeDetectorRef,
+    private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
     this.sService.playerNumberObservable.subscribe((data) => {
@@ -30,11 +32,14 @@ export class HeaderComponent implements OnInit {
   }
 
   getPlayer(): void {
+    this.spinner.show();
     this.pService.getPlayerNumber().subscribe({ next: data => {
       this.playerNumber = data;
+      this.spinner.hide();
     },
       error: _error => {
         console.log(_error);
+        this.spinner.hide();
       }
     });
   }

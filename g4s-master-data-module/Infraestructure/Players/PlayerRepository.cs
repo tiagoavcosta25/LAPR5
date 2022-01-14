@@ -54,8 +54,8 @@ namespace DDDSample1.Infrastructure.Players
         }
 
         public async Task<int> GetNumberOfPlayers() {
-            var temp = await _dbplayer.ToListAsync();
-            return temp.Count;
+            var playerNumber = await _dbplayer.CountAsync();
+            return playerNumber;
         }
     }
 }
