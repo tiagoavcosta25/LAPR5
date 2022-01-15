@@ -34,7 +34,7 @@ import { ProfileTagCloudConnComponent } from './modules/player/components/profil
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'tag-cloud-multi', redirectTo: 'tag-cloud-multi/tag-cloud-connections'},
+  { path: 'tag-cloud-multi', redirectTo: 'tag-cloud-multi/tag-cloud-users'},
 
   { path: '', 
     component: LayoutComponent,

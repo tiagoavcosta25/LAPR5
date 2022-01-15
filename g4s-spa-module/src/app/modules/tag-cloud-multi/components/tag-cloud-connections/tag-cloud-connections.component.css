@@ -1,7 +1,10 @@
 .tag-cloud {
     margin-top: 2%;
-    background: #eee;
     position: relative;
     padding: 20px 25px;
     border-radius: 6px
+}
+
+::ng-deep angular-tag-cloud .tooltip:hover .tooltiptext {
+    z-index: 100;
 }
