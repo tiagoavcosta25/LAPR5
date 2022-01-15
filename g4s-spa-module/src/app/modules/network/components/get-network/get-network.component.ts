@@ -318,15 +318,15 @@ export class GetNetworkComponent implements OnInit {
     this.camera.add(lightSL);
     this.scene.add(this.camera);
 
-    //Object.entries(KeyboardEvent).forEach((e) => {
+    const positionIncrement = 2;
     window.addEventListener('keydown', event => {
         switch (event.key) {
-          case 'w': this.camera.translateZ(-2); break;
-          case 's': this.camera.translateZ(2); break;
-          case 'd': this.camera.translateX(2); break;
-          case 'a': this.camera.translateX(-2); break;
-          case 'p': this.camera.translateY(2); break;
-          case 'l': this.camera.translateY(-2); break;
+          case 'w': this.camera.translateZ(-positionIncrement); break;
+          case 's': this.camera.translateZ(positionIncrement); break;
+          case 'd': this.camera.translateX(positionIncrement); break;
+          case 'a': this.camera.translateX(-positionIncrement); break;
+          case 'p': this.camera.position.y += positionIncrement; break;
+          case 'l': this.camera.position.y -= positionIncrement; break;
           default:
         }
     });
