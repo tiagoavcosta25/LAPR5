@@ -30,6 +30,7 @@ import { ProfileCommonFriendsComponent } from './modules/player/components/profi
 import { TagCloudMultiComponent } from './modules/tag-cloud-multi/tag-cloud-multi.component';
 import { TagCloudUsersComponent } from './modules/tag-cloud-multi/components/tag-cloud-users/tag-cloud-users.component';
 import { TagCloudConnectionsComponent } from './modules/tag-cloud-multi/components/tag-cloud-connections/tag-cloud-connections.component';
+import { ProfileTagCloudConnComponent } from './modules/player/components/profile/profile-tag-cloud-conn/profile-tag-cloud-conn/profile-tag-cloud-conn.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -60,6 +61,7 @@ const routes: Routes = [
         { path: 'profile-timeline', component: ProfileTimelineComponent },
         { path: 'profile-about', component: ProfileAboutComponent },
         { path: 'profile-tag-cloud',  component: ProfileTagCloudComponent },
+        { path: 'profile-tag-cloud-conn',  component: ProfileTagCloudConnComponent },
         { path: 'profile-friends',  component: ProfileFriendsComponent },
         { path: 'profile-common-friends',  component: ProfileCommonFriendsComponent }
       ]},
