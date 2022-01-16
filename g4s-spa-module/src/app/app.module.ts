@@ -60,6 +60,9 @@ import { TagCloudMultiComponent } from './modules/tag-cloud-multi/tag-cloud-mult
 import { TagCloudUsersComponent } from './modules/tag-cloud-multi/components/tag-cloud-users/tag-cloud-users.component';
 import { TagCloudConnectionsComponent } from './modules/tag-cloud-multi/components/tag-cloud-connections/tag-cloud-connections.component';
 import { ProfileTagCloudConnComponent } from './modules/player/components/profile/profile-tag-cloud-conn/profile-tag-cloud-conn/profile-tag-cloud-conn.component';
+import { LeaderboardComponent } from './modules/leaderboard/leaderboard.component';
+import { LeaderboardDimensionComponent } from './modules/leaderboard/components/leaderboard-dimension/leaderboard-dimension.component';
+import { LeaderboardStrengthComponent } from './modules/leaderboard/components/leaderboard-strength/leaderboard-strength.component';
 
 @NgModule({
   declarations: [
@@ -102,7 +105,10 @@ import { ProfileTagCloudConnComponent } from './modules/player/components/profil
     TagCloudMultiComponent,
     TagCloudUsersComponent,
     TagCloudConnectionsComponent,
-    ProfileTagCloudConnComponent
+    ProfileTagCloudConnComponent,
+    LeaderboardComponent,
+    LeaderboardDimensionComponent, 
+    LeaderboardStrengthComponent
   ],
   imports: [
     BrowserModule,
