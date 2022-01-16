@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31729.503
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "g4s-api-gateway", "g4s-api-gateway.csproj", "{99F633BD-8A4A-48B3-B5E2-CB939C682984}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{99F633BD-8A4A-48B3-B5E2-CB939C682984}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99F633BD-8A4A-48B3-B5E2-CB939C682984}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99F633BD-8A4A-48B3-B5E2-CB939C682984}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99F633BD-8A4A-48B3-B5E2-CB939C682984}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2F548954-C5DC-4CBA-B1F0-3FAC79F8AEFA}
+	EndGlobalSection
+EndGlobal

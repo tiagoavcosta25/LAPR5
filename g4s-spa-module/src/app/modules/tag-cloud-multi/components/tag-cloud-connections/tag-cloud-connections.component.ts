@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ConnectionService } from 'src/app/modules/connection/services/connection.service';
-import { GettingConnection } from 'src/shared/models/connection/getting-connection.model';
-import { prepareDataForTagCloud } from 'src/shared/tag-cloud-data-generator';
+import { prepareDataForTagCloudMulti } from 'src/shared/tag-cloud-multi-data-generator';
+import { Pairlist } from 'src/shared/utils/pairlist.model';
 
 @Component({
   selector: 'app-tag-cloud-connections',
@@ -28,6 +28,8 @@ export class TagCloudConnectionsComponent implements OnInit {
 
   data: CloudData[];
 
+  tags: Pairlist = new Pairlist();
+
   constructor(private spinner: NgxSpinnerService,
     private cService: ConnectionService) { }
 
@@ -38,16 +40,13 @@ export class TagCloudConnectionsComponent implements OnInit {
   getConnections(): void {
     this.spinner.show();
     this.cService.getAllConnections().subscribe({ next: data => {
-      let tags: string[] = [];
       for(let con of data) {
         for(let tag of con.tags) {
-          if(!tags.some(x => x == tag)) {
-            tags.push(tag);
-          }
+          this.tags.addOrChange(tag);
         }
       }
-      if(tags.length != 0) {
-        this.data = prepareDataForTagCloud(tags);
+      if(this.tags.length() != 0) {
+        this.data = prepareDataForTagCloudMulti(this.tags);
       } else {
         this.data = [];
       }

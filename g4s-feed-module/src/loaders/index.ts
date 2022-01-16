@@ -47,6 +47,12 @@ export default async ({ expressApp }) => {
     path: config.repos.post.path
   }
 
+  const commentSchema = {
+    // compare with the approach followed in repos and services
+    name: 'commentSchema',
+    schema: '../persistence/schemas/commentSchema',
+  };
+
   const userRepo = {
     name: config.repos.user.name,
     path: config.repos.user.path
@@ -67,7 +73,8 @@ export default async ({ expressApp }) => {
     schemas: [
       userSchema,
       roleSchema,
-      postSchema
+      postSchema,
+      commentSchema
     ],
     controllers: [
       roleController,

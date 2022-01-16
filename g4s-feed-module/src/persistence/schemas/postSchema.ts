@@ -1,5 +1,6 @@
 import { IPostPersistence } from '../../dataschema/IPostPersistence';
 import mongoose from 'mongoose';
+import { CommentSchema } from './commentSchema';
 
 const PostSchema = new mongoose.Schema(
   {
@@ -8,7 +9,8 @@ const PostSchema = new mongoose.Schema(
     creatorId: { type: String},
     likes: { type: [String] },
     dislikes: { type: [String]},
-    tags: { type: [String]}
+    tags: { type: [String]},
+    comments: [CommentSchema]
   },
   {
     timestamps: true

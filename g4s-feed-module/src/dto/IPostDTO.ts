@@ -1,3 +1,4 @@
+import ICommentDTO from "./ICommentDTO";
 
 export default interface IPostDTO {
   id: string;
@@ -6,4 +7,5 @@ export default interface IPostDTO {
 	likes: string[];
 	dislikes: string[];
 	tags: string[];
+  comments: ICommentDTO[];
 }

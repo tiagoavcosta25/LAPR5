@@ -7,6 +7,7 @@ import IPostDTO from "../dto/IPostDTO";
 import { Post } from "../domain/post";
 
 import { UniqueEntityID } from "../core/domain/UniqueEntityID";
+import { CommentMap } from "./CommentMap";
 
 export class PostMap extends Mapper<Post> {
   
@@ -17,7 +18,8 @@ export class PostMap extends Mapper<Post> {
       creatorId: post.creatorId,
       likes: post.likes,
       dislikes: post.dislikes,
-      tags: post.tags
+      tags: post.tags,
+      comments: post.comments.map(comment => CommentMap.toDTO(comment, post.id.toValue() as string))
     } as IPostDTO;
   }
 
@@ -39,7 +41,8 @@ export class PostMap extends Mapper<Post> {
       creatorId: post.creatorId.toString(),
       likes: post.likes,
       dislikes: post.dislikes,
-      tags: post.tags
+      tags: post.tags,
+      comments: post.comments.map(comment => CommentMap.toPersistence(comment))
     }
   }
 }

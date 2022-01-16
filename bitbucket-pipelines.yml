@@ -21,3 +21,13 @@ pipelines:
               - npm --prefix ./g4s-spa-module run build
             artifacts:
               - node_modules/** # Save modules for next steps
+        - step:
+            name: Build and Test Feed Master Data
+            image: node:16.10.0
+            caches:
+              - node
+            script:
+              - npm --prefix ./g4s-feed-module install
+              - npm --prefix ./g4s-feed-module run build
+            artifacts:
+              - node_modules/** # Save modules for next steps
