@@ -31,10 +31,14 @@ import { TagCloudMultiComponent } from './modules/tag-cloud-multi/tag-cloud-mult
 import { TagCloudUsersComponent } from './modules/tag-cloud-multi/components/tag-cloud-users/tag-cloud-users.component';
 import { TagCloudConnectionsComponent } from './modules/tag-cloud-multi/components/tag-cloud-connections/tag-cloud-connections.component';
 import { ProfileTagCloudConnComponent } from './modules/player/components/profile/profile-tag-cloud-conn/profile-tag-cloud-conn/profile-tag-cloud-conn.component';
+import { LeaderboardDimensionComponent } from './modules/leaderboard/components/leaderboard-dimension/leaderboard-dimension.component';
+import { LeaderboardStrengthComponent } from './modules/leaderboard/components/leaderboard-strength/leaderboard-strength.component';
+import { LeaderboardComponent } from './modules/leaderboard/leaderboard.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'tag-cloud-multi', redirectTo: 'tag-cloud-multi/tag-cloud-users'},
+  { path: 'leaderboard', redirectTo: 'leaderboard/leaderboard-dimension'},
 
   { path: '', 
     component: LayoutComponent,
@@ -68,6 +72,10 @@ const routes: Routes = [
       { path: 'tag-cloud-multi', component: TagCloudMultiComponent, children: [
         { path: 'tag-cloud-users', component: TagCloudUsersComponent },
         { path: 'tag-cloud-connections', component: TagCloudConnectionsComponent }
+      ]},
+      { path: 'leaderboard', component: LeaderboardComponent, children: [
+        { path: 'leaderboard-dimension', component: LeaderboardDimensionComponent },
+        { path: 'leaderboard-strength', component: LeaderboardStrengthComponent }
       ]}
     ]
   },
