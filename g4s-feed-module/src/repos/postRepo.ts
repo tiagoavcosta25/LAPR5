@@ -7,6 +7,7 @@ import { PostMap } from "../mappers/PostMap";
 
 import { Document, FilterQuery, Model } from 'mongoose';
 import { IPostPersistence } from '../dataschema/IPostPersistence';
+import { CommentMap } from '../mappers/CommentMap';
 
 @Service()
 export default class PostRepo implements IPostRepo {
@@ -50,6 +51,7 @@ export default class PostRepo implements IPostRepo {
         postDocument.likes = post.likes;
         postDocument.dislikes = post.dislikes;
         postDocument.tags = post.tags;
+        postDocument.comments = post.comments.map(comment => CommentMap.toPersistence(comment));
         await postDocument.save();
 
         return post;
@@ -79,5 +81,15 @@ export default class PostRepo implements IPostRepo {
     }
     else
       return null;
+  }
+
+  public async getAllByCreatorId(creatorId: string): Promise<Post[]> {
+    const query = { creatorId: creatorId.toString() };
+    const postRecord = await this.postSchema.find( query );
+    let postList: Post[] = [];
+    for(let pr of postRecord) {
+      postList.push(PostMap.toDomain(pr));
+    }
+    return postList;
   }
 }

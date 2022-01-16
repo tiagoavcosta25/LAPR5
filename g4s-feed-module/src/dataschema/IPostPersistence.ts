@@ -1,3 +1,5 @@
+import { ICommentPersistence } from "./ICommentPersistence";
+
 export interface IPostPersistence {
 	domainId: string;
 	content: string;
@@ -5,4 +7,5 @@ export interface IPostPersistence {
 	likes: string[];
 	dislikes: string[];
 	tags: string[];
+	comments: ICommentPersistence[];
 }

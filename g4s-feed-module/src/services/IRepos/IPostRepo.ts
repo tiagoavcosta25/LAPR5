@@ -6,5 +6,6 @@ export default interface IPostRepo extends Repo<Post> {
 	save(post: Post): Promise<Post>;
 	findByDomainId (roleId: PostId | string): Promise<Post>;
 	findByCreatorId (creatorId: string): Promise<Post>;
+	getAllByCreatorId (creatorId: string): Promise<Post[]>;
 }
   

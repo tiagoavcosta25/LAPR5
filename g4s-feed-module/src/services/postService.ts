@@ -8,6 +8,10 @@ import { Result } from "../core/logic/Result";
 import { PostMap } from "../mappers/PostMap";
 import { PostContent } from '../domain/postContent';
 import IReactionDTO from '../dto/IReactionDTO';
+import ICommentDTO from '../dto/ICommentDTO';
+import { Comment } from '../domain/comment';
+import { UniqueEntityID } from '../core/domain/UniqueEntityID';
+import IDeleteCommentDTO from '../dto/IDeleteCommentDTO';
 
 @Service()
 export default class PostService implements IPostService {
@@ -46,6 +50,7 @@ export default class PostService implements IPostService {
       await this.postRepo.save(postResult);
 
       const postDTOResult = PostMap.toDTO( postResult ) as IPostDTO;
+
       return Result.ok<IPostDTO>( postDTOResult )
     } catch (e) {
       throw e;
@@ -76,7 +81,7 @@ export default class PostService implements IPostService {
 
   public async likePost(postDTO: IReactionDTO): Promise<Result<IPostDTO>> {
     try {
-      const post = await this.postRepo.findById(postDTO.postId);
+      const post = await this.postRepo.findByDomainId(postDTO.postId);
 
       if (post === null) {
         return Result.fail<IPostDTO>("Post not found");
@@ -103,7 +108,7 @@ export default class PostService implements IPostService {
 
   public async dislikePost(postDTO: IReactionDTO): Promise<Result<IPostDTO>> {
     try {
-      const post = await this.postRepo.findById(postDTO.postId);
+      const post = await this.postRepo.findByDomainId(postDTO.postId);
 
       if (post === null) {
         return Result.fail<IPostDTO>("Post not found");
@@ -123,6 +128,78 @@ export default class PostService implements IPostService {
         const postDTOResult = PostMap.toDTO( post ) as IPostDTO;
         return Result.ok<IPostDTO>( postDTOResult )
         }
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async commentPost(commentDTO: ICommentDTO): Promise<Result<IPostDTO>> {
+    try {
+      const post = await this.postRepo.findByDomainId(commentDTO.postId);
+
+      if (post === null) {
+        return Result.fail<IPostDTO>("Post not found");
+      }
+      else {
+        let newCommentProps = {
+          postId: commentDTO.postId,
+          creatorId: commentDTO.creatorId,
+          content: commentDTO.content
+        } as ICommentDTO
+
+        let comment = Comment.create(newCommentProps, new UniqueEntityID(commentDTO.id)).getValue();
+        post.comments.push(comment);
+        await this.postRepo.save(post);
+
+        const postDTOResult = PostMap.toDTO( post ) as IPostDTO;
+        return Result.ok<IPostDTO>( postDTOResult )
+        }
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async deleteComment(deleteCommentDTO: IDeleteCommentDTO): Promise<Result<IPostDTO>> {
+    try {
+      const post = await this.postRepo.findByDomainId(deleteCommentDTO.postId);
+
+      if (post === null) {
+        return Result.fail<IPostDTO>("Post not found");
+      }
+      else {
+
+        let index = post.comments.findIndex( c => c.id.toString() == deleteCommentDTO.id);
+
+        if (index != -1) {
+          post.comments.splice(index, 1);
+        } else {
+          return Result.fail<IPostDTO>("Comment not found");
+        }
+
+        await this.postRepo.save(post);
+
+        const postDTOResult = PostMap.toDTO( post ) as IPostDTO;
+        return Result.ok<IPostDTO>( postDTOResult )
+        }
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async getPostsByUser(creatorId: string): Promise<Result<IPostDTO[]>> {
+    try {
+      const posts = await this.postRepo.getAllByCreatorId(creatorId);
+
+      if (posts.length == 0) {
+        return Result.fail<IPostDTO[]>("There are no posts");
+      }
+      else {
+        let postList: IPostDTO[] = [];
+        for(let p of posts) {
+          postList.push(PostMap.toDTO( p ) as IPostDTO);
+        }
+        return Result.ok<IPostDTO[]>( postList )
+      }
     } catch (e) {
       throw e;
     }

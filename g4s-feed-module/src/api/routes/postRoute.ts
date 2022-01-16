@@ -51,4 +51,7 @@ export default (app: Router) => {
       }),
     }),
     (req, res, next) => ctrl.dislikePost(req, res, next) );
+
+  route.get('/:creatorId',
+    (req, res, next) => ctrl.getPostsByUser(req, res, next) );
 };

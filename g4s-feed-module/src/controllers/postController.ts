@@ -8,6 +8,10 @@ import IPostDTO from '../dto/IPostDTO';
 
 import { Result } from "../core/logic/Result";
 import IReactionDTO from '../dto/IReactionDTO';
+import { ParamsDictionary } from 'express-serve-static-core';
+import { ParsedQs } from 'qs';
+import ICommentDTO from '../dto/ICommentDTO';
+import IDeleteCommentDTO from '../dto/IDeleteCommentDTO';
 
 @Service()
 export default class PostController implements IPostController /* TODO: extends ../core/infra/BaseController */ {
@@ -78,4 +82,57 @@ export default class PostController implements IPostController /* TODO: extends 
       return next(e);
     }
   };
+
+  public async commentPost(req: Request, res: Response, next: NextFunction) {
+    try {
+      const postOrError = await this.postServiceInstance.commentPost(req.body as ICommentDTO) as Result<IPostDTO>;
+
+      if (postOrError.isFailure) {
+        return res.status(404).send();
+      }
+
+      const postDTO = postOrError.getValue();
+      return res.status(201).json( postDTO );
+    }
+    catch (e) {
+      return next(e);
+    }
+  };
+
+  public async deleteComment(req: Request, res: Response, next: NextFunction) {
+    try {
+      const postOrError = await this.postServiceInstance.deleteComment(req.body as IDeleteCommentDTO) as Result<IPostDTO>;
+
+      if (postOrError.isFailure) {
+        return res.status(404).send();
+      }
+
+      const postDTO = postOrError.getValue();
+      return res.status(200).json( postDTO );
+    }
+    catch (e) {
+      return next(e);
+    }
+  };
+
+  public async getPostsByUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const postOrError = await this.postServiceInstance.getPostsByUser(req.params.creatorId) as Result<IPostDTO[]>;
+
+      if (postOrError.isFailure) {
+        return res.status(404).send();
+      }
+
+      let listResponse = [];
+
+      for(let p of postOrError.getValue()) {
+        listResponse.push(p);
+      }
+
+      return res.status(200).json( listResponse );
+    }
+    catch (e) {
+      return next(e);
+    }
+  }
 }
