@@ -8,4 +8,5 @@ export interface IPostPersistence {
 	dislikes: string[];
 	tags: string[];
 	comments: ICommentPersistence[];
+	createdAt: Date;
 }

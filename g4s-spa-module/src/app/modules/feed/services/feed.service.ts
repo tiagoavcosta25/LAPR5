@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Post } from 'src/shared/models/feed/post.model';
+import { PlayerLike } from 'src/shared/models/player/player-like.model';
+import { CreateComment } from 'src/shared/models/posts/create-comment.model';
 import { CreatingPost } from '../models/creating-post.model';
 
 @Injectable({
@@ -22,9 +24,35 @@ export class FeedService {
 
   /** POST: create new post to the database */
   createPost(post: CreatingPost): Observable<Post> {
-    console.log(this.postUrl);
-    console.log(post);
     return this.http.post<Post>(this.postUrl, post, this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  /* GET players by email */
+  getPostsByUser(email: string): Observable<Post[]> {
+    return this.http.get<Post[]>(this.postUrl + email).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  /** PATCH: comment exising post in the database */
+  commentPost(comment: CreateComment): Observable<Post> {
+    return this.http.patch<Post>(this.postUrl + "addcomment", comment, this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  /** PATCH: like exising post in the database */
+  likePost(like: PlayerLike): Observable<Post> {
+    return this.http.patch<Post>(this.postUrl + "like", like, this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  /** PATCH: dislike exising post in the database */
+  dislikePost(dislike: PlayerLike): Observable<Post> {
+    return this.http.patch<Post>(this.postUrl + "dislike", dislike, this.httpOptions).pipe(
       catchError(this.handleError)
     );
   }

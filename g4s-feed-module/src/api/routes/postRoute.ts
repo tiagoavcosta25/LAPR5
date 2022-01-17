@@ -34,7 +34,7 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.updatePost(req, res, next) );
 
-  route.put('/like',
+  route.patch('/like',
     celebrate({
       body: Joi.object({
         postId: Joi.string().required(),
@@ -43,7 +43,7 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.likePost(req, res, next) );
 
-  route.put('/dislike',
+  route.patch('/dislike',
     celebrate({
       body: Joi.object({
         postId: Joi.string().required(),

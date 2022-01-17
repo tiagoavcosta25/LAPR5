@@ -5,4 +5,5 @@ export default interface ICommentDTO {
   postId: string;
   creatorId: string;
   content: string;
+  createdAt: Date;
 }

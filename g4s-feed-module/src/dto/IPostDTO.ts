@@ -8,4 +8,5 @@ export default interface IPostDTO {
 	dislikes: string[];
 	tags: string[];
   comments: ICommentDTO[];
+  createdAt: Date;
 }

@@ -3,4 +3,5 @@ export interface ICommentPersistence {
 	postId: string;
 	creatorId: string;
     content: string;
+	createdAt: Date;
 }

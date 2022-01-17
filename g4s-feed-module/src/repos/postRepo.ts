@@ -52,6 +52,7 @@ export default class PostRepo implements IPostRepo {
         postDocument.dislikes = post.dislikes;
         postDocument.tags = post.tags;
         postDocument.comments = post.comments.map(comment => CommentMap.toPersistence(comment));
+        postDocument.createdAt = post.createdAt;
         await postDocument.save();
 
         return post;
@@ -90,6 +91,7 @@ export default class PostRepo implements IPostRepo {
     for(let pr of postRecord) {
       postList.push(PostMap.toDomain(pr));
     }
+    postList.sort((b,a) => (a.createdAt > b.createdAt) ? 1 : ((b.createdAt > a.createdAt) ? -1 : 0))
     return postList;
   }
 }

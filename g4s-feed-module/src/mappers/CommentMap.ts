@@ -11,6 +11,7 @@ export class CommentMap extends Mapper<Comment> {
       postId: postId,
       creatorId: comment.creatorId,
       content: comment.content.value,
+      createdAt: comment.createdAt
     } as ICommentDTO;
   }
 
@@ -20,6 +21,7 @@ export class CommentMap extends Mapper<Comment> {
       postId: comment.postId.toString(),
       creatorId: comment.creatorId.toString(),
       content: comment.content.value.toString(),
+      createdAt: comment.createdAt
     }
   }
 }

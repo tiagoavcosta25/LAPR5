@@ -1,52 +1,101 @@
+<div *ngIf="posts==undefined || currentPlayer==undefined || ownProf==undefined; else defined">
+
+</div>
+
+<ng-template #defined>
+
+
+   <div *ngIf="!ownProf; else ownProfile">
+
+   </div>
+   
+   <ng-template #ownProfile>
+      <div class="row justify-content-center mb-5">
+         <div class="col-10">
+            <div class="share border">
+               <div class="d-flex flex-row inputs p-2 py-4">
+                  <input [id]="'shareinput'" type="text" class="form-control rounded-corner" placeholder="Share your thougths...">
+                  <button (click)="post()" class="btn btn-primary f-s-12 rounded-corner btn-comment" type="button">Share!</button>
+               </div>
+               <div class="d-flex flex-row inputs p-2 pb-4">
+                  <input [id]="'tagvalue'" type="text" class="form-control rounded-corner" style="width: 15vw;" placeholder="Add a tag!">
+                  <button (click)="addTag()" class="btn btn-primary f-s-12 rounded-corner btn-comment" style="margin-right: 1vw;" type="button">Add</button>
+                  <div class="col-8 mt-2">
+                     <div *ngIf="tags.length == 0; else therestags">
+                        <p style="margin-left: 5vw;">
+                           Click on the tags if you want to remove them! 😉
+                        </p>
+                     </div>
+                     
+                     <ng-template #therestags>
+                        <a class="badge bg-success" (click)="removeTag(tag)" *ngFor="let tag of tags" style="text-decoration: none;"> #{{ tag }}</a>
+                     </ng-template>
+                  </div>
+               </div>
+           </div>
+         </div>
+      </div>
+   </ng-template>
+
 <ul class="timeline">
-    <li>
+    
+   <li *ngFor="let post of posts; let i = index">
        <!-- begin timeline-time -->
        <div class="timeline-time">
-          <span class="date">today</span>
-          <span class="time">04:20</span>
+          <span class="date" (click)="scroll('target'+i)"> {{ getDate(post.createdAt) }}</span>
+          <span class="time" (click)="scroll('target'+i)"> {{ getTime(post.createdAt) }}</span>
        </div>
        <!-- end timeline-time -->
        <!-- begin timeline-icon -->
        <div class="timeline-icon">
-          <a href="javascript:;">&nbsp;</a>
+          <a [id]="'target'+i" (click)="scroll('target'+i)">&nbsp;</a>
        </div>
        <!-- end timeline-icon -->
        <!-- begin timeline-body -->
        <div class="timeline-body">
           <div class="timeline-header">
-             <span class="userimage"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></span>
-             <span class="username"><a href="javascript:;">Sean Ngu</a> <small></small></span>
+             <span class="userimage"><a href="/profile/{{ userEmail }}"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></a></span>
+             <span class="username"><a href="/profile/{{ userEmail }}"> {{ currentPlayer.name }}</a> <small></small></span>
           </div>
           <div class="timeline-content">
              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc faucibus turpis quis tincidunt luctus.
-                Nam sagittis dui in nunc consequat, in imperdiet nunc sagittis.
+                {{ post.content }}
+             </p>
+
+             <p class="tags">
+               <a class="badge bg-success" *ngFor="let tag of post.tags" style="text-decoration: none;"> #{{ tag }}</a>
              </p>
           </div>
           <div class="timeline-likes">
              <div class="stats-right">
-                <span class="stats-text">21 Comments</span>
+                <span class="stats-text">{{ getCommentCount(post) }} Comments</span>
              </div>
              <div class="stats">
                 <span class="fa-stack fa-fw stats-icon">
                 <i class="fa fa-circle fa-stack-2x text-primary"></i>
                 <i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
                 </span>
-                <span class="stats-total">4.3k</span>
+                <span class="stats-total">{{ getLikeCount(post) }}</span>
+
+                <span class="fa-stack fa-fw stats-icon">
+                <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                <i class="fa fa-thumbs-down fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="stats-total">{{ getDislikeCount(post) }}</span>
              </div>
           </div>
           <div class="timeline-footer">
-             <a href="javascript:;" class="px-2 text-inverse-lighter"><i class="fa fa-thumbs-up fa-fw fa-lg mr-3"></i> Like</a>
-             <a href="javascript:;" class="px-2 text-inverse-lighter"><i class="fa fa-comments fa-fw fa-lg mr-3"></i> Comment</a> 
+             <a style="text-decoration: none;cursor: pointer;" (click)="likePost(post)" class="px-2 text-inverse-lighter" ><i [ngClass]="{'active-l':checkIfLiked(post)}" [id]="'likecomment'+i" class="fa fa-thumbs-up fa-fw fa-lg mr-3"></i><span [id]="'likecommenttext'+i"> Like</span></a>
+             <a style="text-decoration: none;cursor: pointer;" (click)="dislikePost(post)" class="px-2 text-inverse-lighter"><i [ngClass]="{'active-l':checkIfDisliked(post)}" [id]="'dislikecomment'+i" class="fa fa-thumbs-down fa-fw fa-lg mr-3"></i><span [id]="'dislikecommenttext'+i"> Dislike</span></a> 
           </div>
           <div class="timeline-comment-box">
              <div class="user"><img src="https://bootdey.com/img/Content/avatar/avatar3.png"></div>
              <div class="input">
                 <form action="">
                    <div class="input-group">
-                      <input type="text" class="form-control rounded-corner" placeholder="Write a comment...">
+                      <input [id]="'comment'+i" type="text" class="form-control rounded-corner" placeholder="Write a comment...">
                       <span class="input-group-btn p-l-10">
-                      <button class="btn btn-primary f-s-12 rounded-corner" type="button">Comment</button>
+                      <button (click)="comment('comment'+i, post)" class="btn btn-primary f-s-12 rounded-corner btn-comment" type="button">Comment</button>
                       </span>
                    </div>
                 </form>
@@ -54,152 +103,24 @@
           </div>
 
 
-          <div class ="timeline-comments">
-               <div class="alert alert-secondary" role="alert">
-                   <div class="timeline-comments-header">
-                       <span class="userimage"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></span>
-                       <span class="username"><a href="javascript:;">Sean Ngu</a> <small></small></span>
+          <div *ngIf="post.comments.length > 0" class="timeline-comments">
+             <div class="div" *ngFor="let comment of post.comments">
+               <span class="userimage-comment"><a href="/profile/{{ userEmail }}"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></a></span>
+               <div class="alert alert-dark timeline-comments-comment" role="alert">
+                   <div class="timeline-comments-header"><span class="username"><a style="text-decoration:none;" href="/profile/{{ userEmail }}"> {{ currentPlayer.name }}</a> <span style="float:right;"> {{ getDate(comment.createdAt) }}, {{ getTime(comment.createdAt) }} </span> <small></small></span>
                     </div>
                    <div class="timeline-comments-content">
                        <p>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc faucibus turpis quis tincidunt luctus.
-                          Nam sagittis dui in nunc consequat, in imperdiet nunc sagittis.
+                          {{ comment.content }}
                        </p>
                     </div>
-                    <div class="timeline-comments-footer">
-                       <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-thumbs-up fa-fw fa-lg m-r-3"></i>14</a>
-                    </div>
                </div>
-
-               <div class="alert alert-secondary" role="alert">
-                   <div class="timeline-comments-header">
-                       <span class="userimage"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></span>
-                       <span class="username"><a href="javascript:;">Sean Ngu</a> <small></small></span>
-                    </div>
-                   <div class="timeline-comments-content">
-                       <p>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc faucibus turpis quis tincidunt luctus.
-                          Nam sagittis dui in nunc consequat, in imperdiet nunc sagittis.
-                       </p>
-                    </div>
-                    <div class="timeline-comments-footer">
-                       <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-thumbs-up fa-fw fa-lg m-r-3"></i>64</a>
-                    </div>
-               </div>
+             </div>
           </div>
 
 
        </div>
        <!-- end timeline-body -->
-    </li>
-    
-
-    <li>
-       <!-- begin timeline-time -->
-       <div class="timeline-time">
-          <span class="date">Yesterday</span>
-          <span class="time">07:35</span>
-       </div>
-       <!-- end timeline-time -->
-       <!-- begin timeline-icon -->
-       <div class="timeline-icon">
-          <a href="javascript:;">&nbsp;</a>
-       </div>
-       <!-- end timeline-icon -->
-       <!-- begin timeline-body -->
-       <div class="timeline-body">
-          <div class="timeline-header">
-             <span class="userimage"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></span>
-             <span class="username"><a href="javascript:;">Sean Ngu</a> <small></small></span>
-          </div>
-          <div class="timeline-content">
-             <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc faucibus turpis quis tincidunt luctus.
-                Nam sagittis dui in nunc consequat, in imperdiet nunc sagittis.
-             </p>
-          </div>
-          <div class="timeline-likes">
-             <div class="stats-right">
-                <span class="stats-text">21 Comments</span>
-             </div>
-             <div class="stats">
-                <span class="fa-stack fa-fw stats-icon">
-                <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                <i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
-                </span>
-                <span class="stats-total">4.3k</span>
-             </div>
-          </div>
-          <div class="timeline-footer">
-             <a href="javascript:;" class="px-2 text-inverse-lighter"><i class="fa fa-thumbs-up fa-fw fa-lg mr-3"></i> Like</a>
-             <a href="javascript:;" class="px-2 text-inverse-lighter"><i class="fa fa-comments fa-fw fa-lg mr-3"></i> Comment</a> 
-          </div>
-          <div class="timeline-comment-box">
-             <div class="user"><img src="https://bootdey.com/img/Content/avatar/avatar3.png"></div>
-             <div class="input">
-                <form action="">
-                   <div class="input-group">
-                      <input type="text" class="form-control rounded-corner" placeholder="Write a comment...">
-                      <span class="input-group-btn p-l-10">
-                      <button class="btn btn-primary f-s-12 rounded-corner" type="button">Comment</button>
-                      </span>
-                   </div>
-                </form>
-             </div>
-          </div>
-
-
-          <div class ="timeline-comments">
-               <div class="alert alert-secondary" role="alert">
-                   <div class="timeline-comments-header">
-                       <span class="userimage"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></span>
-                       <span class="username"><a href="javascript:;">Sean Ngu</a> <small></small></span>
-                    </div>
-                   <div class="timeline-comments-content">
-                       <p>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc faucibus turpis quis tincidunt luctus.
-                          Nam sagittis dui in nunc consequat, in imperdiet nunc sagittis.
-                       </p>
-                    </div>
-                    <div class="timeline-comments-footer">
-                       <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-thumbs-up fa-fw fa-lg m-r-3"></i>14</a>
-                    </div>
-               </div>
-
-               <div class="alert alert-secondary" role="alert">
-                   <div class="timeline-comments-header">
-                       <span class="userimage"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></span>
-                       <span class="username"><a href="javascript:;">Sean Ngu</a> <small></small></span>
-                    </div>
-                   <div class="timeline-comments-content">
-                       <p>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc faucibus turpis quis tincidunt luctus.
-                          Nam sagittis dui in nunc consequat, in imperdiet nunc sagittis.
-                       </p>
-                    </div>
-                    <div class="timeline-comments-footer">
-                       <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-thumbs-up fa-fw fa-lg m-r-3"></i>64</a>
-                    </div>
-               </div>
-          </div>
-
-
-       </div>
-       <!-- end timeline-body -->
-    </li>
-
-
-    
-    <li>
-       <!-- begin timeline-icon -->
-       <div class="timeline-icon">
-          <a href="javascript:;">&nbsp;</a>
-       </div>
-       <!-- end timeline-icon -->
-       <!-- begin timeline-body -->
-       <div class="timeline-body">
-          Loading...
-       </div>
-       <!-- begin timeline-body -->
     </li>
  </ul>
+</ng-template>
