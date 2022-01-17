@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ConnectionService } from 'src/app/modules/connection/services/connection.service';
 import { GettingConnection } from 'src/shared/models/connection/getting-connection.model';
 import { prepareDataForTagCloud } from 'src/shared/tag-cloud-data-generator';
+import { Pairlist } from 'src/shared/utils/pairlist.model';
 
 @Component({
   selector: 'app-profile-tag-cloud-conn',
@@ -46,13 +47,20 @@ export class ProfileTagCloudConnComponent implements OnInit {
     this.spinner.show();
     this.cService.getConnections(this.userEmail).subscribe({ next: data => {
       this.connections = data;
-      let tags: string[] = [];
+      let tags = new Pairlist();
 
       for(let conn of this.connections){
-        tags = [...tags, ...conn.tags];
+        //tags = [...tags, ...conn.tags];
+        for(let tag of conn.tags) {
+          tags.addOrChange(tag);
+        }
       }
 
-      this.data = prepareDataForTagCloud(tags);
+      if(tags.length() != 0) {
+        this.data = prepareDataForTagCloud(tags);
+      } else {
+        this.data = [];
+      }
       this.spinner.hide();
     },
       error: _error => {
