@@ -32,7 +32,7 @@ export function prepareDataForTagCloudMulti(tags: Pairlist): CloudData[] {
       // set random weight
 
       const el: CloudData = {
-        text: text + " - " + tags.pairlist[i].value,
+        text: text,
         weight: weight,
         color: color,
         rotate: rotate
