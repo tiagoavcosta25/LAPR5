@@ -1,35 +1,45 @@
 import { CloudData } from 'angular-tag-cloud-module';
+import { Pairlist } from './utils/pairlist.model';
 
-export function prepareDataForTagCloud(tags: string[]): CloudData[] {
-    const cd: CloudData[] = [];
+export function prepareDataForTagCloud(tags: Pairlist): CloudData[] {
+  const cd: CloudData[] = [];
 
-    for (let i = 0; i < tags.length; i++) {
-      let color: string = "";
-      let weight = 5;
-      let text = tags[i];
-      let rotate = 0;
+  let biggest = 0;
 
-      // randomly rotate some elements (less probability)
-      if (Math.random() >= 0.8) {
-        const plusMinus = Math.random() >= 0.5 ? '' : '-';
-        rotate = Math.floor(Math.random() * Number(`${plusMinus}20`) + 1);
-      }
+  for(let t of tags.pairlist) {
+    if(t.value > biggest) {
+      biggest = t.value;
+    }
+  }
 
-      // randomly set color attribute
-      color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+  for (let i = 0; i < tags.length(); i++) {
+    let color: string = "";
 
-      // set random weight
-      weight = Math.floor(Math.random() * (15 - 5 + 1) + 5);
+    let weight = Math.ceil(tags.pairlist[i].value / biggest * 10);
 
-      const el: CloudData = {
-        text: text,
-        weight: weight,
-        color: color,
-        rotate: rotate
-      };
+    let text = tags.pairlist[i].key;
+    let rotate = 0;
 
-      cd.push(el);
+    // randomly rotate some elements (less probability)
+    if (Math.random() >= 0.8) {
+      const plusMinus = Math.random() >= 0.5 ? '' : '-';
+      rotate = Math.floor(Math.random() * Number(`${plusMinus}20`) + 1);
     }
 
-    return cd;
+    // randomly set color attribute
+    color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+
+    // set random weight
+
+    const el: CloudData = {
+      text: text,
+      weight: weight,
+      color: color,
+      rotate: rotate
+    };
+
+    cd.push(el);
+  }
+
+  return cd;
   }
