@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { DobPlayer } from '../../../models/dob-player.model copy';
 import { PlayerService } from '../../../services/player.service';
 import { prepareDataForTagCloud } from 'src/shared/tag-cloud-data-generator';
+import { Pairlist } from 'src/shared/utils/pairlist.model';
 
 @Component({
   selector: 'app-profile-tag-cloud',
@@ -46,7 +47,17 @@ export class ProfileTagCloudComponent implements OnInit {
     this.spinner.show();
     this.pService.getOnlyPlayerByEmail(this.userEmail).subscribe({ next: data => {
       this.player = data;
-      this.data = prepareDataForTagCloud(data.tags);
+      let tags = new Pairlist();
+
+      for(let tag of this.player.tags) {
+          tags.addOrChange(tag);
+      }
+      if(tags.length() != 0) {
+        this.data = prepareDataForTagCloud(tags);
+      } else {
+        this.data = [];
+      }
+
       this.spinner.hide();
     },
       error: _error => {
