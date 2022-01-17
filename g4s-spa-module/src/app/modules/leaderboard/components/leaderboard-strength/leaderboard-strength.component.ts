@@ -22,7 +22,6 @@ export class LeaderboardStrengthComponent implements OnInit {
   ngOnInit() {
     this.spinner.show();
     this.unorderedPlayers = [];
-    this.orderedMap = new Map<Player, number>();
     this.leaderboardMap = new Map<Player, number>();
     this.getPlayers();
   }
@@ -35,7 +34,6 @@ export class LeaderboardStrengthComponent implements OnInit {
         }
 
         this.getNetworkDimension();
-        this.spinner.hide();
       },
         error: _error => {
           this.spinner.hide();
@@ -45,7 +43,8 @@ export class LeaderboardStrengthComponent implements OnInit {
 
   getNetworkDimension() {
     if(this.unorderedPlayers.length === 0){
-      this.orderedMap = new Map([...this.leaderboardMap.entries()].sort((a, b) => b[1] - a[1]));
+      let tempMap = new Map([...this.leaderboardMap.entries()].sort((a, b) => b[1] - a[1]));
+      this.orderedMap = tempMap;
       this.spinner.hide();
     }
 

@@ -1,4 +1,8 @@
-<h2>Leaderboard - Network Dimension</h2>
+<div *ngIf="orderedMap==undefined; else defined">
+</div>
+
+<ng-template #defined>
+  <h2>Leaderboard - Network Dimension</h2>
 <div class="container"> 
   <mat-list>
     <mat-list-item *ngFor="let player of this.orderedMap.keys(); index as i">
@@ -11,5 +15,6 @@
     </mat-list-item>
   </mat-list>
 </div>
+</ng-template>
 
 <ngx-spinner></ngx-spinner>
