@@ -1,0 +1,20 @@
+.header-tab>li {
+    display: inline-block;
+    margin-left: 28%;
+}
+
+.header-tab>li>a {
+    display: block;
+    color: #929ba1;
+    line-height: 20px;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 18px;
+    border: none
+}
+
+.header-tab>li.active>a,
+.header-tab>li>a.active {
+    color: #ff0080
+}

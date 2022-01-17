@@ -1,0 +1,15 @@
+<h2>Leaderboard - Network Dimension</h2>
+<div class="container"> 
+  <mat-list>
+    <mat-list-item *ngFor="let player of this.orderedMap.keys(); index as i">
+      <mat-icon matListIcon>person</mat-icon>
+      <h3 matLine> {{i + 1}} - {{player.name}} </h3>
+      <p matLine>
+        <span> {{player.email}} </span><br>
+        <span> Network Dimension: {{this.orderedMap.get(player)}} </span>
+      </p>
+    </mat-list-item>
+  </mat-list>
+</div>
+
+<ngx-spinner></ngx-spinner>

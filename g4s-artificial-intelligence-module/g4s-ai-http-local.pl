@@ -37,7 +37,7 @@ startServer(Port) :-
 
 % Server startup
 start_server:-
-    consult('g4s-ai-http-config-local'),  % Loads server's configuration
+    consult('g4s-ai-http-config-local'),  % Loads servers configuration
     server_port(Port),
     startServer(Port).
 
@@ -114,6 +114,21 @@ listUnion([X|L1],L2,LU):-
     listUnion(L1,L2,LU).
 listUnion([X|L1],L2,[X|LU]):-
     listUnion(L1,L2,LU).
+
+sigmoid(X, ReturnValue):-
+    ReturnValue is (400/(1 + (2.71828 ** (-0.02 * X)))) - 200.
+
+setRelValues([], []):-!.
+setRelValues([H|T], [HFinal|Valores]):-
+	((H > 200, !, HFinal is 100);
+	(H < -200, !, HFinal is 0);
+	(!, HFinal is (H + 200) / 4)),
+        setRelValues(T, Valores).
+
+getMulticriteria(ConnectionStrength, RelationStrength, Output):-
+    MultiConnection is ConnectionStrength / 2,
+    MultiRelation is ((RelationStrength + 200) / 4) / 2,
+    Output is MultiConnection + MultiRelation.
 
 %======== Shortest route between two players (HTTP) ========%
 
@@ -520,41 +535,60 @@ aStar_compute(Request) :-
 
 aStar_prepare(Request, Path, Cost) :-
     http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string]),
-    threshold(Threshold, [integer])]),
+    threshold(Threshold, [integer])]), mode(Mode, [integer])])
 	addPlayers(),
 	addConnections(),
 	getPlayerName(EmailPlayer, PlayerName),
 	getPlayerName(EmailTarget, TargetName),
         node(PlayerId, PlayerName, _),
         node(TargetId, TargetName, _),
-	aStar_find(Threshold, PlayerId, TargetId, Path, Cost),
+	aStar_find(Mode, Threshold, PlayerId, TargetId, Path, Cost),
 	retractall(connection(_,_,_,_)),
 	retractall(node(_,_,_)).
 
 %======== A-Star (Core) ========%
 
-aStar_find(Threshold, Orig, Dest, Path, Cost):-
-    aStar_getStrengthListByPlayer(Threshold, Orig, StrengthList),
+aStar_find(Mode, Threshold, Orig, Dest, Path, Cost):-
+    (retract(aStar_orderedList(_));true),
+    aStar_getStrengthListByPlayer(Mode, Threshold, Orig, StrengthList),
     asserta(aStar_orderedList(StrengthList)),
-    aStar_aux(0, Threshold, Dest,[(_,0,[Orig])],Path,Cost).
-aStar_aux(M, N, Dest,[(_,Cost,[Dest|T])|_],Path,Cost):- M >= N,reverse([Dest|T],Path).
-aStar_aux(M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
+    aStar_aux(Mode, 0, Threshold, Dest,[(_,0,[Orig])],Path,Cost).
+aStar_aux(_, M, N, Dest,[(_,Cost,[Dest|T])|_],Path,Cost):- M >= N,reverse([Dest|T],Path).
+aStar_aux(0, M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
     LA=[Act|_],
     findall((CEX,CaX,[X|LA]),
     (Dest\==Act,
-    (connection(Act,X,CostX, _);
-    connection(X, Act, _, CostX)),
+    (connection(Act,X,CostX, _, _, _);
+    connection(X, Act, _, CostX, _, _)),
     \+ member(X,LA),
     CaX is CostX + Ca,
-    estimate(N,M,EstX),
+    aStar_estimate(N,M,EstX),
     CEX is CaX + EstX),
     New),
     append(Others,New,All),
     sort(All,AllOrd),
     M1 is M + 1,
-    aStar_aux(M1, N, Dest,AllOrd,Path,Cost).
+    aStar_aux(0, M1, N, Dest,AllOrd,Path,Cost).
 
-estimate(N,M, Est):-
+aStar_aux(1, M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
+    LA=[Act|_],
+    findall((CEX,CaX,[X|LA]),
+    (Dest\==Act,
+    (connection(Act,X,ConnStrength, _, RelStrength, _);
+    connection(X, Act, _, ConnStrength, _, RelStrength)),
+    \+ member(X,LA),
+    getMulticriteria(ConnStrength, RelStrength, CostX),
+    CaX is CostX + Ca,
+    aStar_estimate(N,M,EstX),
+    CEX is CaX + EstX),
+    New),
+    append(Others,New,All),
+    sort(All,AllOrd),
+    M1 is M + 1,
+    aStar_aux(1, M1, N, Dest,AllOrd,Path,Cost).
+
+
+aStar_estimate(N,M, Est):-
     retract(aStar_orderedList([H|List])),
     Est is H * (N - M),
     asserta(aStar_orderedList(List)).
@@ -562,32 +596,38 @@ estimate(N,M, Est):-
 aStar_sort(List, ResultList):- sort(0,  @>=, List,  ResultList).
 
 aStar_getOrderedList(ReturnList):-
-    findall(FirstStrength, connection(_, _, FirstStrength, _), AllFirstList),
-    findall(SecondStrength, connection(_, _, _, SecondStrength), AllSecondList),
+    findall(FirstStrength, connection(_, _, FirstStrength, _, _, _), AllFirstList),
+    findall(SecondStrength, connection(_, _, _, SecondStrength, _, _), AllSecondList),
     listUnion(AllFirstList, AllSecondList, AllList),
     sort(0, @>=, AllList, ReturnList).
 
-aStar_getStrengthListByPlayer(N, PlayerId, ReturnList):-
-    aStar_getStrengthListByLevel(0, N, [PlayerId], AllList),
+aStar_getStrengthListByPlayer(Mode, N, PlayerId, ReturnList):-
+    aStar_getStrengthListByLevel(Mode, 0, N, [PlayerId], AllList),
     sort(0, @>=, AllList, ReturnList).
 
-aStar_getStrengthListByLevel(N, N, _, []):-!.
-aStar_getStrengthListByLevel(M, N, PlayerList, ReturnList):-
-    aStar_getStrengthListByPlayersList(PlayerList, FriendsList, StrengthList),
+aStar_getStrengthListByLevel(_, N, N, _, []):-!.
+aStar_getStrengthListByLevel(Mode, M, N, PlayerList, ReturnList):-
+    aStar_getStrengthListByPlayersList(Mode, PlayerList, FriendsList, StrengthList),
     M1 is M + 1,
-    aStar_getStrengthListByLevel(M1, N, FriendsList, List),
+    aStar_getStrengthListByLevel(Mode, M1, N, FriendsList, List),
     listUnion(StrengthList, List, ReturnList).
 
-aStar_getStrengthListByPlayersList([], [], []):-!.
-aStar_getStrengthListByPlayersList([PlayerId | PlayerList], ReturnFriendList, ReturnList):-
+aStar_getStrengthListByPlayersList(_, [], [], []):-!.
+aStar_getStrengthListByPlayersList(Mode, [PlayerId | PlayerList], ReturnFriendList, ReturnList):-
     network_getNetworkByLevel(PlayerId, 1, FriendsList, _),
-    aStar_getStrengthListByFriendsList(PlayerId, FriendsList, StrengthList),
-    aStar_getStrengthListByPlayersList(PlayerList, FList, List),
+    aStar_getStrengthListByFriendsList(Mode, PlayerId, FriendsList, StrengthList),
+    aStar_getStrengthListByPlayersList(Mode, PlayerList, FList, List),
     listUnion(FriendsList, FList, ReturnFriendList),
     listUnion(StrengthList, List, ReturnList).
 
-aStar_getStrengthListByFriendsList(_, [], []):-!.
-aStar_getStrengthListByFriendsList(PlayerId, [FriendId|FriendList], [FirstStrength|[SecondStrength|StrengthList]]):-
-    (connection(PlayerId, FriendId, FirstStrength, SecondStrength);
-    connection(FriendId, PlayerId, FirstStrength, SecondStrength)),
-    aStar_getStrengthListByFriendsList(PlayerId, FriendList, StrengthList).
+aStar_getStrengthListByFriendsList(_, _, [], []):-!.
+aStar_getStrengthListByFriendsList(0, PlayerId, [FriendId|FriendList], [FirstStrength|[SecondStrength|StrengthList]]):-
+    (connection(PlayerId, FriendId, FirstStrength, SecondStrength, _, _);
+    connection(FriendId, PlayerId, FirstStrength, SecondStrength, _, _)),
+    aStar_getStrengthListByFriendsList(0, PlayerId, FriendList, StrengthList).
+aStar_getStrengthListByFriendsList(1, PlayerId, [FriendId|FriendList], [FirstMulti|[SecondMulti|StrengthList]]):-
+    (connection(PlayerId, FriendId, FirstStrength, SecondStrength, FirstRelStrength, SecondRelStrength);
+    connection(FriendId, PlayerId, FirstStrength, SecondStrength, FirstRelStrength, SecondRelStrength)),
+    getMulticriteria(FirstStrength, FirstRelStrength, FirstMulti),
+    getMulticriteria(SecondStrength, SecondRelStrength, SecondMulti),
+    aStar_getStrengthListByFriendsList(1, PlayerId, FriendList, StrengthList).
