@@ -19,7 +19,8 @@ export class PostMap extends Mapper<Post> {
       likes: post.likes,
       dislikes: post.dislikes,
       tags: post.tags,
-      comments: post.comments.map(comment => CommentMap.toDTO(comment, post.id.toValue() as string))
+      comments: post.comments.map(comment => CommentMap.toDTO(comment, post.id.toValue() as string)),
+      createdAt: post.createdAt
     } as IPostDTO;
   }
 
@@ -42,7 +43,8 @@ export class PostMap extends Mapper<Post> {
       likes: post.likes,
       dislikes: post.dislikes,
       tags: post.tags,
-      comments: post.comments.map(comment => CommentMap.toPersistence(comment))
+      comments: post.comments.map(comment => CommentMap.toPersistence(comment)),
+      createdAt: post.createdAt
     }
   }
 }

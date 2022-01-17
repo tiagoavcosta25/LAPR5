@@ -3,6 +3,7 @@
 </div>
 
 <ng-template #defined>
+    <div *ngIf="userFriends.length > 0; else empty">
     <div class="container friends-body">
         <div class="row justify-content-between">
             <div *ngFor="let friend of userFriends" class="col-5 mb-4 user" href="/profile"> 
@@ -33,6 +34,22 @@
                     </div>
                 </a>
             </div>
+        </div>
+    </div>
+    </div>
+</ng-template>
+
+<ng-template #empty>
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div *ngIf="checkIfOwnerOfPage(); else notOwn" class="alert alert-primary" role="alert">
+                You have no friends! 😅
+            </div>
+            <ng-template #notOwn>
+                <div class="alert alert-primary" role="alert">
+                    This user has no friends! 😅
+                </div>
+            </ng-template>
         </div>
     </div>
 </ng-template>

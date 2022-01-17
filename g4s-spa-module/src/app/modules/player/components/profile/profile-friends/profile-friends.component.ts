@@ -65,4 +65,8 @@ export class ProfileFriendsComponent implements OnInit {
     return friend.email == this.currentPlayerEmail;
   }
 
+  checkIfOwnerOfPage() {
+    return this.currentPlayerEmail == this.userEmail;
+  }
+
 }

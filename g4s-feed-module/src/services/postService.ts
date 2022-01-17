@@ -12,6 +12,7 @@ import ICommentDTO from '../dto/ICommentDTO';
 import { Comment } from '../domain/comment';
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 import IDeleteCommentDTO from '../dto/IDeleteCommentDTO';
+import mongoose from '../loaders/mongoose';
 
 @Service()
 export default class PostService implements IPostService {
@@ -144,14 +145,17 @@ export default class PostService implements IPostService {
         let newCommentProps = {
           postId: commentDTO.postId,
           creatorId: commentDTO.creatorId,
-          content: commentDTO.content
+          content: commentDTO.content,
+          createdAt: commentDTO.createdAt
         } as ICommentDTO
 
         let comment = Comment.create(newCommentProps, new UniqueEntityID(commentDTO.id)).getValue();
         post.comments.push(comment);
         await this.postRepo.save(post);
 
-        const postDTOResult = PostMap.toDTO( post ) as IPostDTO;
+        const postFinished = await this.postRepo.findByDomainId(commentDTO.postId);
+
+        const postDTOResult = PostMap.toDTO( postFinished ) as IPostDTO;
         return Result.ok<IPostDTO>( postDTOResult )
         }
     } catch (e) {

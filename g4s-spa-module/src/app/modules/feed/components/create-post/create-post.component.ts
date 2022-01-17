@@ -1,17 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { DebugElement } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FeedService } from '../../services/feed.service';
-import { of } from 'rxjs';
-import { Player } from 'src/shared/models/player/player.model';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { By } from '@angular/platform-browser';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Post } from 'src/shared/models/feed/post.model';
 import { CreatingPost } from '../../models/creating-post.model';
 import { emotionalStatusEnum } from 'src/shared/models/player/emotional-status-enum.model';
-import { PlayerService } from 'src/app/modules/player/services/player.service';
 
 @Component({
   selector: 'app-create-post',
@@ -36,7 +28,6 @@ export class CreatePostComponent implements OnInit {
   constructor(
               private spinner: NgxSpinnerService,
               private service: FeedService,
-              private pService: PlayerService,
               private fb: FormBuilder) { }
 
   ngOnInit(): void {
@@ -45,6 +36,7 @@ export class CreatePostComponent implements OnInit {
   }
 
   createPost() {
+    this.p.creatorId = this.email;
     this.p.content = this.postForm.value.content;
     for(let tag of this.postForm.value.tags)
     {
@@ -85,34 +77,20 @@ export class CreatePostComponent implements OnInit {
   save(): void {
     this.createPost();
     this.spinner.show();
-
-    this.pService.getOnlyPlayerByEmail(this.email)
-    .subscribe({ next: player => {
-      if(player) {
-        this.p.creatorId = player.id;
-        this.service.createPost(this.p)
-        .subscribe({ next: data => {
-          if(data) {
-            this.success = true;
-            let tags = this.postForm.get('tags') as FormArray;
-            for(let tagT of this.p.tags) {
-              tags.removeAt(tags.value.findIndex((tag: { tag: string; }) => tag.tag === tagT))
-            }
-            this.postForm.reset();
-            this.p = new CreatingPost();
+    this.service.createPost(this.p)
+      .subscribe({ next: data => {
+        if(data) {
+          this.success = true;
+          let tags = this.postForm.get('tags') as FormArray;
+          for(let tagT of this.p.tags) {
+            tags.removeAt(tags.value.findIndex((tag: { tag: string; }) => tag.tag === tagT))
           }
-          this.spinner.hide();
-        },
-          error: _error => {
-            this.success = false;
-            this.p = new CreatingPost();
-            this.spinner.hide();
-          }
-        });
-      }
-      this.spinner.hide();
-    },
-      error: _error => {
+          this.postForm.reset();
+          this.p = new CreatingPost();
+        }
+        this.spinner.hide();
+      },
+        error: _error => {
         this.success = false;
         this.p = new CreatingPost();
         this.spinner.hide();

@@ -11,6 +11,7 @@ interface CommentProps {
   postId: string;
   content: CommentContent;
   creatorId: string;
+  createdAt: Date;
 }
 
 export class Comment extends Entity<CommentProps> {
@@ -46,6 +47,14 @@ export class Comment extends Entity<CommentProps> {
     this.props.postId = value;
   }
 
+  get createdAt (): Date {
+    return this.props.createdAt;
+  }
+
+  set createdAt ( value: Date) {
+    this.props.createdAt = value;
+  }
+
   private constructor (props: CommentProps, id?: UniqueEntityID) {
     super(props, id);
   }
@@ -54,13 +63,14 @@ export class Comment extends Entity<CommentProps> {
     const postId = commentDTO.postId;
     const content = commentDTO.content;
     const creatorId = commentDTO.creatorId;
+    const createdAt = commentDTO.createdAt;
 
     if (!!postId === false || !!content === false || !!creatorId === false || content.length === 0) {
       return Result.fail<Comment>('Must provide comment content, creator and postId')
     } else {
       const resContent = CommentContent.create(content);
       if(resContent.isSuccess){
-        const comment = new Comment({ postId: postId, content: resContent.getValue(), creatorId: creatorId }, id);
+        const comment = new Comment({ postId: postId, content: resContent.getValue(), creatorId: creatorId, createdAt: createdAt }, id);
         return Result.ok<Comment>( comment )
       }
       return Result.fail<Comment>('Comment content error')

@@ -8,8 +8,6 @@ import IPostDTO from "../dto/IPostDTO";
 import { PostContent } from "./postContent";
 import { Comment } from "./comment";
 import ICommentDTO from "../dto/ICommentDTO";
-import { ICommentPersistence } from "../dataschema/ICommentPersistence";
-import { IPostPersistence } from "../dataschema/IPostPersistence";
 
 interface PostProps {
   content: PostContent;
@@ -18,6 +16,7 @@ interface PostProps {
   dislikes: string[];
   tags: string[];
   comments: Comment[];
+  createdAt: Date;
 }
 
 export class Post extends AggregateRoot<PostProps> {
@@ -35,6 +34,14 @@ export class Post extends AggregateRoot<PostProps> {
 
   set content ( value: PostContent) {
     this.props.content = value;
+  }
+
+  get createdAt (): Date {
+    return this.props.createdAt;
+  }
+
+  set createdAt ( value: Date) {
+    this.props.createdAt = value;
   }
 
   get creatorId (): string {
@@ -88,6 +95,7 @@ export class Post extends AggregateRoot<PostProps> {
     let dislikes = postDTO.dislikes;
     const tags = postDTO.tags;
     let comments = postDTO.comments;
+    let createdAt = postDTO.createdAt;
     let _comments = [];
 
     if(likes === undefined){
@@ -105,7 +113,8 @@ export class Post extends AggregateRoot<PostProps> {
         let newCommentProps = {
           postId: comment.postId,
           creatorId: comment.creatorId,
-          content: comment.content
+          content: comment.content,
+          createdAt: comment.createdAt
         } as ICommentDTO
         let newComment = Comment.create(newCommentProps, new UniqueEntityID(comment.domainId));
         if(newComment.isFailure) {
@@ -113,6 +122,8 @@ export class Post extends AggregateRoot<PostProps> {
         }
 
         _comments.push(newComment.getValue());
+        _comments.sort((b,a) => (a.createdAt > b.createdAt) ? 1 : ((b.createdAt > a.createdAt) ? -1 : 0));
+
       }
     }
 
@@ -122,7 +133,7 @@ export class Post extends AggregateRoot<PostProps> {
       const resContent = PostContent.create(content);
       if(resContent.isSuccess){
         const post = new Post({ content: resContent.getValue(), creatorId: creatorId, likes: likes,
-           dislikes: dislikes, tags: tags, comments: _comments }, id);
+           dislikes: dislikes, tags: tags, comments: _comments, createdAt: createdAt }, id);
         return Result.ok<Post>( post )
       }
       return Result.fail<Post>('Post content error')
