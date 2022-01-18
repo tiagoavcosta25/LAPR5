@@ -236,7 +236,7 @@ export class GetNetworkComponent implements OnInit {
     let scopex = 0;
     let scopey = 0; 
     for(let scope of this.scopes){
-      let radius = 35 / (scope.scope + 1);
+      let radius = (35 / (scope.scope + 1)) - scope.scope;
       let angleIncrement = this.calculateAngleIncrement(scope);
       scope.angle = angleIncrement;
       if(scope.player.id == this.id){
@@ -266,21 +266,14 @@ export class GetNetworkComponent implements OnInit {
         scopey = this.nodes[index].sphere.position.y;
       }
       let angle = 0;
-      let zerofactor = false;
       for(let s of this.scopes) {
-        if(s.friends.length == 1) {
-          zerofactor = true;
-        }
         for(let i = 0; i < s.friends.length; i++) {
           if(scope.player.email == s.friends[i].email ) {
             if(s.friends.length != 1) {
-              angle -= s.firstAngle + s.angle * i + angleIncrement / 2;
+              angle = s.firstAngle + (s.angle * i) - Math.PI + angleIncrement / 2;
+              console.log(s.firstAngle);
             } 
-            if(zerofactor) {
-              scope.firstAngle = s.firstAngle + s.angle * i + angleIncrement / 2;
-            } else {
               scope.firstAngle = angle;
-            }
             break;
           }
         }
