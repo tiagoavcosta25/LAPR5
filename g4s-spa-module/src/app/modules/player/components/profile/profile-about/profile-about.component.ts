@@ -20,6 +20,8 @@ export class ProfileAboutComponent implements OnInit {
 
   hasFacebook: boolean;
 
+  networkStrength: number;
+
   constructor(private activatedRoute: ActivatedRoute,
     private pService: PlayerService,
     private cService: ConnectionService,
@@ -29,6 +31,7 @@ export class ProfileAboutComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.userEmail = params['email'];
       this.getPlayer();
+      this.getNetworkFirstLevel();
     })
   }
 
@@ -58,26 +61,20 @@ export class ProfileAboutComponent implements OnInit {
     });
   }
 
-  /*getNetwork() {
+  getNetworkFirstLevel() {
     this.spinner.show();
-    this.cService.getNetwork(this.email, this.getNetworkForm.value).subscribe({ next: async data => {
-      this.id = await this.getCurrentPlayerId();
-      for(let con of data) {
-        let netCon = new NetworkConnection(con.id, con.player, con.friend, con.connectionStrength);
-        let tempPlayer = await this.getPlayer(netCon.player.id);
-        netCon.player.setEmailAndName(tempPlayer.email, tempPlayer.name);
-        tempPlayer = await this.getPlayer(netCon.friend.id);
-        netCon.friend.setEmailAndName(tempPlayer.email, tempPlayer.name);
-        this.connections.push(netCon);
+    this.cService.getNetwork(this.userEmail, 1).subscribe({ next: async data => {
+      let strength = 0;
+      for(let c of data) {
+        strength += c.connectionStrength;
       }
-      this.getScopes();
-      this.initializeGraph();
+      this.networkStrength = strength;
       this.spinner.hide();
     },
       error: _error => {
         this.spinner.hide();
       }
     });
-}*/
+}
 
 }
