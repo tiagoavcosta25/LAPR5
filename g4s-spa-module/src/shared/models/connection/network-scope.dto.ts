@@ -5,11 +5,13 @@ export class NetworkScope {
     friends: NetworkPlayer[];
     scope: number;
     angle: number;
+    firstAngle: number;
 
     constructor(player: NetworkPlayer, scope: number) {
         this.player = player;
         this.friends = [];
         this.scope = scope;
         this.angle = 0;
+        this.firstAngle = 0;
     }
 }

@@ -266,10 +266,22 @@ export class GetNetworkComponent implements OnInit {
         scopey = this.nodes[index].sphere.position.y;
       }
       let angle = 0;
+      let zerofactor = false;
       for(let s of this.scopes) {
-        for(let f of s.friends) {
-          if(scope.player.email == f.email ) {
-            angle -= scope.angle / 2;
+        if(s.friends.length == 1) {
+          zerofactor = true;
+        }
+        for(let i = 0; i < s.friends.length; i++) {
+          if(scope.player.email == s.friends[i].email ) {
+            if(s.friends.length != 1) {
+              angle -= s.firstAngle + s.angle * i + angleIncrement / 2;
+            } 
+            if(zerofactor) {
+              scope.firstAngle = s.firstAngle + s.angle * i + angleIncrement / 2;
+            } else {
+              scope.firstAngle = angle;
+            }
+            break;
           }
         }
       }
