@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ConnectionService } from 'src/app/modules/connection/services/connection.service';
 import { DobPlayer } from '../../../models/dob-player.model copy';
 import { PlayerService } from '../../../services/player.service';
 
@@ -21,6 +22,7 @@ export class ProfileAboutComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute,
     private pService: PlayerService,
+    private cService: ConnectionService,
     private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
@@ -55,5 +57,27 @@ export class ProfileAboutComponent implements OnInit {
       }
     });
   }
+
+  /*getNetwork() {
+    this.spinner.show();
+    this.cService.getNetwork(this.email, this.getNetworkForm.value).subscribe({ next: async data => {
+      this.id = await this.getCurrentPlayerId();
+      for(let con of data) {
+        let netCon = new NetworkConnection(con.id, con.player, con.friend, con.connectionStrength);
+        let tempPlayer = await this.getPlayer(netCon.player.id);
+        netCon.player.setEmailAndName(tempPlayer.email, tempPlayer.name);
+        tempPlayer = await this.getPlayer(netCon.friend.id);
+        netCon.friend.setEmailAndName(tempPlayer.email, tempPlayer.name);
+        this.connections.push(netCon);
+      }
+      this.getScopes();
+      this.initializeGraph();
+      this.spinner.hide();
+    },
+      error: _error => {
+        this.spinner.hide();
+      }
+    });
+}*/
 
 }

@@ -7,8 +7,11 @@
       <div class="row justify-content-center mb-5 mt-5">
          <div class="col-10">
             <div class="share border">
+               <div class="d-flex flex-row inputs share-header share-header-mar">
+                  <span class="userimage"><a href="/profile/{{ currentUserEmail }}"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></a></span>
+                  <span class="username"><a href="/profile/{{ currentUserEmail }}"> {{ currentUser.name }}</a> <small></small></span>
+               </div>
                <div class="d-flex flex-row inputs p-2 py-4 share-header">
-                <span class="userimage"><a href="/profile/{{ currentUserEmail }}"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></a></span>
                   <input [id]="'shareinput'" type="text" class="form-control rounded-corner" placeholder="Share your thougths as {{ currentUser.name }}...">
                   <button (click)="post()" class="btn btn-primary f-s-12 rounded-corner btn-comment" type="button">Share!</button>
                </div>
