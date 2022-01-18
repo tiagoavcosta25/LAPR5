@@ -11,6 +11,7 @@ interface CommentProps {
   postId: string;
   content: CommentContent;
   creatorId: string;
+  name: string;
   createdAt: Date;
 }
 
@@ -39,6 +40,14 @@ export class Comment extends Entity<CommentProps> {
     this.props.creatorId = value;
   }
 
+  get name (): string {
+    return this.props.name;
+  }
+
+  set name ( value: string) {
+    this.props.name = value;
+  }
+
   get postId (): string {
     return this.props.postId;
   }
@@ -63,6 +72,7 @@ export class Comment extends Entity<CommentProps> {
     const postId = commentDTO.postId;
     const content = commentDTO.content;
     const creatorId = commentDTO.creatorId;
+    const name = commentDTO.name;
     const createdAt = commentDTO.createdAt;
 
     if (!!postId === false || !!content === false || !!creatorId === false || content.length === 0) {
@@ -70,7 +80,7 @@ export class Comment extends Entity<CommentProps> {
     } else {
       const resContent = CommentContent.create(content);
       if(resContent.isSuccess){
-        const comment = new Comment({ postId: postId, content: resContent.getValue(), creatorId: creatorId, createdAt: createdAt }, id);
+        const comment = new Comment({ postId: postId, content: resContent.getValue(), creatorId: creatorId, name: name, createdAt: createdAt }, id);
         return Result.ok<Comment>( comment )
       }
       return Result.fail<Comment>('Comment content error')

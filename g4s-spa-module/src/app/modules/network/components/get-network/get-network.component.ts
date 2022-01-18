@@ -238,6 +238,7 @@ export class GetNetworkComponent implements OnInit {
     for(let scope of this.scopes){
       let radius = 35 / (scope.scope + 1);
       let angleIncrement = this.calculateAngleIncrement(scope);
+      scope.angle = angleIncrement;
       if(scope.player.id == this.id){
         material  = new THREE.MeshStandardMaterial({color : 0xe67e22,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
         geometry = new THREE.SphereGeometry(4, 32, 16);
@@ -265,6 +266,13 @@ export class GetNetworkComponent implements OnInit {
         scopey = this.nodes[index].sphere.position.y;
       }
       let angle = 0;
+      for(let s of this.scopes) {
+        for(let f of s.friends) {
+          if(scope.player.email == f.email ) {
+            angle -= scope.angle / 2;
+          }
+        }
+      }
       for(let scopeFriend of scope.friends) {
         material  = new THREE.MeshStandardMaterial({color : 0x2e86c1,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
         geometry = new THREE.SphereGeometry(2, 32, 16);
@@ -525,7 +533,11 @@ export class GetNetworkComponent implements OnInit {
         const labelCylinder = document.createElement( 'div' );
         labelCylinder.className = 'badge bg-success text-wrap';
         labelCylinder.style.width = "6rem";
-        labelCylinder.textContent = "Strength: " + con?.strength;
+        let tempCon = 50;
+        if(con?.strength != undefined) {
+          tempCon = con?.strength / 2;
+        }
+        labelCylinder.textContent = "Strength: " + tempCon;
         const labelCylinderObject = new CSS2DObject( labelCylinder );
         labelCylinderObject.position.setX( 0 );
         labelCylinderObject.position.setY( 0 );

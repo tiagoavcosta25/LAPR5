@@ -12,6 +12,7 @@ import ICommentDTO from "../dto/ICommentDTO";
 interface PostProps {
   content: PostContent;
   creatorId: string;
+  name: string;
   likes: string[];
   dislikes: string[];
   tags: string[];
@@ -50,6 +51,14 @@ export class Post extends AggregateRoot<PostProps> {
 
   set creatorId ( value: string) {
     this.props.creatorId = value;
+  }
+
+  get name (): string {
+    return this.props.name;
+  }
+
+  set name ( value: string) {
+    this.props.name = value;
   }
 
   get likes (): string[] {
@@ -91,6 +100,7 @@ export class Post extends AggregateRoot<PostProps> {
   public static create (postDTO: IPostDTO | any, id?: UniqueEntityID): Result<Post> {
     const content = postDTO.content;
     const creatorId = postDTO.creatorId;
+    const name = postDTO.name;
     let likes = postDTO.likes;
     let dislikes = postDTO.dislikes;
     const tags = postDTO.tags;
@@ -113,6 +123,7 @@ export class Post extends AggregateRoot<PostProps> {
         let newCommentProps = {
           postId: comment.postId,
           creatorId: comment.creatorId,
+          name: comment.name,
           content: comment.content,
           createdAt: comment.createdAt
         } as ICommentDTO
@@ -132,7 +143,7 @@ export class Post extends AggregateRoot<PostProps> {
     } else {
       const resContent = PostContent.create(content);
       if(resContent.isSuccess){
-        const post = new Post({ content: resContent.getValue(), creatorId: creatorId, likes: likes,
+        const post = new Post({ content: resContent.getValue(), creatorId: creatorId, name: name, likes: likes,
            dislikes: dislikes, tags: tags, comments: _comments, createdAt: createdAt }, id);
         return Result.ok<Post>( post )
       }

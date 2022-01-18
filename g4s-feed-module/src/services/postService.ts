@@ -12,7 +12,6 @@ import ICommentDTO from '../dto/ICommentDTO';
 import { Comment } from '../domain/comment';
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 import IDeleteCommentDTO from '../dto/IDeleteCommentDTO';
-import mongoose from '../loaders/mongoose';
 
 @Service()
 export default class PostService implements IPostService {
@@ -68,8 +67,21 @@ export default class PostService implements IPostService {
       else {
         post.content = PostContent.create(postDTO.content).getValue();
         post.creatorId = postDTO.creatorId;
+        post.name = postDTO.name;
         post.likes = postDTO.likes;
         post.dislikes = postDTO.dislikes;
+        for(let c of postDTO.comments) {
+          let newCommentProps = {
+            postId: c.postId,
+            creatorId: c.creatorId,
+            name: c.name,
+            content: c.content,
+            createdAt: c.createdAt
+          } as ICommentDTO
+          let newComment = Comment.create(newCommentProps, new UniqueEntityID((<any>c).domainId));
+          post.comments.push(newComment.getValue());
+        }
+        post.comments.sort((b,a) => (a.createdAt > b.createdAt) ? 1 : ((b.createdAt > a.createdAt) ? -1 : 0))
         await this.postRepo.save(post);
 
         const postDTOResult = PostMap.toDTO( post ) as IPostDTO;
@@ -145,6 +157,7 @@ export default class PostService implements IPostService {
         let newCommentProps = {
           postId: commentDTO.postId,
           creatorId: commentDTO.creatorId,
+          name: commentDTO.name,
           content: commentDTO.content,
           createdAt: commentDTO.createdAt
         } as ICommentDTO
@@ -195,7 +208,7 @@ export default class PostService implements IPostService {
       const posts = await this.postRepo.getAllByCreatorId(creatorId);
 
       if (posts.length == 0) {
-        return Result.fail<IPostDTO[]>("There are no posts");
+        return Result.ok<IPostDTO[]>([]);
       }
       else {
         let postList: IPostDTO[] = [];

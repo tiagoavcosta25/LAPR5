@@ -118,7 +118,6 @@ export default class PostController implements IPostController /* TODO: extends 
   public async getPostsByUser(req: Request, res: Response, next: NextFunction) {
     try {
       const postOrError = await this.postServiceInstance.getPostsByUser(req.params.creatorId) as Result<IPostDTO[]>;
-
       if (postOrError.isFailure) {
         return res.status(404).send();
       }

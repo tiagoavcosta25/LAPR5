@@ -17,12 +17,14 @@ import { PlayerService } from '../../../services/player.service';
 export class ProfileTimelineComponent implements OnInit {
 
   userEmail: string;
+  
+  currentPlayer: DobPlayer;
 
   posts: Post[] = [];
 
-  currentPlayer: DobPlayer;
-
   currentUserEmail: string;
+
+  currentUser: DobPlayer;
 
   tags: string[];
 
@@ -36,6 +38,7 @@ export class ProfileTimelineComponent implements OnInit {
   ngOnInit(): void {
     this.tags = [];
     this.currentUserEmail = localStorage.getItem("currentPlayer")!;
+    this.getLoggedPlayer();
     this.activatedRoute.params.subscribe(params => {
       this.userEmail = params['email'];
       this.getCurrentPlayer();
@@ -56,11 +59,22 @@ export class ProfileTimelineComponent implements OnInit {
     });
   }
 
+  getLoggedPlayer(): void {
+    this.spinner.show();
+    this.pService.getOnlyPlayerByEmail(this.currentUserEmail).subscribe({ next: data => {
+      this.currentUser = data;
+      this.spinner.hide();
+    },
+      error: _error => {
+        this.spinner.hide();
+      }
+    });
+  }
+
   getPostsByUser(): void {
     this.spinner.show();
     this.fService.getPostsByUser(this.userEmail).subscribe({ next: data => {
       this.posts = data;
-      console.log(this.posts[0].comments);
       this.spinner.hide();
     },
       error: _error => {
@@ -131,7 +145,7 @@ export class ProfileTimelineComponent implements OnInit {
       (<HTMLInputElement>el).value = "";
     }
     this.spinner.show();
-    let createComment: CreateComment = new CreateComment(post.id, this.currentUserEmail, val);
+    let createComment: CreateComment = new CreateComment(post.id, this.currentUserEmail, this.currentUser.name, val);
     let commentedPost: Post;
     this.fService.commentPost(createComment).subscribe({ next: data => {
       commentedPost = data;
@@ -236,6 +250,7 @@ export class ProfileTimelineComponent implements OnInit {
     let createPost: CreatingPost = new CreatingPost();
     createPost.content = val;
     createPost.creatorId = this.currentUserEmail;
+    createPost.name = this.currentUser.name;
     createPost.tags = this.tags;
     this.fService.createPost(createPost).subscribe({ next: _data => {
       this.spinner.hide();

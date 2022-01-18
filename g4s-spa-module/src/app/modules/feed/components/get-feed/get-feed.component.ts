@@ -1,9 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Post } from 'src/shared/models/feed/post.model';
-import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Location } from '@angular/common';
 import { FeedService } from '../../services/feed.service';
+import { DobPlayer } from 'src/app/modules/player/models/dob-player.model copy';
+import { PlayerService } from 'src/app/modules/player/services/player.service';
+import { CreateComment } from 'src/shared/models/posts/create-comment.model';
+import { PlayerLike } from 'src/shared/models/player/player-like.model';
+import { CreatingPost } from '../../models/creating-post.model';
+import { ConnectionService } from 'src/app/modules/connection/services/connection.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-get-feed',
@@ -12,111 +17,264 @@ import { FeedService } from '../../services/feed.service';
 })
 export class GetFeedComponent implements OnInit {
 
-  constructor(private service: FeedService,
+  posts: Post[];
+
+  currentUserEmail: string;
+
+  currentUser: DobPlayer;
+
+  tags: string[];
+
+  constructor(private fService: FeedService,
+    private pService: PlayerService,
     private spinner: NgxSpinnerService,
-    private location: Location,
-    private fb: FormBuilder) { }
+    private cService: ConnectionService) { }
 
-  feed: Post[];
-
-  post: Post;
-
-  error: boolean;
-
-  success?: boolean;
-
-  successMessage: string;
-  
-  successMessageLike: string = "Post liked sucessfully!";
-
-  successMessageDislike: string = "Post disliked sucessfully!";
-
-  successMessageComment: string = "Post commented sucessfully!";
-  
-  errorMessage: string = "There was an error with reaction!";
-
-  step: number;
-
-  postForm = this.fb.group({
-    comment: ['', [Validators.min(1), Validators.max(100)]],
-
-  })
-
-  ngOnInit(): void {
-    this.feed = [];
-    this.post = new Post();
-    this.post.content = "Hello friends, just wanted to thank you guys for this wonderful year. Happy New Year to everyone!";
-    this.post.creatorId = "User1";
-    console.log(this.post);
-    this.feed.push(this.post);
-    let p2 = new Post();
-    p2.content = "Just saw the new Spiderman movie at my New Year's Eve Party, it was awesome! #spoilers";
-    p2.creatorId = "John";
-    this.feed.push(p2);
-    let p3 = new Post();
-    p3.content = "I just got my first friend on here, many more to go! #g4s";
-    p3.creatorId = "Jane";
-    this.feed.push(p3);
+  async ngOnInit(): Promise<void> {
+    this.tags = [];
+    this.currentUserEmail = localStorage.getItem("currentPlayer")!;
+    this.getFriendsPosts();
+    this.getLoggedPlayer();
   }
 
-  setStep(index: number) {
-    this.step = index;
-  }
-
-  get f() { return this.postForm.controls; }
-
-  like(): void {
+  getLoggedPlayer(): void {
     this.spinner.show();
-
-    this.success = true;
-    this.successMessage = this.successMessageLike;
-    this.postForm.reset();
-    this.spinner.hide();
-  }
-
-  dislike(): void {
-    this.spinner.show();
-
-    this.success = true;
-    this.successMessage = this.successMessageDislike;
-    this.postForm.reset();
-    this.spinner.hide();
-    
-  }
-
-  comment(): void {
-    this.spinner.show();
-
-    this.success = true;
-    this.successMessage = this.successMessageComment;
-    this.postForm.reset();
-    this.spinner.hide();
-    
-  }
-
-  timeLeft: number = 2;
-  interval: any;
-
-  refreshOnTime() {
-    this.interval = setInterval(() => {
-      if(this.timeLeft > 0) {
-        this.timeLeft--;
-      } else {
-        this.refresh();
+    this.pService.getOnlyPlayerByEmail(this.currentUserEmail).subscribe({ next: data => {
+      this.currentUser = data;
+      this.spinner.hide();
+    },
+      error: _error => {
+        this.spinner.hide();
       }
-    },1000)
+    });
   }
 
-  clearSuccess() {
-    delete this.success;
+  getFriendsPosts(): void {
+    this.spinner.show();
+    var connections = [];
+    this.cService.getConnections(this.currentUserEmail).subscribe({ next: async data => {
+      let posts: Post[] = [];
+      connections = data;
+      for(let con of connections) {
+        let tempPosts = await this.getPostsByUser(con.friend.email);
+        for(let p of tempPosts) {
+          posts.push(p);
+        }
+      }
+      let tempPosts = await this.getPostsByUser(this.currentUserEmail);
+        for(let p of tempPosts) {
+          posts.push(p);
+        }
+      posts.sort((b,a) => (a.createdAt > b.createdAt) ? 1 : ((b.createdAt > a.createdAt) ? -1 : 0));
+      this.posts = posts;    
+      this.spinner.hide();
+    },
+      error: _error => {
+        this.spinner.hide();
+      }
+    });
   }
 
-  goBack(): void {
-    this.location.back();
+  async getPostsByUser(email: string): Promise<Post[]>{
+    return await firstValueFrom(this.fService.getPostsByUser(email));
   }
 
-  refresh(): void {
-    window.location.reload();
+
+  getDate(date: Date): string {
+    var today = new Date();
+    let dateF = new Date(date);
+    if(today.getFullYear() === dateF.getFullYear()) {
+      if(today.getMonth() === dateF.getMonth()) {
+        if(today.getDate() === dateF.getDate()) {
+          return "Today";
+        } else if(today.getDate() == dateF.getDate() + 1) {
+          return "Yesterday";
+        } else {
+          return dateF.getDate() + "/" + (dateF.getMonth() + 1).toString().padStart(2, "0");
+        }
+      } else {
+        return dateF.getDate() + "/" + (dateF.getMonth() + 1).toString().padStart(2, "0");
+      }
+    } else {
+      return dateF.getDate() + "/" + (dateF.getMonth() + 1).toString().padStart(2, "0") + "/" + dateF.getFullYear();
+    }
   }
 
+  getTime(date: Date): string {
+    var today = new Date();
+    let dateF = new Date(date);
+    if(today.getFullYear() === dateF.getFullYear()) {
+      if(today.getMonth() === dateF.getMonth()) {
+        if(today.getDate() === dateF.getDate()) {
+          if((today.getTime() - dateF.getTime()) / 60000 / 60 <= 1) {
+            if((today.getTime() - dateF.getTime()) / 60000 <= 1) {
+              return "Just now";
+            } else if((today.getTime() - dateF.getTime()) / 60000 <= 15) {
+              return "A few minutes ago";
+            } else {
+              return "One hour ago";
+            }
+          }
+        }
+      }
+    }
+    return dateF.getHours().toString().padStart(2, "0") + ":" + dateF.getMinutes().toString().padStart(2, "0");;
+  }
+
+  scroll(name: string) {
+    let el = document.getElementById(name);
+    let headerOffset = 120;
+    let elementPosition = el?.getBoundingClientRect().top;
+    if(elementPosition != undefined) {
+      let offsetPosition = elementPosition + window.scrollY - headerOffset;
+      window.scrollTo({
+        top:  offsetPosition,
+        behavior: "smooth"
+      })
+    }
+  }
+
+  comment(name: string, post: Post): void {
+    let el = document.getElementById(name);
+    let val = "";
+    if(el != undefined) {
+      val = ((<HTMLInputElement>el).value);
+      (<HTMLInputElement>el).value = "";
+    }
+    this.spinner.show();
+    let createComment: CreateComment = new CreateComment(post.id, this.currentUserEmail, this.currentUser.name, val);
+    let commentedPost: Post;
+    this.fService.commentPost(createComment).subscribe({ next: data => {
+      commentedPost = data;
+      for(let i = 0; i < this.posts.length; i++) {
+        if(this.posts[i].id == commentedPost.id) {
+          this.posts[i] = commentedPost;
+        }
+      }
+      this.spinner.hide();
+    },
+      error: _error => {
+        this.spinner.hide();
+      }
+    });
+  }
+
+  likePost(post: Post): void {
+    this.spinner.show();
+    let like: PlayerLike = new PlayerLike(post.id, this.currentUserEmail);
+    let likedPost: Post;
+    this.fService.likePost(like).subscribe({ next: data => {
+      likedPost = data;
+      for(let i = 0; i < this.posts.length; i++) {
+        if(this.posts[i].id == likedPost.id) {
+          this.posts[i] = likedPost;
+        }
+      }
+      this.spinner.hide();
+    },
+      error: _error => {
+        this.spinner.hide();
+      }
+    });
+  }
+
+  dislikePost(post: Post): void {
+    this.spinner.show();
+    let dislike: PlayerLike = new PlayerLike(post.id, this.currentUserEmail);
+    let dislikedPost: Post;
+    this.fService.dislikePost(dislike).subscribe({ next: data => {
+      dislikedPost = data;
+      for(let i = 0; i < this.posts.length; i++) {
+        if(this.posts[i].id == dislikedPost.id) {
+          this.posts[i] = dislikedPost;
+        }
+      }
+      this.spinner.hide();
+    },
+      error: _error => {
+        this.spinner.hide();
+      }
+    });
+  }
+
+  getLikeCount(post: Post): string {
+    return this.generalCounter(post.likes.length);
+  }
+
+  getDislikeCount(post: Post): string {
+    return this.generalCounter(post.dislikes.length);
+  }
+
+  getCommentCount(post:Post): string {
+    return this.generalCounter(post.comments.length);
+  }
+
+  generalCounter(n: number): string {
+    if(n > 1000000) {
+      return ((n) / 1000000).toFixed(0).toString() + "M";
+    } else if (n > 1000) {
+      return ((n) / 1000).toFixed(1).toString() + "K";
+    }
+    return (n).toString();
+  }
+
+  checkIfLiked(post: Post): boolean {
+    for(let l of post.likes) {
+      if(l == this.currentUserEmail) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  checkIfDisliked(post: Post): boolean {
+    for(let d of post.dislikes) {
+      if(d == this.currentUserEmail) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  post(): void {
+    this.spinner.show();
+    let el = document.getElementById('shareinput');
+    let val = "";
+    if(el != undefined) {
+      val = ((<HTMLInputElement>el).value);
+      (<HTMLInputElement>el).value = "";
+    }
+    let createPost: CreatingPost = new CreatingPost();
+    createPost.content = val;
+    createPost.creatorId = this.currentUserEmail;
+    createPost.name = this.currentUser.name;
+    createPost.tags = this.tags;
+    this.fService.createPost(createPost).subscribe({ next: _data => {
+      this.spinner.hide();
+      this.ngOnInit();
+    },
+      error: _error => {
+        this.spinner.hide();
+      }
+    });
+  }
+
+  addTag() {
+    let el = document.getElementById('tagvalue');
+    let val = "";
+    if(el != undefined) {
+      val = ((<HTMLInputElement>el).value);
+      (<HTMLInputElement>el).value = "";
+    }
+    if(this.tags.indexOf(val) < 0) {
+      this.tags.push(val);
+    }
+  }
+
+  removeTag(tag: string) {
+    let index = this.tags.findIndex( t => t == tag);
+    if (index != -1) {
+      this.tags.splice(index, 1);
+    }
+  }
 }

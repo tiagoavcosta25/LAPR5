@@ -48,6 +48,7 @@ export default class PostRepo implements IPostRepo {
       } else {
         postDocument.content = post.content.value;
         postDocument.creatorId = post.creatorId;
+        postDocument.name = post.name;
         postDocument.likes = post.likes;
         postDocument.dislikes = post.dislikes;
         postDocument.tags = post.tags;

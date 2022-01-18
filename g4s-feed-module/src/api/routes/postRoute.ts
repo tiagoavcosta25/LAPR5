@@ -19,6 +19,7 @@ export default (app: Router) => {
       body: Joi.object({
         content: Joi.string().required(),
         creatorId: Joi.string().required(),
+        name: Joi.string().required(),
         tags: Joi.array()
       })
     }),
@@ -29,7 +30,8 @@ export default (app: Router) => {
       body: Joi.object({
         id: Joi.string().required(),
         content: Joi.string().required(),
-        creatorId: Joi.string().required()
+        creatorId: Joi.string().required(),
+        name: Joi.string().required()
       }),
     }),
     (req, res, next) => ctrl.updatePost(req, res, next) );

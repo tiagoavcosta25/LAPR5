@@ -1,121 +1,120 @@
-<div *ngIf="feed==undefined; else defined">
-    
-</div>
+<div *ngIf="posts==undefined; else defined">
 
-<div *ngIf="error">
-    <div class="container">
-        <div class="row justify-content-center">
-            <h1 class="font-weight-bold my-5 mb-3 text-center">There was an error trying to obtain your feed, please try again later.</h1>
-            <p></p>
-            <div class="col-4">
-                <button class="btn back btn-primary w-100" (click)="goBack()">Go back!</button>
-            </div>
-            <div class="col-4">
-            <button class="btn back btn-primary w-100" (click)="refresh()">Try again now!</button>
-            </div>
-        </div>
-    </div>
 </div>
 
 <ng-template #defined>
-    <div class="container my-5">
-        <div *ngIf="feed.length; else noFeed">
-            <h2>Activity Feed</h2>
-            <mat-accordion class="example-headers-align">
-                <mat-expansion-panel *ngFor="let p of feed; let i = index" [expanded]="step === i" (opened)="setStep(i);clearSuccess()" (closed)="setStep(-1)" hideToggle>
-                  <mat-expansion-panel-header>
-                      <div class="up-down-sign">
-                        <div class="down-sign" *ngIf="step != i">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray" class="bi bi-arrow-down" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
-                            </svg> 
+
+      <div class="row justify-content-center mb-5 mt-5">
+         <div class="col-10">
+            <div class="share border">
+               <div class="d-flex flex-row inputs p-2 py-4 share-header">
+                <span class="userimage"><a href="/profile/{{ currentUserEmail }}"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></a></span>
+                  <input [id]="'shareinput'" type="text" class="form-control rounded-corner" placeholder="Share your thougths as {{ currentUser.name }}...">
+                  <button (click)="post()" class="btn btn-primary f-s-12 rounded-corner btn-comment" type="button">Share!</button>
+               </div>
+               <div class="d-flex flex-row inputs p-2 pb-4">
+                  <input [id]="'tagvalue'" type="text" class="form-control rounded-corner" style="width: 15vw;" placeholder="Add a tag!">
+                  <button (click)="addTag()" class="btn btn-primary f-s-12 rounded-corner btn-comment" style="margin-right: 1vw;" type="button">Add</button>
+                  <div class="col-8 mt-2">
+                     <div *ngIf="tags.length == 0; else therestags">
+                        <p style="margin-left: 5vw;">
+                           Click on the tags if you want to remove them! 😉
+                        </p>
+                     </div>
+                     
+                     <ng-template #therestags>
+                        <a class="badge bg-success" (click)="removeTag(tag)" *ngFor="let tag of tags" style="text-decoration: none;"> #{{ tag }}</a>
+                     </ng-template>
+                  </div>
+               </div>
+           </div>
+         </div>
+      </div>
+   </ng-template>
+
+      <ul class="timeline">
+    
+         <li *ngFor="let post of posts; let i = index">
+             <!-- begin timeline-time -->
+             <div class="timeline-time">
+                <span class="date" (click)="scroll('target'+i)"> {{ getDate(post.createdAt) }}</span>
+                <span class="time" (click)="scroll('target'+i)"> {{ getTime(post.createdAt) }}</span>
+             </div>
+             <!-- end timeline-time -->
+             <!-- begin timeline-icon -->
+             <div class="timeline-icon">
+                <a [id]="'target'+i" (click)="scroll('target'+i)">&nbsp;</a>
+             </div>
+             <!-- end timeline-icon -->
+             <!-- begin timeline-body -->
+             <div class="timeline-body">
+                <div class="timeline-header">
+                   <span class="userimage"><a href="/profile/{{ post.creatorId }}"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></a></span>
+                   <span class="username"><a href="/profile/{{ post.creatorId }}"> {{ post.name }}</a> <small></small></span>
+                </div>
+                <div class="timeline-content">
+                   <p>
+                      {{ post.content }}
+                   </p>
+      
+                   <p class="tags">
+                     <a class="badge bg-success" *ngFor="let tag of post.tags" style="text-decoration: none;"> #{{ tag }}</a>
+                   </p>
+                </div>
+                <div class="timeline-likes">
+                   <div class="stats-right">
+                      <span class="stats-text">{{ getCommentCount(post) }} Comments</span>
+                   </div>
+                   <div class="stats">
+                      <span class="fa-stack fa-fw stats-icon">
+                      <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                      <i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
+                      </span>
+                      <span class="stats-total">{{ getLikeCount(post) }}</span>
+      
+                      <span class="fa-stack fa-fw stats-icon">
+                      <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                      <i class="fa fa-thumbs-down fa-stack-1x fa-inverse"></i>
+                      </span>
+                      <span class="stats-total">{{ getDislikeCount(post) }}</span>
+                   </div>
+                </div>
+                <div class="timeline-footer">
+                   <a style="text-decoration: none;cursor: pointer;" (click)="likePost(post)" class="px-2 text-inverse-lighter" ><i [ngClass]="{'active-l':checkIfLiked(post)}" [id]="'likecomment'+i" class="fa fa-thumbs-up fa-fw fa-lg mr-3"></i><span [id]="'likecommenttext'+i"> Like</span></a>
+                   <a style="text-decoration: none;cursor: pointer;" (click)="dislikePost(post)" class="px-2 text-inverse-lighter"><i [ngClass]="{'active-l':checkIfDisliked(post)}" [id]="'dislikecomment'+i" class="fa fa-thumbs-down fa-fw fa-lg mr-3"></i><span [id]="'dislikecommenttext'+i"> Dislike</span></a> 
+                </div>
+                <div class="timeline-comment-box">
+                   <div class="user"><img src="https://bootdey.com/img/Content/avatar/avatar3.png"></div>
+                   <div class="input">
+                      <form action="">
+                         <div class="input-group">
+                            <input [id]="'comment'+i" type="text" class="form-control rounded-corner" placeholder="Write a comment...">
+                            <span class="input-group-btn p-l-10">
+                            <button (click)="comment('comment'+i, post)" class="btn btn-primary f-s-12 rounded-corner btn-comment" type="button">Comment</button>
+                            </span>
+                         </div>
+                      </form>
+                   </div>
+                </div>
+      
+      
+                <div *ngIf="post.comments.length > 0" class="timeline-comments">
+                   <div class="div" *ngFor="let comment of post.comments">
+                     <span class="userimage-comment"><a href="/profile/{{ comment.creatorId }}"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></a></span>
+                     <div class="alert alert-dark timeline-comments-comment" role="alert">
+                         <div class="timeline-comments-header"><span class="username"><a style="text-decoration:none;" href="/profile/{{ comment.creatorId }}"> {{ comment.name }}</a> <span style="float:right;"> {{ getDate(comment.createdAt) }}, {{ getTime(comment.createdAt) }} </span> <small></small></span>
                           </div>
-    
-                          <div class="up-sign" *ngIf="step === i">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray" class="bi bi-arrow-up" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
-                              </svg>
+                         <div class="timeline-comments-content">
+                             <p>
+                                {{ comment.content }}
+                             </p>
                           </div>
-                      </div>
-                      
-
-
-                    <mat-panel-title>
-                      {{ p.content }}
-                    </mat-panel-title>
-                  </mat-expansion-panel-header>
-
-                  
-                  <form>
-    
-                    
-    
-                    <div class="row justify-content-center" [formGroup]="postForm">
-                      <div class="col-12 my-5">
-                        <p >This post was made by {{ p.creatorId }}</p>
-                        <label class="form-label">Comment this Post:</label>
-                        <input 
-                            type="text" class="form-control">
-                      </div>
-                        <div class="col-3">
-                            <button type ="submit" class="btn back btn-primary w-100" (click)="like()" [disabled]="postForm.invalid">Like</button>
-                        </div>
-                        <div class="col-3">
-                            <button type ="submit" class="btn back btn-primary w-100" (click)="dislike()">Dislike</button>
-                        </div>
-                        <div class="col-3">
-                            <button type ="submit" class="btn back btn-primary w-100" (click)="comment()">Comment</button>
-                        </div>
-                    </div>
-                    
-
-    
-                            <div class="my-3">
-                                <div *ngIf="success!=undefined">
-                                    <div *ngIf="success">
-                                        <div class="alert alert-success" role="alert">
-                                            {{ successMessage }}
-                                        </div>
-                                    </div>
-                                    <div *ngIf="!success">
-                                        <div class="alert alert-danger" role="alert">
-                                            {{ errorMessage }}
-                                        </div>
-                                    </div>
-                                </div>
-                    </div>
-                    
-    
-                </form>
-                
-                
-
-
-                </mat-expansion-panel>              
-              </mat-accordion>
-        </div>
-            <ng-template #noFeed>
-                <h1 class="font-weight-bold my-5 mb-4 text-center">You don't have any posts on you feed.</h1>
-                <p></p>
-                <button class="btn back btn-primary w-30" (click)="goBack()">Go back!</button>
-            </ng-template>
-    </div>
-</ng-template>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<ngx-spinner></ngx-spinner>
+                     </div>
+                   </div>
+                </div>
+      
+      
+             </div>
+             <!-- end timeline-body -->
+          </li>
+       </ul>

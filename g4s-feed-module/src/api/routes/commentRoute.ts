@@ -18,6 +18,7 @@ export default (app: Router) => {
       body: Joi.object({
         postId: Joi.string().required(),
         creatorId: Joi.string().required(),
+        name: Joi.string().required(),
         content: Joi.string().required()
       })
     }),

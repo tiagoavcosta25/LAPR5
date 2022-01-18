@@ -4,6 +4,7 @@ export class Post {
     id: string;
     content: string;
     creatorId: string;
+    name: string;
     likes: string[] = [];
     dislikes: string[] = [];
     tags: string[] = [];

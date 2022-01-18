@@ -37,90 +37,107 @@
       </div>
    </ng-template>
 
-<ul class="timeline">
+   <div *ngIf="posts.length === 0; else hasPosts">
+
+      <div class="row justify-content-center">
+         <div class="col-6">
+            <div *ngIf="ownProf" class="alert alert-primary" role="alert">
+               You have no posts! What are you waiting for? Start posting!!! 😉
+             </div>
+      
+             <div *ngIf="!ownProf" class="alert alert-primary" role="alert">
+               This user has no posts! 😅
+             </div>
+         </div>
+      </div>
+   </div>
+   
+   <ng-template #hasPosts>
+      <ul class="timeline">
     
-   <li *ngFor="let post of posts; let i = index">
-       <!-- begin timeline-time -->
-       <div class="timeline-time">
-          <span class="date" (click)="scroll('target'+i)"> {{ getDate(post.createdAt) }}</span>
-          <span class="time" (click)="scroll('target'+i)"> {{ getTime(post.createdAt) }}</span>
-       </div>
-       <!-- end timeline-time -->
-       <!-- begin timeline-icon -->
-       <div class="timeline-icon">
-          <a [id]="'target'+i" (click)="scroll('target'+i)">&nbsp;</a>
-       </div>
-       <!-- end timeline-icon -->
-       <!-- begin timeline-body -->
-       <div class="timeline-body">
-          <div class="timeline-header">
-             <span class="userimage"><a href="/profile/{{ userEmail }}"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></a></span>
-             <span class="username"><a href="/profile/{{ userEmail }}"> {{ currentPlayer.name }}</a> <small></small></span>
-          </div>
-          <div class="timeline-content">
-             <p>
-                {{ post.content }}
-             </p>
-
-             <p class="tags">
-               <a class="badge bg-success" *ngFor="let tag of post.tags" style="text-decoration: none;"> #{{ tag }}</a>
-             </p>
-          </div>
-          <div class="timeline-likes">
-             <div class="stats-right">
-                <span class="stats-text">{{ getCommentCount(post) }} Comments</span>
+         <li *ngFor="let post of posts; let i = index">
+             <!-- begin timeline-time -->
+             <div class="timeline-time">
+                <span class="date" (click)="scroll('target'+i)"> {{ getDate(post.createdAt) }}</span>
+                <span class="time" (click)="scroll('target'+i)"> {{ getTime(post.createdAt) }}</span>
              </div>
-             <div class="stats">
-                <span class="fa-stack fa-fw stats-icon">
-                <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                <i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
-                </span>
-                <span class="stats-total">{{ getLikeCount(post) }}</span>
-
-                <span class="fa-stack fa-fw stats-icon">
-                <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                <i class="fa fa-thumbs-down fa-stack-1x fa-inverse"></i>
-                </span>
-                <span class="stats-total">{{ getDislikeCount(post) }}</span>
+             <!-- end timeline-time -->
+             <!-- begin timeline-icon -->
+             <div class="timeline-icon">
+                <a [id]="'target'+i" (click)="scroll('target'+i)">&nbsp;</a>
              </div>
-          </div>
-          <div class="timeline-footer">
-             <a style="text-decoration: none;cursor: pointer;" (click)="likePost(post)" class="px-2 text-inverse-lighter" ><i [ngClass]="{'active-l':checkIfLiked(post)}" [id]="'likecomment'+i" class="fa fa-thumbs-up fa-fw fa-lg mr-3"></i><span [id]="'likecommenttext'+i"> Like</span></a>
-             <a style="text-decoration: none;cursor: pointer;" (click)="dislikePost(post)" class="px-2 text-inverse-lighter"><i [ngClass]="{'active-l':checkIfDisliked(post)}" [id]="'dislikecomment'+i" class="fa fa-thumbs-down fa-fw fa-lg mr-3"></i><span [id]="'dislikecommenttext'+i"> Dislike</span></a> 
-          </div>
-          <div class="timeline-comment-box">
-             <div class="user"><img src="https://bootdey.com/img/Content/avatar/avatar3.png"></div>
-             <div class="input">
-                <form action="">
-                   <div class="input-group">
-                      <input [id]="'comment'+i" type="text" class="form-control rounded-corner" placeholder="Write a comment...">
-                      <span class="input-group-btn p-l-10">
-                      <button (click)="comment('comment'+i, post)" class="btn btn-primary f-s-12 rounded-corner btn-comment" type="button">Comment</button>
-                      </span>
+             <!-- end timeline-icon -->
+             <!-- begin timeline-body -->
+             <div class="timeline-body">
+                <div class="timeline-header">
+                   <span class="userimage"><a href="/profile/{{ post.creatorId }}"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></a></span>
+                   <span class="username"><a href="/profile/{{ post.creatorId }}"> {{ post.name }}</a> <small></small></span>
+                </div>
+                <div class="timeline-content">
+                   <p>
+                      {{ post.content }}
+                   </p>
+      
+                   <p class="tags">
+                     <a class="badge bg-success" *ngFor="let tag of post.tags" style="text-decoration: none;"> #{{ tag }}</a>
+                   </p>
+                </div>
+                <div class="timeline-likes">
+                   <div class="stats-right">
+                      <span class="stats-text">{{ getCommentCount(post) }} Comments</span>
                    </div>
-                </form>
+                   <div class="stats">
+                      <span class="fa-stack fa-fw stats-icon">
+                      <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                      <i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
+                      </span>
+                      <span class="stats-total">{{ getLikeCount(post) }}</span>
+      
+                      <span class="fa-stack fa-fw stats-icon">
+                      <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                      <i class="fa fa-thumbs-down fa-stack-1x fa-inverse"></i>
+                      </span>
+                      <span class="stats-total">{{ getDislikeCount(post) }}</span>
+                   </div>
+                </div>
+                <div class="timeline-footer">
+                   <a style="text-decoration: none;cursor: pointer;" (click)="likePost(post)" class="px-2 text-inverse-lighter" ><i [ngClass]="{'active-l':checkIfLiked(post)}" [id]="'likecomment'+i" class="fa fa-thumbs-up fa-fw fa-lg mr-3"></i><span [id]="'likecommenttext'+i"> Like</span></a>
+                   <a style="text-decoration: none;cursor: pointer;" (click)="dislikePost(post)" class="px-2 text-inverse-lighter"><i [ngClass]="{'active-l':checkIfDisliked(post)}" [id]="'dislikecomment'+i" class="fa fa-thumbs-down fa-fw fa-lg mr-3"></i><span [id]="'dislikecommenttext'+i"> Dislike</span></a> 
+                </div>
+                <div class="timeline-comment-box">
+                   <div class="user"><img src="https://bootdey.com/img/Content/avatar/avatar3.png"></div>
+                   <div class="input">
+                      <form action="">
+                         <div class="input-group">
+                            <input [id]="'comment'+i" type="text" class="form-control rounded-corner" placeholder="Write a comment...">
+                            <span class="input-group-btn p-l-10">
+                            <button (click)="comment('comment'+i, post)" class="btn btn-primary f-s-12 rounded-corner btn-comment" type="button">Comment</button>
+                            </span>
+                         </div>
+                      </form>
+                   </div>
+                </div>
+      
+      
+                <div *ngIf="post.comments.length > 0" class="timeline-comments">
+                   <div class="div" *ngFor="let comment of post.comments">
+                     <span class="userimage-comment"><a href="/profile/{{ comment.creatorId }}"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></a></span>
+                     <div class="alert alert-dark timeline-comments-comment" role="alert">
+                         <div class="timeline-comments-header"><span class="username"><a style="text-decoration:none;" href="/profile/{{ comment.creatorId }}"> {{ comment.name }}</a> <span style="float:right;"> {{ getDate(comment.createdAt) }}, {{ getTime(comment.createdAt) }} </span> <small></small></span>
+                          </div>
+                         <div class="timeline-comments-content">
+                             <p>
+                                {{ comment.content }}
+                             </p>
+                          </div>
+                     </div>
+                   </div>
+                </div>
+      
+      
              </div>
-          </div>
-
-
-          <div *ngIf="post.comments.length > 0" class="timeline-comments">
-             <div class="div" *ngFor="let comment of post.comments">
-               <span class="userimage-comment"><a href="/profile/{{ userEmail }}"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></a></span>
-               <div class="alert alert-dark timeline-comments-comment" role="alert">
-                   <div class="timeline-comments-header"><span class="username"><a style="text-decoration:none;" href="/profile/{{ userEmail }}"> {{ currentPlayer.name }}</a> <span style="float:right;"> {{ getDate(comment.createdAt) }}, {{ getTime(comment.createdAt) }} </span> <small></small></span>
-                    </div>
-                   <div class="timeline-comments-content">
-                       <p>
-                          {{ comment.content }}
-                       </p>
-                    </div>
-               </div>
-             </div>
-          </div>
-
-
-       </div>
-       <!-- end timeline-body -->
-    </li>
- </ul>
+             <!-- end timeline-body -->
+          </li>
+       </ul>
+   </ng-template>
 </ng-template>
