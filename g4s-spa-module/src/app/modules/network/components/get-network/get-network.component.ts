@@ -173,6 +173,8 @@ export class GetNetworkComponent implements OnInit {
   onCylinder : THREE.Intersection[] = [];
   labelAdded: any[] = [];
   changesActive: boolean = true;
+  currentLabel: CSS2DObject;
+  currentLabelSelected: CSS2DObject;
 
   initializeGraph(){
     this.showForm = false;
@@ -475,16 +477,16 @@ export class GetNetworkComponent implements OnInit {
         spheres.push(node.sphere);
       }
       const intersects = this.raycaster.intersectObjects( spheres );
-
+      for(let n of this.scene.children) {
+        if(n.children.length > 1) {
+          n.remove(this.currentLabel);
+        }
+      }  
       if(this.onObject.length > 0 && intersects != this.onObject) {
         for(let obj of this.onObject) {
           if(!this.objectPressed.some(x => x.object.position == obj.object.position)) {
             if(!((<THREE.Mesh>obj.object).position.x == 0 && (<THREE.Mesh>obj.object).position.y == 0)) {
               (<THREE.MeshStandardMaterial>(<THREE.Mesh>obj.object).material).color.set(0x2e86c1);
-                console.log((<THREE.Mesh>obj.object).children);
-                if((<THREE.Mesh>obj.object).children.length > 1) {
-                  (<THREE.Mesh>obj.object).remove((<THREE.Mesh>obj.object).children[1]);
-                }
             }
           }
         }
@@ -613,8 +615,11 @@ export class GetNetworkComponent implements OnInit {
             popup.position.setX( 0 );
             popup.position.setY( -30 );
             popup.position.setZ( 10 );
-            if((<THREE.Mesh>this.onObject[0].object).children.length < 2) {
+            console.log((<THREE.Mesh>this.onObject[0].object).children.length)
+            if((<THREE.Mesh>this.onObject[0].object).children.length === 1 || 
+            (<THREE.Mesh>this.onObject[0].object).children.length === 4) {
               (<THREE.Mesh>this.onObject[0].object).add(popup);
+              this.currentLabel = popup;
             }
           }
         }
