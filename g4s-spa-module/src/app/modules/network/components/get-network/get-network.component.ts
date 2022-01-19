@@ -315,7 +315,6 @@ export class GetNetworkComponent implements OnInit {
       this.createEdge(con);
     }
 
-   
     //lights
     const colorL = 0xffffff;
     const intensity = 1;
@@ -393,6 +392,112 @@ export class GetNetworkComponent implements OnInit {
 
   }
 
+  clickIntersects() {
+    if(this.onObject.length > 0) { 
+      if(!((<THREE.Mesh>this.onObject[0].object).position.x == 0 && (<THREE.Mesh>this.onObject[0].object).position.y == 0)) {
+        if(this.objectPressed.length > 0 && (<THREE.Mesh>this.onObject[0].object).position != (<THREE.Mesh>this.objectPressed[0].object).position) {
+          this.resetColor();
+
+          this.removeButtons();
+        }
+        this.objectPressed = this.onObject;
+
+        const loader = new GLTFLoader();
+        loader.load(
+          'assets/layout/network/avatar/scene.gltf',
+          ( gltf ) => {
+              // called when the resource is loaded
+              var object = gltf.scene;
+              object.scale.set(0.15, 0.15, 0.15);
+              object.position.setX(14);
+              object.position.setY(-4);
+              object.position.setZ(1);
+              (<THREE.Mesh>this.objectPressed[0].object).add(object);
+          },
+          ( xhr ) => {
+              // called while loading is progressing
+              console.log( `${( xhr.loaded / xhr.total * 100 )}% loaded` );
+          },
+          ( error ) => {
+              // called when loading has errors
+              console.error( 'An error happened', error );
+          },
+        );
+
+        const buttonStrongest = document.createElement( 'button' );
+        buttonStrongest.className = 'btn btn-secondary';
+        buttonStrongest.id = 'btn-strong';
+        buttonStrongest.addEventListener("click", () => {
+          // Algoritmo aqui
+          let player = this.checkWhichPlayerIs((<THREE.Mesh>this.objectPressed[0].object));
+          console.log("Strongest Path for player: " + player?.name + ", with email: " + player?.email + ", with id: " + player?.id);
+          this.removeButtons();
+          if(!((<THREE.Mesh>this.objectPressed[0].object).position.x == 0 && (<THREE.Mesh>this.objectPressed[0].object).position.y == 0)) {
+            this.resetColor();
+          }
+        })
+        buttonStrongest.textContent = "Strongest";
+        buttonStrongest.style.color = '0x000';
+        const buttonStrongestObject = new CSS2DObject( buttonStrongest );
+        buttonStrongestObject.position.setX( -18 );
+        buttonStrongestObject.position.setY( +7 );
+        buttonStrongestObject.position.setZ( 0 );
+        this.buttonAdded.push(buttonStrongestObject);
+
+        const buttonShortest = document.createElement( 'button' );
+        buttonShortest.className = 'btn btn-secondary';
+        buttonShortest.id = 'btn-short';
+        buttonShortest.addEventListener("click", () => {
+          // Algoritmo aqui
+          let player = this.checkWhichPlayerIs((<THREE.Mesh>this.objectPressed[0].object));
+          console.log("Shortest Path for player: " + player?.name + ", with email: " + player?.email + ", with id: " + player?.id);
+          this.removeButtons();
+          if(!((<THREE.Mesh>this.objectPressed[0].object).position.x == 0 && (<THREE.Mesh>this.objectPressed[0].object).position.y == 0)) {
+            this.resetColor();
+          }
+        })
+        buttonShortest.textContent = "Shortest";
+        buttonShortest.style.color = '0x000';
+        const buttonShortestObject = new CSS2DObject( buttonShortest );
+        buttonShortestObject.position.setX( -1 );
+        buttonShortestObject.position.setY( +7 );
+        buttonShortestObject.position.setZ( 0 );
+        this.buttonAdded.push(buttonShortestObject);
+
+        const buttonSafest = document.createElement( 'button' );
+        buttonSafest.className = 'btn btn-secondary';
+        buttonSafest.id = 'btn-safe';
+        buttonSafest.addEventListener("click", () => {
+          // Algoritmo aqui
+          let player = this.checkWhichPlayerIs((<THREE.Mesh>this.objectPressed[0].object));
+          console.log("Safest Path for player: " + player?.name + ", with email: " + player?.email + ", with id: " + player?.id);
+          this.removeButtons();
+          if(!((<THREE.Mesh>this.objectPressed[0].object).position.x == 0 && (<THREE.Mesh>this.objectPressed[0].object).position.y == 0)) {
+            this.resetColor();
+          }
+        })
+        buttonSafest.textContent = "Safest";
+        buttonSafest.style.color = '0x000';
+        const buttonSafestObject = new CSS2DObject( buttonSafest );
+        buttonSafestObject.position.setX( +14 );
+        buttonSafestObject.position.setY( +7 );
+        buttonSafestObject.position.setZ( 0 );
+        this.buttonAdded.push(buttonSafestObject);
+        
+        (<THREE.Mesh>this.objectPressed[0].object).add(buttonStrongestObject);
+        (<THREE.Mesh>this.objectPressed[0].object).add(buttonShortestObject);
+        (<THREE.Mesh>this.objectPressed[0].object).add(buttonSafestObject);
+      }
+    } else {
+      if(this.objectPressed.length > 0) {
+        if(!((<THREE.Mesh>this.objectPressed[0].object).position.x == 0 && (<THREE.Mesh>this.objectPressed[0].object).position.y == 0)) {
+          this.resetColor();
+          this.removeButtons();
+        }
+        this.objectPressed = [];
+      }
+    }
+  }
   checkIntersects() {
     let spheres = [];
       for(let node of this.nodes) {
