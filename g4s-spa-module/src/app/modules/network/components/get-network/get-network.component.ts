@@ -14,7 +14,7 @@ import { firstValueFrom } from 'rxjs';
 import { NetworkPlayer } from 'src/shared/models/connection/network-player.dto';
 import { NetworkScope } from 'src/shared/models/connection/network-scope.dto';
 import SpriteText from 'three-spritetext';
-
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 @Component({
   selector: 'app-get-network',
@@ -284,7 +284,14 @@ export class GetNetworkComponent implements OnInit {
         scopeFriend.setMesh(geometry, material);
         scopeFriend.sphere.position.x = scopex + radius * Math.cos(angle);
         scopeFriend.sphere.position.y = scopey + radius * Math.sin(angle);
-        scopeFriend.sphere.position.z = 0;
+        let connectsNumber = 0;
+        for(let s of this.scopes) {
+          if(s.player.email == scopeFriend.email) {
+            connectsNumber = s.friends.length;
+            break;
+          }
+        }
+        scopeFriend.sphere.position.z = 10 * connectsNumber;
         angle += angleIncrement;
 
 
@@ -381,7 +388,6 @@ export class GetNetworkComponent implements OnInit {
     })
 
     this.spinner.hide();
-    
     this.animate();
 
   }
@@ -395,6 +401,28 @@ export class GetNetworkComponent implements OnInit {
           this.removeButtons();
         }
         this.objectPressed = this.onObject;
+
+        const loader = new GLTFLoader();
+        loader.load(
+          'assets/layout/network/avatar/scene.gltf',
+          ( gltf ) => {
+              // called when the resource is loaded
+              var object = gltf.scene;
+              object.scale.set(0.15, 0.15, 0.15);
+              object.position.setX(14);
+              object.position.setY(-4);
+              object.position.setZ(1);
+              (<THREE.Mesh>this.objectPressed[0].object).add(object);
+          },
+          ( xhr ) => {
+              // called while loading is progressing
+              console.log( `${( xhr.loaded / xhr.total * 100 )}% loaded` );
+          },
+          ( error ) => {
+              // called when loading has errors
+              console.error( 'An error happened', error );
+          },
+        );
 
         const buttonStrongest = document.createElement( 'button' );
         buttonStrongest.className = 'btn btn-secondary';
@@ -615,9 +643,8 @@ export class GetNetworkComponent implements OnInit {
             popup.position.setX( 0 );
             popup.position.setY( -30 );
             popup.position.setZ( 10 );
-            console.log((<THREE.Mesh>this.onObject[0].object).children.length)
             if((<THREE.Mesh>this.onObject[0].object).children.length === 1 || 
-            (<THREE.Mesh>this.onObject[0].object).children.length === 4) {
+            (<THREE.Mesh>this.onObject[0].object).children.length === 5) {
               (<THREE.Mesh>this.onObject[0].object).add(popup);
               this.currentLabel = popup;
             }
@@ -715,6 +742,11 @@ export class GetNetworkComponent implements OnInit {
   removeButtons() {
     for(let button of this.buttonAdded) {
       (<THREE.Mesh>this.objectPressed[0].object).remove(button);
+      if((<THREE.Mesh>this.objectPressed[0].object).children.length > 1) {
+        for(let i = 1; i < (<THREE.Mesh>this.objectPressed[0].object).children.length; i++) {
+          (<THREE.Mesh>this.objectPressed[0].object).remove((<THREE.Mesh>this.objectPressed[0].object).children[i]);
+        }
+      }
     }
   }
 
