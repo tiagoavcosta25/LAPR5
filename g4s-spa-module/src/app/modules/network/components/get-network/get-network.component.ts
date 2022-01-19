@@ -13,6 +13,7 @@ import { NetworkConnection } from 'src/shared/models/connection/network-connecti
 import { firstValueFrom } from 'rxjs';
 import { NetworkPlayer } from 'src/shared/models/connection/network-player.dto';
 import { NetworkScope } from 'src/shared/models/connection/network-scope.dto';
+import SpriteText from 'three-spritetext';
 
 
 @Component({
@@ -70,9 +71,9 @@ export class GetNetworkComponent implements OnInit {
         for(let con of data) {
           let netCon = new NetworkConnection(con.id, con.player, con.friend, con.connectionStrength);
           let tempPlayer = await this.getPlayer(netCon.player.id);
-          netCon.player.setEmailAndName(tempPlayer.email, tempPlayer.name);
+          netCon.player.setInfo(tempPlayer);
           tempPlayer = await this.getPlayer(netCon.friend.id);
-          netCon.friend.setEmailAndName(tempPlayer.email, tempPlayer.name);
+          netCon.friend.setInfo(tempPlayer);
           this.connections.push(netCon);
         }
         this.getScopes();
@@ -173,7 +174,6 @@ export class GetNetworkComponent implements OnInit {
   labelAdded: any[] = [];
   changesActive: boolean = true;
 
-
   initializeGraph(){
     this.showForm = false;
     this.showGraph = true;
@@ -247,15 +247,14 @@ export class GetNetworkComponent implements OnInit {
         scope.player.sphere.position.y = 0;
         scope.player.sphere.position.z = 0;
 
-        const div = document.createElement( 'div' );
-        div.className = 'label';
-        div.textContent = scope.player.name;
-        div.style.color = '0x000';
-        const playerLabel = new CSS2DObject( div );
-        playerLabel.position.setX( 0 );
-        playerLabel.position.setY( -7 );
-        playerLabel.position.setZ( 0 );
-        scope.player.sphere.add( playerLabel );
+        var myText = new SpriteText(scope.player.name);
+        myText.color = "0x00000";
+        myText.textHeight = 3;
+        myText.position.setY(-5); 
+        myText.fontSize = 50;
+        myText.fontWeight = "500";
+        myText.material.depthTest = false;
+        scope.player.sphere.add(myText);
 
         this.nodes.push(scope.player);
         this.scene.add(scope.player.sphere);
@@ -271,7 +270,6 @@ export class GetNetworkComponent implements OnInit {
           if(scope.player.email == s.friends[i].email ) {
             if(s.friends.length != 1) {
               angle = s.firstAngle + (s.angle * i) - Math.PI + angleIncrement / 2;
-              console.log(s.firstAngle);
             } 
               scope.firstAngle = angle;
             break;
@@ -287,15 +285,16 @@ export class GetNetworkComponent implements OnInit {
         scopeFriend.sphere.position.z = 0;
         angle += angleIncrement;
 
-        const div = document.createElement( 'div' );
-        div.className = 'label';
-        div.textContent = scopeFriend.name;
-        div.style.color = '0x000';
-        const playerLabel = new CSS2DObject( div );
-        playerLabel.position.setX( 0 );
-        playerLabel.position.setY( -5 );
-        playerLabel.position.setZ( 0 );
-        scopeFriend.sphere.add( playerLabel );
+
+        var myText = new SpriteText(scopeFriend.name);
+        myText.color = "0x00000";
+        myText.textHeight = 3;
+        myText.position.setY(-5); 
+        myText.fontSize = 50;
+        myText.fontWeight = "500";
+        myText.material.depthTest = false;
+        scopeFriend.sphere.add(myText);
+
 
         this.nodes.push(scopeFriend);
         this.scene.add(scopeFriend.sphere);
@@ -332,6 +331,7 @@ export class GetNetworkComponent implements OnInit {
     this.scene.add(this.camera);
 
     const positionIncrement = 2;
+
     window.addEventListener('keydown', event => {
         switch (event.key) {
           case 'w': this.camera.translateZ(-positionIncrement); break;
@@ -393,9 +393,10 @@ export class GetNetworkComponent implements OnInit {
           this.removeButtons();
         }
         this.objectPressed = this.onObject;
-        
+
         const buttonStrongest = document.createElement( 'button' );
         buttonStrongest.className = 'btn btn-secondary';
+        buttonStrongest.id = 'btn-strong';
         buttonStrongest.addEventListener("click", () => {
           // Algoritmo aqui
           let player = this.checkWhichPlayerIs((<THREE.Mesh>this.objectPressed[0].object));
@@ -415,6 +416,7 @@ export class GetNetworkComponent implements OnInit {
 
         const buttonShortest = document.createElement( 'button' );
         buttonShortest.className = 'btn btn-secondary';
+        buttonShortest.id = 'btn-short';
         buttonShortest.addEventListener("click", () => {
           // Algoritmo aqui
           let player = this.checkWhichPlayerIs((<THREE.Mesh>this.objectPressed[0].object));
@@ -434,6 +436,7 @@ export class GetNetworkComponent implements OnInit {
 
         const buttonSafest = document.createElement( 'button' );
         buttonSafest.className = 'btn btn-secondary';
+        buttonSafest.id = 'btn-safe';
         buttonSafest.addEventListener("click", () => {
           // Algoritmo aqui
           let player = this.checkWhichPlayerIs((<THREE.Mesh>this.objectPressed[0].object));
@@ -454,8 +457,6 @@ export class GetNetworkComponent implements OnInit {
         (<THREE.Mesh>this.objectPressed[0].object).add(buttonStrongestObject);
         (<THREE.Mesh>this.objectPressed[0].object).add(buttonShortestObject);
         (<THREE.Mesh>this.objectPressed[0].object).add(buttonSafestObject);
-
-
       }
     } else {
       if(this.objectPressed.length > 0) {
@@ -480,6 +481,10 @@ export class GetNetworkComponent implements OnInit {
           if(!this.objectPressed.some(x => x.object.position == obj.object.position)) {
             if(!((<THREE.Mesh>obj.object).position.x == 0 && (<THREE.Mesh>obj.object).position.y == 0)) {
               (<THREE.MeshStandardMaterial>(<THREE.Mesh>obj.object).material).color.set(0x2e86c1);
+                console.log((<THREE.Mesh>obj.object).children);
+                if((<THREE.Mesh>obj.object).children.length > 1) {
+                  (<THREE.Mesh>obj.object).remove((<THREE.Mesh>obj.object).children[1]);
+                }
             }
           }
         }
@@ -489,6 +494,129 @@ export class GetNetworkComponent implements OnInit {
       for(let inter of intersects) {
         if(!((<THREE.Mesh>inter.object).position.x == 0 && (<THREE.Mesh>inter.object).position.y == 0)) {
           (<THREE.MeshStandardMaterial>(<THREE.Mesh>inter.object).material).color.set(0xff0000);
+          
+          
+          let player = this.checkWhichPlayerIs((<THREE.Mesh>inter.object));
+
+          if(player != null) {
+            const divcard = document.createElement( 'div' );
+            divcard.className = "card";
+            divcard.style.width = "18rem";
+
+            const divcardbody = document.createElement( 'div' );
+            divcardbody.className = "card-body";
+            
+            const row = document.createElement( 'div' );
+            row.className = "row";
+
+            //Image stuff
+            const colimg = document.createElement( 'div' );
+            colimg.className = "col-2";
+
+            const spanuserimage = document.createElement( 'span' );
+            spanuserimage.className = "userimage";
+            spanuserimage.style.float = "left";
+            spanuserimage.style.width = "34px";
+            spanuserimage.style.height = "34px";
+            spanuserimage.style.borderRadius = "40px";
+            spanuserimage.style.overflow = "hidden";
+            spanuserimage.style.margin= "-2px 10px -2px 0";
+            spanuserimage.style.width= "34px";
+            
+            const img = document.createElement( 'img' );
+            img.src = "https://bootdey.com/img/Content/avatar/avatar3.png";
+            img.style.maxWidth = "100%";
+            img.style.display = "block";
+            
+            //Name stuff
+            const colname = document.createElement( 'div' );
+            colname.className = "col-10";
+
+            const playername = document.createElement( 'h4' );
+            playername.textContent = player.name;
+            playername.style.marginTop = "3px";
+
+            //Email stuff
+
+            const colemail = document.createElement( 'div' );
+            colemail.className = "col-12";
+
+            const playeremail = document.createElement( 'h4' );
+            playeremail.textContent = "Email: " + player.email;
+
+            //Birthday stuff
+
+            const colbd = document.createElement( 'div' );
+            colbd.className = "col-12";
+
+            const playerbd = document.createElement( 'h4' );
+            playerbd.textContent = "Birthday: " + player.dateOfBirth;
+
+            //Phone number
+
+            const colpn = document.createElement( 'div' );
+            colpn.className = "col-12";
+
+            const playerpn = document.createElement( 'h4' );
+            playerpn.textContent = "Phone number: " + player.phoneNumber;
+
+            //Tags
+
+            const coltag = document.createElement( 'div' );
+            coltag.className = "col-12";
+
+            const tagText = document.createElement( 'h4' );
+            tagText.textContent = "Tags: ";
+
+            coltag.appendChild(tagText);
+
+            //Tags Content
+
+            const coltagcontent = document.createElement( 'div' );
+            coltagcontent.className = "col-12";
+
+            for(let t of player.tags) {
+              const playertag = document.createElement( 'a' );
+              playertag.className = "badge bg-success";
+              playertag.style.textDecoration = "none";
+              playertag.textContent = t;
+
+              coltagcontent.appendChild(playertag);
+            }
+
+            //Appends
+
+            spanuserimage.appendChild(img);
+            colimg.appendChild(spanuserimage);
+
+            colname.appendChild(playername);
+
+            colemail.appendChild(playeremail);
+
+            colbd.appendChild(playerbd);
+
+            colpn.appendChild(playerpn);
+
+            row.appendChild(colimg);
+            row.appendChild(colname);
+            row.appendChild(colemail);
+            row.appendChild(colbd);
+            row.appendChild(colpn);
+            row.appendChild(coltag);
+            row.appendChild(coltagcontent);
+
+            divcardbody.appendChild(row);
+
+            divcard.appendChild(divcardbody);
+
+            const popup = new CSS2DObject( divcard );
+            popup.position.setX( 0 );
+            popup.position.setY( -30 );
+            popup.position.setZ( 10 );
+            if((<THREE.Mesh>this.onObject[0].object).children.length < 2) {
+              (<THREE.Mesh>this.onObject[0].object).add(popup);
+            }
+          }
         }
       }
   }
@@ -635,9 +763,8 @@ export class GetNetworkComponent implements OnInit {
     // required if controls.enableDamping or controls.autoRotate are set to true
     this.controls.update();
     this.controlsMiniMap.update();
-
-    this.renderer.render( this.scene, this.camera );
     this.labelRenderer.render( this.scene, this.camera );
+    this.renderer.render( this.scene, this.camera );
     this.renderMiniMap();
   }
 

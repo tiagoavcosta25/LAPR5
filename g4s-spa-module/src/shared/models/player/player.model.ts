@@ -5,6 +5,7 @@ export class Player {
     year: number;
     month: number;
     day: number;
+    dateOfBirth: Date;
     phoneNumber: number;
     emotionalStatus: string;
     facebook: string;
