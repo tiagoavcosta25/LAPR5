@@ -316,6 +316,82 @@ export class GetNetworkComponent implements OnInit {
     }
 
    
+    //lights
+    const colorL = 0xffffff;
+    const intensity = 1;
+    const lightA = new THREE.AmbientLight(colorL, intensity);
+    this.scene.add(lightA);
+
+    const lightP1 = new THREE.PointLight(0xffffff, 0.5);
+    lightP1.position.set(-500, 500, 50);
+    this.scene.add(lightP1);
+
+    const lightP2 = new THREE.PointLight(0xffffff, 0.5);
+    lightP2.position.set(500, -500, 50);
+    this.scene.add(lightP2);
+
+    const colorSL = 0xffffff;
+    const intensitySL = 1;
+    const lightSL = new THREE.SpotLight(colorSL, intensitySL);
+    lightSL.target = this.camera;
+    lightSL.angle = THREE.MathUtils.degToRad(1);
+    lightSL.penumbra = 0.4;
+    lightSL.position.z = 140;
+    this.camera.add(lightSL);
+    this.scene.add(this.camera);
+
+    const positionIncrement = 2;
+
+    window.addEventListener('keydown', event => {
+        switch (event.key) {
+          case 'w': this.camera.translateZ(-positionIncrement); break;
+          case 's': this.camera.translateZ(positionIncrement); break;
+          case 'd': this.camera.translateX(positionIncrement); break;
+          case 'a': this.camera.translateX(-positionIncrement); break;
+          case 'p': this.camera.position.y += positionIncrement; break;
+          case 'l': this.camera.position.y -= positionIncrement; break;
+          default:
+        }
+    });
+
+    window.addEventListener('resize', () => {
+      this.camera.aspect = window.innerWidth / window.innerHeight;
+      this.camera.updateProjectionMatrix();
+      this.renderer.setSize(window.innerWidth, window.innerHeight-70);
+      this.labelRenderer.setSize(window.innerWidth, window.innerHeight-70);
+    })
+
+    this.renderer.domElement.addEventListener('mousemove', event => {
+      this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      this.mouse.y = - ( (event.clientY - 70 ) / (window.innerHeight - 70) ) * 2 + 1;
+
+      this.raycaster.setFromCamera(this.mouse, this.camera);
+      
+      if(this.changesActive) {
+        this.checkIntersects();
+        this.checkIntersectsConnections(); 
+      }
+      this.checkMouseInMinimap(event);
+    });
+
+
+    this.renderer.domElement.addEventListener('click', event => {
+      this.clickIntersects();
+    });
+
+    this.renderer.domElement.addEventListener('auxclick', event => {
+      if(event.button == 1) {
+        if(this.onObject.length > 0) {
+          let player = this.checkWhichPlayerIs((<THREE.Mesh>this.onObject[0].object));
+          this.router.navigate(['/profile', player?.email]);
+        }
+      }
+    })
+
+    this.spinner.hide();
+    this.animate();
+
+  }
 
   checkIntersects() {
     let spheres = [];
