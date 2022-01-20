@@ -9,7 +9,7 @@ node(6,michelle,[movies]).
 
 
 
-connection(1,2,10,8,50,0).
+connection(2,1,10,8,50,0).
 connection(2,4,2,6,100,12).
 connection(2,5,19,-19,12,19).
 connection(2,6,4,0,25,24).
@@ -64,16 +64,26 @@ shortest_allDfs(Player1, Player2, PathList):- get_time(T1),
     T is T2-T1,write(T),write(' seconds'),nl,
     write('Possible Path List: '),write(PathList),nl,nl.
 
-shortest_dfs(N, Orig, Dest, Path):- shortest_dfsAux(0, N, Orig, Dest, [Orig], Path).
+shortest_dfs(Mode, N, Orig, Dest, Strength, Path):- shortest_dfsAux(Mode, 0, N, Orig, Dest, [Orig], Strength, Path),!.
 
-shortest_dfsAux(_, _, Dest, Dest, LA, Path):- !, reverse(LA, Path).
-shortest_dfsAux(M, N, _, _, _, _):- M >= N, !, false.
-shortest_dfsAux(M, N, Current, Dest, LA, Path):-
-    (connection(Current, X, _, _, _, _);
-    connection(X, Current, _, _, _, _)),
+shortest_dfsAux(_, _, _, Dest, Dest, LA, 0, Path):- !, reverse(LA, Path).
+shortest_dfsAux(_, M, N, _, _, _, _, _):- M >= N, !, false.
+shortest_dfsAux(0, M, N, Current, Dest, LA, Strength, Path):-
+    (connection(Current, X, StrengthA, _, _, _);
+    connection(X, Current, _, StrengthA, _, _)),
     \+ member(X,LA),
     M1 is M + 1,
-    shortest_dfsAux(M1, N, X,Dest,[X|LA],Path).
+    shortest_dfsAux(0, M1, N, X,Dest,[X|LA], Strength1, Path),
+	Strength is Strength1 + StrengthA.
+	
+shortest_dfsAux(1, M, N, Current, Dest, LA, Strength, Path):-
+    (connection(Current, X, StrengthA, _, RelA, _);
+    connection(X, Current, _, StrengthA, _, RelA)),
+    \+ member(X,LA),
+    M1 is M + 1,
+    shortest_dfsAux(1, M1, N, X,Dest,[X|LA], Strength1, Path),
+	getMulticriteria(StrengthA, RelA, FinalStrength),
+	Strength is Strength1 + FinalStrength.
 
 
 shortest_route(Orig, Dest, ShortestPathList):-
