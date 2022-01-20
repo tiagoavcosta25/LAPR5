@@ -60,7 +60,7 @@ namespace DDDNetCore.Tests.Services
             "middle_target_message", "introduction_pending", "12312322-4444-5555-6666-777888999002",
             "middle_target_message", "middle_target_message", 1, new List<string>{"tag1"});
 
-            Player player = new Player("john", "test@email.com", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            Player player = new Player("john", "test@email.com", "123", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
 
             List<IntroductionRequest> lst = new List<IntroductionRequest>{obj};
@@ -100,11 +100,11 @@ namespace DDDNetCore.Tests.Services
         public async Task AddIntAsync_ReturnsAIntroductionDto_WithIntroductionData()
         {
             // Arrange
-            Player p = new Player("john", "test@email.com", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            Player p = new Player("john", "test@email.com", "123", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
-            Player p2 = new Player("john", "test@email.com", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            Player p2 = new Player("john", "test@email.com", "123", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
-            Player p3 = new Player("john", "test@email.com", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            Player p3 = new Player("john", "test@email.com", "123", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
 
             CreatingIntroductionRequestDto dto = new CreatingIntroductionRequestDto( 

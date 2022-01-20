@@ -18,13 +18,13 @@ namespace DDDNetCore.Tests.Services
         public async Task GetReachablePlayers_ReturnsPlayersList()
         {
             // Arrange
-            Player plyr = new Player("john", "test@email.com", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            Player plyr = new Player("john", "test@email.com", "123", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
-            Player plyr2 = new Player("john2", "test2@email.com", "1232", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            Player plyr2 = new Player("john2", "test2@email.com", "1232", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag2"});
-            Player plyr3 = new Player("john3", "test3@email.com", "1233", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            Player plyr3 = new Player("john3", "test3@email.com", "1233", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag3"});
-            PlayerDto dto2 = new PlayerDto(new System.Guid(), "john3", "test3@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            PlayerDto dto2 = new PlayerDto(new System.Guid(), "john3", "test3@email.com", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag3"});
             string playerEmail = "test2@email.com";
             List<PlayerId> lstId = new List<PlayerId>{plyr2.Id};
@@ -63,14 +63,14 @@ namespace DDDNetCore.Tests.Services
         public async Task GetMutualFriends_ReturnsPlayersList()
         {
             // Arrange
-            Player plyr = new Player("john", "test@email.com", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            Player plyr = new Player("john", "test@email.com", "123", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
-            Player plyr2 = new Player("john2", "test2@email.com", "1232", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            Player plyr2 = new Player("john2", "test2@email.com", "1232", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag2"});
-            Player plyr3 = new Player("john3", "test3@email.com", "1233", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            Player plyr3 = new Player("john3", "test3@email.com", "1233", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag3"});
             GetMutualFriendsDto dto = new GetMutualFriendsDto(plyr3.Email.address.ToString());
-            PlayerDto dto2 = new PlayerDto(plyr2.Id.AsGuid(), "john", "test2@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            PlayerDto dto2 = new PlayerDto(plyr2.Id.AsGuid(), "john", "test2@email.com", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag3"});
             List<PlayerId> lstId = new List<PlayerId>{plyr2.Id};
             List<Player> lst = new List<Player>{plyr2};
@@ -106,11 +106,11 @@ namespace DDDNetCore.Tests.Services
         public async Task GetNetwork_ReturnsConnectionList()
         {
             // Arrange
-            Player plyr = new Player("john", "test@email.com", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            Player plyr = new Player("john", "test@email.com", "123", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
-            Player plyr2 = new Player("john2", "test2@email.com", "1232", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            Player plyr2 = new Player("john2", "test2@email.com", "1232", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag2"});
-            Player plyr3 = new Player("john3", "test3@email.com", "1233", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            Player plyr3 = new Player("john3", "test3@email.com", "1233", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag3"});
             GetNetworkDto dto = new GetNetworkDto(2);
             Connection con = new Connection(plyr.Id.AsString(), plyr2.Id.AsString(), 1, new List<string>{"tag1"});
@@ -154,9 +154,9 @@ namespace DDDNetCore.Tests.Services
         public async Task AddAsync_ReturnsAConnectionDto_WithConnectionData()
         {
             // Arrange
-            Player p = new Player("john", "test@email.com", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            Player p = new Player("john", "test@email.com", "123", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
-            Player p2 = new Player("john", "test@email.com", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            Player p2 = new Player("john", "test@email.com", "123", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
             
 

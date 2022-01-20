@@ -16,11 +16,11 @@ namespace DDDNetCore.Tests.Services
         public async Task AddAsync_ReturnsAPlayerDto_WithPlayerData()
         {
             // Arrange
-            CreatingPlayerDto dto = new CreatingPlayerDto("john", "test@email.com", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            CreatingPlayerDto dto = new CreatingPlayerDto("john", "test@email.com", "123", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
-            Player obj = new Player("john", "test@email.com", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            Player obj = new Player("john", "test@email.com", "123", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
-            PlayerDto dto2 = new PlayerDto(new System.Guid(), "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            PlayerDto dto2 = new PlayerDto(new System.Guid(), "john", "test@email.com", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
 
             var mockRepo = new Mock<IPlayerRepository>();
@@ -43,11 +43,11 @@ namespace DDDNetCore.Tests.Services
         {
             // Arrange
             System.Guid id = new System.Guid();
-            UpdatePlayerDto dto = new UpdatePlayerDto(id, "mary", "test2@email.com", "321", "911222333", 2000, 2, 19, "distressed", "www.facebook.com/john-doe2", 
+            UpdatePlayerDto dto = new UpdatePlayerDto(id, "mary", "test2@email.com", "321", "www.image.com", "911222333", 2000, 2, 19, "distressed", "www.facebook.com/john-doe2", 
             "www.linkedin.com/john-doe2", new List<string>{"tag2"});
-            Player obj = new Player("john", "test@email.com", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            Player obj = new Player("john", "test@email.com", "123", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
-            PlayerDto dto2 = new PlayerDto(id, "mary", "test2@email.com", "911222333", 2000, 2, 19, "distressed", "www.facebook.com/john-doe2", 
+            PlayerDto dto2 = new PlayerDto(id, "mary", "test2@email.com", "www.image.com", "911222333", 2000, 2, 19, "distressed", "www.facebook.com/john-doe2", 
             "www.linkedin.com/john-doe2", new List<string>{"tag2"});
 
             var mockRepo = new Mock<IPlayerRepository>();
