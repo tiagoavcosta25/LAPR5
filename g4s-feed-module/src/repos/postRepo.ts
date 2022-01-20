@@ -107,4 +107,16 @@ export default class PostRepo implements IPostRepo {
     else
       return 0;
   }
+
+  public async countADislikesOnBPosts (emailA: string, emailB: string): Promise<number> {
+    const query = { creatorId: emailB.toString(),
+                    dislikes: emailA};
+    const count = await this.postSchema.count( query );
+
+    if( count != null) {
+      return count;
+    }
+    else
+      return 0;
+  }
 }

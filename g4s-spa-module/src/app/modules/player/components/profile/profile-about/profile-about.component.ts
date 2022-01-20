@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ConnectionService } from 'src/app/modules/connection/services/connection.service';
+import { FeedService } from 'src/app/modules/feed/services/feed.service';
 import { DobPlayer } from '../../../models/dob-player.model copy';
 import { PlayerService } from '../../../services/player.service';
 
@@ -22,17 +23,38 @@ export class ProfileAboutComponent implements OnInit {
 
   networkStrength: number;
 
+  currentPlayer: string;
+
+  dcalcValue: number;
+
   constructor(private activatedRoute: ActivatedRoute,
     private pService: PlayerService,
     private cService: ConnectionService,
+    private fService: FeedService,
     private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
+    this.currentPlayer = localStorage.getItem("currentPlayer")!;
     this.activatedRoute.params.subscribe(params => {
       this.userEmail = params['email'];
       this.getPlayer();
       this.getNetworkFirstLevel();
+      this.getDCalc();
     })
+  }
+
+  getDCalc(): void {
+    this.spinner.show();
+    this.fService.dCalc(this.currentPlayer, this.userEmail).subscribe({ next: data => {
+      console.log(this.currentPlayer, this.userEmail);
+      this.dcalcValue = data.dCalc;
+      console.log(this.dcalcValue);
+      this.spinner.hide();
+    },
+      error: _error => {
+        this.spinner.hide();
+      }
+    });
   }
 
   getPlayer(): void {

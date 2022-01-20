@@ -70,7 +70,6 @@ export class GetFeedComponent implements OnInit, OnDestroy {
       this.obs.push(ob);
       forkJoin(this.obs).subscribe(results => {
         let tempPosts = [];
-        console.log(results.length);
         for(let pList of results) {
           for(let p of pList) {
             tempPosts.push(p);
@@ -148,6 +147,9 @@ export class GetFeedComponent implements OnInit, OnDestroy {
       val = ((<HTMLInputElement>el).value);
       (<HTMLInputElement>el).value = "";
     }
+    if(val == "") {
+      return;
+    }
     this.spinner.show();
     let createComment: CreateComment = new CreateComment(post.id, this.currentUserEmail, this.currentUser.name, val);
     let commentedPost: Post;
@@ -167,41 +169,63 @@ export class GetFeedComponent implements OnInit, OnDestroy {
   }
 
   likePost(post: Post): void {
-    this.spinner.show();
     let like: PlayerLike = new PlayerLike(post.id, this.currentUserEmail);
     let likedPost: Post;
-    this.fService.likePost(like).subscribe({ next: data => {
-      likedPost = data;
-      for(let i = 0; i < this.posts.length; i++) {
-        if(this.posts[i].id == likedPost.id) {
-          this.posts[i] = likedPost;
+    if(post.likes.some(x => x == this.currentUserEmail)) {
+      this.fService.unlikePost(like).subscribe({ next: data => {
+        likedPost = data;
+        for(let i = 0; i < this.posts.length; i++) {
+          if(this.posts[i].id == likedPost.id) {
+            this.posts[i] = likedPost;
+          }
         }
-      }
-      this.spinner.hide();
-    },
-      error: _error => {
-        this.spinner.hide();
-      }
-    });
+      },
+        error: _error => {
+        }
+      });
+    } else {
+      this.fService.likePost(like).subscribe({ next: data => {
+        likedPost = data;
+        for(let i = 0; i < this.posts.length; i++) {
+          if(this.posts[i].id == likedPost.id) {
+            this.posts[i] = likedPost;
+          }
+        }
+      },
+        error: _error => {
+        }
+      });
+    }
   }
 
   dislikePost(post: Post): void {
-    this.spinner.show();
     let dislike: PlayerLike = new PlayerLike(post.id, this.currentUserEmail);
     let dislikedPost: Post;
-    this.fService.dislikePost(dislike).subscribe({ next: data => {
-      dislikedPost = data;
-      for(let i = 0; i < this.posts.length; i++) {
-        if(this.posts[i].id == dislikedPost.id) {
-          this.posts[i] = dislikedPost;
+    if(post.dislikes.some(x => x == this.currentUserEmail)) {
+      this.fService.undislikePost(dislike).subscribe({ next: data => {
+        dislikedPost = data;
+        for(let i = 0; i < this.posts.length; i++) {
+          if(this.posts[i].id == dislikedPost.id) {
+            this.posts[i] = dislikedPost;
+          }
         }
-      }
-      this.spinner.hide();
-    },
-      error: _error => {
-        this.spinner.hide();
-      }
-    });
+      },
+        error: _error => {
+        }
+      });
+    } else {
+      this.fService.dislikePost(dislike).subscribe({ next: data => {
+        dislikedPost = data;
+        for(let i = 0; i < this.posts.length; i++) {
+          if(this.posts[i].id == dislikedPost.id) {
+            this.posts[i] = dislikedPost;
+          }
+        }
+      },
+        error: _error => {
+        }
+      });
+    }
   }
 
   getLikeCount(post: Post): string {

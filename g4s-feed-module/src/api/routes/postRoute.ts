@@ -45,6 +45,15 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.likePost(req, res, next) );
 
+  route.patch('/unlike',
+    celebrate({
+      body: Joi.object({
+        postId: Joi.string().required(),
+        playerId: Joi.string().required()
+      }),
+    }),
+    (req, res, next) => ctrl.unlikePost(req, res, next) );
+
   route.patch('/dislike',
     celebrate({
       body: Joi.object({
@@ -54,9 +63,19 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.dislikePost(req, res, next) );
 
+  route.patch('/undislike',
+    celebrate({
+      body: Joi.object({
+        postId: Joi.string().required(),
+        playerId: Joi.string().required()
+      }),
+    }),
+    (req, res, next) => ctrl.undislikePost(req, res, next) );
+
   route.get('/:creatorId',
     (req, res, next) => ctrl.getPostsByUser(req, res, next) );
 
-  route.get('/dcalc?=:emailA&:emailB',
-    (req, res, next) => ctrl.getPostsByUser(req, res, next) );
+  //how many emailA likes are on emailB posts
+  route.get('/dcalc/:emailA/:emailB',
+    (req, res, next) => ctrl.getDCalc(req, res, next) );
 };

@@ -8,7 +8,10 @@ export default interface IPostController  {
   deleteComment(req: Request, res: Response, next: NextFunction);
 
   likePost(req: Request, res: Response, next: NextFunction);
+  unlikePost(req: Request, res: Response, next: NextFunction);
+
   dislikePost(req: Request, res: Response, next: NextFunction);
+  undislikePost(req: Request, res: Response, next: NextFunction);
 
   getPostsByUser(req: Request, res: Response, next: NextFunction);
   getDCalc(req: Request, res: Response, next: NextFunction);
