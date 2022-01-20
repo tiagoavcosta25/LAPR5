@@ -334,3 +334,10 @@
     margin-left: 9px;
     margin-top: 18px;
 }
+
+
+element {
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+    overflow-y: scroll; 
+}

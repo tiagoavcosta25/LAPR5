@@ -1,9 +1,8 @@
 <div *ngIf="posts==undefined; else defined">
-
 </div>
 
 <ng-template #defined>
-
+   <div class="container">
       <div class="row justify-content-center mb-5 mt-5">
          <div class="col-10">
             <div class="share border">
@@ -135,4 +134,8 @@
           </li>
        </ul>
    </ng-template>
+   </div>
+      
 </ng-template>
+
+<ngx-spinner></ngx-spinner>
