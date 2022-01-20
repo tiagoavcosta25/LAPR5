@@ -129,10 +129,10 @@ namespace DDDNetCore.Domain.Connections
             {
                 var fr = await _repoPl.GetByIdAsync(new PlayerId(con.Friend));
 
-                var pDto = new PlayerDto(pl.Id.AsGuid(), pl.Name.name, pl.Email.address, pl.PhoneNumber.phoneNumber, pl.DateOfBirth.date.Year, 
+                var pDto = new PlayerDto(pl.Id.AsGuid(), pl.Name.name, pl.Email.address, pl.Avatar.url, pl.PhoneNumber.phoneNumber, pl.DateOfBirth.date.Year, 
                     pl.DateOfBirth.date.Month, pl.DateOfBirth.date.Day, pl.EmotionalStatus.Status.ToString(), pl.Facebook.Url, pl.LinkedIn.Url, pl.Tags.Select(t => t.tagName).ToList());
 
-                var frDto = new PlayerDto(fr.Id.AsGuid(), fr.Name.name, fr.Email.address, fr.PhoneNumber.phoneNumber, fr.DateOfBirth.date.Year,
+                var frDto = new PlayerDto(fr.Id.AsGuid(), fr.Name.name, fr.Email.address, fr.Avatar.url, fr.PhoneNumber.phoneNumber, fr.DateOfBirth.date.Year,
                     fr.DateOfBirth.date.Month, fr.DateOfBirth.date.Day, fr.EmotionalStatus.Status.ToString(), fr.Facebook.Url, fr.LinkedIn.Url, fr.Tags.Select(t => t.tagName).ToList());
 
                 finalListDto.Add(new GettingConnectionDto(con.Id.ToString(), pDto, frDto, con.ConnectionStrength, con.Tags));
@@ -194,7 +194,7 @@ namespace DDDNetCore.Domain.Connections
             reachableUsersList.AddRange(await _repoPl.GetByIdsAsync(lstTotal));
 
             return reachableUsersList.ConvertAll<PlayerDto>(plyr =>
-                new PlayerDto(plyr.Id.AsGuid(),plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, 
+                new PlayerDto(plyr.Id.AsGuid(),plyr.Name.name, plyr.Email.address, plyr.Avatar.url, plyr.PhoneNumber.phoneNumber, 
                 plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, plyr.DateOfBirth.date.Day, plyr.EmotionalStatus.Status.ToString(), 
                 plyr.Facebook.Url, plyr.LinkedIn.Url, plyr.Tags.Select(t => t.tagName).ToList()));
         }
@@ -209,7 +209,7 @@ namespace DDDNetCore.Domain.Connections
             var mutualfriendsList = await _repoPl.GetByIdsAsync(lst);
 
             return mutualfriendsList.ConvertAll<PlayerDto>(plyr =>
-                new PlayerDto(plyr.Id.AsGuid(),plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, 
+                new PlayerDto(plyr.Id.AsGuid(),plyr.Name.name, plyr.Email.address, plyr.Avatar.url, plyr.PhoneNumber.phoneNumber, 
                 plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, plyr.DateOfBirth.date.Day, plyr.EmotionalStatus.Status.ToString(), 
                 plyr.Facebook.Url, plyr.LinkedIn.Url, plyr.Tags.Select(t => t.tagName).ToList()));
 
