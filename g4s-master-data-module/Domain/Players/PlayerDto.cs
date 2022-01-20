@@ -8,6 +8,7 @@ namespace DDDSample1.Domain.Players
         public Guid Id { get; set; }
         public string Email { get;  set; }
         public string Name { get;  set; }
+        public string Avatar { get;  set; }
         public string PhoneNumber { get;  set; }
         public DateTime DateOfBirth { get;  set; }
         public string EmotionalStatus { get;  private set; }
@@ -15,12 +16,13 @@ namespace DDDSample1.Domain.Players
         public string LinkedIn { get;  private set; }
         public ICollection<string> Tags { get; set; }
 
-        public PlayerDto(Guid Id, string name, string email, string phoneNumber, int year, int month, int day, string emotionalStatus, string facebook, 
+        public PlayerDto(Guid Id, string name, string email, string avatar, string phoneNumber, int year, int month, int day, string emotionalStatus, string facebook, 
         string linkedin, ICollection<string> tags)
         {
             this.Id = Id;
             this.Name = name;
             this.Email = email;
+            this.Avatar = avatar;
             this.PhoneNumber = phoneNumber;
             this.DateOfBirth = new DateTime(year, month, day);
             this.EmotionalStatus = emotionalStatus;
