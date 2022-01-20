@@ -26,7 +26,7 @@ namespace DDDSample1.Domain.Players
             var list = await this._repo.GetAllAsync();
             
             List<PlayerDto> listDto = list.ConvertAll<PlayerDto>(plyr => 
-                new PlayerDto(plyr.Id.AsGuid(),plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, plyr.DateOfBirth.date.Year, 
+                new PlayerDto(plyr.Id.AsGuid(),plyr.Name.name, plyr.Email.address, plyr.Avatar.url, plyr.PhoneNumber.phoneNumber, plyr.DateOfBirth.date.Year, 
                 plyr.DateOfBirth.date.Month, plyr.DateOfBirth.date.Day, plyr.EmotionalStatus.Status.ToString(), plyr.Facebook.Url, plyr.LinkedIn.Url,
                 plyr.Tags.Select(t => t.tagName).ToList()));
 
@@ -40,14 +40,14 @@ namespace DDDSample1.Domain.Players
             if(plyr == null)
                 return null;
 
-            return new PlayerDto(plyr.Id.AsGuid(),plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, plyr.DateOfBirth.date.Year, 
+            return new PlayerDto(plyr.Id.AsGuid(),plyr.Name.name, plyr.Email.address, plyr.Avatar.url, plyr.PhoneNumber.phoneNumber, plyr.DateOfBirth.date.Year, 
             plyr.DateOfBirth.date.Month, plyr.DateOfBirth.date.Day, plyr.EmotionalStatus.Status.ToString(), plyr.Facebook.Url, plyr.LinkedIn.Url,
             plyr.Tags.Select(t => t.tagName).ToList());
         }
 
         public async Task<PlayerDto> AddAsync(CreatingPlayerDto dto)
         {
-            var Player = new Player(dto.Name, dto.Email, dto.Password, dto.PhoneNumber, dto.DateOfBirth.Year, dto.DateOfBirth.Month, dto.DateOfBirth.Day, dto.EmotionalStatus, 
+            var Player = new Player(dto.Name, dto.Email, dto.Password, dto.Avatar, dto.PhoneNumber, dto.DateOfBirth.Year, dto.DateOfBirth.Month, dto.DateOfBirth.Day, dto.EmotionalStatus, 
             dto.Facebook, dto.LinkedIn, dto.Tags);
 
             await this._repo.AddAsync(Player);
@@ -58,7 +58,7 @@ namespace DDDSample1.Domain.Players
 
             await _hub.Clients.All.SendAsync("playerPost", number);
 
-            return new PlayerDto(Player.Id.AsGuid(),Player.Name.name, Player.Email.address, Player.PhoneNumber.phoneNumber, Player.DateOfBirth.date.Year, 
+            return new PlayerDto(Player.Id.AsGuid(),Player.Name.name, Player.Email.address, Player.Avatar.url, Player.PhoneNumber.phoneNumber, Player.DateOfBirth.date.Year, 
             Player.DateOfBirth.date.Month, Player.DateOfBirth.date.Day, Player.EmotionalStatus.Status.ToString(), Player.Facebook.Url, Player.LinkedIn.Url,
             Player.Tags.Select(t => t.tagName).ToList());
         }
@@ -78,6 +78,7 @@ namespace DDDSample1.Domain.Players
 
             Player.ChangeName(dto.Name);
             Player.ChangeEmail(dto.Email);
+            Player.ChangeAvatar(dto.Avatar);
             Player.ChangePhoneNumber(dto.PhoneNumber);
             Player.ChangeDateOfBirth(dto.DateOfBirth.Year, dto.DateOfBirth.Month, dto.DateOfBirth.Day);
             Player.ChangeEmotionalStatus(dto.EmotionalStatus);
@@ -88,7 +89,7 @@ namespace DDDSample1.Domain.Players
             
             await this._unitOfWork.CommitAsync();
 
-            return new PlayerDto(Player.Id.AsGuid(),Player.Name.name, Player.Email.address, Player.PhoneNumber.phoneNumber, Player.DateOfBirth.date.Year, 
+            return new PlayerDto(Player.Id.AsGuid(),Player.Name.name, Player.Email.address, Player.Avatar.url, Player.PhoneNumber.phoneNumber, Player.DateOfBirth.date.Year, 
             Player.DateOfBirth.date.Month, Player.DateOfBirth.date.Day, Player.EmotionalStatus.Status.ToString(), Player.Facebook.Url, Player.LinkedIn.Url,
             Player.Tags.Select(t => t.tagName).ToList());
         }
@@ -104,7 +105,7 @@ namespace DDDSample1.Domain.Players
             
             await this._unitOfWork.CommitAsync();
 
-            return new PlayerDto(Player.Id.AsGuid(),Player.Name.name, Player.Email.address, Player.PhoneNumber.phoneNumber, Player.DateOfBirth.date.Year, 
+            return new PlayerDto(Player.Id.AsGuid(),Player.Name.name, Player.Email.address, Player.Avatar.url, Player.PhoneNumber.phoneNumber, Player.DateOfBirth.date.Year, 
             Player.DateOfBirth.date.Month, Player.DateOfBirth.date.Day, Player.EmotionalStatus.Status.ToString(), Player.Facebook.Url, Player.LinkedIn.Url,
             Player.Tags.Select(t => t.tagName).ToList());
         }
@@ -122,7 +123,7 @@ namespace DDDSample1.Domain.Players
             this._repo.Remove(Player);
             await this._unitOfWork.CommitAsync();
 
-            return new PlayerDto(Player.Id.AsGuid(),Player.Name.name, Player.Email.address, Player.PhoneNumber.phoneNumber, Player.DateOfBirth.date.Year, 
+            return new PlayerDto(Player.Id.AsGuid(),Player.Name.name, Player.Email.address, Player.Avatar.url, Player.PhoneNumber.phoneNumber, Player.DateOfBirth.date.Year, 
             Player.DateOfBirth.date.Month, Player.DateOfBirth.date.Day, Player.EmotionalStatus.Status.ToString(), Player.Facebook.Url, Player.LinkedIn.Url,
             Player.Tags.Select(t => t.tagName).ToList());
         }
@@ -156,7 +157,7 @@ namespace DDDSample1.Domain.Players
             if (plyr == null)
                 return null;
 
-            return new PlayerDto(plyr.Id.AsGuid(), plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, 
+            return new PlayerDto(plyr.Id.AsGuid(), plyr.Name.name, plyr.Email.address, plyr.Avatar.url, plyr.PhoneNumber.phoneNumber, plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, 
             plyr.DateOfBirth.date.Day, plyr.EmotionalStatus.Status.ToString(), plyr.Facebook.Url, plyr.LinkedIn.Url,
             plyr.Tags.Select(t => t.tagName).ToList());
         }
@@ -166,7 +167,7 @@ namespace DDDSample1.Domain.Players
             var list = await _repo.GetByNameAsync(name);
 
             List<PlayerDto> listDto = list.ConvertAll<PlayerDto>(plyr =>
-                new PlayerDto(plyr.Id.AsGuid(), plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, 
+                new PlayerDto(plyr.Id.AsGuid(), plyr.Name.name, plyr.Email.address, plyr.Avatar.url, plyr.PhoneNumber.phoneNumber, plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, 
                 plyr.DateOfBirth.date.Day, plyr.EmotionalStatus.Status.ToString(), plyr.Facebook.Url, plyr.LinkedIn.Url,
                 plyr.Tags.Select(t => t.tagName).ToList()));
 
@@ -178,7 +179,7 @@ namespace DDDSample1.Domain.Players
             var list = await _repo.GetByPhoneAsync(phoneNumber);
 
             List<PlayerDto> listDto = list.ConvertAll<PlayerDto>(plyr =>
-                new PlayerDto(plyr.Id.AsGuid(), plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, 
+                new PlayerDto(plyr.Id.AsGuid(), plyr.Name.name, plyr.Email.address, plyr.Avatar.url, plyr.PhoneNumber.phoneNumber, plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, 
                 plyr.DateOfBirth.date.Day, plyr.EmotionalStatus.Status.ToString(), plyr.Facebook.Url, plyr.LinkedIn.Url,
                 plyr.Tags.Select(t => t.tagName).ToList()));
 
@@ -190,7 +191,7 @@ namespace DDDSample1.Domain.Players
             var list = await _repo.GetByTagAsync(tag);
 
             List<PlayerDto> listDto = list.ConvertAll<PlayerDto>(plyr =>
-                new PlayerDto(plyr.Id.AsGuid(), plyr.Name.name, plyr.Email.address, plyr.PhoneNumber.phoneNumber, plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, 
+                new PlayerDto(plyr.Id.AsGuid(), plyr.Name.name, plyr.Email.address, plyr.Avatar.url, plyr.PhoneNumber.phoneNumber, plyr.DateOfBirth.date.Year, plyr.DateOfBirth.date.Month, 
                 plyr.DateOfBirth.date.Day, plyr.EmotionalStatus.Status.ToString(), plyr.Facebook.Url, plyr.LinkedIn.Url,
                 plyr.Tags.Select(t => t.tagName).ToList()));
 
