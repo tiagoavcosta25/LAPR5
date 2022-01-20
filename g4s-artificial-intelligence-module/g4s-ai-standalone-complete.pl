@@ -130,14 +130,16 @@ shortest_allDfs(Player1, Player2, PathList):- get_time(T1),
     T is T2-T1,write(T),write(' seconds'),nl,
     write('Possible Path List: '),write(PathList),nl,nl.
 
-shortest_dfs(Orig, Dest, Path):- shortest_dfsAux(Orig, Dest, [Orig], Path).
+shortest_dfs(N, Orig, Dest, Path):- shortest_dfsAux(0, N, Orig, Dest, [Orig], Path).
 
-shortest_dfsAux(Dest, Dest, LA, Path):- !, reverse(LA, Path).
-shortest_dfsAux(Current, Dest, LA, Path):-
-    (connection(Current, X, _, _);
-    connection(X, Current, _, _)),
+shortest_dfsAux(_, _, Dest, Dest, LA, Path):- !, reverse(LA, Path).
+shortest_dfsAux(M, N, _, _, _, _):- M >= N, !, false.
+shortest_dfsAux(M, N, Current, Dest, LA, Path):-
+    (connection(Current, X, _, _, _, _);
+    connection(X, Current, _, _, _, _)),
     \+ member(X,LA),
-    shortest_dfsAux(X,Dest,[X|LA],Path).
+    M1 is M + 1,
+    shortest_dfsAux(M1, N, X,Dest,[X|LA],Path).
 
 
 shortest_route(Orig, Dest, ShortestPathList):-
