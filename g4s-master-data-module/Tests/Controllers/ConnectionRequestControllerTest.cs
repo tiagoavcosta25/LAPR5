@@ -129,7 +129,7 @@ namespace DDDNetCore.Tests.Controllers
         public async Task GetAllUserPendingDirectRequests_ReturnsTargetPendingRequestDtoList()
         {
             // Arrange
-            PlayerDto pobj = new PlayerDto(new System.Guid(), "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
+            PlayerDto pobj = new PlayerDto(new System.Guid(), "john", "test@email.com", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
             "www.linkedin.com/john-doe", new List<string> { "tag1" });
             TargetPendingRequestDto dto = new TargetDirectPendingRequestDto("1", pobj, pobj, "message");
             List<TargetPendingRequestDto> lst = new() { dto };

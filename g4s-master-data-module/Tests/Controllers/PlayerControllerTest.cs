@@ -16,12 +16,12 @@ namespace DDDNetCore.Tests.Controllers
         public async Task Create_ReturnsAPlayerDto_WithPlayerData()
         {
             // Arrange
-            CreatingPlayerDto dto = new CreatingPlayerDto("john", "test@email.com", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            CreatingPlayerDto dto = new CreatingPlayerDto("john", "test@email.com", "www.image.com", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
             /*Player obj = new Player(new PlayerName("john"), new PlayerName("test@email.com"), new PlayerPassword("123"), new PlayerPhoneNumber("987654321"),
                  new PlayerDateOfBirth(2001, 1, 17), new PlayerEmotionalStatus(OOC.joyful), new PlayerFacebook("www.facebook.com/john-doe"), 
                 new PlayerLinkedIn("www.linkedin.com/john-doe"), new List<Tag>{new Tag("tag")});*/
-            PlayerDto obj = new PlayerDto(new System.Guid(), "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            PlayerDto obj = new PlayerDto(new System.Guid(), "john", "test@email.com", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
 
             var mockServ = new Mock<IPlayerService>();
@@ -45,9 +45,9 @@ namespace DDDNetCore.Tests.Controllers
         public async Task Create_ReturnsBadRequestResult_WhenPlayerDataNotValid()
         {
             // Arrange
-            CreatingPlayerDto dto = new CreatingPlayerDto("john", "", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            CreatingPlayerDto dto = new CreatingPlayerDto("john", "", "123", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
-            PlayerDto obj = new PlayerDto(new System.Guid(), "john", "", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            PlayerDto obj = new PlayerDto(new System.Guid(), "john", "", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
 
             var mockServ = new Mock<IPlayerService>();
@@ -68,9 +68,9 @@ namespace DDDNetCore.Tests.Controllers
         {
             // Arrange
             System.Guid id = new System.Guid();
-            UpdatePlayerDto dto = new UpdatePlayerDto(id, "john", "test@email.com", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            UpdatePlayerDto dto = new UpdatePlayerDto(id, "john", "test@email.com", "www.image.com", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
-            PlayerDto obj = new PlayerDto(id, "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            PlayerDto obj = new PlayerDto(id, "john", "test@email.com", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
 
             var mockServ = new Mock<IPlayerService>();
@@ -96,9 +96,9 @@ namespace DDDNetCore.Tests.Controllers
             // Arrange
             System.Guid id = new System.Guid("b2e7111e-1a64-4ffe-8eba-a18fdc1c1e48");
             System.Guid id2 = new System.Guid("42c2df9d-709c-4b10-9d65-e0fbffb87293");
-            UpdatePlayerDto dto = new UpdatePlayerDto(id, "john", "test@email.com", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            UpdatePlayerDto dto = new UpdatePlayerDto(id, "john", "test@email.com", "www.image.com", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
-            PlayerDto obj = new PlayerDto(id2, "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            PlayerDto obj = new PlayerDto(id2, "john", "test@email.com", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
 
             var mockServ = new Mock<IPlayerService>();
@@ -119,9 +119,9 @@ namespace DDDNetCore.Tests.Controllers
         {
             // Arrange
             System.Guid id = new System.Guid();
-            UpdatePlayerDto dto = new UpdatePlayerDto(id, "john", "test@email.com", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            UpdatePlayerDto dto = new UpdatePlayerDto(id, "john", "test@email.com", "123", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
-            PlayerDto obj = new PlayerDto(id, "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            PlayerDto obj = new PlayerDto(id, "john", "test@email.com", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
 
             var mockServ = new Mock<IPlayerService>();
@@ -142,9 +142,9 @@ namespace DDDNetCore.Tests.Controllers
         {
             // Arrange
             System.Guid id = new System.Guid();
-            UpdatePlayerDto dto = new UpdatePlayerDto(id, "john", "test@email.com", "123", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            UpdatePlayerDto dto = new UpdatePlayerDto(id, "john", "test@email.com", "123", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
-            PlayerDto obj = new PlayerDto(id, "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            PlayerDto obj = new PlayerDto(id, "john", "test@email.com", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
 
             var mockServ = new Mock<IPlayerService>();
@@ -236,7 +236,7 @@ namespace DDDNetCore.Tests.Controllers
             // Arrange
             string filter = "email";
             string value = "teste@gmail.com";
-            PlayerDto obj = new PlayerDto(new System.Guid(), "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
+            PlayerDto obj = new PlayerDto(new System.Guid(), "john", "test@email.com", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
             "www.linkedin.com/john-doe", new List<string> { "tag1" });
             ICollection<PlayerDto> lst = new List<PlayerDto> { obj };
 
@@ -262,7 +262,7 @@ namespace DDDNetCore.Tests.Controllers
             // Arrange
             string filter = "name";
             string value = "john";
-            PlayerDto obj = new PlayerDto(new System.Guid(), "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
+            PlayerDto obj = new PlayerDto(new System.Guid(), "john", "test@email.com", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
             "www.linkedin.com/john-doe", new List<string> { "tag1" });
             List<PlayerDto> lst = new List<PlayerDto> { obj };
 
@@ -288,7 +288,7 @@ namespace DDDNetCore.Tests.Controllers
             // Arrange
             string filter = "phone";
             string value = "987654321";
-            PlayerDto obj = new PlayerDto(new System.Guid(), "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
+            PlayerDto obj = new PlayerDto(new System.Guid(), "john", "test@email.com", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
             "www.linkedin.com/john-doe", new List<string> { "tag1" });
             List<PlayerDto> lst = new List<PlayerDto> { obj };
 
@@ -315,7 +315,7 @@ namespace DDDNetCore.Tests.Controllers
             // Arrange
             string filter = "tag";
             string value = "tag1";
-            PlayerDto obj = new PlayerDto(new System.Guid(), "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
+            PlayerDto obj = new PlayerDto(new System.Guid(), "john", "test@email.com", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
             "www.linkedin.com/john-doe", new List<string> { "tag1" });
             List<PlayerDto> lst = new List<PlayerDto> { obj };
 
@@ -342,7 +342,7 @@ namespace DDDNetCore.Tests.Controllers
             // Arrange
             string filter = "none";
             string value = "tag1";
-            PlayerDto obj = new PlayerDto(new System.Guid(), "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
+            PlayerDto obj = new PlayerDto(new System.Guid(), "john", "test@email.com", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
             "www.linkedin.com/john-doe", new List<string> { "tag1" });
             List<PlayerDto> lst = new List<PlayerDto> { obj };
 

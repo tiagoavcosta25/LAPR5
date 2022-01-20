@@ -18,7 +18,7 @@ namespace DDDNetCore.Tests.Controllers
         public async Task GetReachablePlayers_ReturnsPlayersList()
         {
             // Arrange
-            PlayerDto obj = new PlayerDto(new System.Guid(), "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            PlayerDto obj = new PlayerDto(new System.Guid(), "john", "test@email.com", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
             List<PlayerDto> lst = new List<PlayerDto>{obj};
             string playerEmail = "test2@email.com";
@@ -43,7 +43,7 @@ namespace DDDNetCore.Tests.Controllers
         {
             // Arrange
             GetMutualFriendsDto dto = new GetMutualFriendsDto("test@email.com");
-            PlayerDto obj = new PlayerDto(new System.Guid(), "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
+            PlayerDto obj = new PlayerDto(new System.Guid(), "john", "test@email.com", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe", 
             "www.linkedin.com/john-doe", new List<string>{"tag1"});
             List<PlayerDto> lst = new List<PlayerDto>{obj};
             string playerEmail = "test2@email.com";
@@ -92,7 +92,7 @@ namespace DDDNetCore.Tests.Controllers
         public async Task GetAllConnections_ReturnsGettingConnectionDtoList()
         {
             // Arrange
-            PlayerDto pobj = new PlayerDto(new System.Guid(), "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
+            PlayerDto pobj = new PlayerDto(new System.Guid(), "john", "test@email.com", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
             "www.linkedin.com/john-doe", new List<string> { "tag1" });
             GettingConnectionDto obj = new("1234", pobj, pobj, 5,
                 new List<string> { "tag"});
@@ -118,7 +118,7 @@ namespace DDDNetCore.Tests.Controllers
         public async Task GetAllConnections_WhenEmailNotValid()
         {
             // Arrange
-            PlayerDto pobj = new PlayerDto(new System.Guid(), "john", "test@email.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
+            PlayerDto pobj = new PlayerDto(new System.Guid(), "john", "test@email.com", "www.image.com", "987654321", 2001, 1, 17, "joyful", "www.facebook.com/john-doe",
             "www.linkedin.com/john-doe", new List<string> { "tag1" });
             GettingConnectionDto obj = new("1234", pobj, pobj, 5,
                 new List<string> { "tag" });
