@@ -13,15 +13,28 @@
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
     },
     {
-      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
+          "Host": "socialnetworkfeedapi51.azurewebsites.net",
           "Port": 443
         }
       ],
-      "UpstreamPathTemplate": "/api2/{everything}",
+      "UpstreamPathTemplate": "/apifeed/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "socialnetworkaig51.westeurope.cloudapp.azure.com",
+          "Port": 443
+        }
+      ],
+      "UpstreamPathTemplate": "/apiai/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
     }
   ],

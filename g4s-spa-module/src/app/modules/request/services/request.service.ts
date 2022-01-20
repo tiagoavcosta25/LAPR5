@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -28,6 +28,13 @@ export class RequestService {
   /** GET: returns requests from server */
   getRequests(email: string): Observable<TargetPendingRequest[]> {
     return this.http.get<TargetPendingRequest[]>(this.requestUrl + 'pendingRequests/' + email).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  /** GET: checks if user has pending requests */
+  CheckIfRequestsPendingBetweenUsers(emailPlayer: string, emailTarget: string): Observable<boolean> {
+    return this.http.get<boolean>(this.requestUrl + 'pending/emails?emailPlayer=' + emailPlayer + "&emailTarget=" + emailTarget).pipe(
       catchError(this.handleError)
     );
   }

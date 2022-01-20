@@ -38,19 +38,12 @@ namespace DDDNetCore.Infraestructure.ConnectionRequests
 
         public async Task<bool> CheckIfDirectRequestExistsAsync(PlayerId player, PlayerId target)
         {
-            var failed1 = ConnectionRequestStatusEnum.introduction_refused;
-            var failed2 = ConnectionRequestStatusEnum.request_refused;
+            var failed = ConnectionRequestStatusEnum.request_refused;
             var playerToTarget = await _dbdirectRequest
                 .Where(x => x.Player.Equals(player) && x.Target.Equals(target) && 
-                (!x.CurrentStatus.CurrentStatus.Equals(failed1) || !x.CurrentStatus.CurrentStatus.Equals(failed2)))
+                (!x.CurrentStatus.CurrentStatus.Equals(failed)))
                 .FirstOrDefaultAsync();
-
-            var targetToPlayer = await _dbdirectRequest
-                .Where(x => x.Target.Equals(player) && x.Player.Equals(target) &&
-                (!x.CurrentStatus.CurrentStatus.Equals(failed1) || !x.CurrentStatus.CurrentStatus.Equals(failed2)))
-                .FirstOrDefaultAsync();
-
-            return !(playerToTarget == null && targetToPlayer == null);
+            return !(playerToTarget == null);
 
         }
     }

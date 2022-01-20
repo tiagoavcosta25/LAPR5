@@ -41,6 +41,6 @@ namespace DDDNetCore.Domain.ConnectionRequests
 
         Task<List<IntroductionRequestDto>> GetMiddleManRequests(string playerEmail);
 
-
+        Task<bool> CheckIfRequestsPendingBetweenUsers(string playerEmail, string targetEmail);
     }
 }

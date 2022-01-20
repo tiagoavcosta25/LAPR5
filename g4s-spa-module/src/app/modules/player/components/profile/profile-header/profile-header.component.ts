@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ConnectionService } from 'src/app/modules/connection/services/connection.service';
+import { RequestService } from 'src/app/modules/request/services/request.service';
 import { DobPlayer } from '../../../models/dob-player.model copy';
 import { PlayerService } from '../../../services/player.service';
 
@@ -13,6 +14,10 @@ declare var $:any;
   styleUrls: ['./profile-header.component.css']
 })
 export class ProfileHeaderComponent implements OnInit{
+
+  requestSent: boolean;
+
+  requestPending: boolean;
 
   currentPlayer: string;
 
@@ -29,6 +34,7 @@ export class ProfileHeaderComponent implements OnInit{
   constructor(private activatedRoute: ActivatedRoute,
     private pService: PlayerService,
     private cService: ConnectionService,
+    private rService: RequestService,
     private spinner: NgxSpinnerService,
     private router: Router) { }
 
@@ -39,6 +45,13 @@ export class ProfileHeaderComponent implements OnInit{
     this.currentPlayer = localStorage.getItem("currentPlayer")!;
     this.activatedRoute.params.subscribe(params => {
       this.userEmail = params['email'];
+      if(this.userEmail != this.currentPlayer) {
+        this.CheckIfRequestsPendingBetweenUsers();
+        this.CheckIfRequestSent();
+      } else {
+        this.requestPending = false;
+        this.requestSent = false;
+      }
     })
     this.getPlayer();
     this.spinner.hide();
@@ -106,6 +119,30 @@ export class ProfileHeaderComponent implements OnInit{
       }
     },
       error: _error => {
+      }
+    });
+  }
+
+  CheckIfRequestsPendingBetweenUsers(): void {
+    this.spinner.show();
+    this.rService.CheckIfRequestsPendingBetweenUsers(this.userEmail, this.currentPlayer).subscribe({ next: data => {
+      this.requestPending = data;
+      this.spinner.hide();
+    },
+      error: _error => {
+        this.spinner.hide();
+      }
+    });
+  }
+
+  CheckIfRequestSent(): void {
+    this.spinner.show();
+    this.rService.CheckIfRequestsPendingBetweenUsers(this.currentPlayer, this.userEmail).subscribe({ next: data => {
+      this.requestSent = data;
+      this.spinner.hide();
+    },
+      error: _error => {
+        this.spinner.hide();
       }
     });
   }
