@@ -238,10 +238,10 @@ namespace DDDNetCore.Domain.ConnectionRequests
             {
                 var sender = await _repoPl.GetByIdAsync(new PlayerId(conDir.Player));
 
-                var pDto = new PlayerDto(player.Id.AsGuid(), player.Name.name, player.Email.address, player.PhoneNumber.phoneNumber, player.DateOfBirth.date.Year, player.DateOfBirth.date.Month,
+                var pDto = new PlayerDto(player.Id.AsGuid(), player.Name.name, player.Email.address, player.Avatar.url, player.PhoneNumber.phoneNumber, player.DateOfBirth.date.Year, player.DateOfBirth.date.Month,
                     player.DateOfBirth.date.Day, player.EmotionalStatus.Status.ToString(), player.Facebook.Url, player.LinkedIn.Url, player.Tags.Select(t => t.tagName).ToList());
 
-                var sDto = new PlayerDto(sender.Id.AsGuid(), sender.Name.name, sender.Email.address, sender.PhoneNumber.phoneNumber, sender.DateOfBirth.date.Year, sender.DateOfBirth.date.Month,
+                var sDto = new PlayerDto(sender.Id.AsGuid(), sender.Name.name, sender.Email.address, player.Avatar.url, sender.PhoneNumber.phoneNumber, sender.DateOfBirth.date.Year, sender.DateOfBirth.date.Month,
                     sender.DateOfBirth.date.Day, sender.EmotionalStatus.Status.ToString(), sender.Facebook.Url, sender.LinkedIn.Url, sender.Tags.Select(t => t.tagName).ToList());
 
                 finalList.Add(new TargetDirectPendingRequestDto(conDir.Id.ToString(), sDto, pDto, conDir.PlayerToTargetMessage));
@@ -251,13 +251,13 @@ namespace DDDNetCore.Domain.ConnectionRequests
                 var sender = await _repoPl.GetByIdAsync(new PlayerId(conInt.Player));
                 var mid = await _repoPl.GetByIdAsync(new PlayerId(conInt.MiddleMan));
 
-                var pDto = new PlayerDto(player.Id.AsGuid(), player.Name.name, player.Email.address, player.PhoneNumber.phoneNumber, player.DateOfBirth.date.Year, player.DateOfBirth.date.Month,
+                var pDto = new PlayerDto(player.Id.AsGuid(), player.Name.name, player.Email.address, player.Avatar.url, player.PhoneNumber.phoneNumber, player.DateOfBirth.date.Year, player.DateOfBirth.date.Month,
                     player.DateOfBirth.date.Day, player.EmotionalStatus.Status.ToString(), player.Facebook.Url, player.LinkedIn.Url, player.Tags.Select(t => t.tagName).ToList());
 
-                var sDto = new PlayerDto(sender.Id.AsGuid(), sender.Name.name, sender.Email.address, sender.PhoneNumber.phoneNumber, sender.DateOfBirth.date.Year, sender.DateOfBirth.date.Month,
+                var sDto = new PlayerDto(sender.Id.AsGuid(), sender.Name.name, sender.Email.address, player.Avatar.url, sender.PhoneNumber.phoneNumber, sender.DateOfBirth.date.Year, sender.DateOfBirth.date.Month,
                     sender.DateOfBirth.date.Day, sender.EmotionalStatus.Status.ToString(), sender.Facebook.Url, sender.LinkedIn.Url, sender.Tags.Select(t => t.tagName).ToList());
 
-                var mDto = new PlayerDto(mid.Id.AsGuid(), mid.Name.name, mid.Email.address, mid.PhoneNumber.phoneNumber, mid.DateOfBirth.date.Year, mid.DateOfBirth.date.Month,
+                var mDto = new PlayerDto(mid.Id.AsGuid(), mid.Name.name, mid.Email.address, player.Avatar.url, mid.PhoneNumber.phoneNumber, mid.DateOfBirth.date.Year, mid.DateOfBirth.date.Month,
                     mid.DateOfBirth.date.Day, mid.EmotionalStatus.Status.ToString(), mid.Facebook.Url, mid.LinkedIn.Url, mid.Tags.Select(t => t.tagName).ToList());
 
                 finalList.Add(new TargetIntroductionPendingRequestDto(conInt.Id.ToString(), sDto, pDto, conInt.PlayerToTargetMessage, mDto, conInt.MiddleManToTargetMessage));
