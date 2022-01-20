@@ -611,6 +611,22 @@ namespace DDDNetCore.Migrations
                                 .HasForeignKey("PlayerId");
                         });
 
+                    b.OwnsOne("DDDSample1.Domain.Players.PlayerAvatar", "Avatar", b1 =>
+                        {
+                            b1.Property<string>("PlayerId")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<string>("url")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("PlayerId");
+
+                            b1.ToTable("Players");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PlayerId");
+                        });
+
                     b.OwnsOne("DDDSample1.Domain.Players.PlayerPassword", "Password", b1 =>
                         {
                             b1.Property<string>("PlayerId")

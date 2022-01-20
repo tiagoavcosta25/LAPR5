@@ -108,6 +108,7 @@ namespace DDDNetCore.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name_name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email_address = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Avatar_url = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password_password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateOfBirth_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PhoneNumber_phoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
