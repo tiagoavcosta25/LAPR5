@@ -151,14 +151,14 @@ prolog_to_json(Path, JSONObject),
   reply_json(JSONObject, [json_object(dict)]).
 
 shortest_prepare(Request, Path) :-
-http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string])]),
+http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string]), threshold(Threshold, [integer])]),
 addPlayers(),
 addConnections(),
 getPlayerName(EmailPlayer, PlayerName),
 getPlayerName(EmailTarget, TargetName),
     node(PlayerId, PlayerName, _),
     node(TargetId, TargetName, _),
-shortest_route(PlayerId, TargetId, Path),
+shortest_route(Threshold, PlayerId, TargetId, Path),
 retractall(connection(_,_,_,_)),
 retractall(node(_,_,_)).
 
@@ -173,23 +173,25 @@ shortest_allDfs(Player1, Player2, PathList):- get_time(T1),
     T is T2-T1,write(T),write(' seconds'),nl,
     write('Possible Path List: '),write(PathList),nl,nl.
 
-shortest_dfs(Orig, Dest, Path):- shortest_dfsAux(Orig, Dest, [Orig], Path).
+shortest_dfs(N, Orig, Dest, Path):- shortest_dfsAux(0, N, Orig, Dest, [Orig], Path).
 
-shortest_dfsAux(Dest, Dest, LA, Path):- !, reverse(LA, Path).
-shortest_dfsAux(Current, Dest, LA, Path):-
-    (connection(Current, X, _, _);
-    connection(X, Current, _, _)),
+shortest_dfsAux(_, _, Dest, Dest, LA, Path):- !, reverse(LA, Path).
+shortest_dfsAux(M, N, _, _, _, _):- M >= N, !, false.
+shortest_dfsAux(M, N, Current, Dest, LA, Path):-
+    (connection(Current, X, _, _, _, _);
+    connection(X, Current, _, _, _, _)),
     \+ member(X,LA),
-    shortest_dfsAux(X,Dest,[X|LA],Path).
+    M1 is M + 1,
+    shortest_dfsAux(M1, N, X,Dest,[X|LA],Path).
 
 
-shortest_route(Orig, Dest, ShortestPathList):-
-		(shortest_findRoute(Orig, Dest); true),
+shortest_route(Threshold, Orig, Dest, ShortestPathList):-
+		(shortest_findRoute(Threshold, Orig, Dest); true),
 		retract(shortest_currentRoute(ShortestPathList, _)).
 
-shortest_findRoute(Orig, Dest):-
+shortest_findRoute(Threshold, Orig, Dest):-
 		asserta(shortest_currentRoute(_,10000)),
-		shortest_dfs(Orig, Dest, PathList),
+		shortest_dfs(Threshold, Orig, Dest, PathList),
 		shortest_updateRoute(PathList),
 		fail.
 
