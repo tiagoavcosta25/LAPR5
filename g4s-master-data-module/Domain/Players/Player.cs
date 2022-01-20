@@ -17,6 +17,8 @@ namespace DDDSample1.Domain.Players
         [Required]
         public PlayerPassword Password { get;  private set; }
         [Required]
+        public PlayerAvatar Avatar { get;  private set; }
+        [Required]
         public PlayerDateOfBirth DateOfBirth { get;  private set; }
         [Required]
         public PlayerPhoneNumber PhoneNumber { get;  private set; }
@@ -36,11 +38,12 @@ namespace DDDSample1.Domain.Players
             this.Active = true;
         }
 
-        public Player(string name, string email, string password, string phoneNumber, int year, int month, int day, string emotionalStatus, string facebook, string linkedin, ICollection<string> tags)
+        public Player(string name, string email, string password, string avatar, string phoneNumber, int year, int month, int day, string emotionalStatus, string facebook, string linkedin, ICollection<string> tags)
         {
             this.Id = new PlayerId(Guid.NewGuid());
             this.Name = new PlayerName(name);
             this.Email = new PlayerEmail(email);
+            this.Avatar = new PlayerAvatar(avatar);
             this.Password = new PlayerPassword(password);
             this.PhoneNumber = new PlayerPhoneNumber(phoneNumber);
             this.DateOfBirth = new PlayerDateOfBirth(year, month, day);
@@ -79,6 +82,13 @@ namespace DDDSample1.Domain.Players
             if (!this.Active)
                 throw new BusinessRuleValidationException("It is not possible to change the password to an inactive Player.");
             this.Password = new PlayerPassword(password);
+        }
+
+        public void ChangeAvatar(string avatar)
+        {
+            if (!this.Active)
+                throw new BusinessRuleValidationException("It is not possible to change the avatar to an inactive Player.");
+            this.Avatar = new PlayerAvatar(avatar);
         }
         
         public void ChangePhoneNumber(string phoneNumber)
