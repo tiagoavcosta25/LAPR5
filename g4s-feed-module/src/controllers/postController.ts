@@ -67,9 +67,41 @@ export default class PostController implements IPostController /* TODO: extends 
     }
   };
 
+  public async unlikePost(req: Request, res: Response, next: NextFunction) {
+    try {
+      const postOrError = await this.postServiceInstance.unlikePost(req.body as IReactionDTO) as Result<IPostDTO>;
+
+      if (postOrError.isFailure) {
+        return res.status(404).send();
+      }
+
+      const postDTO = postOrError.getValue();
+      return res.status(201).json( postDTO );
+    }
+    catch (e) {
+      return next(e);
+    }
+  };
+
   public async dislikePost(req: Request, res: Response, next: NextFunction) {
     try {
       const postOrError = await this.postServiceInstance.dislikePost(req.body as IReactionDTO) as Result<IPostDTO>;
+
+      if (postOrError.isFailure) {
+        return res.status(404).send();
+      }
+
+      const postDTO = postOrError.getValue();
+      return res.status(201).json( postDTO );
+    }
+    catch (e) {
+      return next(e);
+    }
+  };
+
+  public async undislikePost(req: Request, res: Response, next: NextFunction) {
+    try {
+      const postOrError = await this.postServiceInstance.undislikePost(req.body as IReactionDTO) as Result<IPostDTO>;
 
       if (postOrError.isFailure) {
         return res.status(404).send();
@@ -134,4 +166,19 @@ export default class PostController implements IPostController /* TODO: extends 
       return next(e);
     }
   }
+
+  public async getDCalc(req: Request, res: Response, next: NextFunction) {
+    try {
+      const count = await this.postServiceInstance.getDCalc(req.params.emailA, req.params.emailB) as Result<number>;
+      if (count.isFailure) {
+        return res.status(404).send();
+      }
+
+      return res.status(200).json({ dCalc: count.getValue() });
+    }
+    catch (e) {
+      return next(e);
+    }
+  }
+
 }

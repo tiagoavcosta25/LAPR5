@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Dcalc } from 'src/shared/models/feed/dcalc.dto';
 import { Post } from 'src/shared/models/feed/post.model';
 import { PlayerLike } from 'src/shared/models/player/player-like.model';
 import { CreateComment } from 'src/shared/models/posts/create-comment.model';
@@ -50,9 +51,30 @@ export class FeedService {
     );
   }
 
+  /** PATCH: unlike exising post in the database */
+  unlikePost(like: PlayerLike): Observable<Post> {
+    return this.http.patch<Post>(this.postUrl + "unlike", like, this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   /** PATCH: dislike exising post in the database */
   dislikePost(dislike: PlayerLike): Observable<Post> {
     return this.http.patch<Post>(this.postUrl + "dislike", dislike, this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  /** PATCH: undislike exising post in the database */
+  undislikePost(like: PlayerLike): Observable<Post> {
+    return this.http.patch<Post>(this.postUrl + "undislike", like, this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  /* GET: calculate D value */
+  dCalc(emailA: string, emailB: string): Observable<Dcalc> {
+    return this.http.get<Dcalc>(this.postUrl + "dcalc/" + emailA + "/" + emailB).pipe(
       catchError(this.handleError)
     );
   }

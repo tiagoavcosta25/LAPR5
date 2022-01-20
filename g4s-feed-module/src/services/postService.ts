@@ -119,6 +119,29 @@ export default class PostService implements IPostService {
     }
   }
 
+  public async unlikePost(postDTO: IReactionDTO): Promise<Result<IPostDTO>> {
+    try {
+      const post = await this.postRepo.findByDomainId(postDTO.postId);
+
+      if (post === null) {
+        return Result.fail<IPostDTO>("Post not found");
+      }
+      else {
+        if(post.likes.includes(postDTO.playerId)){
+          var i = post.likes.indexOf(postDTO.playerId);
+          post.likes.splice(i, 1);
+        }
+
+        await this.postRepo.save(post);
+
+        const postDTOResult = PostMap.toDTO( post ) as IPostDTO;
+        return Result.ok<IPostDTO>( postDTOResult )
+        }
+    } catch (e) {
+      throw e;
+    }
+  }
+
   public async dislikePost(postDTO: IReactionDTO): Promise<Result<IPostDTO>> {
     try {
       const post = await this.postRepo.findByDomainId(postDTO.postId);
@@ -136,6 +159,29 @@ export default class PostService implements IPostService {
           post.dislikes.push(postDTO.playerId);
         }
 
+        await this.postRepo.save(post);
+
+        const postDTOResult = PostMap.toDTO( post ) as IPostDTO;
+        return Result.ok<IPostDTO>( postDTOResult )
+        }
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async undislikePost(postDTO: IReactionDTO): Promise<Result<IPostDTO>> {
+    try {
+      const post = await this.postRepo.findByDomainId(postDTO.postId);
+
+      if (post === null) {
+        return Result.fail<IPostDTO>("Post not found");
+      }
+      else {
+        if(post.dislikes.includes(postDTO.playerId)){
+          var i = post.dislikes.indexOf(postDTO.playerId);
+          post.dislikes.splice(i, 1);
+        }
+        
         await this.postRepo.save(post);
 
         const postDTOResult = PostMap.toDTO( post ) as IPostDTO;
@@ -217,6 +263,19 @@ export default class PostService implements IPostService {
         }
         return Result.ok<IPostDTO[]>( postList )
       }
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async getDCalc(emailA: string, emailB:string): Promise<Result<number>> {
+    try {
+      let likes = await this.postRepo.countALikesOnBPosts(emailA, emailB);
+      let dislikes = await this.postRepo.countADislikesOnBPosts(emailA, emailB);
+
+      let count = likes - dislikes;
+
+      return Result.ok<number>(count);
     } catch (e) {
       throw e;
     }

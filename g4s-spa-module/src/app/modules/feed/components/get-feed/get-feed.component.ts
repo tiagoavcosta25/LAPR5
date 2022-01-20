@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Post } from 'src/shared/models/feed/post.model';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { FeedService } from '../../services/feed.service';
@@ -8,14 +8,18 @@ import { CreateComment } from 'src/shared/models/posts/create-comment.model';
 import { PlayerLike } from 'src/shared/models/player/player-like.model';
 import { CreatingPost } from '../../models/creating-post.model';
 import { ConnectionService } from 'src/app/modules/connection/services/connection.service';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, forkJoin, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-get-feed',
   templateUrl: './get-feed.component.html',
   styleUrls: ['./get-feed.component.css']
 })
-export class GetFeedComponent implements OnInit {
+export class GetFeedComponent implements OnInit, OnDestroy {
+
+  obs: Observable<Post[]>[] = [];
+
+  usersFinished: number = 0;
 
   posts: Post[];
 
@@ -27,8 +31,12 @@ export class GetFeedComponent implements OnInit {
 
   constructor(private fService: FeedService,
     private pService: PlayerService,
-    private spinner: NgxSpinnerService,
+    public spinner: NgxSpinnerService,
     private cService: ConnectionService) { }
+
+  ngOnDestroy(): void {
+    this.obs = [];
+  }
 
   async ngOnInit(): Promise<void> {
     this.tags = [];
@@ -53,32 +61,30 @@ export class GetFeedComponent implements OnInit {
     this.spinner.show();
     var connections = [];
     this.cService.getConnections(this.currentUserEmail).subscribe({ next: async data => {
-      let posts: Post[] = [];
       connections = data;
       for(let con of connections) {
-        let tempPosts = await this.getPostsByUser(con.friend.email);
-        for(let p of tempPosts) {
-          posts.push(p);
-        }
+        const ob = this.fService.getPostsByUser(con.friend.email);
+        this.obs.push(ob);
       }
-      let tempPosts = await this.getPostsByUser(this.currentUserEmail);
-        for(let p of tempPosts) {
-          posts.push(p);
+      let ob = this.fService.getPostsByUser(this.currentUserEmail);
+      this.obs.push(ob);
+      forkJoin(this.obs).subscribe(results => {
+        let tempPosts = [];
+        for(let pList of results) {
+          for(let p of pList) {
+            tempPosts.push(p);
+          }
         }
-      posts.sort((b,a) => (a.createdAt > b.createdAt) ? 1 : ((b.createdAt > a.createdAt) ? -1 : 0));
-      this.posts = posts;    
-      this.spinner.hide();
+        tempPosts.sort((b,a) => (a.createdAt > b.createdAt) ? 1 : ((b.createdAt > a.createdAt) ? -1 : 0));
+        this.posts = tempPosts;    
+        this.spinner.hide();
+      })
     },
       error: _error => {
         this.spinner.hide();
       }
     });
   }
-
-  async getPostsByUser(email: string): Promise<Post[]>{
-    return await firstValueFrom(this.fService.getPostsByUser(email));
-  }
-
 
   getDate(date: Date): string {
     var today = new Date();
@@ -141,6 +147,9 @@ export class GetFeedComponent implements OnInit {
       val = ((<HTMLInputElement>el).value);
       (<HTMLInputElement>el).value = "";
     }
+    if(val == "") {
+      return;
+    }
     this.spinner.show();
     let createComment: CreateComment = new CreateComment(post.id, this.currentUserEmail, this.currentUser.name, val);
     let commentedPost: Post;
@@ -160,41 +169,63 @@ export class GetFeedComponent implements OnInit {
   }
 
   likePost(post: Post): void {
-    this.spinner.show();
     let like: PlayerLike = new PlayerLike(post.id, this.currentUserEmail);
     let likedPost: Post;
-    this.fService.likePost(like).subscribe({ next: data => {
-      likedPost = data;
-      for(let i = 0; i < this.posts.length; i++) {
-        if(this.posts[i].id == likedPost.id) {
-          this.posts[i] = likedPost;
+    if(post.likes.some(x => x == this.currentUserEmail)) {
+      this.fService.unlikePost(like).subscribe({ next: data => {
+        likedPost = data;
+        for(let i = 0; i < this.posts.length; i++) {
+          if(this.posts[i].id == likedPost.id) {
+            this.posts[i] = likedPost;
+          }
         }
-      }
-      this.spinner.hide();
-    },
-      error: _error => {
-        this.spinner.hide();
-      }
-    });
+      },
+        error: _error => {
+        }
+      });
+    } else {
+      this.fService.likePost(like).subscribe({ next: data => {
+        likedPost = data;
+        for(let i = 0; i < this.posts.length; i++) {
+          if(this.posts[i].id == likedPost.id) {
+            this.posts[i] = likedPost;
+          }
+        }
+      },
+        error: _error => {
+        }
+      });
+    }
   }
 
   dislikePost(post: Post): void {
-    this.spinner.show();
     let dislike: PlayerLike = new PlayerLike(post.id, this.currentUserEmail);
     let dislikedPost: Post;
-    this.fService.dislikePost(dislike).subscribe({ next: data => {
-      dislikedPost = data;
-      for(let i = 0; i < this.posts.length; i++) {
-        if(this.posts[i].id == dislikedPost.id) {
-          this.posts[i] = dislikedPost;
+    if(post.dislikes.some(x => x == this.currentUserEmail)) {
+      this.fService.undislikePost(dislike).subscribe({ next: data => {
+        dislikedPost = data;
+        for(let i = 0; i < this.posts.length; i++) {
+          if(this.posts[i].id == dislikedPost.id) {
+            this.posts[i] = dislikedPost;
+          }
         }
-      }
-      this.spinner.hide();
-    },
-      error: _error => {
-        this.spinner.hide();
-      }
-    });
+      },
+        error: _error => {
+        }
+      });
+    } else {
+      this.fService.dislikePost(dislike).subscribe({ next: data => {
+        dislikedPost = data;
+        for(let i = 0; i < this.posts.length; i++) {
+          if(this.posts[i].id == dislikedPost.id) {
+            this.posts[i] = dislikedPost;
+          }
+        }
+      },
+        error: _error => {
+        }
+      });
+    }
   }
 
   getLikeCount(post: Post): string {
@@ -250,8 +281,9 @@ export class GetFeedComponent implements OnInit {
     createPost.name = this.currentUser.name;
     createPost.tags = this.tags;
     this.fService.createPost(createPost).subscribe({ next: _data => {
-      this.spinner.hide();
+      this.ngOnDestroy();
       this.ngOnInit();
+      this.spinner.hide();
     },
       error: _error => {
         this.spinner.hide();

@@ -95,4 +95,28 @@ export default class PostRepo implements IPostRepo {
     postList.sort((b,a) => (a.createdAt > b.createdAt) ? 1 : ((b.createdAt > a.createdAt) ? -1 : 0))
     return postList;
   }
+
+  public async countALikesOnBPosts (emailA: string, emailB: string): Promise<number> {
+    const query = { creatorId: emailB.toString(),
+                    likes: emailA};
+    const count = await this.postSchema.count( query );
+
+    if( count != null) {
+      return count;
+    }
+    else
+      return 0;
+  }
+
+  public async countADislikesOnBPosts (emailA: string, emailB: string): Promise<number> {
+    const query = { creatorId: emailB.toString(),
+                    dislikes: emailA};
+    const count = await this.postSchema.count( query );
+
+    if( count != null) {
+      return count;
+    }
+    else
+      return 0;
+  }
 }
