@@ -300,5 +300,12 @@ namespace DDDNetCore.Controllers
             return await _service.GetMiddleManRequests(playerEmail);
         }
 
+        // GET: api/connectionRequests/pending/emails?emailPlayer=email1@gmail.com&emailTarget=email2@gmail.com
+        [HttpGet("pending/emails")]
+        public async Task<ActionResult<bool>> CheckIfRequestsPendingBetweenUsers(string emailPlayer, string emailTarget)
+        {
+            return await _service.CheckIfRequestsPendingBetweenUsers(emailPlayer, emailTarget);
+        }
+
     }
 }

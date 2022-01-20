@@ -448,5 +448,17 @@ namespace DDDNetCore.Domain.ConnectionRequests
             return listDtoInt;
         }
 
+        public async Task<bool> CheckIfRequestsPendingBetweenUsers(string playerEmail, string targetEmail)
+        {
+            var player = await _repoPl.GetByEmailAsync(playerEmail);
+            
+            var target = await _repoPl.GetByEmailAsync(targetEmail);
+
+            bool dr = await _repoDir.CheckIfDirectRequestExistsAsync(player.Id, target.Id);
+            
+            bool ir = await _repoInt.CheckIfIntroductionRequestExistsAsync(player.Id, target.Id);
+
+            return ir || dr;
+        }
     }
 }
