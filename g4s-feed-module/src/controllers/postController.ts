@@ -134,4 +134,19 @@ export default class PostController implements IPostController /* TODO: extends 
       return next(e);
     }
   }
+
+  public async getDCalc(req: Request, res: Response, next: NextFunction) {
+    try {
+      const count = await this.postServiceInstance.getDCalc(req.params.emailA, req.params.emailB) as Result<number>;
+      if (count.isFailure) {
+        return res.status(404).send();
+      }
+
+      return res.status(200).json( count );
+    }
+    catch (e) {
+      return next(e);
+    }
+  }
+
 }

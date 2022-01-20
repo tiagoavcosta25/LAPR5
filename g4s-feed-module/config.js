@@ -19,7 +19,7 @@ export default {
   /**
    * That long string from mlab
    */
-  databaseURL: process.env.MONGODB_URI || "mongodb+srv://user:LisaGroup51!@socialnetworknosqldb51.yskyf.mongodb.net/socialNetworkNoSqlDB51?retryWrites=true&w=majority",
+  databaseURL: process.env.MONGODB_URI || "mongodb://socialnetworknosql51db:qvgH1prW5uFZ1q9TjGevNEeYZlgGNM9khrC2V4XiNC3ek9pRKd6CCD3qzxpf1zOr0MRWANWVBcdfOX8ghF4w2w==@socialnetworknosql51db.mongo.cosmos.azure.com:10255/socialNetworkNoSqlDB51?ssl=true&retrywrites=false&maxIdleTimeMS=120000&appName=@socialnetworknosql51db@",
 
   /**
    * Your secret sauce

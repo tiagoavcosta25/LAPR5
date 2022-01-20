@@ -56,4 +56,7 @@ export default (app: Router) => {
 
   route.get('/:creatorId',
     (req, res, next) => ctrl.getPostsByUser(req, res, next) );
+
+  route.get('/dcalc?=:emailA&:emailB',
+    (req, res, next) => ctrl.getPostsByUser(req, res, next) );
 };

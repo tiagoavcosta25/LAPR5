@@ -7,5 +7,6 @@ export default interface IPostRepo extends Repo<Post> {
 	findByDomainId (roleId: PostId | string): Promise<Post>;
 	findByCreatorId (creatorId: string): Promise<Post>;
 	getAllByCreatorId (creatorId: string): Promise<Post[]>;
+	countALikesOnBPosts (emailA: string, emailB: string): Promise<number>;
 }
   

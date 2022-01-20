@@ -222,4 +222,14 @@ export default class PostService implements IPostService {
     }
   }
 
+  public async getDCalc(emailA: string, emailB:string): Promise<Result<number>> {
+    try {
+      let count = await this.postRepo.countALikesOnBPosts(emailA, emailB);
+
+      return Result.ok<number>(count);
+    } catch (e) {
+      throw e;
+    }
+  }
+
 }

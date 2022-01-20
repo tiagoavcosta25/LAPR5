@@ -11,4 +11,5 @@ export default interface IPostController  {
   dislikePost(req: Request, res: Response, next: NextFunction);
 
   getPostsByUser(req: Request, res: Response, next: NextFunction);
+  getDCalc(req: Request, res: Response, next: NextFunction);
 }
