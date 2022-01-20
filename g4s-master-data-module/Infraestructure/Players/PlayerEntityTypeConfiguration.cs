@@ -12,6 +12,7 @@ namespace DDDSample1.Infrastructure.Players
             builder.HasKey(b => b.Id);
             builder.OwnsOne(x => x.DateOfBirth);
             builder.OwnsOne(x => x.Email);
+            builder.OwnsOne(x => x.Avatar);
             builder.OwnsOne(x => x.Password);
             builder.OwnsOne(x => x.PhoneNumber);
             builder.OwnsOne(x => x.Name);
