@@ -498,7 +498,6 @@ export class GetNetworkComponent implements OnInit {
       }
     }
   }
-
   checkIntersects() {
     let spheres = [];
       for(let node of this.nodes) {
