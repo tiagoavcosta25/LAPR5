@@ -1,20 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CreatingPlayer } from '../../models/creating-player.model';
 import { PlayerService } from '../../services/player.service';
 import { Validators, FormBuilder, FormControl, FormArray } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { emotionalStatusEnum } from 'src/shared/models/player/emotional-status-enum.model';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-register-player',
   templateUrl: './register-player.component.html',
   styleUrls: ['./register-player.component.css']
 })
-export class RegisterPlayerComponent implements OnInit {
+export class RegisterPlayerComponent implements OnInit, OnDestroy {
 
   success: any;
   successMessage: string = "Player created sucessfully!";
   errorMessage: string = "There was an error creating a player!";
+  avatars: string[] = [
+    "https://bootdey.com/img/Content/avatar/avatar1.png",
+    "https://bootdey.com/img/Content/avatar/avatar2.png",
+    "https://bootdey.com/img/Content/avatar/avatar3.png",
+    "https://bootdey.com/img/Content/avatar/avatar4.png",
+    "https://bootdey.com/img/Content/avatar/avatar5.png",
+    "https://bootdey.com/img/Content/avatar/avatar6.png",
+    "https://bootdey.com/img/Content/avatar/avatar7.png",
+    "https://bootdey.com/img/Content/avatar/avatar8.png",
+  ]
+  avatarPosition: number = 0;
+  currentAvatar: string = this.avatars[0];
 
   playerForm = this.fb.group({
     name: ['', Validators.required],
@@ -32,10 +45,18 @@ export class RegisterPlayerComponent implements OnInit {
 
   p: CreatingPlayer;
 
-  constructor(
-              private spinner: NgxSpinnerService,
+  interval: any;
+
+  constructor(private spinner: NgxSpinnerService,
               private service: PlayerService,
-              private fb: FormBuilder) { }
+              private fb: FormBuilder,
+              private location: Location) { }
+
+  ngOnDestroy(): void {
+    if(this.interval) {
+      clearInterval(this.interval);
+    }
+  }
 
   ngOnInit(): void {
     this.p = new CreatingPlayer();
@@ -59,6 +80,7 @@ export class RegisterPlayerComponent implements OnInit {
 
   registerPlayer() {
     this.p.name = this.playerForm.value.name;
+    this.p.avatar = this.avatars[this.avatarPosition];
     this.p.email = this.playerForm.value.email;
     this.p.day = Number(this.playerForm.value.day);
     this.p.month = Number(this.playerForm.value.month);
@@ -151,6 +173,7 @@ export class RegisterPlayerComponent implements OnInit {
         this.playerForm.reset();
         this.p = new CreatingPlayer;
       }
+      this.goBackInTime();
       this.spinner.hide();
     },
       error: _error => {
@@ -175,6 +198,37 @@ export class RegisterPlayerComponent implements OnInit {
       }
     }
     return emots;
+  }
+
+  nextAvatar() {
+    if(this.avatarPosition == this.avatars.length - 1) {
+      this.avatarPosition = 0;
+      this.currentAvatar = this.avatars[this.avatarPosition];
+    } else {
+      this.avatarPosition++;
+      this.currentAvatar = this.avatars[this.avatarPosition];
+    }
+  }
+
+  lastAvatar() {
+    console.log(this.avatarPosition);
+    if(this.avatarPosition == 0) {
+      this.avatarPosition = this.avatars.length - 1;
+      this.currentAvatar = this.avatars[this.avatarPosition];
+    } else {
+      this.avatarPosition--;
+      this.currentAvatar = this.avatars[this.avatarPosition];
+    }
+  }
+
+  goBack(): void {
+    this.location.back();
+  }
+
+  goBackInTime(): void {
+    this.interval = setInterval(() => {
+      this.goBack(); // api call
+   }, 1000);
   }
 
 }

@@ -35,15 +35,14 @@ export class ProfileCommonFriendsComponent implements OnInit {
       this.userEmail = params['email'];
       this.userFriends = await this.getFriends(this.userEmail);
       this.getFriendsInCommon();
+      this.spinner.hide();
+
     })
-    this.spinner.hide();
   }
 
   async getConnections(userEmail: string): Promise<GettingConnection[]> {
-    let cons = [];
-    const connections = this.cService.getConnections(userEmail);
-    cons = await lastValueFrom(connections);
-    return cons;
+    const connections = await lastValueFrom(this.cService.getConnections(userEmail));
+    return connections;
   }
 
   async getFriends(userEmail: string): Promise<Player[]> {

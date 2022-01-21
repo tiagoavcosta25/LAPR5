@@ -44,7 +44,6 @@ const routes: Routes = [
   { path: '', 
     component: LayoutComponent,
     children: [
-      { path: 'register-player',  component: RegisterPlayerComponent },
       { path: 'create-post',  component: CreatePostComponent },
       { path: 'get-feed',  component: GetFeedComponent },
       { path: 'get-players',  component: GetPlayersComponent },
@@ -82,6 +81,7 @@ const routes: Routes = [
     ]
   },
   { path: 'login',  component: LoginComponent },
+  { path: 'register-player',  component: RegisterPlayerComponent },
   { path: '', 
     component: GeneralComponent,
     children: [

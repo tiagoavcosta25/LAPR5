@@ -553,7 +553,7 @@ export class GetNetworkComponent implements OnInit {
             spanuserimage.style.width= "34px";
             
             const img = document.createElement( 'img' );
-            img.src = "https://bootdey.com/img/Content/avatar/avatar3.png";
+            img.src = player.avatar;
             img.style.maxWidth = "100%";
             img.style.display = "block";
             

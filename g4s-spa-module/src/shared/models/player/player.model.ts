@@ -2,6 +2,7 @@ export class Player {
     id: string;
     name: string;
     email: string;
+    avatar: string;
     year: number;
     month: number;
     day: number;

@@ -49,6 +49,7 @@ export default class PostRepo implements IPostRepo {
         postDocument.content = post.content.value;
         postDocument.creatorId = post.creatorId;
         postDocument.creatorEmail = post.creatorEmail;
+        postDocument.avatar = post.avatar;
         postDocument.name = post.name;
         postDocument.likes = post.likes;
         postDocument.dislikes = post.dislikes;
@@ -101,7 +102,6 @@ export default class PostRepo implements IPostRepo {
     const query = { creatorId: idB.toString(),
                     likes: idA};
     const count = await this.postSchema.count( query );
-    console.log("yo")
     if( count != null) {
       return count;
     }

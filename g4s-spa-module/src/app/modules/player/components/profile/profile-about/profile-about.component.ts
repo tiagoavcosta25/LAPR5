@@ -89,7 +89,6 @@ export class ProfileAboutComponent implements OnInit {
       this.getNetworkFirstLevel();
       this.getDCalc();
       this.getNetworkSize();
-      this.spinner.hide();
     },
       error: _error => {
         this.spinner.hide();
@@ -102,7 +101,6 @@ export class ProfileAboutComponent implements OnInit {
     this.pService.getOnlyPlayerByEmail(this.currentPlayerEmail).subscribe({ next: data => {
       this.currentPlayer = data;
       this.getPlayer();
-      this.spinner.hide();
     },
       error: _error => {
         this.spinner.hide();

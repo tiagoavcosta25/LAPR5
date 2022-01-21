@@ -20,7 +20,7 @@ export class ProfileTimelineComponent implements OnInit {
   
   currentPlayer: DobPlayer;
 
-  posts: Post[] = [];
+  posts: Post[];
 
   currentUserEmail: string;
 
@@ -148,7 +148,7 @@ export class ProfileTimelineComponent implements OnInit {
       return;
     }
     this.spinner.show();
-    let createComment: CreateComment = new CreateComment(post.id, this.currentUserEmail, this.currentUser.name, val);
+    let createComment: CreateComment = new CreateComment(post.id, this.currentUserEmail, this.currentUser.avatar, this.currentUser.name, val);
     let commentedPost: Post;
     this.fService.commentPost(createComment).subscribe({ next: data => {
       commentedPost = data;
@@ -276,6 +276,7 @@ export class ProfileTimelineComponent implements OnInit {
     createPost.content = val;
     createPost.creatorId = this.currentUser.id;
     createPost.creatorEmail = this.currentUserEmail;
+    createPost.avatar = this.currentUser.avatar;
     createPost.name = this.currentUser.name;
     createPost.tags = this.tags;
     this.fService.createPost(createPost).subscribe({ next: _data => {

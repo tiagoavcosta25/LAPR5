@@ -10,6 +10,7 @@ export class CommentMap extends Mapper<Comment> {
       id: comment.id.toString(),
       postId: postId,
       creatorId: comment.creatorId,
+      avatar: comment.avatar,
       name: comment.name,
       content: comment.content.value,
       createdAt: comment.createdAt
@@ -21,6 +22,7 @@ export class CommentMap extends Mapper<Comment> {
       domainId: comment.id.toString(),
       postId: comment.postId.toString(),
       creatorId: comment.creatorId.toString(),
+      avatar: comment.avatar.toString(),
       name: comment.name.toString(),
       content: comment.content.value.toString(),
       createdAt: comment.createdAt

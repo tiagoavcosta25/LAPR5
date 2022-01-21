@@ -68,6 +68,7 @@ export default class PostService implements IPostService {
         post.content = PostContent.create(postDTO.content).getValue();
         post.creatorId = postDTO.creatorId;
         post.creatorEmail = postDTO.creatorEmail;
+        post.avatar = postDTO.avatar;
         post.name = postDTO.name;
         post.likes = postDTO.likes;
         post.dislikes = postDTO.dislikes;
@@ -75,6 +76,7 @@ export default class PostService implements IPostService {
           let newCommentProps = {
             postId: c.postId,
             creatorId: c.creatorId,
+            avatar: c.avatar,
             name: c.name,
             content: c.content,
             createdAt: c.createdAt
@@ -204,6 +206,7 @@ export default class PostService implements IPostService {
         let newCommentProps = {
           postId: commentDTO.postId,
           creatorId: commentDTO.creatorId,
+          avatar: commentDTO.avatar,
           name: commentDTO.name,
           content: commentDTO.content,
           createdAt: commentDTO.createdAt

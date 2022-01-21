@@ -70,7 +70,7 @@
              <!-- begin timeline-body -->
              <div class="timeline-body">
                 <div class="timeline-header">
-                   <span class="userimage"><a href="/profile/{{ post.creatorEmail }}"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></a></span>
+                   <span class="userimage"><a href="/profile/{{ post.creatorEmail }}"><img src="{{ post.avatar }}" alt=""></a></span>
                    <span class="username"><a href="/profile/{{ post.creatorEmail }}"> {{ post.name }}</a> <small></small></span>
                 </div>
                 <div class="timeline-content">
@@ -105,7 +105,7 @@
                    <a style="text-decoration: none;cursor: pointer;" (click)="dislikePost(post)" class="px-2 text-inverse-lighter"><i [ngClass]="{'active-l':checkIfDisliked(post)}" [id]="'dislikecomment'+i" class="fa fa-thumbs-down fa-fw fa-lg mr-3"></i><span [id]="'dislikecommenttext'+i"> Dislike</span></a> 
                 </div>
                 <div class="timeline-comment-box">
-                   <div class="user"><img src="https://bootdey.com/img/Content/avatar/avatar3.png"></div>
+                   <div class="user"><img src="{{ currentUser.avatar }}"></div>
                    <div class="input">
                       <form action="">
                          <div class="input-group">
@@ -121,7 +121,7 @@
       
                 <div *ngIf="post.comments.length > 0" class="timeline-comments">
                    <div class="div" *ngFor="let comment of post.comments">
-                     <span class="userimage-comment"><a href="/profile/{{ comment.creatorId }}"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></a></span>
+                     <span class="userimage-comment"><a href="/profile/{{ comment.creatorId }}"><img src="{{ comment.avatar }}" alt=""></a></span>
                      <div class="alert alert-dark timeline-comments-comment" role="alert">
                          <div class="timeline-comments-header"><span class="username"><a style="text-decoration:none;" href="/profile/{{ comment.creatorId }}"> {{ comment.name }}</a> <span style="float:right;"> {{ getDate(comment.createdAt) }}, {{ getTime(comment.createdAt) }} </span> <small></small></span>
                           </div>
@@ -141,3 +141,5 @@
        </ul>
    </ng-template>
 </ng-template>
+
+<ngx-spinner></ngx-spinner>

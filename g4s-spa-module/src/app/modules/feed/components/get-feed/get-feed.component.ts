@@ -151,7 +151,7 @@ export class GetFeedComponent implements OnInit, OnDestroy {
       return;
     }
     this.spinner.show();
-    let createComment: CreateComment = new CreateComment(post.id, this.currentUserEmail, this.currentUser.name, val);
+    let createComment: CreateComment = new CreateComment(post.id, this.currentUserEmail, this.currentUser.avatar, this.currentUser.name, val);
     let commentedPost: Post;
     this.fService.commentPost(createComment).subscribe({ next: data => {
       commentedPost = data;
@@ -279,6 +279,7 @@ export class GetFeedComponent implements OnInit, OnDestroy {
     createPost.content = val;
     createPost.creatorId = this.currentUser.id;
     createPost.creatorEmail = this.currentUserEmail;
+    createPost.avatar = this.currentUser.avatar;
     createPost.name = this.currentUser.name;
     createPost.tags = this.tags;
     this.fService.createPost(createPost).subscribe({ next: _data => {

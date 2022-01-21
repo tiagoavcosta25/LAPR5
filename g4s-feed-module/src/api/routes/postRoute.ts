@@ -20,6 +20,7 @@ export default (app: Router) => {
         content: Joi.string().required(),
         creatorId: Joi.string().required(),
         creatorEmail: Joi.string().required(),
+        avatar: Joi.string().required(),
         name: Joi.string().required(),
         tags: Joi.array()
       })
@@ -33,6 +34,7 @@ export default (app: Router) => {
         content: Joi.string().required(),
         creatorId: Joi.string().required(),
         creatorEmail: Joi.string().required(),
+        avatar: Joi.string().required(),
         name: Joi.string().required()
       }),
     }),
