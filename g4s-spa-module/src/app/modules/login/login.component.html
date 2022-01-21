@@ -23,7 +23,10 @@
                         </div>
                         <div class="mb-4">
                             <input type="password" class="form-control mb-3" placeholder="Password" id="exampleInputPassword1" formControlName="password">
-                            <a href="" class="form-text text-muted text-decoration-none">Forgot your password?</a>
+                            <span *ngIf="wrongLogin" style="color: red; margin-left: 4vw; font-weight: 500;">Your email and password do not match. Please try again.</span>
+                            <span *ngIf="loginError" style="color: red; margin-left: 4vw; font-weight: 500;">There was an error with your login.</span>
+                            <p *ngIf="loginError || wrongLogin"></p>
+                            <a href="" style="margin-top: 2vw;" class="form-text text-muted text-decoration-none">Forgot your password?</a>
                         </div>
                             <button type="submit" class="btn btn-primary w-100" (click)="login()">Login</button>
                     </form>
@@ -34,3 +37,5 @@
             </div>
         </div>
     </section>
+
+    <ngx-spinner></ngx-spinner>

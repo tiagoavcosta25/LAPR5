@@ -230,5 +230,21 @@ namespace DDDSample1.Controllers
 
             return Ok(message);
         }
+
+        // GET: api/Players/login
+        [HttpGet("login")]
+        public async Task<ActionResult<int>> Login(string playerEmail, string playerPassword)
+        {
+            var code = await _service.Login(playerEmail, playerPassword);
+
+            if (code == 1)
+            {
+                return Ok(code);
+            }
+            else if (code == 2) {
+                return Ok(code);
+            } 
+            return BadRequest();
+        }
     }
 }

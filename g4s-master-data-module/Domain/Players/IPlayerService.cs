@@ -32,5 +32,7 @@ namespace DDDSample1.Domain.Players
         Task<List<GetPlayerSuggestionDto>> GetSuggestions(string playerEmail);
 
         Task<int> getPlayerNumber();
+
+        Task<int> Login(string playerEmail, string playerPassword); 
     }
 }

@@ -30,6 +30,16 @@ export class PlayerService {
     return this.http.get<number>(this.playerUrl + "number");
   }
 
+  /** Login */
+  login(playerEmail: string, playerPassword: string): Observable<number> {
+    const params = new HttpParams()
+    .set('playerEmail', playerEmail)
+    .set('playerPassword', playerPassword);
+    return this.http.get<number>(this.playerUrl + "login", { params: params }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   /** GET players from the server */
   getPlayers(): Observable<Player[]> {
     return this.http.get<Player[]>(this.playerUrl);

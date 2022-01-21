@@ -81,6 +81,7 @@ export class RegisterPlayerComponent implements OnInit, OnDestroy {
   registerPlayer() {
     this.p.name = this.playerForm.value.name;
     this.p.avatar = this.avatars[this.avatarPosition];
+    this.p.password = this.playerForm.value.password;
     this.p.email = this.playerForm.value.email;
     this.p.day = Number(this.playerForm.value.day);
     this.p.month = Number(this.playerForm.value.month);
