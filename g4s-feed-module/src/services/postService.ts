@@ -101,13 +101,13 @@ export default class PostService implements IPostService {
         return Result.fail<IPostDTO>("Post not found");
       }
       else {
-        if(post.dislikes.includes(postDTO.playerId)){
-          var i = post.dislikes.indexOf(postDTO.playerId);
+        if(post.dislikes.includes(postDTO.playerEmail)){
+          var i = post.dislikes.indexOf(postDTO.playerEmail);
           post.dislikes.splice(i, 1);
           
         }
-        if(!post.likes.includes(postDTO.playerId)){
-          post.likes.push(postDTO.playerId);
+        if(!post.likes.includes(postDTO.playerEmail)){
+          post.likes.push(postDTO.playerEmail);
         }
 
         await this.postRepo.save(post);
@@ -128,8 +128,8 @@ export default class PostService implements IPostService {
         return Result.fail<IPostDTO>("Post not found");
       }
       else {
-        if(post.likes.includes(postDTO.playerId)){
-          var i = post.likes.indexOf(postDTO.playerId);
+        if(post.likes.includes(postDTO.playerEmail)){
+          var i = post.likes.indexOf(postDTO.playerEmail);
           post.likes.splice(i, 1);
         }
 
@@ -151,13 +151,13 @@ export default class PostService implements IPostService {
         return Result.fail<IPostDTO>("Post not found");
       }
       else {
-        if(post.likes.includes(postDTO.playerId)){
-          var i = post.likes.indexOf(postDTO.playerId);
+        if(post.likes.includes(postDTO.playerEmail)){
+          var i = post.likes.indexOf(postDTO.playerEmail);
           post.likes.splice(i, 1);
           
         }
-        if(!post.dislikes.includes(postDTO.playerId)){
-          post.dislikes.push(postDTO.playerId);
+        if(!post.dislikes.includes(postDTO.playerEmail)){
+          post.dislikes.push(postDTO.playerEmail);
         }
 
         await this.postRepo.save(post);
@@ -178,8 +178,8 @@ export default class PostService implements IPostService {
         return Result.fail<IPostDTO>("Post not found");
       }
       else {
-        if(post.dislikes.includes(postDTO.playerId)){
-          var i = post.dislikes.indexOf(postDTO.playerId);
+        if(post.dislikes.includes(postDTO.playerEmail)){
+          var i = post.dislikes.indexOf(postDTO.playerEmail);
           post.dislikes.splice(i, 1);
         }
         
@@ -273,6 +273,19 @@ export default class PostService implements IPostService {
     try {
       let likes = await this.postRepo.countALikesOnBPosts(emailA, emailB);
       let dislikes = await this.postRepo.countADislikesOnBPosts(emailA, emailB);
+
+      let count = likes - dislikes;
+
+      return Result.ok<number>(count);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async getDCalcId(idA: string, idB:string): Promise<Result<number>> {
+    try {
+      let likes = await this.postRepo.countALikesOnBPosts(idA, idB);
+      let dislikes = await this.postRepo.countADislikesOnBPosts(idA, idB);
 
       let count = likes - dislikes;
 

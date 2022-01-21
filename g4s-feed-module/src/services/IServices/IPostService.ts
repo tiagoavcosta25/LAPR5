@@ -16,4 +16,5 @@ export default interface IPostService  {
   deleteComment(deleteCommentDTO: IDeleteCommentDTO): Promise<Result<IPostDTO>>;
   getPostsByUser(creatorId: string): Promise<Result<IPostDTO[]>>;
   getDCalc(emailA: string, emailB:string): Promise<Result<number>>;
+  getDCalcId(idA: string, idB:string): Promise<Result<number>>;
 }
