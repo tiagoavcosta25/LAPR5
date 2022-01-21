@@ -527,7 +527,7 @@ dfs2(Act,Level,LA):-
 
 %======== A-Star (HTTP) ========%
 
-:- http_handler('/api/a-star', safest_routeCompute, []).
+:- http_handler('/api/a-star', aStar_compute, []).
 
 aStar_compute(Request) :-
 	cors_enable(Request, [methods([get])]),
@@ -537,7 +537,7 @@ aStar_compute(Request) :-
 
 aStar_prepare(Request, Path, Cost) :-
     http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string]),
-    threshold(Threshold, [integer])]), mode(Mode, [integer])])
+    threshold(Threshold, [integer]), mode(Mode, [integer])]),
 	addPlayers(),
 	addConnections(),
 	getPlayerName(EmailPlayer, PlayerName),
