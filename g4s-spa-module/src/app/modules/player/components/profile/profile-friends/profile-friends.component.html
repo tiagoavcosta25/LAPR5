@@ -10,7 +10,7 @@
                 <a href="/profile/{{ friend.email }}">
                     <div class="row friends-friend-header justify-content-between">
                         <div class="col-lg-5">
-                            <span class="userimage"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></span>
+                            <span class="userimage"><img src="{{ friend.avatar }}" alt=""></span>
                             <span class="username"> {{ friend.name }} <small></small></span>
                         </div>
                         <div *ngIf="checkIfFriend(friend)" class="col-lg-3">
@@ -53,3 +53,4 @@
         </div>
     </div>
 </ng-template>
+<ngx-spinner></ngx-spinner>

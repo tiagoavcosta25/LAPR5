@@ -8,7 +8,7 @@ import { CreateComment } from 'src/shared/models/posts/create-comment.model';
 import { PlayerLike } from 'src/shared/models/player/player-like.model';
 import { CreatingPost } from '../../models/creating-post.model';
 import { ConnectionService } from 'src/app/modules/connection/services/connection.service';
-import { firstValueFrom, forkJoin, Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-get-feed',
@@ -41,7 +41,6 @@ export class GetFeedComponent implements OnInit, OnDestroy {
   async ngOnInit(): Promise<void> {
     this.tags = [];
     this.currentUserEmail = localStorage.getItem("currentPlayer")!;
-    this.getFriendsPosts();
     this.getLoggedPlayer();
   }
 
@@ -49,6 +48,7 @@ export class GetFeedComponent implements OnInit, OnDestroy {
     this.spinner.show();
     this.pService.getOnlyPlayerByEmail(this.currentUserEmail).subscribe({ next: data => {
       this.currentUser = data;
+      this.getFriendsPosts();
       this.spinner.hide();
     },
       error: _error => {
@@ -63,10 +63,10 @@ export class GetFeedComponent implements OnInit, OnDestroy {
     this.cService.getConnections(this.currentUserEmail).subscribe({ next: async data => {
       connections = data;
       for(let con of connections) {
-        const ob = this.fService.getPostsByUser(con.friend.email);
+        const ob = this.fService.getPostsByUser(con.friend.id);
         this.obs.push(ob);
       }
-      let ob = this.fService.getPostsByUser(this.currentUserEmail);
+      let ob = this.fService.getPostsByUser(this.currentUser.id);
       this.obs.push(ob);
       forkJoin(this.obs).subscribe(results => {
         let tempPosts = [];
@@ -151,7 +151,7 @@ export class GetFeedComponent implements OnInit, OnDestroy {
       return;
     }
     this.spinner.show();
-    let createComment: CreateComment = new CreateComment(post.id, this.currentUserEmail, this.currentUser.name, val);
+    let createComment: CreateComment = new CreateComment(post.id, this.currentUserEmail, this.currentUser.avatar, this.currentUser.name, val);
     let commentedPost: Post;
     this.fService.commentPost(createComment).subscribe({ next: data => {
       commentedPost = data;
@@ -169,9 +169,9 @@ export class GetFeedComponent implements OnInit, OnDestroy {
   }
 
   likePost(post: Post): void {
-    let like: PlayerLike = new PlayerLike(post.id, this.currentUserEmail);
+    let like: PlayerLike = new PlayerLike(post.id, this.currentUser.id);
     let likedPost: Post;
-    if(post.likes.some(x => x == this.currentUserEmail)) {
+    if(post.likes.some(x => x == this.currentUser.id)) {
       this.fService.unlikePost(like).subscribe({ next: data => {
         likedPost = data;
         for(let i = 0; i < this.posts.length; i++) {
@@ -199,9 +199,9 @@ export class GetFeedComponent implements OnInit, OnDestroy {
   }
 
   dislikePost(post: Post): void {
-    let dislike: PlayerLike = new PlayerLike(post.id, this.currentUserEmail);
+    let dislike: PlayerLike = new PlayerLike(post.id, this.currentUser.id);
     let dislikedPost: Post;
-    if(post.dislikes.some(x => x == this.currentUserEmail)) {
+    if(post.dislikes.some(x => x == this.currentUser.id)) {
       this.fService.undislikePost(dislike).subscribe({ next: data => {
         dislikedPost = data;
         for(let i = 0; i < this.posts.length; i++) {
@@ -251,7 +251,7 @@ export class GetFeedComponent implements OnInit, OnDestroy {
 
   checkIfLiked(post: Post): boolean {
     for(let l of post.likes) {
-      if(l == this.currentUserEmail) {
+      if(l == this.currentUser.id) {
         return true;
       }
     }
@@ -260,7 +260,7 @@ export class GetFeedComponent implements OnInit, OnDestroy {
 
   checkIfDisliked(post: Post): boolean {
     for(let d of post.dislikes) {
-      if(d == this.currentUserEmail) {
+      if(d == this.currentUser.id) {
         return true;
       }
     }
@@ -277,7 +277,9 @@ export class GetFeedComponent implements OnInit, OnDestroy {
     }
     let createPost: CreatingPost = new CreatingPost();
     createPost.content = val;
-    createPost.creatorId = this.currentUserEmail;
+    createPost.creatorId = this.currentUser.id;
+    createPost.creatorEmail = this.currentUserEmail;
+    createPost.avatar = this.currentUser.avatar;
     createPost.name = this.currentUser.name;
     createPost.tags = this.tags;
     this.fService.createPost(createPost).subscribe({ next: _data => {

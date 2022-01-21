@@ -1,4 +1,39 @@
 <div class="container my-5">
+    <div class="row justify-content-center mb-3">
+        <div class="row justify-content-between">
+            <div class="col-2">
+                <h1 style="font-weight: bold;">Register yourself</h1>
+            </div>
+            <div class="col-2">
+                <button type="button" (click)="goBack()" class="btn btn-primary">Go back</button>
+            </div>
+        </div>
+        <div class="col-3"></div>
+        <div class="col-6">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-2"></div>
+                        <div class="col-lg-9">
+                            <h2 class="card-title">Pick your avatar</h2>
+                        </div>
+                        <div class="col-lg-2">
+
+                        </div>
+                        <div class="col-lg-9">
+                            <img src="{{ currentAvatar }}" style="border-radius: 50%;height: 90%; width: 75%;" class="card-img-top mb-2" alt="avatar3">
+                        </div>
+                        <div class="col-lg-6">
+                            <button [disabled]="avatarPosition == 0" (click)="lastAvatar()" class="btn btn-primary">Last avatar</button>
+                        </div>
+                        <div class="col-lg-6">
+                            <button [disabled]="avatarPosition == 7" (click)="nextAvatar()" class="btn btn-primary">Next avatar</button>
+                        </div>
+                </div>
+                </div>
+              </div>
+        </div>
+    </div>
     <div class="row justify-content-center">
         <div class="col-md-6">
             

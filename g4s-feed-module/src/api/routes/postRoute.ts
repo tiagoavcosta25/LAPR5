@@ -19,6 +19,8 @@ export default (app: Router) => {
       body: Joi.object({
         content: Joi.string().required(),
         creatorId: Joi.string().required(),
+        creatorEmail: Joi.string().required(),
+        avatar: Joi.string().required(),
         name: Joi.string().required(),
         tags: Joi.array()
       })
@@ -31,6 +33,8 @@ export default (app: Router) => {
         id: Joi.string().required(),
         content: Joi.string().required(),
         creatorId: Joi.string().required(),
+        creatorEmail: Joi.string().required(),
+        avatar: Joi.string().required(),
         name: Joi.string().required()
       }),
     }),
@@ -40,7 +44,7 @@ export default (app: Router) => {
     celebrate({
       body: Joi.object({
         postId: Joi.string().required(),
-        playerId: Joi.string().required()
+        playerEmail: Joi.string().required()
       }),
     }),
     (req, res, next) => ctrl.likePost(req, res, next) );
@@ -49,7 +53,7 @@ export default (app: Router) => {
     celebrate({
       body: Joi.object({
         postId: Joi.string().required(),
-        playerId: Joi.string().required()
+        playerEmail: Joi.string().required()
       }),
     }),
     (req, res, next) => ctrl.unlikePost(req, res, next) );
@@ -58,7 +62,7 @@ export default (app: Router) => {
     celebrate({
       body: Joi.object({
         postId: Joi.string().required(),
-        playerId: Joi.string().required()
+        playerEmail: Joi.string().required()
       }),
     }),
     (req, res, next) => ctrl.dislikePost(req, res, next) );
@@ -67,7 +71,7 @@ export default (app: Router) => {
     celebrate({
       body: Joi.object({
         postId: Joi.string().required(),
-        playerId: Joi.string().required()
+        playerEmail: Joi.string().required()
       }),
     }),
     (req, res, next) => ctrl.undislikePost(req, res, next) );
@@ -76,6 +80,6 @@ export default (app: Router) => {
     (req, res, next) => ctrl.getPostsByUser(req, res, next) );
 
   //how many emailA likes are on emailB posts
-  route.get('/dcalc/:emailA/:emailB',
+  route.get('/dcalc/:idA/:idB',
     (req, res, next) => ctrl.getDCalc(req, res, next) );
 };

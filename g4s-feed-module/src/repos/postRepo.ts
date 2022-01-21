@@ -48,6 +48,8 @@ export default class PostRepo implements IPostRepo {
       } else {
         postDocument.content = post.content.value;
         postDocument.creatorId = post.creatorId;
+        postDocument.creatorEmail = post.creatorEmail;
+        postDocument.avatar = post.avatar;
         postDocument.name = post.name;
         postDocument.likes = post.likes;
         postDocument.dislikes = post.dislikes;
@@ -96,11 +98,10 @@ export default class PostRepo implements IPostRepo {
     return postList;
   }
 
-  public async countALikesOnBPosts (emailA: string, emailB: string): Promise<number> {
-    const query = { creatorId: emailB.toString(),
-                    likes: emailA};
+  public async countALikesOnBPosts(idA: string, idB: string): Promise<number> {
+    const query = { creatorId: idB.toString(),
+                    likes: idA};
     const count = await this.postSchema.count( query );
-
     if( count != null) {
       return count;
     }
@@ -108,11 +109,10 @@ export default class PostRepo implements IPostRepo {
       return 0;
   }
 
-  public async countADislikesOnBPosts (emailA: string, emailB: string): Promise<number> {
-    const query = { creatorId: emailB.toString(),
-                    dislikes: emailA};
+  public async countADislikesOnBPosts(idA: string, idB: string): Promise<number> {
+    const query = { creatorId: idB.toString(),
+                    dislikes: idA};
     const count = await this.postSchema.count( query );
-
     if( count != null) {
       return count;
     }

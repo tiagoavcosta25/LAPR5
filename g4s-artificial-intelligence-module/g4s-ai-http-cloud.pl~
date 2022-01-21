@@ -1,5 +1,7 @@
-% Libraries
+﻿% Libraries
 :- use_module(library(http/thread_httpd)).
+:- use_module(library(http/http_ssl_plugin)).
+:- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_parameters)).
 :- use_module(library(http/http_open)).
@@ -24,19 +26,31 @@
 :- dynamic strongest_currentRoute/2.
 :- dynamic suggest_currentRoute/2.
 :- dynamic common_tags_users/2.
+:- dynamic aStar_orderedList/1.
+:- dynamic occ/7.
+:- dynamic fear/2.
+:- dynamic hope/2.
 
 
 % HTTP Server setup at 'Port'
 startServer(Port) :-
-        http_server(http_dispatch, [port(Port)]),
+		http_server(http_dispatch,
+                    [ port(Port),
+                      ssl([ certificate_file('C:/Users/Administrador/Desktop/g4s_ai/g4s-artificial-intelligence-module/certificate.crt'),
+                            key_file('C:/Users/Administrador/Desktop/g4s_ai/g4s-artificial-intelligence-module/private.key')
+                          ])
+                    ]),
         asserta(port(Port)).
+
+
+
 
 % Cors setup
 :- set_setting(http:cors, [*]).
 
 % Server startup
 start_server:-
-    consult('g4s-ai-http-config-cloud'),  % Loads server's configuration
+    consult('g4s-ai-http-config-cloud'),  % Loads servers configuration
     server_port(Port),
     startServer(Port).
 
@@ -107,6 +121,28 @@ intersect([ ],_,[ ]).
 intersect([X|L1],L2,[X|LI]):-member(X,L2),!,intersect(L1,L2,LI).
 intersect([_|L1],L2, LI):- intersect(L1,L2,LI).
 
+listUnion([ ],L,L).
+listUnion([X|L1],L2,LU):-
+    member(X,L2),
+    listUnion(L1,L2,LU).
+listUnion([X|L1],L2,[X|LU]):-
+    listUnion(L1,L2,LU).
+
+sigmoid(X, ReturnValue):-
+    ReturnValue is (400/(1 + (2.71828 ** (-0.02 * X)))) - 200.
+
+setRelValues([], []):-!.
+setRelValues([H|T], [HFinal|Valores]):-
+	((H > 200, !, HFinal is 100);
+	(H < -200, !, HFinal is 0);
+	(!, HFinal is (H + 200) / 4)),
+        setRelValues(T, Valores).
+
+getMulticriteria(ConnectionStrength, RelationStrength, Output):-
+    MultiConnection is ConnectionStrength / 2,
+    MultiRelation is ((RelationStrength + 200) / 4) / 2,
+    Output is MultiConnection + MultiRelation.
+
 %======== Shortest route between two players (HTTP) ========%
 
 :- http_handler('/api/shortest-route', shortest_compute, []).
@@ -118,14 +154,14 @@ prolog_to_json(Path, JSONObject),
   reply_json(JSONObject, [json_object(dict)]).
 
 shortest_prepare(Request, Path) :-
-http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string])]),
+http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string]), threshold(Threshold, [integer])]),
 addPlayers(),
 addConnections(),
 getPlayerName(EmailPlayer, PlayerName),
 getPlayerName(EmailTarget, TargetName),
     node(PlayerId, PlayerName, _),
     node(TargetId, TargetName, _),
-shortest_route(PlayerId, TargetId, Path),
+shortest_route(Threshold, PlayerId, TargetId, Path),
 retractall(connection(_,_,_,_)),
 retractall(node(_,_,_)).
 
@@ -140,28 +176,25 @@ shortest_allDfs(Player1, Player2, PathList):- get_time(T1),
     T is T2-T1,write(T),write(' seconds'),nl,
     write('Possible Path List: '),write(PathList),nl,nl.
 
-shortest_dfs(Orig, Dest, Path):- shortest_dfsAux(Orig, Dest, [Orig], Path).
+shortest_dfs(N, Orig, Dest, Path):- shortest_dfsAux(0, N, Orig, Dest, [Orig], Path).
 
-shortest_dfsAux(Dest, Dest, LA, Path):- !, reverse(LA, Path).
-shortest_dfsAux(Current, Dest, LA, Path):-
-    (connection(Current, X, _, _);
-    connection(X, Current, _, _)),
+shortest_dfsAux(_, _, Dest, Dest, LA, Path):- !, reverse(LA, Path).
+shortest_dfsAux(M, N, _, _, _, _):- M >= N, !, false.
+shortest_dfsAux(M, N, Current, Dest, LA, Path):-
+    (connection(Current, X, _, _, _, _);
+    connection(X, Current, _, _, _, _)),
     \+ member(X,LA),
-    shortest_dfsAux(X,Dest,[X|LA],Path).
+    M1 is M + 1,
+    shortest_dfsAux(M1, N, X,Dest,[X|LA],Path).
 
 
-shortest_route(Orig, Dest, ShortestPathList):-
-		get_time(Ti),
-		(shortest_findRoute(Orig, Dest); true),
-		retract(shortest_currentRoute(ShortestPathList, _)),
-		get_time(Tf),
-		T is Tf-Ti,
-                write(ShortestPathList),
-		write('Solution generation time:'), write(T), nl.
+shortest_route(Threshold, Orig, Dest, ShortestPathList):-
+		(shortest_findRoute(Threshold, Orig, Dest); true),
+		retract(shortest_currentRoute(ShortestPathList, _)).
 
-shortest_findRoute(Orig, Dest):-
+shortest_findRoute(Threshold, Orig, Dest):-
 		asserta(shortest_currentRoute(_,10000)),
-		shortest_dfs(Orig, Dest, PathList),
+		shortest_dfs(Threshold, Orig, Dest, PathList),
 		shortest_updateRoute(PathList),
 		fail.
 
@@ -502,3 +535,227 @@ dfs2(Act,Level,LA):-
     Level1 is Level-1,
     asserta(userVisited(X)),
     dfs2(X,Level1,[X|LA]).
+
+
+
+%======== A-Star (HTTP) ========%
+
+:- http_handler('/api/a-star', aStar_compute, []).
+
+aStar_compute(Request) :-
+	cors_enable(Request, [methods([get])]),
+    aStar_prepare(Request, Path, _),
+	prolog_to_json(Path, JSONObject),
+    reply_json(JSONObject, [json_object(dict)]).
+
+aStar_prepare(Request, Path, Cost) :-
+    http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string]),
+    threshold(Threshold, [integer]), mode(Mode, [integer])]),
+	addPlayers(),
+	addConnections(),
+	getPlayerName(EmailPlayer, PlayerName),
+	getPlayerName(EmailTarget, TargetName),
+        node(PlayerId, PlayerName, _),
+        node(TargetId, TargetName, _),
+	aStar_find(Mode, Threshold, PlayerId, TargetId, Path, Cost),
+	retractall(connection(_,_,_,_)),
+	retractall(node(_,_,_)).
+
+%======== A-Star (Core) ========%
+
+aStar_find(Mode, Threshold, Orig, Dest, Path, Cost):-
+    (retract(aStar_orderedList(_));true),
+    aStar_getStrengthListByPlayer(Mode, Threshold, Orig, StrengthList),
+    asserta(aStar_orderedList(StrengthList)),
+    aStar_aux(Mode, 0, Threshold, Dest,[(_,0,[Orig])],Path,Cost).
+aStar_aux(_, M, N, Dest,[(_,Cost,[Dest|T])|_],Path,Cost):- M >= N,reverse([Dest|T],Path).
+aStar_aux(0, M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
+    LA=[Act|_],
+    findall((CEX,CaX,[X|LA]),
+    (Dest\==Act,
+    (connection(Act,X,CostX, _, _, _);
+    connection(X, Act, _, CostX, _, _)),
+    \+ member(X,LA),
+    CaX is CostX + Ca,
+    aStar_estimate(N,M,EstX),
+    CEX is CaX + EstX),
+    New),
+    append(Others,New,All),
+    sort(All,AllOrd),
+    M1 is M + 1,
+    aStar_aux(0, M1, N, Dest,AllOrd,Path,Cost).
+
+aStar_aux(1, M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
+    LA=[Act|_],
+    findall((CEX,CaX,[X|LA]),
+    (Dest\==Act,
+    (connection(Act,X,ConnStrength, _, RelStrength, _);
+    connection(X, Act, _, ConnStrength, _, RelStrength)),
+    \+ member(X,LA),
+    getMulticriteria(ConnStrength, RelStrength, CostX),
+    CaX is CostX + Ca,
+    aStar_estimate(N,M,EstX),
+    CEX is CaX + EstX),
+    New),
+    append(Others,New,All),
+    sort(All,AllOrd),
+    M1 is M + 1,
+    aStar_aux(1, M1, N, Dest,AllOrd,Path,Cost).
+
+
+aStar_estimate(N,M, Est):-
+    retract(aStar_orderedList([H|List])),
+    Est is H * (N - M),
+    asserta(aStar_orderedList(List)).
+
+aStar_sort(List, ResultList):- sort(0,  @>=, List,  ResultList).
+
+aStar_getOrderedList(ReturnList):-
+    findall(FirstStrength, connection(_, _, FirstStrength, _, _, _), AllFirstList),
+    findall(SecondStrength, connection(_, _, _, SecondStrength, _, _), AllSecondList),
+    listUnion(AllFirstList, AllSecondList, AllList),
+    sort(0, @>=, AllList, ReturnList).
+
+aStar_getStrengthListByPlayer(Mode, N, PlayerId, ReturnList):-
+    aStar_getStrengthListByLevel(Mode, 0, N, [PlayerId], AllList),
+    sort(0, @>=, AllList, ReturnList).
+
+aStar_getStrengthListByLevel(_, N, N, _, []):-!.
+aStar_getStrengthListByLevel(Mode, M, N, PlayerList, ReturnList):-
+    aStar_getStrengthListByPlayersList(Mode, PlayerList, FriendsList, StrengthList),
+    M1 is M + 1,
+    aStar_getStrengthListByLevel(Mode, M1, N, FriendsList, List),
+    listUnion(StrengthList, List, ReturnList).
+
+aStar_getStrengthListByPlayersList(_, [], [], []):-!.
+aStar_getStrengthListByPlayersList(Mode, [PlayerId | PlayerList], ReturnFriendList, ReturnList):-
+    network_getNetworkByLevel(PlayerId, 1, FriendsList, _),
+    aStar_getStrengthListByFriendsList(Mode, PlayerId, FriendsList, StrengthList),
+    aStar_getStrengthListByPlayersList(Mode, PlayerList, FList, List),
+    listUnion(FriendsList, FList, ReturnFriendList),
+    listUnion(StrengthList, List, ReturnList).
+
+aStar_getStrengthListByFriendsList(_, _, [], []):-!.
+aStar_getStrengthListByFriendsList(0, PlayerId, [FriendId|FriendList], [FirstStrength|[SecondStrength|StrengthList]]):-
+    (connection(PlayerId, FriendId, FirstStrength, SecondStrength, _, _);
+    connection(FriendId, PlayerId, FirstStrength, SecondStrength, _, _)),
+    aStar_getStrengthListByFriendsList(0, PlayerId, FriendList, StrengthList).
+aStar_getStrengthListByFriendsList(1, PlayerId, [FriendId|FriendList], [FirstMulti|[SecondMulti|StrengthList]]):-
+    (connection(PlayerId, FriendId, FirstStrength, SecondStrength, FirstRelStrength, SecondRelStrength);
+    connection(FriendId, PlayerId, FirstStrength, SecondStrength, FirstRelStrength, SecondRelStrength)),
+    getMulticriteria(FirstStrength, FirstRelStrength, FirstMulti),
+    getMulticriteria(SecondStrength, SecondRelStrength, SecondMulti),
+    aStar_getStrengthListByFriendsList(1, PlayerId, FriendList, StrengthList).
+
+
+%======== Emotion Relation Variation (HTTP) ========%
+
+:- http_handler('/api/emotion-relation', emotion_relationCompute, []).
+
+emotion_relationCompute(Request) :-
+	cors_enable(Request, [methods([get])]),
+    emotion_relationPrepare(Request, NewJoy, _),
+	prolog_to_json(NewJoy, JSONObject),
+    reply_json(JSONObject, [json_object(dict)]).
+
+emotion_relationPrepare(Request, NewJoy, NewAnguish) :-
+    http_parameters(Request, [emailPlayer(EmailPlayer, [string]), value(Value, [integer])]),
+	addPlayers(),
+	addConnections(),
+	getPlayerName(EmailPlayer, PlayerName),
+        node(PlayerId, PlayerName, _),
+	emotion_relationChange(PlayerId, Value, NewJoy, NewAnguish),
+	retractall(connection(_,_,_,_)),
+	retractall(node(_,_,_)).
+
+%======== Emotion Suggested Variation (HTTP) ========%
+
+:- http_handler('/api/emotion-suggested', emotion_suggestedCompute, []).
+
+emotion_suggestedCompute(Request) :-
+	cors_enable(Request, [methods([get])]),
+    emotion_suggestedPrepare(Request, NewHope, _, _, _),
+	prolog_to_json(NewHope, JSONObject),
+    reply_json(JSONObject, [json_object(dict)]).
+
+emotion_suggestedPrepare(Request, NewHope, NewDeception, NewFear, NewRelief) :-
+    http_parameters(Request, [emailPlayer(EmailPlayer, [string]), tags(Tags, [string])]),
+	addPlayers(),
+	addConnections(),
+	getPlayerName(EmailPlayer, PlayerName),
+        node(PlayerId, PlayerName, _),
+	emotion_groupSuggestion(PlayerId, Tags, NewHope, NewDeception, NewFear, NewRelief),
+	retractall(connection(_,_,_,_)),
+	retractall(node(_,_,_)).
+
+%======== Emotion Variation (Core) ========%
+
+emotion_increase(PreviousValue, Value, Saturation, Return):-
+    ((Value < Saturation, !, Min is Value);
+    (!, Min is Saturation)),
+    Div is Min / Saturation,
+    Return is PreviousValue + (1 - PreviousValue) * Div.
+
+emotion_decrease(PreviousValue, Value, Saturation, Return):-
+    ((Value < Saturation, !, Min is Value);
+    (!, Min is Saturation)),
+    Div is 1 - (Min / Saturation),
+    Return is PreviousValue * Div.
+
+emotion_relationChange(PlayerId, Value, NewJoy, NewAnguish):-
+    occ(PlayerId, Joy, Anguish, _, _, _, _),
+    ((Value > 0, !,
+     emotion_increase(Joy, Value, 200, NewJoy),
+     emotion_decrease(Anguish, Value, 200, NewAnguish));
+    (Value < 0, !,
+    emotion_increase(Anguish, -Value, 200, NewAnguish),
+    emotion_decrease(Joy, -Value, 200, NewJoy))),
+    retract(occ(PlayerId, Joy, Anguish, Hope, Deception, Fear, Relief)),
+    asserta(occ(PlayerId, NewJoy, NewAnguish, Hope, Deception, Fear, Relief)).
+
+emotion_groupSuggestion(PlayerId, TagList, NewHope, NewDeception, NewFear, NewRelief):-
+    suggest_playerGroups(PlayerId, TagList, SuggestedGroup),
+    emotion_checkHope(PlayerId, SuggestedGroup, NewHope, NewDeception),
+    emotion_checkFear(PlayerId, SuggestedGroup, NewFear, NewRelief),
+    retract(occ(PlayerId, Joy, Anguish, _, _, _, _)),
+    asserta(occ(PlayerId, Joy, Anguish, NewHope, NewDeception, NewFear, NewRelief)).
+
+emotion_checkHope(PlayerId, SuggestedGroup, NewHope, NewDeception):-
+    emotion_countHope(PlayerId, SuggestedGroup, 0, Counter),
+    occ(PlayerId, _, _, Hope, Deception, _, _),
+    length(SuggestedGroup, Length),
+    ((Counter > 0, !,
+      emotion_increase(Hope, Counter, Length, NewHope),
+     emotion_decrease(Deception, Counter, Length, NewDeception));
+    (emotion_increase(Deception, Counter, Length, NewDeception),
+    emotion_decrease(Hope, Counter, Length, NewHope))).
+
+emotion_countHope(_, [], Counter, Return):- Return is Counter.
+emotion_countHope(PlayerId, [H | Group], Counter, Return):-
+    hope(PlayerId, H),
+    !, Counter1 is Counter + 1,
+    emotion_countHope(PlayerId, Group, Counter1, Return).
+emotion_countHope(PlayerId, [_ | Group], Counter, Return):-
+    !,emotion_countHope(PlayerId, Group, Counter, Return).
+
+
+
+emotion_checkFear(PlayerId, SuggestedGroup, NewFear, NewRelief):-
+    emotion_countFear(PlayerId, SuggestedGroup, 0, Counter),
+    occ(PlayerId, _, _, _, _, Fear, Relief),
+    length(SuggestedGroup, Length),
+    ((Counter > 0, !,
+      emotion_increase(Fear, Counter, Length, NewFear),
+     emotion_decrease(Relief, Counter, Length, NewRelief));
+    (emotion_increase(Relief, Counter, Length, NewRelief),
+    emotion_decrease(Fear, Counter, Length, NewFear))).
+
+emotion_countFear(_, [], Counter, Return):- Return is Counter.
+emotion_countFear(PlayerId, [H | Group], Counter, Return):-
+    fear(PlayerId, H),
+    !, Counter1 is Counter + 1,
+    emotion_countFear(PlayerId, Group, Counter1, Return).
+emotion_countFear(PlayerId, [_ | Group], Counter, Return):-
+    !,emotion_countFear(PlayerId, Group, Counter, Return).
+
+suggest_playerGroups(_, _, [3,6, 4, 5]).
