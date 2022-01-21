@@ -1,0 +1,103 @@
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-lg-7 col-algo">
+            <div class="row justify-content-center">
+                <div class="col-8">
+                    <h1>What algorithm would you like to calculate: </h1>
+                </div>
+                <div class="col-2">
+                    <span class="badge bg-success" style="font-size: 20px;">{{ algo }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-3">
+                <button type ="submit astar" class="btn btn-primary" (click)="setAlgo('astar')">A*</button>
+            </div>
+            <div class="col-3">
+                <button type ="submit bfs" class="btn btn-primary" (click)="setAlgo('bfs')">BFS</button>
+            </div>
+            <div class="col-3">
+                <button type ="submit shortest" class="btn btn-primary" (click)="setAlgo('shortest')">Shortest path</button>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="algo!=undefined;">
+        
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-7 multitext">
+                <div class="row justify-content-center">
+                    <div class="col-10">
+                        <h1>Would you like to calculate the cost as multicriteria:</h1>
+                    </div>
+                    <div class="col-1">
+                        <span class="badge bg-success" style="font-size: 20px;">{{ getMulticriteria() }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-3">
+                    <button type ="submit" class="btn btn-primary" (click)="setMulticriteria(true)">Yes</button>
+                </div>
+                <div class="col-3">
+                    <button type ="submit" class="btn btn-primary" (click)="setMulticriteria(false)">No</button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <div *ngIf="multicriteria!=undefined;">
+        
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-6 ntext">
+                <div class="row justify-content-center">
+                    <div class="col-7">
+                        <h1>What N would you like to set:</h1>
+                    </div>
+                    <div class="col-1">
+                        <span class="badge bg-success" style="font-size: 20px;">{{ n }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-4">
+                    <select class="form-select form-select-lg mb-3" [(ngModel)]="tempN" aria-label=".form-select-lg example">
+                        <option selected value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                    </select>
+                </div>
+                <div class="col-3">
+                    <button type ="submit" class="btn btn-primary" (click)="setN()">Set N</button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <div *ngIf="n!=undefined && networkPlayers!=undefined;">
+        
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-6 ntext">
+                <h1>Choose the player to calculate the path too:</h1>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-4">
+                    <select id="form-select" [(ngModel)]="tempTarget" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                        <option *ngFor="let p of networkPlayers" value="{{ p.email }}">{{ p.name + " - " + p.email }}</option>
+                    </select>
+                </div>
+                <div class="col-3">
+                    <button type ="submit" class="btn btn-primary" (click)="calculate()">Calculate</button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <ngx-spinner></ngx-spinner>
+</div>

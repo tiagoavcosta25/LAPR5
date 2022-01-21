@@ -34,6 +34,7 @@ import { ProfileTagCloudConnComponent } from './modules/player/components/profil
 import { LeaderboardDimensionComponent } from './modules/leaderboard/components/leaderboard-dimension/leaderboard-dimension.component';
 import { LeaderboardStrengthComponent } from './modules/leaderboard/components/leaderboard-strength/leaderboard-strength.component';
 import { LeaderboardComponent } from './modules/leaderboard/leaderboard.component';
+import { AipathsComponent } from './modules/ai/components/aipaths/aipaths.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -54,6 +55,7 @@ const routes: Routes = [
       { path: 'update-player',  component: UpdatePlayerComponent },
       { path: 'search-player', component: SearchPlayerComponent},
       { path: 'safest-route', component: SafestRouteComponent},
+      { path: 'ai-paths', component: AipathsComponent},
       { path: 'a-star', component: AStarComponent},
       { path: 'shortest-route', component: ShortestRouteComponent},
       { path: 'strongest-route', component: StrongestRouteComponent},

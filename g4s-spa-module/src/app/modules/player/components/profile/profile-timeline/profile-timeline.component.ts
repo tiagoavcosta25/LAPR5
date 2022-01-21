@@ -44,13 +44,13 @@ export class ProfileTimelineComponent implements OnInit {
       this.getCurrentPlayer();
       this.checkIfOwnProfile();
     })
-    this.getPostsByUser();
   }
 
   getCurrentPlayer(): void {
     this.spinner.show();
     this.pService.getOnlyPlayerByEmail(this.userEmail).subscribe({ next: data => {
       this.currentPlayer = data;
+      this.getPostsByUser();
       this.spinner.hide();
     },
       error: _error => {
@@ -73,7 +73,7 @@ export class ProfileTimelineComponent implements OnInit {
 
   getPostsByUser(): void {
     this.spinner.show();
-    this.fService.getPostsByUser(this.userEmail).subscribe({ next: data => {
+    this.fService.getPostsByUser(this.currentPlayer.id).subscribe({ next: data => {
       this.posts = data;
       this.spinner.hide();
     },
@@ -274,7 +274,8 @@ export class ProfileTimelineComponent implements OnInit {
     }
     let createPost: CreatingPost = new CreatingPost();
     createPost.content = val;
-    createPost.creatorId = this.currentUserEmail;
+    createPost.creatorId = this.currentUser.id;
+    createPost.creatorEmail = this.currentUserEmail;
     createPost.name = this.currentUser.name;
     createPost.tags = this.tags;
     this.fService.createPost(createPost).subscribe({ next: _data => {

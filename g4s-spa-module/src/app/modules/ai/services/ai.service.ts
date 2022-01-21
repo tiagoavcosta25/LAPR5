@@ -21,7 +21,7 @@ export class AiService {
     const params = new HttpParams()
       .set('emailPlayer', emailPlayer)
       .set('emailTarget', emailTarget);
-    const url = this.aiUrl + '/api/strongest-route';
+    const url = this.aiUrl + '/strongest-route';
     return this.http.get<string[]>(url, { params: params }).pipe(
       catchError(this.handleError)
     );
@@ -32,7 +32,7 @@ export class AiService {
     const params = new HttpParams()
       .set('emailPlayer', emailPlayer)
       .set('emailTarget', emailTarget);
-    const url = this.aiUrl + '/api/shortest-route';
+    const url = this.aiUrl + '/shortest-route';
     return this.http.get<string[]>(url, { params: params }).pipe(
       catchError(this.handleError)
     );
@@ -42,7 +42,7 @@ export class AiService {
     getUsersWithXCommonTags(x: number): Observable<[[][]]> {
       const params = new HttpParams()
       .set('num', x);
-      const url = this.aiUrl + '/api/common-tags';
+      const url = this.aiUrl + '/common-tags';
       return this.http.get<[[][]]>(url, { params: params }).pipe(
         catchError(this.handleError)
       );
@@ -54,7 +54,7 @@ export class AiService {
       .set('emailPlayer', emailPlayer)
       .set('emailTarget', emailTarget)
       .set('threshold', threshold);
-    const url = this.aiUrl + '/api/safest-route';
+    const url = this.aiUrl + '/safest-route';
     return this.http.get<string[]>(url, { params: params }).pipe(
       catchError(this.handleError)
     );
@@ -67,7 +67,7 @@ export class AiService {
     .set('scope', scope);
     console.log(emailPlayer);
     console.log(scope);
-    const url = this.aiUrl + '/api/suggest-players';
+    const url = this.aiUrl + '/suggest-players';
     return this.http.get<string[]>(url, { params: params }).pipe(
       catchError(this.handleError)
     );
