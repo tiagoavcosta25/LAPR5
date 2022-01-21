@@ -122,9 +122,11 @@ parse_connections([H|List]):-
 prepareConnections() :-
 	forall(connectionTemp(A, B, C),(
 		connectionTemp(B, A, D),
-		getDCalc(A, B, DAB),
-		getDCalc(B, A, DBA),
-		asserta(connection(A, B, C, D, DAB.get(dCalc), DBA.get(dCalc))))),
+		getDCalc(A, B, DABTemp),
+		getDCalc(B, A, DBATemp),
+		sigmoid(DABTemp.get(dCalc), DAB),		
+		sigmoid(DBATemp.get(dCalc), DBA),
+		asserta(connection(A, B, C, D, DAB, DBA)))),
 	retractall(connectionTemp(_,_,_)).
 
 %======== Auxiliary Methods ========%
