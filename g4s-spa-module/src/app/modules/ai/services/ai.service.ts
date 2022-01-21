@@ -65,11 +65,22 @@ export class AiService {
     const params = new HttpParams()
     .set('emailPlayer', emailPlayer)
     .set('scope', scope);
-    console.log(emailPlayer);
-    console.log(scope);
     const url = this.aiUrl + '/suggest-players';
     return this.http.get<string[]>(url, { params: params }).pipe(
       catchError(this.handleError)
+    );
+  }
+
+  /** GET: searches for players from server */
+  getAiPath(algo:string, emailPlayer: string, emailTarget: string, mode:number, n: number): Observable<string[][]> {
+    const params = new HttpParams()
+    .set('emailPlayer', emailPlayer)
+    .set('emailTarget', emailTarget)
+    .set('mode', mode)
+    .set('n', n);
+    const url = this.aiUrl + '/' + algo;
+    return this.http.get<string[][]>(url, { params: params }).pipe(
+    catchError(this.handleError)
     );
   }
 
