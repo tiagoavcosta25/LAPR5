@@ -87,10 +87,17 @@ connection(1,51,6,2).
 connection(51,61,7,3).
 connection(61,200,2,4).
 
+occ(1, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
+
+hope(1, 21).
+fear(1, 31).
+fear(1, 41).
+
 % Secundary knowledge base
 :- dynamic shortest_currentRoute/2.
 :- dynamic safest_currentRoute/2.
 :- dynamic aStar_orderedList/1.
+:- dynamic occ/7.
 
 % aux methods
 
@@ -141,7 +148,7 @@ shortest_dfsAux(0, M, N, Current, Dest, LA, Strength, Path):-
     M1 is M + 1,
     shortest_dfsAux(0, M1, N, X,Dest,[X|LA], Strength1, Path),
 	Strength is Strength1 + StrengthA.
-	
+
 shortest_dfsAux(1, M, N, Current, Dest, LA, Strength, Path):-
     (connection(Current, X, StrengthA, _, RelA, _);
     connection(X, Current, _, StrengthA, _, RelA)),
@@ -503,3 +510,76 @@ aStar_getStrengthListByFriendsList(1, PlayerId, [FriendId|FriendList], [FirstMul
     getMulticriteria(FirstStrength, FirstRelStrength, FirstMulti),
     getMulticriteria(SecondStrength, SecondRelStrength, SecondMulti),
     aStar_getStrengthListByFriendsList(1, PlayerId, FriendList, StrengthList).
+
+
+%======== Emotion Variation (Core) ========%
+
+emotion_increase(PreviousValue, Value, Saturation, Return):-
+    ((Value < Saturation, !, Min is Value);
+    (!, Min is Saturation)),
+    Div is Min / Saturation,
+    Return is PreviousValue + (1 - PreviousValue) * Div.
+
+emotion_decrease(PreviousValue, Value, Saturation, Return):-
+    ((Value < Saturation, !, Min is Value);
+    (!, Min is Saturation)),
+    Div is 1 - (Min / Saturation),
+    Return is PreviousValue * Div.
+
+emotion_relationChange(PlayerId, Value, NewJoy, NewAnguish):-
+    occ(PlayerId, Joy, Anguish, _, _, _, _),
+    ((Value > 0, !,
+     emotion_increase(Joy, Value, 200, NewJoy),
+     emotion_decrease(Anguish, Value, 200, NewAnguish));
+    (Value < 0, !,
+    emotion_increase(Anguish, -Value, 200, NewAnguish),
+    emotion_decrease(Joy, -Value, 200, NewJoy))),
+    retract(occ(PlayerId, Joy, Anguish, Hope, Deception, Fear, Relief)),
+    asserta(occ(PlayerId, NewJoy, NewAnguish, Hope, Deception, Fear, Relief)).
+
+emotion_groupSuggestion(PlayerId, TagList, NewHope, NewDeception, NewFear, NewRelief):-
+    suggest_playerGroups(PlayerId, TagList, SuggestedGroup),
+    emotion_checkHope(PlayerId, SuggestedGroup, NewHope, NewDeception),
+    emotion_checkFear(PlayerId, SuggestedGroup, NewFear, NewRelief),
+    retract(occ(PlayerId, Joy, Anguish, _, _, _, _)),
+    asserta(occ(PlayerId, Joy, Anguish, NewHope, NewDeception, NewFear, NewRelief)).
+
+emotion_checkHope(PlayerId, SuggestedGroup, NewHope, NewDeception):-
+    emotion_countHope(PlayerId, SuggestedGroup, 0, Counter),
+    occ(PlayerId, _, _, Hope, Deception, _, _),
+    length(SuggestedGroup, Length),
+    ((Counter > 0, !,
+      emotion_increase(Hope, Counter, Length, NewHope),
+     emotion_decrease(Deception, Counter, Length, NewDeception));
+    (emotion_increase(Deception, Counter, Length, NewDeception),
+    emotion_decrease(Hope, Counter, Length, NewHope))).
+
+emotion_countHope(_, [], Counter, Return):- Return is Counter.
+emotion_countHope(PlayerId, [H | Group], Counter, Return):-
+    hope(PlayerId, H),
+    !, Counter1 is Counter + 1,
+    emotion_countHope(PlayerId, Group, Counter1, Return).
+emotion_countHope(PlayerId, [_ | Group], Counter, Return):-
+    !,emotion_countHope(PlayerId, Group, Counter, Return).
+
+
+
+emotion_checkFear(PlayerId, SuggestedGroup, NewFear, NewRelief):-
+    emotion_countFear(PlayerId, SuggestedGroup, 0, Counter),
+    occ(PlayerId, _, _, _, _, Fear, Relief),
+    length(SuggestedGroup, Length),
+    ((Counter > 0, !,
+      emotion_increase(Fear, Counter, Length, NewFear),
+     emotion_decrease(Relief, Counter, Length, NewRelief));
+    (emotion_increase(Relief, Counter, Length, NewRelief),
+    emotion_decrease(Fear, Counter, Length, NewFear))).
+
+emotion_countFear(_, [], Counter, Return):- Return is Counter.
+emotion_countFear(PlayerId, [H | Group], Counter, Return):-
+    fear(PlayerId, H),
+    !, Counter1 is Counter + 1,
+    emotion_countFear(PlayerId, Group, Counter1, Return).
+emotion_countFear(PlayerId, [_ | Group], Counter, Return):-
+    !,emotion_countFear(PlayerId, Group, Counter, Return).
+
+suggest_playerGroups(_, _, [3,6, 4, 5]).
