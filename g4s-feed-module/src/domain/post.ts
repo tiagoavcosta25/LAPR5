@@ -13,6 +13,7 @@ interface PostProps {
   content: PostContent;
   creatorId: string;
   creatorEmail: string;
+  avatar: string;
   name: string;
   likes: string[];
   dislikes: string[];
@@ -52,6 +53,14 @@ export class Post extends AggregateRoot<PostProps> {
 
   set creatorId ( value: string) {
     this.props.creatorId = value;
+  }
+
+  get avatar (): string {
+    return this.props.avatar;
+  }
+
+  set avatar ( value: string) {
+    this.props.avatar = value;
   }
 
   get creatorEmail (): string {
@@ -111,6 +120,7 @@ export class Post extends AggregateRoot<PostProps> {
     const creatorId = postDTO.creatorId;
     const creatorEmail = postDTO.creatorEmail;
     const name = postDTO.name;
+    const avatar = postDTO.avatar;
     let likes = postDTO.likes;
     let dislikes = postDTO.dislikes;
     const tags = postDTO.tags;
@@ -133,6 +143,7 @@ export class Post extends AggregateRoot<PostProps> {
         let newCommentProps = {
           postId: comment.postId,
           creatorId: comment.creatorId,
+          avatar: comment.avatar,
           name: comment.name,
           content: comment.content,
           createdAt: comment.createdAt
@@ -153,8 +164,8 @@ export class Post extends AggregateRoot<PostProps> {
     } else {
       const resContent = PostContent.create(content);
       if(resContent.isSuccess){
-        const post = new Post({ content: resContent.getValue(), creatorId: creatorId, creatorEmail: creatorEmail, name: name, likes: likes,
-           dislikes: dislikes, tags: tags, comments: _comments, createdAt: createdAt }, id);
+        const post = new Post({ content: resContent.getValue(), creatorId: creatorId, creatorEmail: creatorEmail, avatar: avatar,
+           name: name, likes: likes, dislikes: dislikes, tags: tags, comments: _comments, createdAt: createdAt }, id);
         return Result.ok<Post>( post )
       }
       return Result.fail<Post>('Post content error')

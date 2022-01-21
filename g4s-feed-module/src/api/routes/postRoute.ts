@@ -20,6 +20,7 @@ export default (app: Router) => {
         content: Joi.string().required(),
         creatorId: Joi.string().required(),
         creatorEmail: Joi.string().required(),
+        avatar: Joi.string().required(),
         name: Joi.string().required(),
         tags: Joi.array()
       })
@@ -33,6 +34,7 @@ export default (app: Router) => {
         content: Joi.string().required(),
         creatorId: Joi.string().required(),
         creatorEmail: Joi.string().required(),
+        avatar: Joi.string().required(),
         name: Joi.string().required()
       }),
     }),
@@ -78,10 +80,6 @@ export default (app: Router) => {
     (req, res, next) => ctrl.getPostsByUser(req, res, next) );
 
   //how many emailA likes are on emailB posts
-  route.get('/dcalc/:emailA/:emailB',
+  route.get('/dcalc/:idA/:idB',
     (req, res, next) => ctrl.getDCalc(req, res, next) );
-
-  //how many emailA likes are on emailB posts
-  route.get('/dcalcid/:idA/:idB',
-    (req, res, next) => ctrl.getDCalcId(req, res, next) );
 };

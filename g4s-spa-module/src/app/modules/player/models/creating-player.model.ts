@@ -1,5 +1,6 @@
 export class CreatingPlayer {
     name: string;
+    avatar: string;
     email: string;
     password: string;
     year: number;

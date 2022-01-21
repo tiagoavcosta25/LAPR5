@@ -8,6 +8,7 @@ const PostSchema = new mongoose.Schema(
     content: { type: String}, 
     creatorId: { type: String},
     creatorEmail: { type: String },
+    avatar: { type: String },
     name: { type: String },
     likes: { type: [String] },
     dislikes: { type: [String]},

@@ -151,7 +151,7 @@ export class GetFeedComponent implements OnInit, OnDestroy {
       return;
     }
     this.spinner.show();
-    let createComment: CreateComment = new CreateComment(post.id, this.currentUserEmail, this.currentUser.name, val);
+    let createComment: CreateComment = new CreateComment(post.id, this.currentUserEmail, this.currentUser.avatar, this.currentUser.name, val);
     let commentedPost: Post;
     this.fService.commentPost(createComment).subscribe({ next: data => {
       commentedPost = data;
@@ -169,9 +169,9 @@ export class GetFeedComponent implements OnInit, OnDestroy {
   }
 
   likePost(post: Post): void {
-    let like: PlayerLike = new PlayerLike(post.id, this.currentUserEmail);
+    let like: PlayerLike = new PlayerLike(post.id, this.currentUser.id);
     let likedPost: Post;
-    if(post.likes.some(x => x == this.currentUserEmail)) {
+    if(post.likes.some(x => x == this.currentUser.id)) {
       this.fService.unlikePost(like).subscribe({ next: data => {
         likedPost = data;
         for(let i = 0; i < this.posts.length; i++) {
@@ -199,9 +199,9 @@ export class GetFeedComponent implements OnInit, OnDestroy {
   }
 
   dislikePost(post: Post): void {
-    let dislike: PlayerLike = new PlayerLike(post.id, this.currentUserEmail);
+    let dislike: PlayerLike = new PlayerLike(post.id, this.currentUser.id);
     let dislikedPost: Post;
-    if(post.dislikes.some(x => x == this.currentUserEmail)) {
+    if(post.dislikes.some(x => x == this.currentUser.id)) {
       this.fService.undislikePost(dislike).subscribe({ next: data => {
         dislikedPost = data;
         for(let i = 0; i < this.posts.length; i++) {
@@ -251,7 +251,7 @@ export class GetFeedComponent implements OnInit, OnDestroy {
 
   checkIfLiked(post: Post): boolean {
     for(let l of post.likes) {
-      if(l == this.currentUserEmail) {
+      if(l == this.currentUser.id) {
         return true;
       }
     }
@@ -260,7 +260,7 @@ export class GetFeedComponent implements OnInit, OnDestroy {
 
   checkIfDisliked(post: Post): boolean {
     for(let d of post.dislikes) {
-      if(d == this.currentUserEmail) {
+      if(d == this.currentUser.id) {
         return true;
       }
     }
@@ -279,6 +279,7 @@ export class GetFeedComponent implements OnInit, OnDestroy {
     createPost.content = val;
     createPost.creatorId = this.currentUser.id;
     createPost.creatorEmail = this.currentUserEmail;
+    createPost.avatar = this.currentUser.avatar;
     createPost.name = this.currentUser.name;
     createPost.tags = this.tags;
     this.fService.createPost(createPost).subscribe({ next: _data => {

@@ -5,6 +5,7 @@ export class NetworkPlayer {
     id: string;
     email: string;
     name: string;
+    avatar: string;
     dateOfBirth: string;
     phoneNumber: number;
     emotionalStatus: string;
@@ -18,6 +19,7 @@ export class NetworkPlayer {
     setInfo(player: Player) {
         this.email = player.email;
         this.name = player.name;
+        this.avatar = player.avatar;
         let date = new Date(player.dateOfBirth);
         this.dateOfBirth = date.getDate().toString().padStart(2, "0") + "-" + (date.getMonth() + 1).toString().padStart(2, "0") + "-" + date.getFullYear();
         this.phoneNumber = player.phoneNumber;
