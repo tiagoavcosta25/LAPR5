@@ -18,7 +18,7 @@
 
 % Secundary knowledge base
 :- dynamic node/3.
-:- dynamic connection/4.
+:- dynamic connection/6.
 :- dynamic shortest_currentRoute/2.
 :- dynamic safest_currentRoute/2.
 :- dynamic strongest_currentRoute/2.
@@ -77,6 +77,18 @@ getConnections(Data) :-
         json_read_dict(In, Data),
         close(In)
 	).
+	dcalc_url("http://localhost:3000/api/post/dcalc/").
+
+getDCalc(idA, idB, Data) :-
+	dcalc_url(BaseURL),
+	atom_concat(BaseURL, idA, URLIdA),
+	atom_concat(URLIdA, '/', URLIdBReady),
+	atom_concat(URLIdBReady, idB, URL),
+	setup_call_cleanup(
+        http_open(URL, In, [ cert_verify_hook(cert_accept_any)]),
+        json_read_dict(In, Data),
+        close(In)
+	).
 
 
 getPlayerName(Email, PlayerName) :-
@@ -102,7 +114,9 @@ parse_connections([H|List]):-
 prepareConnections() :-
 	forall(connectionTemp(A, B, C),(
 		connectionTemp(B, A, D),
-		asserta(connection(A, B, C, D)))),
+		getDCalc(A, B, DAB),
+		getDCalc(B, A, DBA),
+		asserta(connection(A, B, C, D, DAB, DBA)))),
 	retractall(connectionTemp(_,_,_)).
 
 %======== Auxiliary Methods ========%
@@ -548,7 +562,7 @@ aStar_prepare(Request, Path, Cost) :-
         node(PlayerId, PlayerName, _),
         node(TargetId, TargetName, _),
 	aStar_find(Mode, Threshold, PlayerId, TargetId, Path, Cost),
-	retractall(connection(_,_,_,_)),
+	retractall(connection(_,_,_,_,_,_)),
 	retractall(node(_,_,_)).
 
 %======== A-Star (Core) ========%
