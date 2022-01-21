@@ -71,7 +71,7 @@ shortest_allDfs(Player1, Player2, PathList):- get_time(T1),
     T is T2-T1,write(T),write(' seconds'),nl,
     write('Possible Path List: '),write(PathList),nl,nl.
 
-shortest_dfs(Mode, N, Orig, Dest, Strength, Path):- shortest_dfsAux(Mode, 0, N, Orig, Dest, [Orig], Strength, Path),!.
+shortest_dfs(Mode, N, Orig, Dest, Strength, Path):- shortest_dfsAux(Mode, 0, N, Orig, Dest, [Orig], Strength, Path).
 
 shortest_dfsAux(_, _, _, Dest, Dest, LA, 0, Path):- !, reverse(LA, Path).
 shortest_dfsAux(_, M, N, _, _, _, _, _):- M >= N, !, false.
@@ -311,7 +311,7 @@ common_tags_remove_repeated_tags([List|All_Tags],Tags):-
     common_tags_remove_repeated_tags(All_Tags,Tags1),!,
     union(List,Tags1,Tags).
 
-%=== Combinaçoes ===
+%=== CombinaÃ§oes ===
 common_tags_combination(0,_,[]).
 common_tags_combination(N,[X|T],[X|Comb]):-N>0,N1 is N-1,common_tags_combination(N1,T,Comb).
 common_tags_combination(N,[_|T],Comb):-N>0,common_tags_combination(N,T,Comb).
@@ -513,4 +513,3 @@ emotion_countFear(PlayerId, [_ | Group], Counter, Return):-
     !,emotion_countFear(PlayerId, Group, Counter, Return).
 
 suggest_playerGroups(_, _, [3,6, 4, 5]).
-
