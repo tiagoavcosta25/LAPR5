@@ -20,8 +20,8 @@
 
 % Secundary knowledge base
 :- dynamic node/3.
-:- dynamic connection/4.
-:- dynamic shortest_currentRoute/2.
+:- dynamic connection/6.
+:- dynamic shortest_currentRoute/3.
 :- dynamic safest_currentRoute/2.
 :- dynamic strongest_currentRoute/2.
 :- dynamic suggest_currentRoute/2.
@@ -88,6 +88,16 @@ getConnections(Data) :-
         close(In)
 	).
 
+getDCalc(IdA, IdB, Data) :-
+    dcalc_url(BaseURL),
+    atom_concat(BaseURL, IdA, URLIdA),
+    atom_concat(URLIdA, '/', URLIdBReady),
+    atom_concat(URLIdBReady, IdB, URL),
+    setup_call_cleanup(
+        http_open(URL, In, [ cert_verify_hook(cert_accept_any)]),
+        json_read_dict(In, Data),
+        close(In)
+    ).
 
 getPlayerName(Email, PlayerName) :-
 	atom_concat('email/',Email,Urlpath),
@@ -112,7 +122,9 @@ parse_connections([H|List]):-
 prepareConnections() :-
 	forall(connectionTemp(A, B, C),(
 		connectionTemp(B, A, D),
-		asserta(connection(A, B, C, D)))),
+		getDCalc(A, B, DAB),
+		getDCalc(B, A, DBA),
+		asserta(connection(A, B, C, D, DAB.get(dCalc), DBA.get(dCalc))))),
 	retractall(connectionTemp(_,_,_)).
 
 %======== Auxiliary Methods ========%
@@ -149,20 +161,21 @@ getMulticriteria(ConnectionStrength, RelationStrength, Output):-
 
 shortest_compute(Request) :-
 cors_enable(Request, [methods([get])]),
-  shortest_prepare(Request, Path),
-prolog_to_json(Path, JSONObject),
-  reply_json(JSONObject, [json_object(dict)]).
-
-shortest_prepare(Request, Path) :-
-http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string]), threshold(Threshold, [integer])]),
+	shortest_prepare(Request, Strength, Path),
+	prolog_to_json(Path, JSONObject),
+	prolog_to_json(Strength, JSONObject2),
+	reply_json([JSONObject, JSONObject2], [json_object(dict)]).
+ 
+shortest_prepare(Request, Strength, Path) :-
+http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string]),mode(Mode, [integer]) , n(N, [integer])]),
 addPlayers(),
 addConnections(),
 getPlayerName(EmailPlayer, PlayerName),
 getPlayerName(EmailTarget, TargetName),
     node(PlayerId, PlayerName, _),
     node(TargetId, TargetName, _),
-shortest_route(Threshold, PlayerId, TargetId, Path),
-retractall(connection(_,_,_,_)),
+shortest_route(Mode, N, PlayerId, TargetId, Strength, Path),
+retractall(connection(_,_,_,_,_,_)),
 retractall(node(_,_,_)).
 
 
@@ -176,33 +189,41 @@ shortest_allDfs(Player1, Player2, PathList):- get_time(T1),
     T is T2-T1,write(T),write(' seconds'),nl,
     write('Possible Path List: '),write(PathList),nl,nl.
 
-shortest_dfs(N, Orig, Dest, Path):- shortest_dfsAux(0, N, Orig, Dest, [Orig], Path).
+shortest_dfs(Mode, N, Orig, Dest, Strength, Path):- shortest_dfsAux(Mode, 0, N, Orig, Dest, [Orig], Strength, Path),!.
 
-shortest_dfsAux(_, _, Dest, Dest, LA, Path):- !, reverse(LA, Path).
-shortest_dfsAux(M, N, _, _, _, _):- M >= N, !, false.
-shortest_dfsAux(M, N, Current, Dest, LA, Path):-
-    (connection(Current, X, _, _, _, _);
-    connection(X, Current, _, _, _, _)),
+shortest_dfsAux(_, _, _, Dest, Dest, LA, 0, Path):- !, reverse(LA, Path).
+shortest_dfsAux(_, M, N, _, _, _, _, _):- M >= N, !, false.
+shortest_dfsAux(0, M, N, Current, Dest, LA, Strength, Path):-
+    (connection(Current, X, StrengthA, _, _, _);
+    connection(X, Current, _, StrengthA, _, _)),
     \+ member(X,LA),
     M1 is M + 1,
-    shortest_dfsAux(M1, N, X,Dest,[X|LA],Path).
+    shortest_dfsAux(0, M1, N, X,Dest,[X|LA], Strength1, Path),
+	Strength is Strength1 + StrengthA.
+shortest_dfsAux(1, M, N, Current, Dest, LA, Strength, Path):-
+    (connection(Current, X, StrengthA, _, RelA, _);
+    connection(X, Current, _, StrengthA, _, RelA)),
+    \+ member(X,LA),
+    M1 is M + 1,
+    shortest_dfsAux(1, M1, N, X,Dest,[X|LA], Strength1, Path),
+	getMulticriteria(StrengthA, RelA, FinalStrength),
+	Strength is Strength1 + FinalStrength.
 
-
-shortest_route(Threshold, Orig, Dest, ShortestPathList):-
-		(shortest_findRoute(Threshold, Orig, Dest); true),
-		retract(shortest_currentRoute(ShortestPathList, _)).
-
-shortest_findRoute(Threshold, Orig, Dest):-
-		asserta(shortest_currentRoute(_,10000)),
-		shortest_dfs(Threshold, Orig, Dest, PathList),
-		shortest_updateRoute(PathList),
+shortest_route(Mode, N, Orig, Dest, Strength, ShortestPathList):-
+		(shortest_findRoute(Mode, N, Orig, Dest); true),
+		retract(shortest_currentRoute(ShortestPathList, _, Strength)).
+		
+shortest_findRoute(Mode, N, Orig, Dest):-
+		asserta(shortest_currentRoute(_,10000, _)),
+		shortest_dfs(Mode, N, Orig, Dest, Strength, PathList),
+		shortest_updateRoute(Strength, PathList),
 		fail.
 
-shortest_updateRoute(PathList):-
-		shortest_currentRoute(_, CurrentPathLength),
+shortest_updateRoute(Strength, PathList):-
+		shortest_currentRoute(_, CurrentPathLength, _),
 		length(PathList, PathLength),
-	PathLength < CurrentPathLength, retract(shortest_currentRoute(_,_)),
-		asserta(shortest_currentRoute(PathList, PathLength)).
+		PathLength < CurrentPathLength, retract(shortest_currentRoute(_,_,_)),
+		asserta(shortest_currentRoute(PathList, PathLength, Strength)).
 
 %======== Safest path between two players (HTTP) ========%
 

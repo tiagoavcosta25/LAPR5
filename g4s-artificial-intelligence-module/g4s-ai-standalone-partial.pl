@@ -27,7 +27,7 @@ synonym('c#', csharp).
 
 
 % Secundary knowledge base
-:- dynamic shortest_currentRoute/2.
+:- dynamic shortest_currentRoute/3.
 :- dynamic safest_currentRoute/2.
 :- dynamic aStar_orderedList/1.
 :- dynamic occ/7.
@@ -82,7 +82,6 @@ shortest_dfsAux(0, M, N, Current, Dest, LA, Strength, Path):-
     M1 is M + 1,
     shortest_dfsAux(0, M1, N, X,Dest,[X|LA], Strength1, Path),
 	Strength is Strength1 + StrengthA.
-
 shortest_dfsAux(1, M, N, Current, Dest, LA, Strength, Path):-
     (connection(Current, X, StrengthA, _, RelA, _);
     connection(X, Current, _, StrengthA, _, RelA)),
@@ -92,26 +91,25 @@ shortest_dfsAux(1, M, N, Current, Dest, LA, Strength, Path):-
 	getMulticriteria(StrengthA, RelA, FinalStrength),
 	Strength is Strength1 + FinalStrength.
 
-
-shortest_route(Orig, Dest, ShortestPathList):-
+shortest_route(Mode, N, Orig, Dest, Strength, ShortestPathList):-
 		get_time(Ti),
-		(shortest_findRoute(Orig, Dest); true),
-		retract(shortest_currentRoute(ShortestPathList, _)),
+		(shortest_findRoute(Mode, N, Orig, Dest); true),
+		retract(shortest_currentRoute(ShortestPathList, _, Strength)),
 		get_time(Tf),
 		T is Tf-Ti,
 		write('Solution generation time:'), write(T), nl.
 
-shortest_findRoute(Orig, Dest):-
-		asserta(shortest_currentRoute(_,10000)),
-		shortest_dfs(Orig, Dest, PathList),
-		shortest_updateRoute(PathList),
+shortest_findRoute(Mode, N, Orig, Dest):-
+		asserta(shortest_currentRoute(_,10000, _)),
+		shortest_dfs(Mode, N, Orig, Dest, Strength, PathList),
+		shortest_updateRoute(Strength, PathList),
 		fail.
 
-shortest_updateRoute(PathList):-
-		shortest_currentRoute(_, CurrentPathLength),
+shortest_updateRoute(Strength, PathList):-
+		shortest_currentRoute(_, CurrentPathLength, _),
 		length(PathList, PathLength),
-	PathLength < CurrentPathLength, retract(shortest_currentRoute(_,_)),
-		asserta(shortest_currentRoute(PathList, PathLength)).
+		PathLength < CurrentPathLength, retract(shortest_currentRoute(_,_,_)),
+		asserta(shortest_currentRoute(PathList, PathLength, Strength)).
 
 % safest route
 
