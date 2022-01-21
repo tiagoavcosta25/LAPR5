@@ -269,20 +269,7 @@ export default class PostService implements IPostService {
     }
   }
 
-  public async getDCalc(emailA: string, emailB:string): Promise<Result<number>> {
-    try {
-      let likes = await this.postRepo.countALikesOnBPosts(emailA, emailB);
-      let dislikes = await this.postRepo.countADislikesOnBPosts(emailA, emailB);
-
-      let count = likes - dislikes;
-
-      return Result.ok<number>(count);
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  public async getDCalcId(idA: string, idB:string): Promise<Result<number>> {
+  public async getDCalc(idA: string, idB:string): Promise<Result<number>> {
     try {
       let likes = await this.postRepo.countALikesOnBPosts(idA, idB);
       let dislikes = await this.postRepo.countADislikesOnBPosts(idA, idB);

@@ -166,9 +166,9 @@ export class ProfileTimelineComponent implements OnInit {
   }
 
   likePost(post: Post): void {
-    let like: PlayerLike = new PlayerLike(post.id, this.currentUserEmail);
+    let like: PlayerLike = new PlayerLike(post.id, this.currentUser.id);
     let likedPost: Post;
-    if(post.likes.some(x => x == this.currentUserEmail)) {
+    if(post.likes.some(x => x == this.currentUser.id)) {
       this.fService.unlikePost(like).subscribe({ next: data => {
         likedPost = data;
         for(let i = 0; i < this.posts.length; i++) {
@@ -196,9 +196,9 @@ export class ProfileTimelineComponent implements OnInit {
   }
 
   dislikePost(post: Post): void {
-    let dislike: PlayerLike = new PlayerLike(post.id, this.currentUserEmail);
+    let dislike: PlayerLike = new PlayerLike(post.id, this.currentUser.id);
     let dislikedPost: Post;
-    if(post.dislikes.some(x => x == this.currentUserEmail)) {
+    if(post.dislikes.some(x => x == this.currentUser.id)) {
       this.fService.undislikePost(dislike).subscribe({ next: data => {
         dislikedPost = data;
         for(let i = 0; i < this.posts.length; i++) {
@@ -248,7 +248,7 @@ export class ProfileTimelineComponent implements OnInit {
 
   checkIfLiked(post: Post): boolean {
     for(let l of post.likes) {
-      if(l == this.currentUserEmail) {
+      if(l == this.currentUser.id) {
         return true;
       }
     }
@@ -257,7 +257,7 @@ export class ProfileTimelineComponent implements OnInit {
 
   checkIfDisliked(post: Post): boolean {
     for(let d of post.dislikes) {
-      if(d == this.currentUserEmail) {
+      if(d == this.currentUser.id) {
         return true;
       }
     }

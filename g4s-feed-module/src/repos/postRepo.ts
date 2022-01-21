@@ -97,35 +97,11 @@ export default class PostRepo implements IPostRepo {
     return postList;
   }
 
-  public async countALikesOnBPosts (emailA: string, emailB: string): Promise<number> {
-    const query = { creatorEmail: emailB.toString(),
-                    likes: emailA};
-    const count = await this.postSchema.count( query );
-
-    if( count != null) {
-      return count;
-    }
-    else
-      return 0;
-  }
-
-  public async countADislikesOnBPosts (emailA: string, emailB: string): Promise<number> {
-    const query = { creatorEmail: emailB.toString(),
-                    dislikes: emailA};
-    const count = await this.postSchema.count( query );
-
-    if( count != null) {
-      return count;
-    }
-    else
-      return 0;
-  }
-
-  public async countALikesOnBPostsId (idA: string, idB: string): Promise<number> {
+  public async countALikesOnBPosts(idA: string, idB: string): Promise<number> {
     const query = { creatorId: idB.toString(),
                     likes: idA};
     const count = await this.postSchema.count( query );
-
+    console.log("yo")
     if( count != null) {
       return count;
     }
@@ -133,11 +109,10 @@ export default class PostRepo implements IPostRepo {
       return 0;
   }
 
-  public async countADislikesOnBPostsId (idA: string, idB: string): Promise<number> {
+  public async countADislikesOnBPosts(idA: string, idB: string): Promise<number> {
     const query = { creatorId: idB.toString(),
                     dislikes: idA};
     const count = await this.postSchema.count( query );
-
     if( count != null) {
       return count;
     }

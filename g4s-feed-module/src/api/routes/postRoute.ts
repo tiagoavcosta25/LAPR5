@@ -78,10 +78,6 @@ export default (app: Router) => {
     (req, res, next) => ctrl.getPostsByUser(req, res, next) );
 
   //how many emailA likes are on emailB posts
-  route.get('/dcalc/:emailA/:emailB',
+  route.get('/dcalc/:idA/:idB',
     (req, res, next) => ctrl.getDCalc(req, res, next) );
-
-  //how many emailA likes are on emailB posts
-  route.get('/dcalcid/:idA/:idB',
-    (req, res, next) => ctrl.getDCalcId(req, res, next) );
 };

@@ -1,4 +1,4 @@
-<div *ngIf="player==undefined || networkStrength==undefined || dcalcValue==undefined; else defined">
+<div *ngIf="player==undefined || currentPlayer==undefined || networkStrength==undefined || dcalcValue==undefined; else defined">
 </div>
 
 <ng-template #defined>
@@ -61,7 +61,7 @@
                 {{ networkSize }}
             </div>
 
-            <div *ngIf="currentPlayer!=userEmail">
+            <div *ngIf="currentPlayerEmail!=userEmail">
                 <div class="about-body-title mb-3">
                     D value
                 </div>

@@ -15,5 +15,4 @@ export default interface IPostController  {
 
   getPostsByUser(req: Request, res: Response, next: NextFunction);
   getDCalc(req: Request, res: Response, next: NextFunction);
-  getDCalcId(req: Request, res: Response, next: NextFunction);
 }

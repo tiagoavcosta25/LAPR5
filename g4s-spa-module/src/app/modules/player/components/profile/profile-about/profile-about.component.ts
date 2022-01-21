@@ -23,7 +23,9 @@ export class ProfileAboutComponent implements OnInit {
 
   networkStrength: number;
 
-  currentPlayer: string;
+  currentPlayerEmail: string;
+
+  currentPlayer: DobPlayer;
 
   dcalcValue: number;
 
@@ -36,19 +38,16 @@ export class ProfileAboutComponent implements OnInit {
     private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
-    this.currentPlayer = localStorage.getItem("currentPlayer")!;
+    this.currentPlayerEmail = localStorage.getItem("currentPlayer")!;
     this.activatedRoute.params.subscribe(params => {
       this.userEmail = params['email'];
-      this.getPlayer();
-      this.getNetworkFirstLevel();
-      this.getDCalc();
-      this.getNetworkSize();
+      this.getCurrentPlayer();
     })
   }
 
   getNetworkSize(): void {
     this.spinner.show();
-    this.cService.getNetwork(this.currentPlayer, 3).subscribe({ next: data => {
+    this.cService.getNetwork(this.currentPlayerEmail, 3).subscribe({ next: data => {
       this.networkSize = data.length;
       this.spinner.hide();
     },
@@ -60,10 +59,8 @@ export class ProfileAboutComponent implements OnInit {
 
   getDCalc(): void {
     this.spinner.show();
-    this.fService.dCalc(this.currentPlayer, this.userEmail).subscribe({ next: data => {
-      console.log(this.currentPlayer, this.userEmail);
+    this.fService.dCalc(this.currentPlayer.id, this.player.id).subscribe({ next: data => {
       this.dcalcValue = data.dCalc;
-      console.log(this.dcalcValue);
       this.spinner.hide();
     },
       error: _error => {
@@ -89,7 +86,22 @@ export class ProfileAboutComponent implements OnInit {
       } else {
         this.hasLinkedin = true;
       }
+      this.getNetworkFirstLevel();
+      this.getDCalc();
+      this.getNetworkSize();
+      this.spinner.hide();
+    },
+      error: _error => {
+        this.spinner.hide();
+      }
+    });
+  }
 
+  getCurrentPlayer(): void {
+    this.spinner.show();
+    this.pService.getOnlyPlayerByEmail(this.currentPlayerEmail).subscribe({ next: data => {
+      this.currentPlayer = data;
+      this.getPlayer();
       this.spinner.hide();
     },
       error: _error => {
