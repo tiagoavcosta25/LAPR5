@@ -77,7 +77,6 @@ getConnections(Data) :-
         json_read_dict(In, Data),
         close(In)
 	).
-	dcalc_url("http://localhost:3000/api/post/dcalc/").
 
 getDCalc(idA, idB, Data) :-
 	dcalc_url(BaseURL),
