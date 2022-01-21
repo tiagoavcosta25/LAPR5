@@ -285,13 +285,13 @@ export class GetNetworkComponent implements OnInit {
         scopeFriend.sphere.position.x = scopex + radius * Math.cos(angle);
         scopeFriend.sphere.position.y = scopey + radius * Math.sin(angle);
         let connectsNumber = 0;
-        for(let s of this.scopes) {
-          if(s.player.email == scopeFriend.email) {
-            connectsNumber = s.friends.length;
-            break;
+        for(let c of this.connections) {
+          if(c.player.email == scopeFriend.email || c.friend.email == scopeFriend.email) {
+            connectsNumber++;
           }
         }
-        scopeFriend.sphere.position.z = 10 * connectsNumber;
+        scopeFriend.sphere.position.z = 10 * connectsNumber - 30;
+        console.log(scopeFriend.name, "| connection number: " + connectsNumber, "| z position: " + scopeFriend.sphere.position.z, "| (starts at -30, +10 for each connection)");
         angle += angleIncrement;
 
 
