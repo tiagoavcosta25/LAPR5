@@ -27,6 +27,8 @@ export class ProfileAboutComponent implements OnInit {
 
   dcalcValue: number;
 
+  networkSize: number;
+
   constructor(private activatedRoute: ActivatedRoute,
     private pService: PlayerService,
     private cService: ConnectionService,
@@ -40,7 +42,20 @@ export class ProfileAboutComponent implements OnInit {
       this.getPlayer();
       this.getNetworkFirstLevel();
       this.getDCalc();
+      this.getNetworkSize();
     })
+  }
+
+  getNetworkSize(): void {
+    this.spinner.show();
+    this.cService.getNetwork(this.currentPlayer, 3).subscribe({ next: data => {
+      this.networkSize = data.length;
+      this.spinner.hide();
+    },
+      error: _error => {
+        this.spinner.hide();
+      }
+    });
   }
 
   getDCalc(): void {
