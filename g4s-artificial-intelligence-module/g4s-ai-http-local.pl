@@ -539,14 +539,10 @@ aStar_compute(Request) :-
     reply_json(JSONObject, [json_object(dict)]).
 
 aStar_prepare(Request, Path, Cost) :-
-    http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string]),
+    http_parameters(Request, [playerId(PlayerId, [string]), targetId(TargetId, [string]),
     threshold(Threshold, [integer]), mode(Mode, [integer])]),
 	addPlayers(),
 	addConnections(),
-	getPlayerName(EmailPlayer, PlayerName),
-	getPlayerName(EmailTarget, TargetName),
-        node(PlayerId, PlayerName, _),
-        node(TargetId, TargetName, _),
 	aStar_find(Mode, Threshold, PlayerId, TargetId, Path, Cost),
 	retractall(connection(_,_,_,_)),
 	retractall(node(_,_,_)).
