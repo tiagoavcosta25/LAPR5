@@ -19,6 +19,7 @@ export default (app: Router) => {
       body: Joi.object({
         content: Joi.string().required(),
         creatorId: Joi.string().required(),
+        creatorEmail: Joi.string().required(),
         name: Joi.string().required(),
         tags: Joi.array()
       })

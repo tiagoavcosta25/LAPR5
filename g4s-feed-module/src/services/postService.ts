@@ -67,6 +67,7 @@ export default class PostService implements IPostService {
       else {
         post.content = PostContent.create(postDTO.content).getValue();
         post.creatorId = postDTO.creatorId;
+        post.creatorEmail = postDTO.creatorEmail;
         post.name = postDTO.name;
         post.likes = postDTO.likes;
         post.dislikes = postDTO.dislikes;
