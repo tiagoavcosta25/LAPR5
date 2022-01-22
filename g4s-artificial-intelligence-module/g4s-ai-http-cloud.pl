@@ -566,15 +566,21 @@ dfs2(Act,Level,LA):-
 
 aStar_compute(Request) :-
 	cors_enable(Request, [methods([get])]),
-    aStar_prepare(Request, Path, _),
+    aStar_prepare(Request, Path, Cost),
 	prolog_to_json(Path, JSONObject),
-    reply_json(JSONObject, [json_object(dict)]).
+	prolog_to_json(Cost, JSONObject2),
+	reply_json([JSONObject, JSONObject2], [json_object(dict)]).
+
 
 aStar_prepare(Request, Path, Cost) :-
-    http_parameters(Request, [playerId(PlayerId, [string]), targetId(TargetId, [string]),
-    threshold(Threshold, [integer]), mode(Mode, [integer])]),
+	http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string]),
+	threshold(Threshold, [integer]), mode(Mode, [integer])]),
 	addPlayers(),
 	addConnections(),
+	getPlayerName(EmailPlayer, PlayerName),
+	getPlayerName(EmailTarget, TargetName),
+        node(PlayerId, PlayerName, _),
+        node(TargetId, TargetName, _),
 	aStar_find(Mode, Threshold, PlayerId, TargetId, Path, Cost),
 	retractall(connection(_,_,_,_,_,_)),
 	retractall(node(_,_,_)).
@@ -672,9 +678,11 @@ aStar_getStrengthListByFriendsList(1, PlayerId, [FriendId|FriendList], [FirstMul
 
 emotion_relationCompute(Request) :-
 	cors_enable(Request, [methods([get])]),
-    emotion_relationPrepare(Request, NewJoy, _),
+    emotion_relationPrepare(Request, NewJoy, NewAnguish),
 	prolog_to_json(NewJoy, JSONObject),
-    reply_json(JSONObject, [json_object(dict)]).
+	prolog_to_json(NewAnguish, JSONObject2),
+	reply_json([JSONObject, JSONObject2], [json_object(dict)]).
+
 
 emotion_relationPrepare(Request, NewJoy, NewAnguish) :-
     http_parameters(Request, [emailPlayer(EmailPlayer, [string]), value(Value, [integer])]),
@@ -692,9 +700,12 @@ emotion_relationPrepare(Request, NewJoy, NewAnguish) :-
 
 emotion_suggestedCompute(Request) :-
 	cors_enable(Request, [methods([get])]),
-    emotion_suggestedPrepare(Request, NewHope, _, _, _),
+    emotion_suggestedPrepare(Request, NewHope, NewDeception, NewFear, NewRelief),
 	prolog_to_json(NewHope, JSONObject),
-    reply_json(JSONObject, [json_object(dict)]).
+	prolog_to_json(NewDeception, JSONObject2),
+	prolog_to_json(NewFear, JSONObject3),
+	prolog_to_json(NewRelief, JSONObject4),
+	reply_json([JSONObject, JSONObject2, JSONObject3, JSONObject4], [json_object(dict)]).
 
 emotion_suggestedPrepare(Request, NewHope, NewDeception, NewFear, NewRelief) :-
     http_parameters(Request, [emailPlayer(EmailPlayer, [string]), tags(Tags, [string])]),
