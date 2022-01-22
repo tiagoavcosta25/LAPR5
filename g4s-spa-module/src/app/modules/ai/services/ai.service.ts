@@ -73,16 +73,28 @@ export class AiService {
     );
   }
 
-  /** GET: searches for players from server */
+  /** GET: get's the desired path */
   getAiPath(algo:string, emailPlayer: string, emailTarget: string, mode:number, n: number): Observable<string[][]> {
     const params = new HttpParams()
-    .set('emailPlayer', emailPlayer)
-    .set('emailTarget', emailTarget)
-    .set('mode', mode)
-    .set('n', n);
+      .set('emailPlayer', emailPlayer)
+      .set('emailTarget', emailTarget)
+      .set('mode', mode)
+      .set('n', n);
     const url = this.aiUrl + '/' + algo;
     return this.http.get<string[][]>(url, { params: params }).pipe(
     catchError(this.handleError)
+    );
+  }
+
+  /** GET: searches for groups */
+  getGroups(ntags:number, nusers: number, taglist: string): Observable<string[][]> {
+    const params = new HttpParams()
+      .set('ntags', ntags)
+      .set('nusers', nusers)
+      .set('taglist', taglist)
+    const url = this.aiUrl + '/common-tags';
+    return this.http.get<string[][]>(url, { params: params }).pipe(
+      catchError(this.handleError)
     );
   }
 
