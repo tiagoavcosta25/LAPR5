@@ -574,14 +574,14 @@ aStar_compute(Request) :-
 
 aStar_prepare(Request, Path, Cost) :-
 	http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string]),
-	threshold(Threshold, [integer]), mode(Mode, [integer])]),
+	n(N, [integer]), mode(Mode, [integer])]),
 	addPlayers(),
 	addConnections(),
 	getPlayerName(EmailPlayer, PlayerName),
 	getPlayerName(EmailTarget, TargetName),
         node(PlayerId, PlayerName, _),
         node(TargetId, TargetName, _),
-	aStar_find(Mode, Threshold, PlayerId, TargetId, Path, Cost),
+	aStar_find(Mode, N, PlayerId, TargetId, Path, Cost),
 	retractall(connection(_,_,_,_,_,_)),
 	retractall(node(_,_,_)).
 
