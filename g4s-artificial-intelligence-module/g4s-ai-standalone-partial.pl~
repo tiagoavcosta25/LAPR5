@@ -77,37 +77,39 @@ shortest_allDfs(Player1, Player2, PathList):- get_time(T1),
     T is T2-T1,write(T),write(' seconds'),nl,
     write('Possible Path List: '),write(PathList),nl,nl.
 
-shortest_dfs(Mode, N, Orig, Dest, Strength, Path):- shortest_dfsAux(Mode, 0, N, Orig, Dest, [Orig], Strength, Path).
+shortest_dfs(Mode, EmotionBool, N, Orig, Dest, Strength, Path):- shortest_dfsAux(Mode, EmotionBool, 0, N, Orig, Dest, [Orig], Strength, Path).
 
-shortest_dfsAux(_, _, _, Dest, Dest, LA, 0, Path):- !, reverse(LA, Path).
-shortest_dfsAux(_, M, N, _, _, _, _, _):- M >= N, !, false.
-shortest_dfsAux(0, M, N, Current, Dest, LA, Strength, Path):-
+shortest_dfsAux(_, _, _, _, Dest, Dest, LA, 0, Path):- !, reverse(LA, Path).
+shortest_dfsAux(_, _, M, N, _, _, _, _, _):- M >= N, !, false.
+shortest_dfsAux(0, EmotionBool, M, N, Current, Dest, LA, Strength, Path):-
     (connection(Current, X, StrengthA, _, _, _);
     connection(X, Current, _, StrengthA, _, _)),
+    emotion_checkSameEmotion(EmotionBool, Current, X),
     \+ member(X,LA),
     M1 is M + 1,
     shortest_dfsAux(0, M1, N, X,Dest,[X|LA], Strength1, Path),
 	Strength is Strength1 + StrengthA.
-shortest_dfsAux(1, M, N, Current, Dest, LA, Strength, Path):-
+shortest_dfsAux(1, EmotionBool, M, N, Current, Dest, LA, Strength, Path):-
     (connection(Current, X, StrengthA, _, RelA, _);
     connection(X, Current, _, StrengthA, _, RelA)),
+    emotion_checkSameEmotion(EmotionBool, Current, X),
     \+ member(X,LA),
     M1 is M + 1,
     shortest_dfsAux(1, M1, N, X,Dest,[X|LA], Strength1, Path),
-	getMulticriteria(StrengthA, RelA, FinalStrength),
-	Strength is Strength1 + FinalStrength.
+    getMulticriteria(StrengthA, RelA, FinalStrength),
+    Strength is Strength1 + FinalStrength.
 
-shortest_route(Mode, N, Orig, Dest, Strength, ShortestPathList):-
+shortest_route(Mode, EmotionBool, N, Orig, Dest, Strength, ShortestPathList):-
 		get_time(Ti),
-		(shortest_findRoute(Mode, N, Orig, Dest); true),
+		(shortest_findRoute(Mode, EmotionBool, N, Orig, Dest); true),
 		retract(shortest_currentRoute(ShortestPathList, _, Strength)),
 		get_time(Tf),
 		T is Tf-Ti,
 		write('Solution generation time:'), write(T), nl.
 
-shortest_findRoute(Mode, N, Orig, Dest):-
+shortest_findRoute(Mode, EmotionBool, N, Orig, Dest):-
 		asserta(shortest_currentRoute(_,10000, _)),
-		shortest_dfs(Mode, N, Orig, Dest, Strength, PathList),
+		shortest_dfs(Mode, EmotionBool, N, Orig, Dest, Strength, PathList),
 		shortest_updateRoute(Strength, PathList),
 		fail.
 
@@ -385,7 +387,7 @@ aStar_aux(0, EmotionBool, M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
     (Dest\==Act,
     (connection(Act,X,CostX, _, _, _);
     connection(X, Act, _, CostX, _, _)),
-    emotion_checkSameEmotion(EmotionBool, Act, X), !,
+    emotion_checkSameEmotion(EmotionBool, Act, X),
     \+ member(X,LA),
     CaX is CostX + Ca,
     aStar_estimate(N,M,EstX),
@@ -402,7 +404,7 @@ aStar_aux(1, EmotionBool, M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
     (Dest\==Act,
     (connection(Act,X,ConnStrength, _, RelStrength, _);
     connection(X, Act, _, ConnStrength, _, RelStrength)),
-    emotion_checkSameEmotion(EmotionBool, Act, X), !,
+    emotion_checkSameEmotion(EmotionBool, Act, X),
     \+ member(X,LA),
     getMulticriteria(ConnStrength, RelStrength, CostX),
     CaX is CostX + Ca,
@@ -486,7 +488,6 @@ emotion_relationChange(PlayerId, Value, NewJoy, NewAnguish):-
 
 emotion_groupSuggestion(PlayerId, TagCount, PlayerCount, MandatoryTags, NewHope, NewDeception, NewFear, NewRelief):-
     common_tags(PlayerId, TagCount, PlayerCount, MandatoryTags, _,SuggestedGroup),
-    write(SuggestedGroup),
     emotion_checkHope(PlayerId, SuggestedGroup, NewHope, NewDeception),
     emotion_checkFear(PlayerId, SuggestedGroup, NewFear, NewRelief),
     retract(occ(PlayerId, Joy, Anguish, _, _, _, _)),
