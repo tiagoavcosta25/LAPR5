@@ -44,8 +44,8 @@ export class ShortestRouteComponent implements OnInit {
 
   getshortestRoute(emailPlayer: string, emailTarget: string): void {
     this.spinner.show();
-    this.aiService.getshortestRoute(emailPlayer, emailTarget).subscribe({ next: data => {
-      this.shortestRoute = data;
+    this.aiService.getshortestRoute(emailPlayer, emailTarget, 0, 100).subscribe({ next: data => {
+      this.shortestRoute = data[0];
       this.getPlayers();
       this.spinner.hide();
     },
