@@ -341,16 +341,49 @@ export class GetNetworkComponent implements OnInit {
     this.camera.add(lightSL);
     this.scene.add(this.camera);
 
-    const positionIncrement = 2;
+    const positionIncrement = 4;
 
     window.addEventListener('keydown', event => {
         switch (event.key) {
-          case 'w': this.camera.translateZ(-positionIncrement); break;
-          case 's': this.camera.translateZ(positionIncrement); break;
-          case 'd': this.camera.translateX(positionIncrement); break;
-          case 'a': this.camera.translateX(-positionIncrement); break;
-          case 'p': this.camera.position.y += positionIncrement; break;
-          case 'l': this.camera.position.y -= positionIncrement; break;
+          case 'w': 
+                    this.camera.translateZ(-positionIncrement); 
+                    if(this.checkCollision()){
+                      this.camera.translateZ(positionIncrement); 
+                    } 
+                    break;
+          case 's': 
+                    this.camera.translateZ(positionIncrement); 
+                    if(this.checkCollision()){
+                      this.camera.translateZ(-positionIncrement); 
+                    } 
+                    break;
+          case 'd': 
+                    this.camera.translateX(positionIncrement); 
+                    if(this.checkCollision()){
+                      this.camera.translateX(-positionIncrement); 
+                    }  
+                    break;
+          case 'a': 
+                    this.camera.translateX(-positionIncrement); 
+                    if(this.checkCollision()){
+                      this.camera.translateX(positionIncrement); 
+                    }  
+                    break;
+          case 'p': 
+                    this.camera.position.y += positionIncrement; 
+                    if(this.checkCollision()){
+                      this.camera.position.y -= positionIncrement; 
+                    } 
+                    break;
+          case 'l': 
+                    this.camera.position.y -= positionIncrement; 
+                    if(this.checkCollision()){
+                      this.camera.position.y += positionIncrement; 
+                    }  
+                    break;
+          case 'c': 
+                    this.clearPath();
+                    break;
           default:
         }
     });
@@ -394,6 +427,44 @@ export class GetNetworkComponent implements OnInit {
 
   }
 
+  getStatus(emotionalStatus: string): string {
+    switch(emotionalStatus) {
+      case "joyful": {
+        return "😄";
+      }
+      case "distressed": {
+        return "😖";
+      }
+      case "hopeful": {
+        return "😇";
+      }
+      case "fearful": {
+        return "😧";
+      }
+      case "relieve": {
+        return "😪";
+      }
+      case "disappointed": {
+        return "😔";
+      }
+      case "proud": {
+        return "🥰";
+      }
+      case "remorseful": {
+        return "🤥";
+      }
+      case "grateful": {
+        return "🤗";
+      }
+      case "angry": {
+        return "😡";
+      }
+      default: {
+        return "👾";
+      }
+    }
+  }
+
   clickIntersects() {
     if(this.onObject.length > 0) { 
       if(!((<THREE.Mesh>this.onObject[0].object).position.x == 0 && (<THREE.Mesh>this.onObject[0].object).position.y == 0)) {
@@ -433,22 +504,7 @@ export class GetNetworkComponent implements OnInit {
           let player = this.checkWhichPlayerIs((<THREE.Mesh>this.objectPressed[0].object));
           if(player !== undefined){
             this.aiService.getStrongestRoute(this.email, player!.email).subscribe({ next: async data => {
-              this.clearPath(); 
-              for(let node of this.nodes) {
-                if(data.includes(node.id)){
-                  //node.setPath(true)
-                  var material = new THREE.MeshStandardMaterial({color : 0xe75480,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
-                  node.sphere.material = material;
-                }
-              }
-
-              for(let c of this.connections) {
-                if(data.includes(c.player.id) && data.includes(c.friend.id)){
-                  var material = new THREE.MeshStandardMaterial({color : 0xe75480,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
-                  c.cylinder.material = material;
-                }
-              }
-
+              this.showPath(data);
             },
               error: _error => {
                 this.spinner.hide();
@@ -476,25 +532,7 @@ export class GetNetworkComponent implements OnInit {
           let player = this.checkWhichPlayerIs((<THREE.Mesh>this.objectPressed[0].object));
           if(player !== undefined){
             this.aiService.getshortestRoute(this.email, player!.email, 0, this.getNetworkForm.value.scope).subscribe({ next: async data => {
-              this.clearPath();
-              console.log("Data: " + data[0]);
-              for(let node of this.nodes) {
-                console.log("Node: " + node.id);
-                if(data[0].includes(node.id)){
-                  //node.setPath(true)
-                  var material = new THREE.MeshStandardMaterial({color : 0xe75480,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
-                  node.sphere.material = material;
-                }
-              }
-
-              for(let c of this.connections) {
-                if(data[0].includes(c.player.id) && data[0].includes(c.friend.id)){
-                  console.log("Connection: " + c);
-                  var material = new THREE.MeshStandardMaterial({color : 0xe75480,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
-                  c.cylinder.material = material;
-                }
-              }
-
+              this.showPath(data[0]);
             },
               error: _error => {
                 this.spinner.hide();
@@ -523,22 +561,7 @@ export class GetNetworkComponent implements OnInit {
           let player = this.checkWhichPlayerIs((<THREE.Mesh>this.objectPressed[0].object));
           if(player !== undefined){
             this.aiService.getSafestRoute(this.email, player!.email, 0).subscribe({ next: async data => {
-              this.clearPath();
-              for(let node of this.nodes) {
-                if(data.includes(node.id)){
-                  //node.setPath(true)
-                  var material = new THREE.MeshStandardMaterial({color : 0xe75480,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
-                  node.sphere.material = material;
-                }
-              }
-
-              for(let c of this.connections) {
-                if(data.includes(c.player.id) && data.includes(c.friend.id)){
-                  var material = new THREE.MeshStandardMaterial({color : 0xe75480,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
-                  c.cylinder.material = material;
-                }
-              }
-
+              this.showPath(data);
             },
               error: _error => {
                 this.spinner.hide();
@@ -574,13 +597,67 @@ export class GetNetworkComponent implements OnInit {
     }
   }
 
+  showPath(data: string[]){
+    this.clearPath();
+    for(let node of this.nodes) {
+      if(data.includes(node.id)){
+        console.log(node.id);
+        node.setPath(true);
+        var material = new THREE.MeshStandardMaterial({color : 0xe75480,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
+        node.sphere.material = material;
+      }
+    }
+
+    for(let c of this.connections) {
+      if(data.includes(c.player.id) && data.includes(c.friend.id)){
+        c.setPath(true);
+        var material = new THREE.MeshStandardMaterial({color : 0xe75480,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
+        c.cylinder.material = material;
+      }
+    }
+  }
+
+  checkCollision(){
+    let spheres = [];
+    for(let node of this.nodes) {
+      spheres.push(node.sphere);
+    }
+
+    const intersects = this.raycaster.intersectObjects( spheres );
+
+    console.log(spheres);
+
+    return intersects.length > 0;
+
+    /*let spheres = [];
+    for(let node of this.nodes) {
+      spheres.push(node.sphere);
+    }
+
+    let dir = new THREE.Vector3()
+    let intersects = []
+    xLine.position.copy(this.controls.target)
+    yLine.position.copy(this.controls.target)
+    zLine.position.copy(this.controls.target)
+    dir.subVectors(this.camera.position, controls.target).normalize()
+    raycaster.set(controls.target, dir.subVectors(this.camera.position, controls.target).normalize())
+    intersects = this.raycaster.intersectObjects(spheres, false)
+    if (intersects.length > 0) {
+        if (intersects[0].distance < controls.target.distanceTo(camera.position)) {
+            camera.position.copy(intersects[0].point)
+        }
+    }*/
+  }
+
   clearPath() {
     for(let node of this.nodes) {
+      node.setPath(false);
       var material = new THREE.MeshStandardMaterial({color : 0x2e86c1,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
       node.sphere.material = material;
     }
 
     for(let c of this.connections) {
+        c.setPath(false);
         var material = new THREE.MeshStandardMaterial({color : 0x80ffff,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
         c.cylinder.material = material;
     }
@@ -650,7 +727,7 @@ export class GetNetworkComponent implements OnInit {
             colname.className = "col-10";
 
             const playername = document.createElement( 'h4' );
-            playername.textContent = player.name;
+            playername.textContent = player.name + " " + this.getStatus(player.emotionalStatus);
             playername.style.marginTop = "3px";
 
             //Email stuff
@@ -822,7 +899,14 @@ export class GetNetworkComponent implements OnInit {
   }
 
   resetColor() {
-    (<THREE.MeshStandardMaterial>(<THREE.Mesh>this.objectPressed[0].object).material).color.set(0x2e86c1);
+    let player = this.checkWhichPlayerIs(<THREE.Mesh>this.objectPressed[0].object);
+    if(player !== undefined){
+      if(player!.checkIsPath()){
+        (<THREE.MeshStandardMaterial>(<THREE.Mesh>this.objectPressed[0].object).material).color.set(0xe75480);
+      } else{
+        (<THREE.MeshStandardMaterial>(<THREE.Mesh>this.objectPressed[0].object).material).color.set(0x2e86c1);
+      }
+    }
   }
 
   removeButtons() {
