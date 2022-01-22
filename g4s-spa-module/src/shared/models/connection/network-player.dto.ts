@@ -11,6 +11,7 @@ export class NetworkPlayer {
     emotionalStatus: string;
     tags: string[] = [];
     sphere: THREE.Mesh;
+    isPath: boolean = false;
 
     constructor(id: string) {
         this.id = id;
@@ -25,9 +26,18 @@ export class NetworkPlayer {
         this.phoneNumber = player.phoneNumber;
         this.emotionalStatus = player.emotionalStatus;
         this.tags = player.tags;
+        this.isPath = false;
     } 
 
     setMesh(geometry: THREE.SphereGeometry, material: THREE.MeshStandardMaterial) {
         this.sphere = new THREE.Mesh(geometry, material);
+    }
+
+    setPath(value: boolean) {
+        this.isPath = value;
+    }
+
+    checkIsPath() : boolean{
+        return this.isPath;
     }
 }
