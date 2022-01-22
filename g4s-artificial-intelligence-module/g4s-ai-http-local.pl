@@ -19,6 +19,7 @@
 % Secundary knowledge base
 :- dynamic node/3.
 :- dynamic connection/6.
+:- dynamic connectionTemp/3.
 :- dynamic shortest_currentRoute/3.
 :- dynamic safest_currentRoute/2.
 :- dynamic strongest_currentRoute/2.
@@ -436,56 +437,68 @@ common_tagsCompute(Request) :-
     reply_json(JSONObject, [json_object(dict)]).
 
 common_tagsPrepare(Request, Path) :-
-    http_parameters(Request, [num(Num, [number])]),
+    http_parameters(Request, [ntags(NTags, [number]),nusers(NUsers, [number]),taglist(TagList, [string])]),
 	addPlayers(),
 	addConnections(),
-	common_tags(Num, Path),
+	split_string(TagList, "/", "", TagListResult),
+	common_tags(NTags, NUsers, TagListResult, Path),
 	retractall(connection(_,_,_,_,_,_)),
 	retractall(node(_,_,_)).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-common_tags(X,List_Result):-
+common_tags(NTags,NUsers,TagList,List_Result):-
     common_tags_get_all_tags(All_TagsT),
 	common_tags_change_to_synonyms(All_TagsT, All_Tags),
-    findall(Combination,common_tags_combination(X,All_Tags,Combination),Combinations),
+    findall(Combination,common_tags_combination(NTags,All_Tags,Combination),CombinationsTemp),
+	common_tags_test_list(CombinationsTemp, TagList, Combinations),
     findall(UserId,node(UserId,_,_),Users),
-    common_tags_users_combination(X,Users,Combinations),
+    common_tags_users_combination(NTags,NUsers,Users,Combinations),
     findall([Comb,ListUsers],common_tags_users(Comb,ListUsers),List_Result),
     retractall(common_tags_users(_,_)).
 
-common_tags_users_combination(_,_,[]).
-common_tags_users_combination(X,Users,[Combination|Combinations]):-
-    common_tags_users_combination_aux(X,Combination,Users,Users_With_Tags),
-    common_tags_users_combination(X,Users,Combinations),
+common_tags_users_combination(_,_,_,[]).
+common_tags_users_combination(NTags,NUsers,Users,[Combination|Combinations]):-
+    common_tags_users_combination_aux(NTags,Combination,Users,Users_With_Tags),
+    common_tags_users_combination(NTags,NUsers,Users,Combinations),
     !,
 	comon_tags_list_length(Users_With_Tags, L),
-	( L > 1-> assertz(common_tags_users(Combination,Users_With_Tags)) ; ! ).
+	( L >= NUsers-> assertz(common_tags_users(Combination,Users_With_Tags)) ; ! ).
 
 common_tags_users_combination_aux(_,_,[],[]):-!.
-common_tags_users_combination_aux(X,Tags,[U|Users],Result):-
+common_tags_users_combination_aux(NTags,Tags,[U|Users],Result):-
     node(U,_,User_TagsT),
 	common_tags_change_to_synonyms(User_TagsT, User_Tags),
     intersection(Tags, User_Tags,Commun),
     length(Commun, Size),
-    Size >= X, !,
-    common_tags_users_combination_aux(X,Tags,Users,Result1),
+    Size >= NTags, !,
+    common_tags_users_combination_aux(NTags,Tags,Users,Result1),
     append([U], Result1, Result).
-common_tags_users_combination_aux(X,Tags,[_|Users],Result):-
+common_tags_users_combination_aux(NTags,Tags,[_|Users],Result):-
     !,
-    common_tags_users_combination_aux(X,Tags,Users,Result).
+    common_tags_users_combination_aux(NTags,Tags,Users,Result).
 
 common_tags_get_all_tags(Tags):-
     findall(User_Tags,node(_,_,User_Tags),All_Tags),
     common_tags_remove_repeated_tags(All_Tags,Tags).
+	
+common_tags_test_list([],_,[]):-!.
+common_tags_test_list([CombinationsH|CombinationsT], Tags, FinalCombinations):-
+	common_tags_test_list(CombinationsT, Tags, FinalCombinations1),
+	(common_tags_test_lists(Tags, CombinationsH) ->
+		append([CombinationsH], FinalCombinations1, FinalCombinations);
+		append([], FinalCombinations1, FinalCombinations)).
+
+common_tags_test_lists(List1, List2) :-
+    forall(member(Element,List1), member(Element,List2)).
 
 common_tags_remove_repeated_tags([],[]).
 common_tags_remove_repeated_tags([List|All_Tags],Tags):-
     common_tags_remove_repeated_tags(All_Tags,Tags1),!,
     union(List,Tags1,Tags).
 
-%=== Combinaçoes ===
+%=== CombinaÃ§oes ===
 common_tags_combination(0,_,[]).
 common_tags_combination(N,[X|T],[X|Comb]):-N>0,N1 is N-1,common_tags_combination(N1,T,Comb).
 common_tags_combination(N,[_|T],Comb):-N>0,common_tags_combination(N,T,Comb).
