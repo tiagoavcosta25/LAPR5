@@ -18,7 +18,7 @@ export class SignalrService {
 
   startConnection = () => {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(environment.apiUrl + "/signalr")
+      .withUrl("https://socialnetworkapi51.azurewebsites.net/api/signalr")
       .build();
 
     this.hubConnection

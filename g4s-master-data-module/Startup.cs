@@ -52,7 +52,7 @@ namespace DDDSample1
             {
                 option.AddDefaultPolicy(builder =>
                 {
-                    builder.WithOrigins("http://localhost:4200", "https://socialnetworkspa51.web.app").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+                    builder.WithOrigins("http://localhost:4200", "https://socialnetworkspa51.web.app", "https://socialnetworkgatewayapi51.azurewebsites.net").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
                 });
             });
 
