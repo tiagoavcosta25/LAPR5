@@ -28,12 +28,14 @@ export class AiService {
   }
 
   /** GET: returns connections from server */
-  getshortestRoute(emailPlayer: string, emailTarget: string): Observable<string[]> {
+  getshortestRoute(emailPlayer: string, emailTarget: string, mode:number, n: number): Observable<string[][]> {
     const params = new HttpParams()
       .set('emailPlayer', emailPlayer)
-      .set('emailTarget', emailTarget);
+      .set('emailTarget', emailTarget)
+      .set('mode', mode)
+      .set('n', n);
     const url = this.aiUrl + '/shortest-route';
-    return this.http.get<string[]>(url, { params: params }).pipe(
+    return this.http.get<string[][]>(url, { params: params }).pipe(
       catchError(this.handleError)
     );
   }
