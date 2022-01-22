@@ -20,13 +20,14 @@ occ(1, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
 
 hope(1, 3).
 fear(1, 6).
+fear(1, 4).
 
 
 synonym('c#', csharp).
 
 
 % Secundary knowledge base
-:- dynamic shortest_currentRoute/2.
+:- dynamic shortest_currentRoute/3.
 :- dynamic safest_currentRoute/2.
 :- dynamic aStar_orderedList/1.
 :- dynamic occ/7.
@@ -70,7 +71,7 @@ shortest_allDfs(Player1, Player2, PathList):- get_time(T1),
     T is T2-T1,write(T),write(' seconds'),nl,
     write('Possible Path List: '),write(PathList),nl,nl.
 
-shortest_dfs(Mode, N, Orig, Dest, Strength, Path):- shortest_dfsAux(Mode, 0, N, Orig, Dest, [Orig], Strength, Path),!.
+shortest_dfs(Mode, N, Orig, Dest, Strength, Path):- shortest_dfsAux(Mode, 0, N, Orig, Dest, [Orig], Strength, Path).
 
 shortest_dfsAux(_, _, _, Dest, Dest, LA, 0, Path):- !, reverse(LA, Path).
 shortest_dfsAux(_, M, N, _, _, _, _, _):- M >= N, !, false.
@@ -81,7 +82,6 @@ shortest_dfsAux(0, M, N, Current, Dest, LA, Strength, Path):-
     M1 is M + 1,
     shortest_dfsAux(0, M1, N, X,Dest,[X|LA], Strength1, Path),
 	Strength is Strength1 + StrengthA.
-
 shortest_dfsAux(1, M, N, Current, Dest, LA, Strength, Path):-
     (connection(Current, X, StrengthA, _, RelA, _);
     connection(X, Current, _, StrengthA, _, RelA)),
@@ -91,26 +91,25 @@ shortest_dfsAux(1, M, N, Current, Dest, LA, Strength, Path):-
 	getMulticriteria(StrengthA, RelA, FinalStrength),
 	Strength is Strength1 + FinalStrength.
 
-
-shortest_route(Orig, Dest, ShortestPathList):-
+shortest_route(Mode, N, Orig, Dest, Strength, ShortestPathList):-
 		get_time(Ti),
-		(shortest_findRoute(Orig, Dest); true),
-		retract(shortest_currentRoute(ShortestPathList, _)),
+		(shortest_findRoute(Mode, N, Orig, Dest); true),
+		retract(shortest_currentRoute(ShortestPathList, _, Strength)),
 		get_time(Tf),
 		T is Tf-Ti,
 		write('Solution generation time:'), write(T), nl.
 
-shortest_findRoute(Orig, Dest):-
-		asserta(shortest_currentRoute(_,10000)),
-		shortest_dfs(Orig, Dest, PathList),
-		shortest_updateRoute(PathList),
+shortest_findRoute(Mode, N, Orig, Dest):-
+		asserta(shortest_currentRoute(_,10000, _)),
+		shortest_dfs(Mode, N, Orig, Dest, Strength, PathList),
+		shortest_updateRoute(Strength, PathList),
 		fail.
 
-shortest_updateRoute(PathList):-
-		shortest_currentRoute(_, CurrentPathLength),
+shortest_updateRoute(Strength, PathList):-
+		shortest_currentRoute(_, CurrentPathLength, _),
 		length(PathList, PathLength),
-	PathLength < CurrentPathLength, retract(shortest_currentRoute(_,_)),
-		asserta(shortest_currentRoute(PathList, PathLength)).
+		PathLength < CurrentPathLength, retract(shortest_currentRoute(_,_,_)),
+		asserta(shortest_currentRoute(PathList, PathLength, Strength)).
 
 % safest route
 
@@ -312,7 +311,7 @@ common_tags_remove_repeated_tags([List|All_Tags],Tags):-
     common_tags_remove_repeated_tags(All_Tags,Tags1),!,
     union(List,Tags1,Tags).
 
-%=== Combinaçoes ===
+%=== CombinaÃ§oes ===
 common_tags_combination(0,_,[]).
 common_tags_combination(N,[X|T],[X|Comb]):-N>0,N1 is N-1,common_tags_combination(N1,T,Comb).
 common_tags_combination(N,[_|T],Comb):-N>0,common_tags_combination(N,T,Comb).
@@ -514,4 +513,3 @@ emotion_countFear(PlayerId, [_ | Group], Counter, Return):-
     !,emotion_countFear(PlayerId, Group, Counter, Return).
 
 suggest_playerGroups(_, _, [3,6, 4, 5]).
-
