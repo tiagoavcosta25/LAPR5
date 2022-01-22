@@ -436,7 +436,7 @@ export class GetNetworkComponent implements OnInit {
               this.clearPath(); 
               for(let node of this.nodes) {
                 if(data.includes(node.id)){
-                  node.setPath(true)
+                  //node.setPath(true)
                   var material = new THREE.MeshStandardMaterial({color : 0xe75480,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
                   node.sphere.material = material;
                 }
@@ -481,7 +481,7 @@ export class GetNetworkComponent implements OnInit {
               for(let node of this.nodes) {
                 console.log("Node: " + node.id);
                 if(data[0].includes(node.id)){
-                  node.setPath(true)
+                  //node.setPath(true)
                   var material = new THREE.MeshStandardMaterial({color : 0xe75480,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
                   node.sphere.material = material;
                 }
@@ -526,7 +526,7 @@ export class GetNetworkComponent implements OnInit {
               this.clearPath();
               for(let node of this.nodes) {
                 if(data.includes(node.id)){
-                  node.setPath(true)
+                  //node.setPath(true)
                   var material = new THREE.MeshStandardMaterial({color : 0xe75480,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
                   node.sphere.material = material;
                 }
