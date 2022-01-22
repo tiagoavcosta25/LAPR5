@@ -123,7 +123,7 @@ prepareConnections() :-
 		connectionTemp(B, A, D),
 		getDCalc(A, B, DABTemp),
 		getDCalc(B, A, DBATemp),
-		sigmoid(DABTemp.get(dCalc), DAB),		
+		sigmoid(DABTemp.get(dCalc), DAB),
 		sigmoid(DBATemp.get(dCalc), DBA),
 		asserta(connection(A, B, C, D, DAB, DBA)))),
 	retractall(connectionTemp(_,_,_)).
@@ -166,7 +166,7 @@ cors_enable(Request, [methods([get])]),
 	prolog_to_json(Path, JSONObject),
 	prolog_to_json(Strength, JSONObject2),
 	reply_json([JSONObject, JSONObject2], [json_object(dict)]).
- 
+
 shortest_prepare(Request, Strength, Path) :-
 http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string]),mode(Mode, [integer]) , n(N, [integer])]),
 addPlayers(),
@@ -213,7 +213,7 @@ shortest_dfsAux(1, M, N, Current, Dest, LA, Strength, Path):-
 shortest_route(Mode, N, Orig, Dest, Strength, ShortestPathList):-
 		(shortest_findRoute(Mode, N, Orig, Dest); true),
 		retract(shortest_currentRoute(ShortestPathList, _, Strength)).
-		
+
 shortest_findRoute(Mode, N, Orig, Dest):-
 		asserta(shortest_currentRoute(_,10000, _)),
 		shortest_dfs(Mode, N, Orig, Dest, Strength, PathList),
@@ -245,7 +245,7 @@ safest_routePrepare(Request, Path) :-
         node(PlayerId, PlayerName, _),
         node(TargetId, TargetName, _),
 	safest_route(PlayerId, TargetId, Threshold, Path),
-	retractall(connection(_,_,_,_)),
+	retractall(connection(_,_,_,_,_,_)),
 	retractall(node(_,_,_)).
 
 
@@ -255,8 +255,8 @@ safest_dfs(Orig, Dest, Threshold, Strength, Path):- safest_dfsAux(Orig, Dest, [O
 
 safest_dfsAux(Dest, Dest, AuxList, _ , Strength, Strength, Path):-!, reverse(AuxList,Path).
 safest_dfsAux(Current, Dest, AuxList, Threshold, Strength, ReturnStrength, Path):-
-		(connection(Current, Friend, StrengthA, StrengthB);
-		connection(Friend, Current, StrengthA, StrengthB)),
+		(connection(Current, Friend, StrengthA, StrengthB,_,_);
+		connection(Friend, Current, StrengthA, StrengthB,_,_)),
 		\+ member(Friend, AuxList),
 		StrengthA >= Threshold,
 		StrengthB >= Threshold,
@@ -303,7 +303,7 @@ suggest_prepare(Request, SuggestedPlayersList) :-
     getPlayerName(EmailPlayer, PlayerName),
     node(PlayerId, PlayerName, _),
     suggest_players(PlayerId, Scope, SuggestedPlayersList),
-    retractall(connection(_,_,_,_)),
+    retractall(connection(_,_,_,_,_,_)),
     retractall(node(_,_,_)).
 
 
@@ -317,8 +317,8 @@ suggest_players(Player, Level, SuggestedPlayersList):-
 
 suggest_removeFriends(_, [ ], []).
 suggest_removeFriends(Player, [CurrentPlayer | NetworkList], CandidateList):-
-		(connection(Player, CurrentPlayer, _, _);
-		connection(CurrentPlayer, Player, _, _)), !,
+		(connection(Player, CurrentPlayer, _, _,_,_);
+		connection(CurrentPlayer, Player, _, _,_,_)), !,
 		suggest_removeFriends(Player, NetworkList, CandidateList).
 suggest_removeFriends(Player, [CurrentPlayer | NetworkList], [CurrentPlayer | CandidateList]):-
 		suggest_removeFriends(Player, NetworkList, CandidateList).
@@ -375,8 +375,8 @@ suggest_dfs(Orig,Dest, Tag, Path):-suggest_dfsAux(Orig,Dest,[Orig], Tag, Path).
 suggest_dfsAux(Dest,Dest,AuxList, _, Path):-!,reverse(AuxList,Path).
 suggest_dfsAux(Current,Dest,AuxList, Tag, Path):-
 		node(Current, _, _),
-		(connection(Current, Friend, _, _);
-		connection(Friend, Current, _, _)),
+		(connection(Current, Friend, _, _,_,_);
+		connection(Friend, Current, _, _,_,_)),
 		node(Friend, _, FriendTagList),
 		\+ member(Friend, AuxList),
 		member(Tag, FriendTagList),
@@ -401,7 +401,7 @@ strongest_routePrepare(Request, Path) :-
 	node(PlayerId, PlayerName, _),
 	node(TargetId, TargetName, _),
 	strongest_route(PlayerId, TargetId, Path),
-	retractall(connection(_,_,_,_)),
+	retractall(connection(_,_,_,_,_,_)),
 	retractall(node(_,_,_)).
 
 
@@ -411,8 +411,8 @@ strongest_dfs(OrigId, DestId, Strength, Path):- strongest_dfsAux(OrigId, DestId,
 
 strongest_dfsAux(DestId, DestId, AuxList, 0, Path):-!,reverse(AuxList, Path).
 strongest_dfsAux(CurrentId, DestId, AuxList, Strength, Path):-
-	(connection(CurrentId, FriendID, StrengthA, StrengthB);
-	connection(FriendID, CurrentId, StrengthA, StrengthB)),
+	(connection(CurrentId, FriendID, StrengthA, StrengthB,_,_);
+	connection(FriendID, CurrentId, StrengthA, StrengthB,_,_)),
 	\+ member(FriendID, AuxList),
 	strongest_dfsAux(FriendID, DestId, [FriendID | AuxList], SX, Path),
 	Strength is (SX + StrengthA + StrengthB).
@@ -449,7 +449,7 @@ common_tagsPrepare(Request, Path) :-
 	addPlayers(),
 	addConnections(),
 	common_tags(Num, Path),
-	retractall(connection(_,_,_,_)),
+	retractall(connection(_,_,_,_,_,_)),
 	retractall(node(_,_,_)).
 
 
@@ -526,7 +526,7 @@ network_levelPrepare(Request, Path, Size) :-
     getPlayerName(Email, PlayerName),
     node(PlayerId, PlayerName, _),
     network_getNetworkByLevel(PlayerId, Level, Path, Size),
-    retractall(connection(_,_,_,_)),
+    retractall(connection(_,_,_,_,_,_)),
     retractall(node(_,_,_)).
 
 
@@ -551,7 +551,7 @@ dfs2(_,0,_):-!.
 
 dfs2(Act,Level,LA):-
     Level > 0,
-    (connection(Act,X,_,_);connection(X,Act,_,_)),
+    (connection(Act,X,_,_,_,_);connection(X,Act,_,_,_,_)),
     \+userVisited(X),
     \+ member(X,LA),
     Level1 is Level-1,
@@ -576,7 +576,7 @@ aStar_prepare(Request, Path, Cost) :-
 	addPlayers(),
 	addConnections(),
 	aStar_find(Mode, Threshold, PlayerId, TargetId, Path, Cost),
-	retractall(connection(_,_,_,_)),
+	retractall(connection(_,_,_,_,_,_)),
 	retractall(node(_,_,_)).
 
 %======== A-Star (Core) ========%
@@ -683,7 +683,7 @@ emotion_relationPrepare(Request, NewJoy, NewAnguish) :-
 	getPlayerName(EmailPlayer, PlayerName),
         node(PlayerId, PlayerName, _),
 	emotion_relationChange(PlayerId, Value, NewJoy, NewAnguish),
-	retractall(connection(_,_,_,_)),
+	retractall(connection(_,_,_,_,_,_)),
 	retractall(node(_,_,_)).
 
 %======== Emotion Suggested Variation (HTTP) ========%
@@ -703,7 +703,7 @@ emotion_suggestedPrepare(Request, NewHope, NewDeception, NewFear, NewRelief) :-
 	getPlayerName(EmailPlayer, PlayerName),
         node(PlayerId, PlayerName, _),
 	emotion_groupSuggestion(PlayerId, Tags, NewHope, NewDeception, NewFear, NewRelief),
-	retractall(connection(_,_,_,_)),
+	retractall(connection(_,_,_,_,_,_)),
 	retractall(node(_,_,_)).
 
 %======== Emotion Variation (Core) ========%
