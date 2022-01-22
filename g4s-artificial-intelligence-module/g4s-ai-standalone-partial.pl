@@ -17,6 +17,12 @@ connection(1,3,11,3,35,90).
 connection(3,5,12,-2,10,31).
 
 occ(1, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
+occ(2, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
+occ(3, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
+occ(4, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
+occ(5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
+occ(6, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
+
 
 hope(1, 3).
 fear(1, 6).
@@ -306,7 +312,7 @@ common_tags_users_combination_aux(NTags,Tags,[_|Users],Result):-
 common_tags_get_all_tags(Tags):-
     findall(User_Tags,node(_,_,User_Tags),All_Tags),
     common_tags_remove_repeated_tags(All_Tags,Tags).
-	
+
 common_tags_test_list([],_,[]):-!.
 common_tags_test_list([CombinationsH|CombinationsT], Tags, FinalCombinations):-
 	common_tags_test_list(CombinationsT, Tags, FinalCombinations1),
@@ -369,18 +375,19 @@ dfs2(Act,Level,LA):-
 
 %======== A-Star (Core) ========%
 
-aStar_find(Mode, Threshold, Orig, Dest, Path, Cost):-
+aStar_find(Mode, EmotionBool, Threshold, Orig, Dest, Path, Cost):-
     (retract(aStar_orderedList(_));true),
     aStar_getStrengthListByPlayer(Mode, Threshold, Orig, StrengthList),
     asserta(aStar_orderedList(StrengthList)),
-    aStar_aux(Mode, 0, Threshold, Dest,[(_,0,[Orig])],Path,Cost).
-aStar_aux(_, M, N, Dest,[(_,Cost,[Dest|T])|_],Path,Cost):- M >= N,reverse([Dest|T],Path).
-aStar_aux(0, M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
+    aStar_aux(Mode, EmotionBool, 0, Threshold, Dest,[(_,0,[Orig])],Path,Cost).
+aStar_aux(_, _, M, N, Dest,[(_,Cost,[Dest|T])|_],Path,Cost):- M >= N,reverse([Dest|T],Path).
+aStar_aux(0, EmotionBool, M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
     LA=[Act|_],
     findall((CEX,CaX,[X|LA]),
     (Dest\==Act,
     (connection(Act,X,CostX, _, _, _);
     connection(X, Act, _, CostX, _, _)),
+    emotion_checkSameEmotion(EmotionBool, Act, X), !,
     \+ member(X,LA),
     CaX is CostX + Ca,
     aStar_estimate(N,M,EstX),
@@ -389,14 +396,15 @@ aStar_aux(0, M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
     append(Others,New,All),
     sort(All,AllOrd),
     M1 is M + 1,
-    aStar_aux(0, M1, N, Dest,AllOrd,Path,Cost).
+    aStar_aux(0, EmotionBool, M1, N, Dest,AllOrd,Path,Cost).
 
-aStar_aux(1, M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
+aStar_aux(1, EmotionBool, M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
     LA=[Act|_],
     findall((CEX,CaX,[X|LA]),
     (Dest\==Act,
     (connection(Act,X,ConnStrength, _, RelStrength, _);
     connection(X, Act, _, ConnStrength, _, RelStrength)),
+    emotion_checkSameEmotion(EmotionBool, Act, X), !,
     \+ member(X,LA),
     getMulticriteria(ConnStrength, RelStrength, CostX),
     CaX is CostX + Ca,
@@ -406,7 +414,7 @@ aStar_aux(1, M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
     append(Others,New,All),
     sort(All,AllOrd),
     M1 is M + 1,
-    aStar_aux(1, M1, N, Dest,AllOrd,Path,Cost).
+    aStar_aux(1, EmotionBool, M1, N, Dest,AllOrd,Path,Cost).
 
 
 aStar_estimate(N,M, Est):-
@@ -478,8 +486,8 @@ emotion_relationChange(PlayerId, Value, NewJoy, NewAnguish):-
     retract(occ(PlayerId, Joy, Anguish, Hope, Deception, Fear, Relief)),
     asserta(occ(PlayerId, NewJoy, NewAnguish, Hope, Deception, Fear, Relief)).
 
-emotion_groupSuggestion(PlayerId, TagList, NewHope, NewDeception, NewFear, NewRelief):-
-    suggest_playerGroups(PlayerId, TagList, SuggestedGroup),
+emotion_groupSuggestion(PlayerId, TagCount, PlayerCount, MandatoryTags, NewHope, NewDeception, NewFear, NewRelief):-
+    suggest_playerGroups(PlayerId, TagCount, PlayerCount, MandatoryTags, SuggestedGroup),
     emotion_checkHope(PlayerId, SuggestedGroup, NewHope, NewDeception),
     emotion_checkFear(PlayerId, SuggestedGroup, NewFear, NewRelief),
     retract(occ(PlayerId, Joy, Anguish, _, _, _, _)),
@@ -523,4 +531,24 @@ emotion_countFear(PlayerId, [H | Group], Counter, Return):-
 emotion_countFear(PlayerId, [_ | Group], Counter, Return):-
     !,emotion_countFear(PlayerId, Group, Counter, Return).
 
-suggest_playerGroups(_, _, [3,6, 4, 5]).
+emotion_getMax(PlayerId, MaxValue, MaxEmotion):-
+    occ(PlayerId, Joy, Anguish, Hope,Deception, Fear, Relief),
+    emotion_maxEmotion([Joy, Anguish, Hope, Deception, Fear, Relief], [joy, anguish, hope, deception, fear, relief],-100, emotion, MaxValue, MaxEmotion).
+
+emotion_maxEmotion([], [], MaxAuxValue, MaxAuxEmotion, MaxReturnValue, MaxReturnEmotion):- !, MaxReturnValue is MaxAuxValue, MaxReturnEmotion = MaxAuxEmotion.
+emotion_maxEmotion([HV|TV], [HE|TE], MaxAuxValue, _, MaxReturnValue, MaxReturnEmotion):-
+    HV >= MaxAuxValue, !,
+    emotion_maxEmotion(TV, TE, HV, HE, MaxReturnValue, MaxReturnEmotion).
+emotion_maxEmotion([_|TV], [_|TE], MaxAuxValue, MaxAuxEmotion, MaxReturnValue, MaxReturnEmotion):-
+    !, emotion_maxEmotion(TV, TE, MaxAuxValue, MaxAuxEmotion, MaxReturnValue, MaxReturnEmotion).
+
+emotion_checkSameEmotion(EmotionBool, Act, X):-
+    ((EmotionBool =:= 1, !,
+     emotion_getMax(Act, _, ActEmotion),
+     emotion_getMax(X, _, XEmotion),
+     ((ActEmotion = XEmotion,!);
+     false));
+    true).
+
+suggest_playerGroups(_, _, _, _, [3,6, 4, 5]).
+
