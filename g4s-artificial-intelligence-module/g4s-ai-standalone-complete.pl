@@ -26,66 +26,66 @@ synonym(tecnologia, jogos).
 synonym(teatro, musica).
 
 
-connection(1,11,10,8).
-connection(1,12,2,6).
-connection(1,13,-3,-2).
-connection(1,14,1,-5).
-connection(11,21,5,7).
-connection(11,22,2,-4).
-connection(11,23,-2,8).
-connection(11,24,6,0).
-connection(12,21,4,9).
-connection(12,22,-3,-8).
-connection(12,23,2,4).
-connection(12,24,-2,4).
-connection(13,21,3,2).
-connection(13,22,0,-3).
-connection(13,23,5,9).
-connection(13,24,-2, 4).
-connection(14,21,2,6).
-connection(14,22,6,-3).
-connection(14,23,7,0).
-connection(14,24,2,2).
-connection(21,31,2,1).
-connection(21,32,-2,3).
-connection(21,33,3,5).
-connection(21,34,4,2).
-connection(22,31,5,-4).
-connection(22,32,-1,6).
-connection(22,33,2,1).
-connection(22,34,2,3).
-connection(23,31,4,-3).
-connection(23,32,3,5).
-connection(23,33,4,1).
-connection(23,34,-2,-3).
-connection(24,31,1,-5).
-connection(24,32,1,0).
-connection(24,33,3,-1).
-connection(24,34,-1,5).
-connection(31,41,2,4).
-connection(31,42,6,3).
-connection(31,43,2,1).
-connection(31,44,2,1).
-connection(32,41,2,3).
-connection(32,42,-1,0).
-connection(32,43,0,1).
-connection(32,44,1,2).
-connection(33,41,4,-1).
-connection(33,42,-1,3).
-connection(33,43,7,2).
-connection(33,44,5,-3).
-connection(34,41,3,2).
-connection(34,42,1,-1).
-connection(34,43,2,4).
-connection(34,44,1,-2).
-connection(41,200,2,0).
-connection(42,200,7,-2).
-connection(43,200,-2,4).
-connection(44,200,-1,-3).
+connection(1,11,10,8, 1, 1).
+connection(1,12,2,6, 1, 1).
+connection(1,13,-3,-2, 1, 1).
+connection(1,14,1,-5, 1, 1).
+connection(11,21,5,7, 1, 1).
+connection(11,22,2,-4, 1, 1).
+connection(11,23,-2,8, 1, 1).
+connection(11,24,6,0, 1, 1).
+connection(12,21,4,9, 1, 1).
+connection(12,22,-3,-8, 1, 1).
+connection(12,23,2,4, 1, 1).
+connection(12,24,-2,4, 1, 1).
+connection(13,21,3,2, 1, 1).
+connection(13,22,0,-3, 1, 1).
+connection(13,23,5,9, 1, 1).
+connection(13,24,-2, 4, 1, 1).
+connection(14,21,2,6, 1, 1).
+connection(14,22,6,-3, 1, 1).
+connection(14,23,7,0, 1, 1).
+connection(14,24,2,2, 1, 1).
+connection(21,31,2,1, 1, 1).
+connection(21,32,-2,3, 1, 1).
+connection(21,33,3,5, 1, 1).
+connection(21,34,4,2, 1, 1).
+connection(22,31,5,-4, 1, 1).
+connection(22,32,-1,6, 1, 1).
+connection(22,33,2,1, 1, 1).
+connection(22,34,2,3, 1, 1).
+connection(23,31,4,-3, 1, 1).
+connection(23,32,3,5, 1, 1).
+connection(23,33,4,1, 1, 1).
+connection(23,34,-2,-3, 1, 1).
+connection(24,31,1,-5, 1, 1).
+connection(24,32,1,0, 1, 1).
+connection(24,33,3,-1, 1, 1).
+connection(24,34,-1,5, 1, 1).
+connection(31,41,2,4, 1, 1).
+connection(31,42,6,3, 1, 1).
+connection(31,43,2,1, 1, 1).
+connection(31,44,2,1, 1, 1).
+connection(32,41,2,3, 1, 1).
+connection(32,42,-1,0, 1, 1).
+connection(32,43,0,1, 1, 1).
+connection(32,44,1,2, 1, 1).
+connection(33,41,4,-1, 1, 1).
+connection(33,42,-1,3, 1, 1).
+connection(33,43,7,2, 1, 1).
+connection(33,44,5,-3, 1, 1).
+connection(34,41,3,2, 1, 1).
+connection(34,42,1,-1, 1, 1).
+connection(34,43,2,4, 1, 1).
+connection(34,44,1,-2, 1, 1).
+connection(41,200,2,0, 1, 1).
+connection(42,200,7,-2, 1, 1).
+connection(43,200,-2,4, 1, 1).
+connection(44,200,-1,-3, 1, 1).
 
-connection(1,51,6,2).
-connection(51,61,7,3).
-connection(61,200,2,4).
+connection(1,51,6,2, 1, 1).
+connection(51,61,7,3, 1, 1).
+connection(61,200,2,4, 1, 1).
 
 occ(1, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
 
@@ -185,8 +185,8 @@ safest_dfs(Orig, Dest, Threshold, Strength, Path):- safest_dfsAux(Orig, Dest, [O
 
 safest_dfsAux(Dest, Dest, AuxList, _ , Strength, Strength, Path):-!, reverse(AuxList,Path).
 safest_dfsAux(Current, Dest, AuxList, Threshold, Strength, ReturnStrength, Path):-
-		(connection(Current, Friend, StrengthA, StrengthB);
-		connection(Friend, Current, StrengthA, StrengthB)),
+		(connection(Current, Friend, StrengthA, StrengthB,_,_);
+		connection(Friend, Current, StrengthA, StrengthB,_,_)),
 		\+ member(Friend, AuxList),
 		StrengthA >= Threshold,
 		StrengthB >= Threshold,
@@ -228,8 +228,8 @@ suggest_players(Player, Level, SuggestedPlayersList):-
 
 suggest_removeFriends(_, [ ], []).
 suggest_removeFriends(Player, [CurrentPlayer | NetworkList], CandidateList):-
-		(connection(Player, CurrentPlayer, _, _);
-		connection(CurrentPlayer, Player, _, _)), !,
+		(connection(Player, CurrentPlayer, _, _,_,_);
+		connection(CurrentPlayer, Player, _, _,_,_)), !,
 		suggest_removeFriends(Player, NetworkList, CandidateList).
 suggest_removeFriends(Player, [CurrentPlayer | NetworkList], [CurrentPlayer | CandidateList]):-
 		suggest_removeFriends(Player, NetworkList, CandidateList).
@@ -286,8 +286,8 @@ suggest_dfs(Orig,Dest, Tag, Path):-suggest_dfsAux(Orig,Dest,[Orig], Tag, Path).
 suggest_dfsAux(Dest,Dest,AuxList, _, Path):-!,reverse(AuxList,Path).
 suggest_dfsAux(Current,Dest,AuxList, Tag, Path):-
 		node(Current, _, _),
-		(connection(Current, Friend, _, _);
-		connection(Friend, Current, _, _)),
+		(connection(Current, Friend, _, _, _, _);
+		connection(Friend, Current, _, _, _, _)),
 		node(Friend, _, FriendTagList),
 		\+ member(Friend, AuxList),
 		member(Tag, FriendTagList),
@@ -303,8 +303,8 @@ strongest_dfs(Orig, Dest, Strength, Path):- strongest_dfsAux(Orig, Dest, [Orig],
 strongest_dfsAux(Dest, Dest, AuxList, 0, Path):-!,reverse(AuxList, Path).
 strongest_dfsAux(Current, Dest, AuxList, Strength, Path):-
 	node(CurrentID, Current, _),
-	(connection(CurrentID, FriendID, StrengthA, StrengthB);
-	connection(FriendID, CurrentID, StrengthA, StrengthB)),
+	(connection(CurrentID, FriendID, StrengthA, StrengthB, _, _);
+	connection(FriendID, CurrentID, StrengthA, StrengthB, _, _)),
 	node(FriendID, Friend, _),
 	\+ member(Friend, AuxList),
 	strongest_dfsAux(Friend, Dest, [Friend | AuxList], SX, Path),
@@ -418,7 +418,7 @@ dfs2(_,0,_):-!.
 
 dfs2(Act,Level,LA):-
     Level > 0,
-    (connection(Act,X,_,_);connection(X,Act,_,_)),
+    (connection(Act,X,_,_, _, _);connection(X,Act,_,_, _, _)),
     \+userVisited(X),
     \+ member(X,LA),
     Level1 is Level-1,
