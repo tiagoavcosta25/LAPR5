@@ -87,11 +87,12 @@ export class AiService {
   }
 
   /** GET: searches for groups */
-  getGroups(ntags:number, nusers: number, taglist: string): Observable<string[][]> {
+  getGroups(id:string, ntags:number, nusers: number, taglist: string): Observable<string[][]> {
     const params = new HttpParams()
-      .set('ntags', ntags)
-      .set('nusers', nusers)
-      .set('taglist', taglist)
+    .set('id', id)  
+    .set('ntags', ntags)
+    .set('nusers', nusers)
+    .set('taglist', taglist)
     const url = this.aiUrl + '/common-tags';
     return this.http.get<string[][]>(url, { params: params }).pipe(
       catchError(this.handleError)

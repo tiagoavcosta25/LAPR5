@@ -457,7 +457,7 @@ common_tags(Id, NTags,NUsers,TagList,ResultTag,ResultUsers):-
     findall(Combination,common_tags_combination(NTags,All_Tags,Combination),CombinationsTemp),
 	common_tags_test_list(CombinationsTemp, TagList, Combinations),
     findall(UserId,node(UserId,_,_),Users),
-	asserta(common_tags_users(_,_,0)),
+	asserta(common_tags_users([],[],0)),
     common_tags_users_combination(NTags,NUsers,Users,Combinations),
 	common_tags_users(ResultTag,ResultUsers,_),
     retractall(common_tags_users(_,_,_)).
