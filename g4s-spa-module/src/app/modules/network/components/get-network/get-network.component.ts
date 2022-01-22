@@ -503,8 +503,10 @@ export class GetNetworkComponent implements OnInit {
         buttonStrongest.addEventListener("click", () => {
           let player = this.checkWhichPlayerIs((<THREE.Mesh>this.objectPressed[0].object));
           if(player !== undefined){
+            this.spinner.show();
             this.aiService.getStrongestRoute(this.email, player!.email).subscribe({ next: async data => {
               this.showPath(data);
+              this.spinner.hide();
             },
               error: _error => {
                 this.spinner.hide();
@@ -531,8 +533,10 @@ export class GetNetworkComponent implements OnInit {
         buttonShortest.addEventListener("click", () => {
           let player = this.checkWhichPlayerIs((<THREE.Mesh>this.objectPressed[0].object));
           if(player !== undefined){
+            this.spinner.show();
             this.aiService.getshortestRoute(this.email, player!.email, 0, this.getNetworkForm.value.scope).subscribe({ next: async data => {
               this.showPath(data[0]);
+              this.spinner.hide();
             },
               error: _error => {
                 this.spinner.hide();
@@ -560,8 +564,10 @@ export class GetNetworkComponent implements OnInit {
         buttonSafest.addEventListener("click", () => {
           let player = this.checkWhichPlayerIs((<THREE.Mesh>this.objectPressed[0].object));
           if(player !== undefined){
+            this.spinner.show();
             this.aiService.getSafestRoute(this.email, player!.email, 0).subscribe({ next: async data => {
               this.showPath(data);
+              this.spinner.hide()
             },
               error: _error => {
                 this.spinner.hide();
@@ -597,7 +603,10 @@ export class GetNetworkComponent implements OnInit {
     }
   }
 
+
   showPath(data: string[]){
+    this.onObject = [];
+    this.objectPressed = [];
     this.clearPath();
     for(let node of this.nodes) {
       if(data.includes(node.id)){
@@ -669,6 +678,8 @@ export class GetNetworkComponent implements OnInit {
         spheres.push(node.sphere);
       }
       const intersects = this.raycaster.intersectObjects( spheres );
+      let player;
+
       for(let n of this.scene.children) {
         if(n.children.length > 1) {
           n.remove(this.currentLabel);
@@ -676,9 +687,18 @@ export class GetNetworkComponent implements OnInit {
       }  
       if(this.onObject.length > 0 && intersects != this.onObject) {
         for(let obj of this.onObject) {
+          player = this.checkWhichPlayerIs((<THREE.Mesh>obj.object));
           if(!this.objectPressed.some(x => x.object.position == obj.object.position)) {
             if(!((<THREE.Mesh>obj.object).position.x == 0 && (<THREE.Mesh>obj.object).position.y == 0)) {
-              (<THREE.MeshStandardMaterial>(<THREE.Mesh>obj.object).material).color.set(0x2e86c1);
+              if(player != undefined) {
+                if(player!.checkIsPath()){
+                  (<THREE.MeshStandardMaterial>(<THREE.Mesh>obj.object).material).color.set(0xe75480);
+                } else{
+                  (<THREE.MeshStandardMaterial>(<THREE.Mesh>obj.object).material).color.set(0x2e86c1);
+                }
+              } else {
+                (<THREE.MeshStandardMaterial>(<THREE.Mesh>obj.object).material).color.set(0x2e86c1);
+              }
             }
           }
         }
@@ -819,13 +839,23 @@ export class GetNetworkComponent implements OnInit {
 
 
   checkIntersectsConnections() {
+    let c;
     if(this.onObject.length > 0) {
       if(this.onCylinder.length > 0) {
         for(let obj of this.onCylinder) {
+          c = this.checkWhichCylinderIs((<THREE.Mesh>obj.object));
+          if(c != undefined) {
+            if(c.checkIsPath()) {
+              (<THREE.MeshStandardMaterial>(<THREE.Mesh>obj.object).material).color.set(0xe75480);
+            } else {
               (<THREE.MeshStandardMaterial>(<THREE.Mesh>obj.object).material).color.set(0x80ffff);
-              for(let label of this.labelAdded) {
-                (<THREE.Mesh>obj.object).remove(label);
-              }
+            }
+          } else {
+            (<THREE.MeshStandardMaterial>(<THREE.Mesh>obj.object).material).color.set(0x80ffff);
+          }
+          for(let label of this.labelAdded) {
+            (<THREE.Mesh>obj.object).remove(label);
+          }
         }
       }
       this.onCylinder = [];
@@ -839,10 +869,19 @@ export class GetNetworkComponent implements OnInit {
 
       if(this.onCylinder.length > 0 && intersects != this.onCylinder) {
         for(let obj of this.onCylinder) {
+          c = this.checkWhichCylinderIs((<THREE.Mesh>obj.object));
+          if(c != undefined) {
+            if(c.checkIsPath()) {
+              (<THREE.MeshStandardMaterial>(<THREE.Mesh>obj.object).material).color.set(0xe75480);
+            } else {
               (<THREE.MeshStandardMaterial>(<THREE.Mesh>obj.object).material).color.set(0x80ffff);
-              for(let label of this.labelAdded) {
-                (<THREE.Mesh>obj.object).remove(label);
-              }
+            }
+          } else {
+            (<THREE.MeshStandardMaterial>(<THREE.Mesh>obj.object).material).color.set(0x80ffff);
+          }              
+          for(let label of this.labelAdded) {
+            (<THREE.Mesh>obj.object).remove(label);
+          }
         }
       }
       this.onCylinder = intersects;
@@ -894,6 +933,14 @@ export class GetNetworkComponent implements OnInit {
     for(let node of this.nodes) {
       if(node.sphere.position == mesh.position)
         return node;
+    }
+    return null;
+  }
+
+  checkWhichCylinderIs(mesh: THREE.Mesh): NetworkConnection | null {
+    for(let c of this.cylinders) {
+      if(c.cylinder.position == mesh.position)
+        return c;
     }
     return null;
   }

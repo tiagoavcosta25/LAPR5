@@ -39,14 +39,12 @@ export class LoginComponent implements OnInit {
     let password = this.loginForm.value.password;
     this.pService.login(email, password).subscribe({ next: data => {
       let code = data;
-      console.log(code);
       if(code == 1) {
         localStorage.clear();
         localStorage.setItem('currentPlayer', this.loginForm.value.email);
         this.router.navigate(['/get-feed']);
       } else {
         this.wrongLogin = true;
-        console.log("Erro no login");
         this.resetForm();
       }
       this.spinner.hide();
