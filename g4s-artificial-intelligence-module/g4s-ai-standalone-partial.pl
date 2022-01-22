@@ -485,7 +485,7 @@ emotion_relationChange(PlayerId, Value, NewJoy, NewAnguish):-
     asserta(occ(PlayerId, NewJoy, NewAnguish, Hope, Deception, Fear, Relief)).
 
 emotion_groupSuggestion(PlayerId, TagCount, PlayerCount, MandatoryTags, NewHope, NewDeception, NewFear, NewRelief):-
-    suggest_playerGroups(PlayerId, TagCount, PlayerCount, MandatoryTags, SuggestedGroup),
+    common_tags(PlayerId, TagCount, PlayerCount, MandatoryTags, _,SuggestedGroup),
     emotion_checkHope(PlayerId, SuggestedGroup, NewHope, NewDeception),
     emotion_checkFear(PlayerId, SuggestedGroup, NewFear, NewRelief),
     retract(occ(PlayerId, Joy, Anguish, _, _, _, _)),
@@ -547,5 +547,3 @@ emotion_checkSameEmotion(EmotionBool, Act, X):-
      ((ActEmotion = XEmotion,!);
      false));
     true).
-
-suggest_playerGroups(_, _, _, _, [3,6, 4, 5]).
