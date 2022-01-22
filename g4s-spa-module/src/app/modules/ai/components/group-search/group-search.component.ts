@@ -57,12 +57,10 @@ export class GroupSearchComponent implements OnInit {
       }
     }
     this.aService.getGroups(this.currentUser.id, this.ntags, this.nusers, this.taglist).subscribe({ next: data => {
-      console.log(data);
       this.algoTags = data[0];
       let algoT = [];
       for(let pId of data[1]) {
         for(let p of this.players) {
-          console.log(pId, p.id);
           if(pId == p.id) {
             algoT.push(p);
             break;
@@ -70,7 +68,6 @@ export class GroupSearchComponent implements OnInit {
         }
       }
       this.algoPlayers = algoT; 
-      console.log(this.algoPlayers);
       this.spinner.hide()
     },
       error: _error => {
