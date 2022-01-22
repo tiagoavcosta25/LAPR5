@@ -440,10 +440,13 @@ common_tagsPrepare(Request, ResultTag, ResultUsers) :-
     http_parameters(Request, [id(Id, [string]),ntags(NTags, [number]),nusers(NUsers, [number]),taglist(TagList, [string])]),
 	addPlayers(),
 	addConnections(),
-	split_string(TagList, "/", "", TagListResult),
-	common_tags(Id,NTags, NUsers, TagListResult, ResultTag, ResultUsers),
+	(TagList = "_" ->
+		common_tags(Id,NTags, NUsers, [], ResultTag, ResultUsers);
+		split_string(TagList, "/", "", TagListResult),
+		common_tags(Id,NTags, NUsers, TagListResult, ResultTag, ResultUsers)),
 	retractall(connection(_,_,_,_,_,_)),
 	retractall(node(_,_,_)).
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
