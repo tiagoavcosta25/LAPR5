@@ -71,6 +71,7 @@ export class GetNetworkComponent implements OnInit {
       this.cService.getNetwork(this.email, this.getNetworkForm.value.scope).subscribe({ next: async data => {
         this.id = await this.getCurrentPlayerId();
         for(let con of data) {
+          console.log(con.player + " - " + con.friend);
           let netCon = new NetworkConnection(con.id, con.player, con.friend, con.connectionStrength);
           let tempPlayer = await this.getPlayer(netCon.player.id);
           netCon.player.setInfo(tempPlayer);
@@ -626,43 +627,54 @@ export class GetNetworkComponent implements OnInit {
     }
   }
 
+  getPlayerById(id: string) : NetworkPlayer {
+    for(let node of this.nodes){
+      if(node.id === id){
+          return node;
+      }
+    }
+    return this.nodes[0];
+  }
+
   checkCollision(){
-    let spheres = [];
+
+    var distance = 50;
+
     for(let node of this.nodes) {
-      spheres.push(node.sphere);
+      distance = this.camera.position.distanceTo(node.sphere.position);
+
+      if(distance < 5){
+        return true;
+      }
     }
 
-    const intersects = this.raycaster.intersectObjects( spheres );
+    for(let c of this.connections) {
 
-    console.log(spheres);
+      let dir = new THREE.Vector3();
 
-    return intersects.length > 0;
+      var player = this.getPlayerById(c.player.id);
 
-    /*let spheres = [];
-    for(let node of this.nodes) {
-      spheres.push(node.sphere);
+      var friend = this.getPlayerById(c.friend.id);
+
+      const line = new THREE.Line3(player.sphere.position, friend.sphere.position);
+      distance = line.closestPointToPoint(this.camera.position, true, dir).distanceTo(this.camera.position);
+
+      if(distance < 3){
+        return true;
+      }
     }
 
-    let dir = new THREE.Vector3()
-    let intersects = []
-    xLine.position.copy(this.controls.target)
-    yLine.position.copy(this.controls.target)
-    zLine.position.copy(this.controls.target)
-    dir.subVectors(this.camera.position, controls.target).normalize()
-    raycaster.set(controls.target, dir.subVectors(this.camera.position, controls.target).normalize())
-    intersects = this.raycaster.intersectObjects(spheres, false)
-    if (intersects.length > 0) {
-        if (intersects[0].distance < controls.target.distanceTo(camera.position)) {
-            camera.position.copy(intersects[0].point)
-        }
-    }*/
+    return false;
+
   }
 
   clearPath() {
     for(let node of this.nodes) {
-      node.setPath(false);
-      var material = new THREE.MeshStandardMaterial({color : 0x2e86c1,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
-      node.sphere.material = material;
+      if(node.email !== this.email){
+        node.setPath(false);
+        var material = new THREE.MeshStandardMaterial({color : 0x2e86c1,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
+        node.sphere.material = material;
+      }
     }
 
     for(let c of this.connections) {
