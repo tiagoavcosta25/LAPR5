@@ -15,6 +15,7 @@ import { NetworkPlayer } from 'src/shared/models/connection/network-player.dto';
 import { NetworkScope } from 'src/shared/models/connection/network-scope.dto';
 import SpriteText from 'three-spritetext';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { AiService } from 'src/app/modules/ai/services/ai.service';
 
 @Component({
   selector: 'app-get-network',
@@ -43,6 +44,7 @@ export class GetNetworkComponent implements OnInit {
   constructor(
     private spinner: NgxSpinnerService,
     private cService: ConnectionService,
+    private aiService: AiService,
     private pService: PlayerService,
     private fb: FormBuilder, 
     private router: Router) { 
@@ -242,7 +244,7 @@ export class GetNetworkComponent implements OnInit {
       let angleIncrement = this.calculateAngleIncrement(scope);
       scope.angle = angleIncrement;
       if(scope.player.id == this.id){
-        material  = new THREE.MeshStandardMaterial({color : 0xe67e22,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
+        material  = new THREE.MeshStandardMaterial({color : 0xe75480,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
         geometry = new THREE.SphereGeometry(4, 32, 16);
         scope.player.setMesh( geometry, material );
         scope.player.sphere.position.x = 0;
@@ -285,13 +287,13 @@ export class GetNetworkComponent implements OnInit {
         scopeFriend.sphere.position.x = scopex + radius * Math.cos(angle);
         scopeFriend.sphere.position.y = scopey + radius * Math.sin(angle);
         let connectsNumber = 0;
-        for(let s of this.scopes) {
-          if(s.player.email == scopeFriend.email) {
-            connectsNumber = s.friends.length;
-            break;
+        for(let c of this.connections) {
+          if(c.player.email == scopeFriend.email || c.friend.email == scopeFriend.email) {
+            connectsNumber++;
           }
         }
-        scopeFriend.sphere.position.z = 10 * connectsNumber;
+        scopeFriend.sphere.position.z = 10 * connectsNumber - 30;
+        console.log(scopeFriend.name, "| connection number: " + connectsNumber, "| z position: " + scopeFriend.sphere.position.z, "| (starts at -30, +10 for each connection)");
         angle += angleIncrement;
 
 
@@ -339,16 +341,49 @@ export class GetNetworkComponent implements OnInit {
     this.camera.add(lightSL);
     this.scene.add(this.camera);
 
-    const positionIncrement = 2;
+    const positionIncrement = 4;
 
     window.addEventListener('keydown', event => {
         switch (event.key) {
-          case 'w': this.camera.translateZ(-positionIncrement); break;
-          case 's': this.camera.translateZ(positionIncrement); break;
-          case 'd': this.camera.translateX(positionIncrement); break;
-          case 'a': this.camera.translateX(-positionIncrement); break;
-          case 'p': this.camera.position.y += positionIncrement; break;
-          case 'l': this.camera.position.y -= positionIncrement; break;
+          case 'w': 
+                    this.camera.translateZ(-positionIncrement); 
+                    if(this.checkCollision()){
+                      this.camera.translateZ(positionIncrement); 
+                    } 
+                    break;
+          case 's': 
+                    this.camera.translateZ(positionIncrement); 
+                    if(this.checkCollision()){
+                      this.camera.translateZ(-positionIncrement); 
+                    } 
+                    break;
+          case 'd': 
+                    this.camera.translateX(positionIncrement); 
+                    if(this.checkCollision()){
+                      this.camera.translateX(-positionIncrement); 
+                    }  
+                    break;
+          case 'a': 
+                    this.camera.translateX(-positionIncrement); 
+                    if(this.checkCollision()){
+                      this.camera.translateX(positionIncrement); 
+                    }  
+                    break;
+          case 'p': 
+                    this.camera.position.y += positionIncrement; 
+                    if(this.checkCollision()){
+                      this.camera.position.y -= positionIncrement; 
+                    } 
+                    break;
+          case 'l': 
+                    this.camera.position.y -= positionIncrement; 
+                    if(this.checkCollision()){
+                      this.camera.position.y += positionIncrement; 
+                    }  
+                    break;
+          case 'c': 
+                    this.clearPath();
+                    break;
           default:
         }
     });
@@ -392,6 +427,44 @@ export class GetNetworkComponent implements OnInit {
 
   }
 
+  getStatus(emotionalStatus: string): string {
+    switch(emotionalStatus) {
+      case "joyful": {
+        return "😄";
+      }
+      case "distressed": {
+        return "😖";
+      }
+      case "hopeful": {
+        return "😇";
+      }
+      case "fearful": {
+        return "😧";
+      }
+      case "relieve": {
+        return "😪";
+      }
+      case "disappointed": {
+        return "😔";
+      }
+      case "proud": {
+        return "🥰";
+      }
+      case "remorseful": {
+        return "🤥";
+      }
+      case "grateful": {
+        return "🤗";
+      }
+      case "angry": {
+        return "😡";
+      }
+      default: {
+        return "👾";
+      }
+    }
+  }
+
   clickIntersects() {
     if(this.onObject.length > 0) { 
       if(!((<THREE.Mesh>this.onObject[0].object).position.x == 0 && (<THREE.Mesh>this.onObject[0].object).position.y == 0)) {
@@ -428,8 +501,18 @@ export class GetNetworkComponent implements OnInit {
         buttonStrongest.className = 'btn btn-secondary';
         buttonStrongest.id = 'btn-strong';
         buttonStrongest.addEventListener("click", () => {
-          // Algoritmo aqui
           let player = this.checkWhichPlayerIs((<THREE.Mesh>this.objectPressed[0].object));
+          if(player !== undefined){
+            this.spinner.show();
+            this.aiService.getStrongestRoute(this.email, player!.email).subscribe({ next: async data => {
+              this.showPath(data);
+              this.spinner.hide();
+            },
+              error: _error => {
+                this.spinner.hide();
+              }
+            });
+          }
           console.log("Strongest Path for player: " + player?.name + ", with email: " + player?.email + ", with id: " + player?.id);
           this.removeButtons();
           if(!((<THREE.Mesh>this.objectPressed[0].object).position.x == 0 && (<THREE.Mesh>this.objectPressed[0].object).position.y == 0)) {
@@ -448,14 +531,25 @@ export class GetNetworkComponent implements OnInit {
         buttonShortest.className = 'btn btn-secondary';
         buttonShortest.id = 'btn-short';
         buttonShortest.addEventListener("click", () => {
-          // Algoritmo aqui
           let player = this.checkWhichPlayerIs((<THREE.Mesh>this.objectPressed[0].object));
+          if(player !== undefined){
+            this.spinner.show();
+            this.aiService.getshortestRoute(this.email, player!.email, 0, this.getNetworkForm.value.scope).subscribe({ next: async data => {
+              this.showPath(data[0]);
+              this.spinner.hide();
+            },
+              error: _error => {
+                this.spinner.hide();
+              }
+            });
+          }
           console.log("Shortest Path for player: " + player?.name + ", with email: " + player?.email + ", with id: " + player?.id);
           this.removeButtons();
           if(!((<THREE.Mesh>this.objectPressed[0].object).position.x == 0 && (<THREE.Mesh>this.objectPressed[0].object).position.y == 0)) {
             this.resetColor();
           }
         })
+
         buttonShortest.textContent = "Shortest";
         buttonShortest.style.color = '0x000';
         const buttonShortestObject = new CSS2DObject( buttonShortest );
@@ -468,8 +562,18 @@ export class GetNetworkComponent implements OnInit {
         buttonSafest.className = 'btn btn-secondary';
         buttonSafest.id = 'btn-safe';
         buttonSafest.addEventListener("click", () => {
-          // Algoritmo aqui
           let player = this.checkWhichPlayerIs((<THREE.Mesh>this.objectPressed[0].object));
+          if(player !== undefined){
+            this.spinner.show();
+            this.aiService.getSafestRoute(this.email, player!.email, 0).subscribe({ next: async data => {
+              this.showPath(data);
+              this.spinner.hide()
+            },
+              error: _error => {
+                this.spinner.hide();
+              }
+            });
+          }
           console.log("Safest Path for player: " + player?.name + ", with email: " + player?.email + ", with id: " + player?.id);
           this.removeButtons();
           if(!((<THREE.Mesh>this.objectPressed[0].object).position.x == 0 && (<THREE.Mesh>this.objectPressed[0].object).position.y == 0)) {
@@ -498,12 +602,95 @@ export class GetNetworkComponent implements OnInit {
       }
     }
   }
+
+
+  showPath(data: string[]){
+    this.onObject = [];
+    this.objectPressed = [];
+    this.clearPath();
+    for(let node of this.nodes) {
+      if(data.includes(node.id)){
+        console.log(node.id);
+        node.setPath(true);
+        var material = new THREE.MeshStandardMaterial({color : 0xe75480,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
+        node.sphere.material = material;
+      }
+    }
+
+    for(let c of this.connections) {
+      if(data.includes(c.player.id) && data.includes(c.friend.id)){
+        c.setPath(true);
+        var material = new THREE.MeshStandardMaterial({color : 0xe75480,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
+        c.cylinder.material = material;
+      }
+    }
+  }
+
+  getPlayerById(id: string) : NetworkPlayer {
+    for(let node of this.nodes){
+      if(node.id === id){
+          return node;
+      }
+    }
+    return this.nodes[0];
+  }
+
+  checkCollision(){
+
+    var distance = 50;
+
+    for(let node of this.nodes) {
+      distance = this.camera.position.distanceTo(node.sphere.position);
+
+      if(distance < 5){
+        return true;
+      }
+    }
+
+    for(let c of this.connections) {
+
+      let dir = new THREE.Vector3();
+
+      var player = this.getPlayerById(c.player.id);
+
+      var friend = this.getPlayerById(c.friend.id);
+
+      const line = new THREE.Line3(player.sphere.position, friend.sphere.position);
+      distance = line.closestPointToPoint(this.camera.position, true, dir).distanceTo(this.camera.position);
+
+      if(distance < 3){
+        return true;
+      }
+    }
+
+    return false;
+
+  }
+
+  clearPath() {
+    for(let node of this.nodes) {
+      if(node.email !== this.email){
+        node.setPath(false);
+        var material = new THREE.MeshStandardMaterial({color : 0x2e86c1,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
+        node.sphere.material = material;
+      }
+    }
+
+    for(let c of this.connections) {
+        c.setPath(false);
+        var material = new THREE.MeshStandardMaterial({color : 0x80ffff,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
+        c.cylinder.material = material;
+    }
+  }
+
   checkIntersects() {
     let spheres = [];
       for(let node of this.nodes) {
         spheres.push(node.sphere);
       }
       const intersects = this.raycaster.intersectObjects( spheres );
+      let player;
+
       for(let n of this.scene.children) {
         if(n.children.length > 1) {
           n.remove(this.currentLabel);
@@ -511,9 +698,18 @@ export class GetNetworkComponent implements OnInit {
       }  
       if(this.onObject.length > 0 && intersects != this.onObject) {
         for(let obj of this.onObject) {
+          player = this.checkWhichPlayerIs((<THREE.Mesh>obj.object));
           if(!this.objectPressed.some(x => x.object.position == obj.object.position)) {
             if(!((<THREE.Mesh>obj.object).position.x == 0 && (<THREE.Mesh>obj.object).position.y == 0)) {
-              (<THREE.MeshStandardMaterial>(<THREE.Mesh>obj.object).material).color.set(0x2e86c1);
+              if(player != undefined) {
+                if(player!.checkIsPath()){
+                  (<THREE.MeshStandardMaterial>(<THREE.Mesh>obj.object).material).color.set(0xe75480);
+                } else{
+                  (<THREE.MeshStandardMaterial>(<THREE.Mesh>obj.object).material).color.set(0x2e86c1);
+                }
+              } else {
+                (<THREE.MeshStandardMaterial>(<THREE.Mesh>obj.object).material).color.set(0x2e86c1);
+              }
             }
           }
         }
@@ -553,7 +749,7 @@ export class GetNetworkComponent implements OnInit {
             spanuserimage.style.width= "34px";
             
             const img = document.createElement( 'img' );
-            img.src = "https://bootdey.com/img/Content/avatar/avatar3.png";
+            img.src = player.avatar;
             img.style.maxWidth = "100%";
             img.style.display = "block";
             
@@ -562,7 +758,7 @@ export class GetNetworkComponent implements OnInit {
             colname.className = "col-10";
 
             const playername = document.createElement( 'h4' );
-            playername.textContent = player.name;
+            playername.textContent = player.name + " " + this.getStatus(player.emotionalStatus);
             playername.style.marginTop = "3px";
 
             //Email stuff
@@ -653,15 +849,24 @@ export class GetNetworkComponent implements OnInit {
   }
 
 
-
   checkIntersectsConnections() {
+    let c;
     if(this.onObject.length > 0) {
       if(this.onCylinder.length > 0) {
         for(let obj of this.onCylinder) {
+          c = this.checkWhichCylinderIs((<THREE.Mesh>obj.object));
+          if(c != undefined) {
+            if(c.checkIsPath()) {
+              (<THREE.MeshStandardMaterial>(<THREE.Mesh>obj.object).material).color.set(0xe75480);
+            } else {
               (<THREE.MeshStandardMaterial>(<THREE.Mesh>obj.object).material).color.set(0x80ffff);
-              for(let label of this.labelAdded) {
-                (<THREE.Mesh>obj.object).remove(label);
-              }
+            }
+          } else {
+            (<THREE.MeshStandardMaterial>(<THREE.Mesh>obj.object).material).color.set(0x80ffff);
+          }
+          for(let label of this.labelAdded) {
+            (<THREE.Mesh>obj.object).remove(label);
+          }
         }
       }
       this.onCylinder = [];
@@ -675,10 +880,19 @@ export class GetNetworkComponent implements OnInit {
 
       if(this.onCylinder.length > 0 && intersects != this.onCylinder) {
         for(let obj of this.onCylinder) {
+          c = this.checkWhichCylinderIs((<THREE.Mesh>obj.object));
+          if(c != undefined) {
+            if(c.checkIsPath()) {
+              (<THREE.MeshStandardMaterial>(<THREE.Mesh>obj.object).material).color.set(0xe75480);
+            } else {
               (<THREE.MeshStandardMaterial>(<THREE.Mesh>obj.object).material).color.set(0x80ffff);
-              for(let label of this.labelAdded) {
-                (<THREE.Mesh>obj.object).remove(label);
-              }
+            }
+          } else {
+            (<THREE.MeshStandardMaterial>(<THREE.Mesh>obj.object).material).color.set(0x80ffff);
+          }              
+          for(let label of this.labelAdded) {
+            (<THREE.Mesh>obj.object).remove(label);
+          }
         }
       }
       this.onCylinder = intersects;
@@ -734,8 +948,23 @@ export class GetNetworkComponent implements OnInit {
     return null;
   }
 
+  checkWhichCylinderIs(mesh: THREE.Mesh): NetworkConnection | null {
+    for(let c of this.cylinders) {
+      if(c.cylinder.position == mesh.position)
+        return c;
+    }
+    return null;
+  }
+
   resetColor() {
-    (<THREE.MeshStandardMaterial>(<THREE.Mesh>this.objectPressed[0].object).material).color.set(0x2e86c1);
+    let player = this.checkWhichPlayerIs(<THREE.Mesh>this.objectPressed[0].object);
+    if(player !== undefined){
+      if(player!.checkIsPath()){
+        (<THREE.MeshStandardMaterial>(<THREE.Mesh>this.objectPressed[0].object).material).color.set(0xe75480);
+      } else{
+        (<THREE.MeshStandardMaterial>(<THREE.Mesh>this.objectPressed[0].object).material).color.set(0x2e86c1);
+      }
+    }
   }
 
   removeButtons() {

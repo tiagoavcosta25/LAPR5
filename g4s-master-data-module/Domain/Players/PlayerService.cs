@@ -220,9 +220,21 @@ namespace DDDSample1.Domain.Players
                 plyr.Tags.Select(t => t.tagName).ToList()));
 
             return listDto;
-
         }
 
+        public async Task<int> Login(string playerEmail, string playerPassword)
+        {
+            var player = await _repo.GetByEmailAsync(playerEmail);
+            if (player == null) {
+                return 3;
+            } 
+            
+            if (player.Password.password.Equals(playerPassword)) {
+                return 1;
+            }
+
+            return 2;
+        }
 
     }
 }

@@ -10,7 +10,7 @@
         }
       ],
       "UpstreamPathTemplate": "/apisocial/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Patch", "Delete" ]
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
@@ -22,7 +22,7 @@
         }
       ],
       "UpstreamPathTemplate": "/apifeed/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Patch", "Delete" ]
     },
 
     {
@@ -35,7 +35,7 @@
         }
       ],
       "UpstreamPathTemplate": "/apiai/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Patch", "Delete" ]
     }
   ],
 

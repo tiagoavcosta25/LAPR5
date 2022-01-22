@@ -63,6 +63,8 @@ import { ProfileTagCloudConnComponent } from './modules/player/components/profil
 import { LeaderboardComponent } from './modules/leaderboard/leaderboard.component';
 import { LeaderboardDimensionComponent } from './modules/leaderboard/components/leaderboard-dimension/leaderboard-dimension.component';
 import { LeaderboardStrengthComponent } from './modules/leaderboard/components/leaderboard-strength/leaderboard-strength.component';
+import { AipathsComponent } from './modules/ai/components/aipaths/aipaths.component';
+import { GroupSearchComponent } from './modules/ai/components/group-search/group-search.component';
 
 @NgModule({
   declarations: [
@@ -108,7 +110,7 @@ import { LeaderboardStrengthComponent } from './modules/leaderboard/components/l
     ProfileTagCloudConnComponent,
     LeaderboardComponent,
     LeaderboardDimensionComponent, 
-    LeaderboardStrengthComponent
+    LeaderboardStrengthComponent, AipathsComponent, GroupSearchComponent
   ],
   imports: [
     BrowserModule,

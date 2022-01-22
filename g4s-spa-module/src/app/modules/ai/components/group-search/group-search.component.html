@@ -1,0 +1,87 @@
+<div class="container">
+    <div *ngIf="algoPlayers==undefined; else defined">
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-6 col-algo">
+                <div class="row justify-content-center">
+                    <div class="col-4">
+                        <h1>Number of tags: </h1>
+                    </div>
+                    <div class="col-1">
+                        <span class="badge bg-success" style="font-size: 20px;">{{ ntags }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5 multitext">
+                <div class="row">
+                    <div class="col-8">
+                        <h1>Minimum number of players: </h1>
+                    </div>
+                    <div class="col-1">
+                        <span class="badge bg-success" style="font-size: 20px;">{{ nusers }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <select class="form-select form-select-lg mb-3" [(ngModel)]="ntags" aria-label=".form-select-lg example">
+                    <option selected value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="8">9</option>
+                    <option value="8">10</option>
+                </select>
+            </div>
+            <div class="col-lg-1"></div>
+
+            <div class="col-lg-5">
+                <select class="form-select form-select-lg mb-3" [(ngModel)]="nusers" aria-label=".form-select-lg example">
+                    <option selected value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="8">9</option>
+                    <option value="8">10</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row justify-content-center mt-5">
+            <div class="col-1"></div>
+            <div class="col-11">
+                <h1>Add tag:</h1>
+            </div>
+            <div class="col-2">
+                <input type="text" class="form-control" placeholder="Tag name">
+            </div>
+            <div class="col-1 mb-5">
+                <button type ="submit" class="btn btn-primary">Add tag</button>
+            </div>
+            <div class="col-8">
+                <span (click)="removeTag(tag)" *ngFor="let tag of tags" class="badge bg-success" style="font-size: 20px;margin-right: 1vw;margin-bottom: 1vw;">{{ tag }}</span>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-5">
+            <div class="col-4">
+                <button type ="submit" class="btn search btn-primary" (click)="getGroups()">Search</button>
+            </div>
+        </div>
+    </div>
+    
+    <ng-template #defined>
+        Defined here
+    </ng-template>
+</div>
+
+
+
+
+<ngx-spinner></ngx-spinner>

@@ -8,8 +8,6 @@ import IPostDTO from '../dto/IPostDTO';
 
 import { Result } from "../core/logic/Result";
 import IReactionDTO from '../dto/IReactionDTO';
-import { ParamsDictionary } from 'express-serve-static-core';
-import { ParsedQs } from 'qs';
 import ICommentDTO from '../dto/ICommentDTO';
 import IDeleteCommentDTO from '../dto/IDeleteCommentDTO';
 
@@ -169,7 +167,7 @@ export default class PostController implements IPostController /* TODO: extends 
 
   public async getDCalc(req: Request, res: Response, next: NextFunction) {
     try {
-      const count = await this.postServiceInstance.getDCalc(req.params.emailA, req.params.emailB) as Result<number>;
+      const count = await this.postServiceInstance.getDCalc(req.params.idA, req.params.idB) as Result<number>;
       if (count.isFailure) {
         return res.status(404).send();
       }

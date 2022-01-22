@@ -1,0 +1,155 @@
+<div class="container">
+    <div *ngIf="algoPlayers==undefined; else defined">
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-7 col-algo">
+                <div class="row justify-content-center">
+                    <div class="col-8">
+                        <h1>What algorithm would you like to calculate: </h1>
+                    </div>
+                    <div class="col-2">
+                        <span class="badge bg-success" style="font-size: 20px;">{{ algo }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-3">
+                    <button type ="submit astar" class="btn btn-primary" (click)="setAlgo('a-star')">A*</button>
+                </div>
+                <div class="col-3">
+                    <button type ="submit bfs" class="btn btn-primary" (click)="setAlgo('bfs')">BFS</button>
+                </div>
+                <div class="col-3">
+                    <button type ="submit shortest" class="btn btn-primary" (click)="setAlgo('shortest-route')">Shortest path</button>
+                </div>
+            </div>
+        </div>
+    
+        <div *ngIf="algo!=undefined;">
+            
+            <div class="row justify-content-center mt-5">
+                <div class="col-lg-7 multitext">
+                    <div class="row justify-content-center">
+                        <div class="col-10">
+                            <h1>Would you like to calculate the cost as multicriteria:</h1>
+                        </div>
+                        <div class="col-1">
+                            <span class="badge bg-success" style="font-size: 20px;">{{ getMulticriteria() }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-3">
+                        <button type ="submit" class="btn btn-primary" (click)="setMulticriteria(true)">Yes</button>
+                    </div>
+                    <div class="col-3">
+                        <button type ="submit" class="btn btn-primary" (click)="setMulticriteria(false)">No</button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    
+        <div *ngIf="multicriteria!=undefined;">
+            
+            <div class="row justify-content-center mt-5">
+                <div class="col-lg-6 ntext">
+                    <div class="row justify-content-center">
+                        <div class="col-7">
+                            <h1>What N would you like to set:</h1>
+                        </div>
+                        <div class="col-1">
+                            <span class="badge bg-success" style="font-size: 20px;">{{ n }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-4">
+                        <select class="form-select form-select-lg mb-3" [(ngModel)]="tempN" aria-label=".form-select-lg example">
+                            <option selected value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                        </select>
+                    </div>
+                    <div class="col-3">
+                        <button type ="submit" class="btn btn-primary" (click)="setN()">Set N</button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    
+        <div *ngIf="n!=undefined && networkPlayers!=undefined;">
+            
+            <div class="row justify-content-center mt-3">
+                <div class="col-lg-6 ntext">
+                    <h1>Choose the player to calculate the path too:</h1>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-4">
+                        <select id="form-select" [(ngModel)]="tempTarget" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                            <option *ngFor="let p of networkPlayers" value="{{ p.email }}">{{ p.name + " - " + p.email }}</option>
+                        </select>
+                    </div>
+                    <div class="col-3">
+                        <button type ="submit" class="btn btn-primary" (click)="calculate()">Calculate</button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <ng-template #defined>
+        <div class="container my-5">
+            <div *ngIf="algoPlayers?.length; else noConnections">
+                <button class="btn back btn-primary w-30 mb-4" (click)="reset()">Reset!</button>
+                <h2>Strongest path between you and {{ getLastPlayerName() }} - Cost: {{ cost }}</h2>
+                <mat-accordion class="example-headers-align">
+                    <mat-expansion-panel *ngFor="let p of algoPlayers; let i = index" [expanded]="step === i" (opened)="setStep(i)" (closed)="setStep(-1)" hideToggle>
+                      <mat-expansion-panel-header>
+                          <div class="up-down-sign">
+                            <div class="down-sign">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray" class="bi bi-arrow-down" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
+                                </svg> 
+                              </div>
+        
+                          </div>
+                          
+    
+    
+                        <mat-panel-title>
+                          {{ p.name }}
+                        </mat-panel-title>
+                        <mat-panel-description>
+                          {{ p.email }}
+                        </mat-panel-description>
+                      </mat-expansion-panel-header>
+    
+                      <div class="container-4">
+                        <p  style="font-size: 14px; margin: 5px;">Phone number: {{ p.phoneNumber }}</p>
+                      </div>
+    
+                      <div class="container-4 mb-4" style="display: flex;">
+                          <span class="badge rounded-pill bg-success" style="margin: 5px; font-size: 14px;" *ngFor="let tag of p.tags">{{ tag }}</span>
+                      </div>
+    
+                    </mat-expansion-panel>              
+                  </mat-accordion>
+            </div>
+                <ng-template #noConnections>
+                    <h1 class="font-weight-bold my-5 mb-4 text-center">There's no possible path.</h1>
+                    <p></p>
+                    <button class="btn back btn-primary w-30" (click)="goBack()">Go back!</button>
+                </ng-template>
+        </div>
+    </ng-template>
+</div>
+
+
+
+
+<ngx-spinner></ngx-spinner>
