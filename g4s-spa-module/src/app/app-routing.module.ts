@@ -35,6 +35,7 @@ import { LeaderboardDimensionComponent } from './modules/leaderboard/components/
 import { LeaderboardStrengthComponent } from './modules/leaderboard/components/leaderboard-strength/leaderboard-strength.component';
 import { LeaderboardComponent } from './modules/leaderboard/leaderboard.component';
 import { AipathsComponent } from './modules/ai/components/aipaths/aipaths.component';
+import { GroupSearchComponent } from './modules/ai/components/group-search/group-search.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -55,6 +56,7 @@ const routes: Routes = [
       { path: 'search-player', component: SearchPlayerComponent},
       { path: 'safest-route', component: SafestRouteComponent},
       { path: 'ai-paths', component: AipathsComponent},
+      { path: 'group-search', component: GroupSearchComponent},
       { path: 'a-star', component: AStarComponent},
       { path: 'shortest-route', component: ShortestRouteComponent},
       { path: 'strongest-route', component: StrongestRouteComponent},

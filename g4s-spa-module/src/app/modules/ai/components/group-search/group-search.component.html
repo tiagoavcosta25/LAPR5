@@ -1,0 +1,127 @@
+<div class="container">
+    <div *ngIf="currentUser!=undefined">
+    <div *ngIf="algoPlayers==undefined; else defined">
+        <div class="row justify-content-center mt-5">
+            <div class="col-6 col-algo">
+                <div class="row justify-content-center">
+                    <div class="col-4">
+                        <h1>Number of tags: </h1>
+                    </div>
+                    <div class="col-1">
+                        <span class="badge bg-success" style="font-size: 20px;">{{ ntags }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-5 multitext">
+                <div class="row">
+                    <div class="col-8">
+                        <h1>Minimum number of players: </h1>
+                    </div>
+                    <div class="col-1">
+                        <span class="badge bg-success" style="font-size: 20px;">{{ nusers }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-5">
+                <select class="form-select form-select mb-3" [(ngModel)]="ntags" aria-label=".form-select example">
+                    <option *ngFor="let tag of currentUser.tags;let i = index" value="{{i + 1}}">{{ i + 1 }}</option>
+                </select>
+            </div>
+            <div class="col-1"></div>
+
+            <div class="col-5">
+                <select class="form-select form-select mb-3" [(ngModel)]="nusers" aria-label=".form-select example">
+                    <option selected value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="8">9</option>
+                    <option value="8">10</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row justify-content-center mt-5">
+            <div class="col-12" align="center">
+                <h1>Tags to add:</h1>
+            </div>
+            <div class="col-6" align="center">
+                <span (click)="addTag(t)" *ngFor="let t of currentUser.tags" class="badge bg-info" style="font-size: 20px;margin-right: 1vw;margin-bottom: 1vw;">{{ t }}</span>
+            </div>
+            <div class="col-12 mt-5" align="center">
+                <h1 *ngIf="tags.length > 0">Tags added:</h1>
+            </div>
+            <div class="col-6" align="center">
+                <span (click)="removeTag(tag)" *ngFor="let tag of tags" class="badge bg-success" style="font-size: 20px;margin-right: 1vw;margin-bottom: 1vw;">{{ tag }}</span>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-5">
+            <div class="col-4">
+                <button type ="submit" class="btn search btn-primary" (click)="getGroups()">Search</button>
+            </div>
+        </div>
+    </div>
+    
+    
+    <ng-template #defined>
+        <div class="container my-5">
+            <div *ngIf="algoPlayers?.length != 0; else noConnections">
+                <button class="btn back btn-primary w-30 mb-4" (click)="reset()">Reset!</button>
+                <h2>Group with {{ntags}} tags in common with atleast {{nusers}} users resulted on:</h2>
+                <mat-accordion class="example-headers-align">
+                    <mat-expansion-panel *ngFor="let p of algoPlayers; let i = index" [expanded]="step === i" (opened)="setStep(i)" (closed)="setStep(-1)" hideToggle>
+                      <mat-expansion-panel-header>
+                          <div class="up-down-sign">
+                            <div class="down-sign">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray" class="bi bi-arrow-down" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
+                                </svg> 
+                              </div>
+        
+                          </div>
+                          
+    
+    
+                        <mat-panel-title>
+                            <a href="/profile/{{ p.email }}">{{ p.name }}</a>
+                        </mat-panel-title>
+                        <mat-panel-description>
+                          {{ p.email }}
+                        </mat-panel-description>
+                      </mat-expansion-panel-header>
+    
+                      <div class="container-4">
+                        <p  style="font-size: 14px; margin: 5px;">Phone number: {{ p.phoneNumber }}</p>
+                      </div>
+    
+                      <div class="container-4 mb-4" style="display: flex;">
+                          <span class="badge rounded-pill bg-success" style="margin: 5px; font-size: 14px;" *ngFor="let tag of p.tags">{{ tag }}</span>
+                      </div>
+    
+                    </mat-expansion-panel>              
+                  </mat-accordion>
+                  <div class="row justify-content-center">
+                    <div class="col-2"></div>  
+                    <div class="col-5 mt-5">
+                          <h2>Tags in common: {{ algoTags }}</h2>
+                      </div>
+                  </div>
+            </div>
+                <ng-template #noConnections>
+                    <h1 class="font-weight-bold my-5 mb-4 text-center">There's no group for what you've asked for.</h1>
+                    <p></p>
+                    <button class="btn back btn-primary w-30" (click)="reset()">Try again!</button>
+                </ng-template>
+        </div>
+    </ng-template>
+    </div>
+</div>
+
+
+
+<ngx-spinner></ngx-spinner>

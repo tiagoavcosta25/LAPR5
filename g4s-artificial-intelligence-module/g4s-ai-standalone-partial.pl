@@ -272,18 +272,19 @@ strongest_updateRoute(Strength, PathList):-
 
 % common_tags
 
-:- dynamic common_tags_users/2.
+:- dynamic common_tags_users/3.
 
-common_tags(NTags,NUsers,TagList,List_Result):-
+common_tags(Id, NTags,NUsers,TagList,ResultTag,ResultUsers):-
     get_time(T1),
-    common_tags_get_all_tags(All_TagsT),
+    node(Id,_,All_TagsT),
 	common_tags_change_to_synonyms(All_TagsT, All_Tags),
     findall(Combination,common_tags_combination(NTags,All_Tags,Combination),CombinationsTemp),
 	common_tags_test_list(CombinationsTemp, TagList, Combinations),
     findall(UserId,node(UserId,_,_),Users),
+	asserta(common_tags_users([],[],0)),
     common_tags_users_combination(NTags,NUsers,Users,Combinations),
-    findall([Comb,ListUsers],common_tags_users(Comb,ListUsers),List_Result),
-    retractall(common_tags_users(_,_)),
+	common_tags_users(ResultTag,ResultUsers,_),
+    retractall(common_tags_users(_,_,_)),
     write('Solution found in '),
     get_time(T2),
     T is T2-T1,write(T),write(' seconds'),nl.
@@ -293,8 +294,12 @@ common_tags_users_combination(NTags,NUsers,Users,[Combination|Combinations]):-
     common_tags_users_combination_aux(NTags,Combination,Users,Users_With_Tags),
     common_tags_users_combination(NTags,NUsers,Users,Combinations),
     !,
-	comon_tags_list_length(Users_With_Tags, L),
-	( L >= NUsers-> assertz(common_tags_users(Combination,Users_With_Tags)) ; ! ).
+	length(Users_With_Tags, L),
+	( L >= NUsers->
+	common_tags_users(_,_,Size),
+	(L > Size ->
+	retract(common_tags_users(_,_,_)),
+	asserta(common_tags_users(Combination,Users_With_Tags, L)) ; ! );!).
 
 common_tags_users_combination_aux(_,_,[],[]):-!.
 common_tags_users_combination_aux(NTags,Tags,[U|Users],Result):-
@@ -323,18 +328,11 @@ common_tags_test_list([CombinationsH|CombinationsT], Tags, FinalCombinations):-
 common_tags_test_lists(List1, List2) :-
     forall(member(Element,List1), member(Element,List2)).
 
-common_tags_remove_repeated_tags([],[]).
-common_tags_remove_repeated_tags([List|All_Tags],Tags):-
-    common_tags_remove_repeated_tags(All_Tags,Tags1),!,
-    union(List,Tags1,Tags).
 
 %=== CombinaÃ§oes ===
 common_tags_combination(0,_,[]).
 common_tags_combination(N,[X|T],[X|Comb]):-N>0,N1 is N-1,common_tags_combination(N1,T,Comb).
 common_tags_combination(N,[_|T],Comb):-N>0,common_tags_combination(N,T,Comb).
-
-comon_tags_list_length([], 0).
-comon_tags_list_length([_|TAIL], N) :- comon_tags_list_length(TAIL, N1), N is N1 + 1.
 
 common_tags_change_to_synonyms([],[]).
 common_tags_change_to_synonyms([Tag|All_Tags],Tags):-
@@ -551,4 +549,3 @@ emotion_checkSameEmotion(EmotionBool, Act, X):-
     true).
 
 suggest_playerGroups(_, _, _, _, [3,6, 4, 5]).
-
