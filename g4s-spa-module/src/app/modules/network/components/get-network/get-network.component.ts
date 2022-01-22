@@ -15,6 +15,7 @@ import { NetworkPlayer } from 'src/shared/models/connection/network-player.dto';
 import { NetworkScope } from 'src/shared/models/connection/network-scope.dto';
 import SpriteText from 'three-spritetext';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { AiService } from 'src/app/modules/ai/services/ai.service';
 
 @Component({
   selector: 'app-get-network',
@@ -43,6 +44,7 @@ export class GetNetworkComponent implements OnInit {
   constructor(
     private spinner: NgxSpinnerService,
     private cService: ConnectionService,
+    private aiService: AiService,
     private pService: PlayerService,
     private fb: FormBuilder, 
     private router: Router) { 
@@ -242,7 +244,7 @@ export class GetNetworkComponent implements OnInit {
       let angleIncrement = this.calculateAngleIncrement(scope);
       scope.angle = angleIncrement;
       if(scope.player.id == this.id){
-        material  = new THREE.MeshStandardMaterial({color : 0xe67e22,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
+        material  = new THREE.MeshStandardMaterial({color : 0xe75480,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
         geometry = new THREE.SphereGeometry(4, 32, 16);
         scope.player.setMesh( geometry, material );
         scope.player.sphere.position.x = 0;
@@ -428,8 +430,31 @@ export class GetNetworkComponent implements OnInit {
         buttonStrongest.className = 'btn btn-secondary';
         buttonStrongest.id = 'btn-strong';
         buttonStrongest.addEventListener("click", () => {
-          // Algoritmo aqui
           let player = this.checkWhichPlayerIs((<THREE.Mesh>this.objectPressed[0].object));
+          if(player !== undefined){
+            this.aiService.getStrongestRoute(this.email, player!.email).subscribe({ next: async data => {
+              this.clearPath(); 
+              for(let node of this.nodes) {
+                if(data.includes(node.id)){
+                  node.setPath(true)
+                  var material = new THREE.MeshStandardMaterial({color : 0xe75480,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
+                  node.sphere.material = material;
+                }
+              }
+
+              for(let c of this.connections) {
+                if(data.includes(c.player.id) && data.includes(c.friend.id)){
+                  var material = new THREE.MeshStandardMaterial({color : 0xe75480,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
+                  c.cylinder.material = material;
+                }
+              }
+
+            },
+              error: _error => {
+                this.spinner.hide();
+              }
+            });
+          }
           console.log("Strongest Path for player: " + player?.name + ", with email: " + player?.email + ", with id: " + player?.id);
           this.removeButtons();
           if(!((<THREE.Mesh>this.objectPressed[0].object).position.x == 0 && (<THREE.Mesh>this.objectPressed[0].object).position.y == 0)) {
@@ -448,14 +473,41 @@ export class GetNetworkComponent implements OnInit {
         buttonShortest.className = 'btn btn-secondary';
         buttonShortest.id = 'btn-short';
         buttonShortest.addEventListener("click", () => {
-          // Algoritmo aqui
           let player = this.checkWhichPlayerIs((<THREE.Mesh>this.objectPressed[0].object));
+          if(player !== undefined){
+            this.aiService.getshortestRoute(this.email, player!.email, 0, this.getNetworkForm.value.scope).subscribe({ next: async data => {
+              this.clearPath();
+              console.log("Data: " + data[0]);
+              for(let node of this.nodes) {
+                console.log("Node: " + node.id);
+                if(data[0].includes(node.id)){
+                  node.setPath(true)
+                  var material = new THREE.MeshStandardMaterial({color : 0xe75480,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
+                  node.sphere.material = material;
+                }
+              }
+
+              for(let c of this.connections) {
+                if(data[0].includes(c.player.id) && data[0].includes(c.friend.id)){
+                  console.log("Connection: " + c);
+                  var material = new THREE.MeshStandardMaterial({color : 0xe75480,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
+                  c.cylinder.material = material;
+                }
+              }
+
+            },
+              error: _error => {
+                this.spinner.hide();
+              }
+            });
+          }
           console.log("Shortest Path for player: " + player?.name + ", with email: " + player?.email + ", with id: " + player?.id);
           this.removeButtons();
           if(!((<THREE.Mesh>this.objectPressed[0].object).position.x == 0 && (<THREE.Mesh>this.objectPressed[0].object).position.y == 0)) {
             this.resetColor();
           }
         })
+
         buttonShortest.textContent = "Shortest";
         buttonShortest.style.color = '0x000';
         const buttonShortestObject = new CSS2DObject( buttonShortest );
@@ -468,8 +520,31 @@ export class GetNetworkComponent implements OnInit {
         buttonSafest.className = 'btn btn-secondary';
         buttonSafest.id = 'btn-safe';
         buttonSafest.addEventListener("click", () => {
-          // Algoritmo aqui
           let player = this.checkWhichPlayerIs((<THREE.Mesh>this.objectPressed[0].object));
+          if(player !== undefined){
+            this.aiService.getSafestRoute(this.email, player!.email, 0).subscribe({ next: async data => {
+              this.clearPath();
+              for(let node of this.nodes) {
+                if(data.includes(node.id)){
+                  node.setPath(true)
+                  var material = new THREE.MeshStandardMaterial({color : 0xe75480,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
+                  node.sphere.material = material;
+                }
+              }
+
+              for(let c of this.connections) {
+                if(data.includes(c.player.id) && data.includes(c.friend.id)){
+                  var material = new THREE.MeshStandardMaterial({color : 0xe75480,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
+                  c.cylinder.material = material;
+                }
+              }
+
+            },
+              error: _error => {
+                this.spinner.hide();
+              }
+            });
+          }
           console.log("Safest Path for player: " + player?.name + ", with email: " + player?.email + ", with id: " + player?.id);
           this.removeButtons();
           if(!((<THREE.Mesh>this.objectPressed[0].object).position.x == 0 && (<THREE.Mesh>this.objectPressed[0].object).position.y == 0)) {
@@ -498,6 +573,19 @@ export class GetNetworkComponent implements OnInit {
       }
     }
   }
+
+  clearPath() {
+    for(let node of this.nodes) {
+      var material = new THREE.MeshStandardMaterial({color : 0x2e86c1,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
+      node.sphere.material = material;
+    }
+
+    for(let c of this.connections) {
+        var material = new THREE.MeshStandardMaterial({color : 0x80ffff,metalness: 0.2,roughness: 0.55,opacity: 1.0}) ;
+        c.cylinder.material = material;
+    }
+  }
+
   checkIntersects() {
     let spheres = [];
       for(let node of this.nodes) {
@@ -651,7 +739,6 @@ export class GetNetworkComponent implements OnInit {
         }
       }
   }
-
 
 
   checkIntersectsConnections() {
