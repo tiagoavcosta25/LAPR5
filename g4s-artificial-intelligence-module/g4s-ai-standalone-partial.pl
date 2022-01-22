@@ -117,8 +117,8 @@ safest_dfs(Orig, Dest, Threshold, Strength, Path):- safest_dfsAux(Orig, Dest, [O
 
 safest_dfsAux(Dest, Dest, AuxList, _ , Strength, Strength, Path):-!, reverse(AuxList,Path).
 safest_dfsAux(Current, Dest, AuxList, Threshold, Strength, ReturnStrength, Path):-
-		(connection(Current, Friend, StrengthA, StrengthB);
-		connection(Friend, Current, StrengthA, StrengthB)),
+		(connection(Current, Friend, StrengthA, StrengthB, _, _);
+		connection(Friend, Current, StrengthA, StrengthB, _, _)),
 		\+ member(Friend, AuxList),
 		StrengthA >= Threshold,
 		StrengthB >= Threshold,
@@ -160,8 +160,8 @@ suggest_players(Player, Level, SuggestedPlayersList):-
 
 suggest_removeFriends(_, [ ], []).
 suggest_removeFriends(Player, [CurrentPlayer | NetworkList], CandidateList):-
-		(connection(Player, CurrentPlayer, _, _);
-		connection(CurrentPlayer, Player, _, _)), !,
+		(connection(Player, CurrentPlayer, _, _, _, _);
+		connection(CurrentPlayer, Player, _, _, _, _)), !,
 		suggest_removeFriends(Player, NetworkList, CandidateList).
 suggest_removeFriends(Player, [CurrentPlayer | NetworkList], [CurrentPlayer | CandidateList]):-
 		suggest_removeFriends(Player, NetworkList, CandidateList).
@@ -218,8 +218,8 @@ suggest_dfs(Orig,Dest, Tag, Path):-suggest_dfsAux(Orig,Dest,[Orig], Tag, Path).
 suggest_dfsAux(Dest,Dest,AuxList, _, Path):-!,reverse(AuxList,Path).
 suggest_dfsAux(Current,Dest,AuxList, Tag, Path):-
 		node(Current, _, _),
-		(connection(Current, Friend, _, _);
-		connection(Friend, Current, _, _)),
+		(connection(Current, Friend, _, _, _, _);
+		connection(Friend, Current, _, _, _, _)),
 		node(Friend, _, FriendTagList),
 		\+ member(Friend, AuxList),
 		member(Tag, FriendTagList),
@@ -235,8 +235,8 @@ strongest_dfs(Orig, Dest, Strength, Path):- strongest_dfsAux(Orig, Dest, [Orig],
 strongest_dfsAux(Dest, Dest, AuxList, 0, Path):-!,reverse(AuxList, Path).
 strongest_dfsAux(Current, Dest, AuxList, Strength, Path):-
 	node(CurrentID, Current, _),
-	(connection(CurrentID, FriendID, StrengthA, StrengthB);
-	connection(FriendID, CurrentID, StrengthA, StrengthB)),
+	(connection(CurrentID, FriendID, StrengthA, StrengthB, _, _);
+	connection(FriendID, CurrentID, StrengthA, StrengthB, _, _)),
 	node(FriendID, Friend, _),
 	\+ member(Friend, AuxList),
 	strongest_dfsAux(Friend, Dest, [Friend | AuxList], SX, Path),
