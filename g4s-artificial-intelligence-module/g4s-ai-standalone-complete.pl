@@ -88,13 +88,30 @@ connection(51,61,7,3, 1, 1).
 connection(61,200,2,4, 1, 1).
 
 occ(1, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
+occ(11, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
+occ(12, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
+occ(13, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
+occ(14, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
+occ(21, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
+occ(22, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
+occ(23, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
+occ(24, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
+occ(31, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
+occ(32, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
+occ(33, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
+occ(34, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
+occ(41, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
+occ(42, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
+occ(43, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
+occ(44, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
+occ(200, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
 
 hope(1, 21).
 fear(1, 31).
 fear(1, 41).
 
 % Secundary knowledge base
-:- dynamic shortest_currentRoute/2.
+:- dynamic shortest_currentRoute/3.
 :- dynamic safest_currentRoute/2.
 :- dynamic aStar_orderedList/1.
 :- dynamic occ/7.
@@ -127,6 +144,7 @@ getMulticriteria(ConnectionStrength, RelationStrength, Output):-
     MultiRelation is ((RelationStrength + 200) / 4) / 2,
     Output is MultiConnection + MultiRelation.
 
+
 %======== Shortest route between two players (Core) ========%
 
 shortest_allDfs(Player1, Player2, PathList):- get_time(T1),
@@ -137,47 +155,47 @@ shortest_allDfs(Player1, Player2, PathList):- get_time(T1),
     T is T2-T1,write(T),write(' seconds'),nl,
     write('Possible Path List: '),write(PathList),nl,nl.
 
-shortest_dfs(Mode, N, Orig, Dest, Strength, Path):- shortest_dfsAux(Mode, 0, N, Orig, Dest, [Orig], Strength, Path).
+shortest_dfs(Mode, EmotionBool, N, Orig, Dest, Strength, Path):- shortest_dfsAux(Mode, EmotionBool, 0, N, Orig, Dest, [Orig], Strength, Path).
 
-shortest_dfsAux(_, _, _, Dest, Dest, LA, 0, Path):- !, reverse(LA, Path).
-shortest_dfsAux(_, M, N, _, _, _, _, _):- M >= N, !, false.
-shortest_dfsAux(0, M, N, Current, Dest, LA, Strength, Path):-
+shortest_dfsAux(_, _, _, _, Dest, Dest, LA, 0, Path):- !, reverse(LA, Path).
+shortest_dfsAux(_, _, M, N, _, _, _, _, _):- M >= N, !, false.
+shortest_dfsAux(0, EmotionBool, M, N, Current, Dest, LA, Strength, Path):-
     (connection(Current, X, StrengthA, _, _, _);
     connection(X, Current, _, StrengthA, _, _)),
+    emotion_checkSameEmotion(EmotionBool, Current, X),
     \+ member(X,LA),
     M1 is M + 1,
-    shortest_dfsAux(0, M1, N, X,Dest,[X|LA], Strength1, Path),
+    shortest_dfsAux(0, EmotionBool, M1, N, X,Dest,[X|LA], Strength1, Path),
 	Strength is Strength1 + StrengthA.
-
-shortest_dfsAux(1, M, N, Current, Dest, LA, Strength, Path):-
+shortest_dfsAux(1, EmotionBool, M, N, Current, Dest, LA, Strength, Path):-
     (connection(Current, X, StrengthA, _, RelA, _);
     connection(X, Current, _, StrengthA, _, RelA)),
+    emotion_checkSameEmotion(EmotionBool, Current, X),
     \+ member(X,LA),
     M1 is M + 1,
-    shortest_dfsAux(1, M1, N, X,Dest,[X|LA], Strength1, Path),
-	getMulticriteria(StrengthA, RelA, FinalStrength),
-	Strength is Strength1 + FinalStrength.
+    shortest_dfsAux(1, EmotionBool, M1, N, X,Dest,[X|LA], Strength1, Path),
+    getMulticriteria(StrengthA, RelA, FinalStrength),
+    Strength is Strength1 + FinalStrength.
 
-
-shortest_route(Orig, Dest, ShortestPathList):-
+shortest_route(Mode, EmotionBool, N, Orig, Dest, Strength, ShortestPathList):-
 		get_time(Ti),
-		(shortest_findRoute(Orig, Dest); true),
-		retract(shortest_currentRoute(ShortestPathList, _)),
+		(shortest_findRoute(Mode, EmotionBool, N, Orig, Dest); true),
+		retract(shortest_currentRoute(ShortestPathList, _, Strength)),
 		get_time(Tf),
 		T is Tf-Ti,
 		write('Solution generation time:'), write(T), nl.
 
-shortest_findRoute(Orig, Dest):-
-		asserta(shortest_currentRoute(_,10000)),
-		shortest_dfs(Orig, Dest, PathList),
-		shortest_updateRoute(PathList),
+shortest_findRoute(Mode, EmotionBool, N, Orig, Dest):-
+		asserta(shortest_currentRoute(_,10000, _)),
+		shortest_dfs(Mode, EmotionBool, N, Orig, Dest, Strength, PathList),
+		shortest_updateRoute(Strength, PathList),
 		fail.
 
-shortest_updateRoute(PathList):-
-		shortest_currentRoute(_, CurrentPathLength),
+shortest_updateRoute(Strength, PathList):-
+		shortest_currentRoute(_, CurrentPathLength, _),
 		length(PathList, PathLength),
-	PathLength < CurrentPathLength, retract(shortest_currentRoute(_,_)),
-		asserta(shortest_currentRoute(PathList, PathLength)).
+		PathLength < CurrentPathLength, retract(shortest_currentRoute(_,_,_)),
+		asserta(shortest_currentRoute(PathList, PathLength, Strength)).
 
 % safest route
 
@@ -185,8 +203,8 @@ safest_dfs(Orig, Dest, Threshold, Strength, Path):- safest_dfsAux(Orig, Dest, [O
 
 safest_dfsAux(Dest, Dest, AuxList, _ , Strength, Strength, Path):-!, reverse(AuxList,Path).
 safest_dfsAux(Current, Dest, AuxList, Threshold, Strength, ReturnStrength, Path):-
-		(connection(Current, Friend, StrengthA, StrengthB,_,_);
-		connection(Friend, Current, StrengthA, StrengthB,_,_)),
+		(connection(Current, Friend, StrengthA, StrengthB, _, _);
+		connection(Friend, Current, StrengthA, StrengthB, _, _)),
 		\+ member(Friend, AuxList),
 		StrengthA >= Threshold,
 		StrengthB >= Threshold,
@@ -228,8 +246,8 @@ suggest_players(Player, Level, SuggestedPlayersList):-
 
 suggest_removeFriends(_, [ ], []).
 suggest_removeFriends(Player, [CurrentPlayer | NetworkList], CandidateList):-
-		(connection(Player, CurrentPlayer, _, _,_,_);
-		connection(CurrentPlayer, Player, _, _,_,_)), !,
+		(connection(Player, CurrentPlayer, _, _, _, _);
+		connection(CurrentPlayer, Player, _, _, _, _)), !,
 		suggest_removeFriends(Player, NetworkList, CandidateList).
 suggest_removeFriends(Player, [CurrentPlayer | NetworkList], [CurrentPlayer | CandidateList]):-
 		suggest_removeFriends(Player, NetworkList, CandidateList).
@@ -375,7 +393,11 @@ common_tags_users_combination_aux(NTags,Tags,[U|Users],Result):-
 common_tags_users_combination_aux(NTags,Tags,[_|Users],Result):-
     !,
     common_tags_users_combination_aux(NTags,Tags,Users,Result).
-	
+
+common_tags_get_all_tags(Tags):-
+    findall(User_Tags,node(_,_,User_Tags),All_Tags),
+    common_tags_remove_repeated_tags(All_Tags,Tags).
+
 common_tags_test_list([],_,[]):-!.
 common_tags_test_list([CombinationsH|CombinationsT], Tags, FinalCombinations):-
 	common_tags_test_list(CombinationsT, Tags, FinalCombinations1),
@@ -400,7 +422,7 @@ common_tags_change_to_synonyms([Tag|All_Tags],Tags):-
 		union([Tag], Tags1, Tags)).
 
 
-    % getNetworkByLevel
+% getNetworkByLevel
 
 :-dynamic user_visited/1.
 
@@ -428,20 +450,22 @@ dfs2(Act,Level,LA):-
     asserta(userVisited(X)),
     dfs2(X,Level1,[X|LA]).
 
+
 %======== A-Star (Core) ========%
 
-aStar_find(Mode, Threshold, Orig, Dest, Path, Cost):-
+aStar_find(Mode, EmotionBool, Threshold, Orig, Dest, Path, Cost):-
     (retract(aStar_orderedList(_));true),
     aStar_getStrengthListByPlayer(Mode, Threshold, Orig, StrengthList),
     asserta(aStar_orderedList(StrengthList)),
-    aStar_aux(Mode, 0, Threshold, Dest,[(_,0,[Orig])],Path,Cost).
-aStar_aux(_, M, N, Dest,[(_,Cost,[Dest|T])|_],Path,Cost):- M >= N,reverse([Dest|T],Path).
-aStar_aux(0, M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
+    aStar_aux(Mode, EmotionBool, 0, Threshold, Dest,[(_,0,[Orig])],Path,Cost).
+aStar_aux(_, _, M, N, Dest,[(_,Cost,[Dest|T])|_],Path,Cost):- M >= N,reverse([Dest|T],Path).
+aStar_aux(0, EmotionBool, M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
     LA=[Act|_],
     findall((CEX,CaX,[X|LA]),
     (Dest\==Act,
     (connection(Act,X,CostX, _, _, _);
     connection(X, Act, _, CostX, _, _)),
+    emotion_checkSameEmotion(EmotionBool, Act, X),
     \+ member(X,LA),
     CaX is CostX + Ca,
     aStar_estimate(N,M,EstX),
@@ -450,14 +474,15 @@ aStar_aux(0, M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
     append(Others,New,All),
     sort(All,AllOrd),
     M1 is M + 1,
-    aStar_aux(0, M1, N, Dest,AllOrd,Path,Cost).
+    aStar_aux(0, EmotionBool, M1, N, Dest,AllOrd,Path,Cost).
 
-aStar_aux(1, M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
+aStar_aux(1, EmotionBool, M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
     LA=[Act|_],
     findall((CEX,CaX,[X|LA]),
     (Dest\==Act,
     (connection(Act,X,ConnStrength, _, RelStrength, _);
     connection(X, Act, _, ConnStrength, _, RelStrength)),
+    emotion_checkSameEmotion(EmotionBool, Act, X),
     \+ member(X,LA),
     getMulticriteria(ConnStrength, RelStrength, CostX),
     CaX is CostX + Ca,
@@ -467,7 +492,7 @@ aStar_aux(1, M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
     append(Others,New,All),
     sort(All,AllOrd),
     M1 is M + 1,
-    aStar_aux(1, M1, N, Dest,AllOrd,Path,Cost).
+    aStar_aux(1, EmotionBool, M1, N, Dest,AllOrd,Path,Cost).
 
 
 aStar_estimate(N,M, Est):-
@@ -514,7 +539,6 @@ aStar_getStrengthListByFriendsList(1, PlayerId, [FriendId|FriendList], [FirstMul
     getMulticriteria(SecondStrength, SecondRelStrength, SecondMulti),
     aStar_getStrengthListByFriendsList(1, PlayerId, FriendList, StrengthList).
 
-
 %======== Emotion Variation (Core) ========%
 
 emotion_increase(PreviousValue, Value, Saturation, Return):-
@@ -540,8 +564,8 @@ emotion_relationChange(PlayerId, Value, NewJoy, NewAnguish):-
     retract(occ(PlayerId, Joy, Anguish, Hope, Deception, Fear, Relief)),
     asserta(occ(PlayerId, NewJoy, NewAnguish, Hope, Deception, Fear, Relief)).
 
-emotion_groupSuggestion(PlayerId, TagList, NewHope, NewDeception, NewFear, NewRelief):-
-    suggest_playerGroups(PlayerId, TagList, SuggestedGroup),
+emotion_groupSuggestion(PlayerId, TagCount, PlayerCount, MandatoryTags, NewHope, NewDeception, NewFear, NewRelief):-
+    common_tags(PlayerId, TagCount, PlayerCount, MandatoryTags, _,SuggestedGroup),
     emotion_checkHope(PlayerId, SuggestedGroup, NewHope, NewDeception),
     emotion_checkFear(PlayerId, SuggestedGroup, NewFear, NewRelief),
     retract(occ(PlayerId, Joy, Anguish, _, _, _, _)),
@@ -585,4 +609,21 @@ emotion_countFear(PlayerId, [H | Group], Counter, Return):-
 emotion_countFear(PlayerId, [_ | Group], Counter, Return):-
     !,emotion_countFear(PlayerId, Group, Counter, Return).
 
-suggest_playerGroups(_, _, [3,6, 4, 5]).
+emotion_getMax(PlayerId, MaxValue, MaxEmotion):-
+    occ(PlayerId, Joy, Anguish, Hope,Deception, Fear, Relief),
+    emotion_maxEmotion([Joy, Anguish, Hope, Deception, Fear, Relief], [joy, anguish, hope, deception, fear, relief],-100, emotion, MaxValue, MaxEmotion).
+
+emotion_maxEmotion([], [], MaxAuxValue, MaxAuxEmotion, MaxReturnValue, MaxReturnEmotion):- !, MaxReturnValue is MaxAuxValue, MaxReturnEmotion = MaxAuxEmotion.
+emotion_maxEmotion([HV|TV], [HE|TE], MaxAuxValue, _, MaxReturnValue, MaxReturnEmotion):-
+    HV >= MaxAuxValue, !,
+    emotion_maxEmotion(TV, TE, HV, HE, MaxReturnValue, MaxReturnEmotion).
+emotion_maxEmotion([_|TV], [_|TE], MaxAuxValue, MaxAuxEmotion, MaxReturnValue, MaxReturnEmotion):-
+    !, emotion_maxEmotion(TV, TE, MaxAuxValue, MaxAuxEmotion, MaxReturnValue, MaxReturnEmotion).
+
+emotion_checkSameEmotion(EmotionBool, Act, X):-
+    ((EmotionBool =:= 1, !,
+     emotion_getMax(Act, _, ActEmotion),
+     emotion_getMax(X, _, XEmotion),
+     ((ActEmotion = XEmotion,!);
+     false));
+    true).
