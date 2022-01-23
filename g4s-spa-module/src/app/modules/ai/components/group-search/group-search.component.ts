@@ -101,6 +101,7 @@ export class GroupSearchComponent implements OnInit {
   }
 
   addTag(tag: string) {
+    if(this.tags.length == this.ntags) { return; }
     if(!this.tags.some(x => x == tag)) {
       this.tags.push(tag);
     }

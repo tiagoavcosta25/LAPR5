@@ -156,13 +156,17 @@
     
     
                         <mat-panel-title>
-                          {{ p.name }}
+                            <a href="/profile/{{ p.email }}">{{ p.name }}</a>
                         </mat-panel-title>
                         <mat-panel-description>
                           {{ p.email }}
                         </mat-panel-description>
                       </mat-expansion-panel-header>
     
+                      <div class="container-4">
+                        <p  style="font-size: 14px; margin: 5px;">Emotional status: {{ p.emotionalStatus }}</p>
+                      </div>
+
                       <div class="container-4">
                         <p  style="font-size: 14px; margin: 5px;">Phone number: {{ p.phoneNumber }}</p>
                       </div>
