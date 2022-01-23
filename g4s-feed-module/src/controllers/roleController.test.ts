@@ -46,5 +46,66 @@ describe('role controller', function() {
 
     sinon.assert.calledOnce(res.json);
     sinon.assert.calledWith(res.json, sinon.match({ id: '123', name: req.body.name }));
-  });
+  })
+  
+  it('createRole2: returns json with id+name values', async function() {
+    let body = { name: 'role12' };
+    let req: Partial<Request> = {};
+    req.body = body;
+
+    let res: Partial<Response> = {
+      json: sinon.spy(),
+    };
+    let next: Partial<NextFunction> = () => {};
+
+    let roleSchemaInstance = require('../persistence/schemas/roleSchema').default;
+    Container.set('roleSchema', roleSchemaInstance);
+
+    let roleRepoClass = require(config.repos.role.path).default;
+    let roleRepoInstance = Container.get(roleRepoClass);
+    Container.set('RoleRepo', roleRepoInstance);
+
+    let roleServiceClass = require(config.services.role.path).default;
+    let roleServiceInstance = Container.get(roleServiceClass);
+    Container.set(config.services.role.name, roleServiceInstance);
+    roleServiceInstance = Container.get(config.services.role.name);
+
+    const ctrl = new RoleController(roleServiceInstance as IRoleService);
+
+    await ctrl.createRole(<Request>req, <Response>res, <NextFunction>next);
+
+    sinon.assert.calledOnce(res.json);
+    sinon.assert.calledWith(res.json, sinon.match({ id: '123', name: req.body.name }));
+  })
+
+  it('createRole3: returns json with id+name values', async function() {
+    let body = { name: 'role12' };
+    let req: Partial<Request> = {};
+    req.body = body;
+
+    let res: Partial<Response> = {
+      json: sinon.spy(),
+    };
+    let next: Partial<NextFunction> = () => {};
+
+    let roleSchemaInstance = require('../persistence/schemas/roleSchema').default;
+    Container.set('roleSchema', roleSchemaInstance);
+
+    let roleRepoClass = require(config.repos.role.path).default;
+    let roleRepoInstance = Container.get(roleRepoClass);
+    Container.set('RoleRepo', roleRepoInstance);
+
+    let roleServiceClass = require(config.services.role.path).default;
+    let roleServiceInstance = Container.get(roleServiceClass);
+    Container.set(config.services.role.name, roleServiceInstance);
+    roleServiceInstance = Container.get(config.services.role.name);
+
+    const ctrl = new RoleController(roleServiceInstance as IRoleService);
+
+    await ctrl.createRole(<Request>req, <Response>res, <NextFunction>next);
+
+    sinon.assert.calledOnce(res.json);
+    sinon.assert.calledWith(res.json, sinon.match({ id: '123', name: req.body.name }));
+  })
+  ;
 });
