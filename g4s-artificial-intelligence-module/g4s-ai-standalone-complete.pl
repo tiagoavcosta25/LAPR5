@@ -575,10 +575,11 @@ emotion_checkHope(PlayerId, SuggestedGroup, NewHope, NewDeception):-
     emotion_countHope(PlayerId, SuggestedGroup, 0, Counter),
     occ(PlayerId, _, _, Hope, Deception, _, _),
     length(SuggestedGroup, Length),
-    ((Counter > 0, !,
+    Complementary is Length - Counter,
+    ((Counter > Complementary, !,
       emotion_increase(Hope, Counter, Length, NewHope),
-     emotion_decrease(Deception, Counter, Length, NewDeception));
-    (emotion_increase(Deception, Counter, Length, NewDeception),
+     emotion_decrease(Deception, Complementary, Length, NewDeception));
+    (emotion_increase(Deception, Complementary, Length, NewDeception),
     emotion_decrease(Hope, Counter, Length, NewHope))).
 
 emotion_countHope(_, [], Counter, Return):- Return is Counter.
@@ -595,10 +596,11 @@ emotion_checkFear(PlayerId, SuggestedGroup, NewFear, NewRelief):-
     emotion_countFear(PlayerId, SuggestedGroup, 0, Counter),
     occ(PlayerId, _, _, _, _, Fear, Relief),
     length(SuggestedGroup, Length),
-    ((Counter > 0, !,
+    Complementary is Length - Counter,
+    ((Counter > Complementary, !,
       emotion_increase(Fear, Counter, Length, NewFear),
-     emotion_decrease(Relief, Counter, Length, NewRelief));
-    (emotion_increase(Relief, Counter, Length, NewRelief),
+     emotion_decrease(Relief, Complementary, Length, NewRelief));
+    (emotion_increase(Relief, Complementary, Length, NewRelief),
     emotion_decrease(Fear, Counter, Length, NewFear))).
 
 emotion_countFear(_, [], Counter, Return):- Return is Counter.
