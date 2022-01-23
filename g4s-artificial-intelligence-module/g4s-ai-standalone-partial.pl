@@ -551,3 +551,89 @@ emotion_checkSameEmotion(EmotionBool, Act, X):-
      ((ActEmotion = XEmotion,!);
      false));
     true).
+
+% Best First
+
+best_first(Mode, EmotionBool, N, Orig,Dest,Cam,Custo):-
+    best_firstAux(Mode, EmotionBool, 0, N, Dest,[[Orig]],Cam,Custo),
+    write('Caminho='),
+    write(Cam),nl.
+
+best_firstAux(Mode,EmotionBool,_,_, Dest,[[Dest|T]|_],Cam,Custo):-
+    reverse([Dest|T],Cam),
+    best_costCalc(Mode,EmotionBool,Cam,Custo).
+best_firstAux(Mode, EmotionBool, M,N,Dest,[[Dest|_]|LLA2],Cam,Custo):-
+    !, best_firstAux(Mode, EmotionBool, M, N,Dest,LLA2,Cam,Custo).
+best_firstAux(_, _,M, N, _, _, _, _):-
+    M >= N, !, false.
+best_firstAux(0, EmotionBool,M, N, Dest,LLA,Cam,Custo):-
+    best_firstMember(LA,LLA,LLA1),
+    LA=[Act|_],
+    ((Act==Dest,!,
+      best_firstAux(0, EmotionBool, M, N, Dest,[LA|LLA1],Cam,Custo));
+    (findall((CX,[X|LA]),
+    ((connection(Act,X,CX,_,_,_);
+     connection(X,Act,_,CX,_,_)),
+    emotion_checkSameEmotion(EmotionBool, Act, X),
+     \+member(X,LA)),Novos),
+     Novos\==[],!,
+     sort(0,@>=,Novos,NovosOrd),
+     best_removeCosts(NovosOrd,NovosOrd1),
+     append(NovosOrd1,LLA1,LLA2),
+     write('LLA2='),write(LLA2),nl,
+     M1 is M + 1,
+     best_firstAux(0, EmotionBool, M1, N, Dest,LLA2,Cam,Custo) )).
+
+best_firstAux(1, EmotionBool, M, N, Dest,LLA,Cam,Custo):-
+    best_firstMember(LA,LLA,LLA1),
+    LA=[Act|_],
+    ((Act==Dest,!,
+      best_firstAux(1, EmotionBool,M, N, Dest,[LA|LLA1],Cam,Custo));
+    (findall((CX,[X|LA]),
+    ((connection(Act,X,ConStrength,_,RelationStrength,_);
+     connection(X,Act,_,ConStrength,_,RelationStrength)),
+     emotion_checkSameEmotion(EmotionBool, Act, X),
+     getMulticriteria(ConStrength,RelationStrength, CX),
+     \+member(X,LA)),Novos),
+     Novos\==[],!,
+     sort(0,@>=,Novos,NovosOrd),
+     best_removeCosts(NovosOrd,NovosOrd1),
+     append(NovosOrd1,LLA1,LLA2),
+     write('LLA2='),write(LLA2),nl,
+     M1 is M + 1,
+     best_firstAux(1, EmotionBool,M1, N, Dest,LLA2,Cam,Custo) )).
+
+best_firstMember(LA,[LA|LAA],LAA).
+best_firstMember(LA,[_|LAA],LAA1):-
+    best_firstMember(LA,LAA,LAA1).
+
+best_removeCosts([],[]).
+best_removeCosts([(_,LA)|L],[LA|L1]):-
+    best_removeCosts(L,L1).
+
+best_costCalc(0,EmotionBool,[Act,X],C):-
+    !,(connection(Act,X,C,_,_,_);
+      connection(X,Act,_,C,_,_)),
+    emotion_checkSameEmotion(EmotionBool, Act, X).
+best_costCalc(0,EmotionBool,[Act,X|L],S):-
+    best_costCalc(0,[X|L],S1),
+    (connection(Act,X,C,_,_,_);
+    connection(X,Act,_,C,_,_)),
+    emotion_checkSameEmotion(EmotionBool, Act, X),
+    S is S1+C.
+
+best_costCalc(1,EmotionBool, [Act,X],C):-
+    !,(connection(Act,X,ConStrength,_,RelationStrength,_);
+      connection(X,Act,_,ConStrength,_,RelationStrength)),
+    emotion_checkSameEmotion(EmotionBool, Act, X),
+    getMulticriteria(ConStrength,RelationStrength, C).
+best_costCalc(1,[Act,X|L],S):-
+    best_costCalc(1,EmotionBool, [X|L],S1),
+    (connection(Act,X,ConStrength,_,RelationStrength,_);
+    connection(X,Act,_,ConStrength,_,RelationStrength)),
+    emotion_checkSameEmotion(EmotionBool, Act, X),
+    getMulticriteria(ConStrength,RelationStrength, C),
+    S is S1+C.
+
+
+

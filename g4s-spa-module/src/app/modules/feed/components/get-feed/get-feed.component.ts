@@ -9,6 +9,8 @@ import { PlayerLike } from 'src/shared/models/player/player-like.model';
 import { CreatingPost } from '../../models/creating-post.model';
 import { ConnectionService } from 'src/app/modules/connection/services/connection.service';
 import { forkJoin, Observable } from 'rxjs';
+import { AiService } from 'src/app/modules/ai/services/ai.service';
+import { ChangeEmotionalStatus } from 'src/shared/models/player/change-emotional-status.model';
 
 @Component({
   selector: 'app-get-feed',
@@ -29,7 +31,24 @@ export class GetFeedComponent implements OnInit, OnDestroy {
 
   tags: string[];
 
+  dcalcValue: number;
+
+  joy: number = 0.25;
+  
+  anguish: number = 0.25;
+  
+  hope: number = 0.25;
+  
+  deception: number = 0.25;
+  
+  fear: number = 0.25;
+  
+  relief: number = 0.25;
+
+  newEmotion: string;
+
   constructor(private fService: FeedService,
+    private aService: AiService,
     private pService: PlayerService,
     public spinner: NgxSpinnerService,
     private cService: ConnectionService) { }
@@ -309,6 +328,114 @@ export class GetFeedComponent implements OnInit, OnDestroy {
     let index = this.tags.findIndex( t => t == tag);
     if (index != -1) {
       this.tags.splice(index, 1);
+    }
+  }
+
+  getDCalc(post: Post): void {
+    if(this.currentUser.id == post.creatorId) {
+      console.log("Same user, no calculations");
+      return;
+    }
+    this.fService.dCalc(this.currentUser.id, post.creatorId).subscribe({ next: data => {
+      this.dcalcValue = data.dCalc;
+      this.resetEmotions();
+      this.setEmotion();
+      this.getEmotionRelation(post);
+    },
+      error: _error => {
+      }
+    });
+  }
+
+  getEmotionRelation(post: Post): void {
+    console.log("Current emotion: " + this.currentUser.emotionalStatus);
+    this.aService.getEmotionRelation(post.creatorEmail, this.joy, this.anguish, this.hope, this.deception,
+      this.fear, this.relief, this.dcalcValue).subscribe({ next: data => {
+        console.log("Calculated emotions: joy: " + data[0] + " anguish: " + data[1] + " hope: " + data[2] + " deception: " + data[3] + " fear: " + data[4] + " relief: " + data[5]);
+      let highest;
+      let highestValue = 0;
+      for(let i = 0; i < data.length; i++) {
+        if(data[i] > highestValue) {
+          highest = i;
+          highestValue = data[i];
+        }
+      }
+      switch(highest) {
+        case 0:
+          this.newEmotion = "joyful";
+          break;
+        case 1:
+          this.newEmotion = "distressed";
+          break;
+        case 2:
+          this.newEmotion = "hopeful";
+          break;
+        case 3:
+          this.newEmotion = "disappointed";
+          break;
+        case 4:
+          this.newEmotion = "fearful";
+          break;
+        case 5:
+          this.newEmotion = "relieve";
+          break;                        
+      }
+      if(this.currentUser.emotionalStatus != this.newEmotion) {
+        this.changeEmotionalStatus();
+      } else {
+        console.log("Emotional change not necessary");
+      }
+    },
+      error: _error => {
+      }
+    });
+  }
+
+  changeEmotionalStatus(): void {
+    let ces: ChangeEmotionalStatus = new ChangeEmotionalStatus;
+    ces.emotionalStatus = this.newEmotion;
+    ces.playerEmail = this.currentUser.email;
+    this.pService.updateEmotionalStatus(this.currentUser.email, ces)
+    .subscribe({ next: _ => {
+      console.log("Emotional status changed to " + this.newEmotion);
+      //Nothing
+    },
+      error: _error => {
+        //Nothing
+      }
+    });
+  }
+
+  resetEmotions() {
+    this.joy = 0.25;
+    this.anguish = 0.25;
+    this.hope = 0.25;
+    this.deception = 0.25;
+    this.fear = 0.25;
+    this.relief = 0.25;
+  }
+
+  setEmotion() {
+    let currentEmotion = this.currentUser.emotionalStatus;
+    switch(currentEmotion) {
+      case "joyful":
+        this.joy = 0.75;
+        break;
+      case "distressed":
+        this.anguish = 0.75;
+        break;
+      case "hopeful":
+        this.hope = 0.75;
+        break;
+      case "disappointed":  
+        this.deception = 0.75;
+        break;
+      case "fearful":
+        this.fear = 0.75;
+        break;
+      case "relieve":
+        this.relief = 0.75;
+        break;
     }
   }
 }
