@@ -59,10 +59,14 @@ export class PlayerService {
     );
   }
 
+  /** DELETE: deactivate the player from the server */
+  deactivatePlayer(id: string): Observable<unknown> {
+    return this.http.delete(this.playerUrl + id, this.httpOptions);
+  }
+
   /** DELETE: delete the player from the server */
-  deletePlayer(id: number): Observable<unknown> {
-    const url = `${this.playerUrl}/${id}`; // DELETE api/players/42
-    return this.http.delete(url, this.httpOptions);
+  deletePlayer(id: string): Observable<unknown> {
+    return this.http.delete(this.playerUrl + id + "/hard", this.httpOptions);
   }
 
   /** GET: get player by id */
