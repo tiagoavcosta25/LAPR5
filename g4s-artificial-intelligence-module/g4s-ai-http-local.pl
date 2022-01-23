@@ -870,3 +870,133 @@ emotion_checkSameEmotion(EmotionBool, Act, X):-
      ((ActEmotion = XEmotion,!);
      false));
     true).
+
+
+%======== Best First (HTTP) ========%
+
+:- http_handler('/api/best-first', best_compute, []).
+
+best_compute(Request) :-
+	cors_enable(Request, [methods([get])]),
+    best_prepare(Request, Path, Cost),
+	prolog_to_json(Path, JSONObject),
+	prolog_to_json(Cost, JSONObject2),
+	reply_json([JSONObject, JSONObject2], [json_object(dict)]).
+
+best_prepare(Request, Path, Cost) :-
+    http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string]),
+    n(N, [integer]), mode(Mode, [integer])]),
+	addPlayers(),
+	addConnections(),
+	getPlayerName(EmailPlayer, PlayerName),
+	getPlayerName(EmailTarget, TargetName),
+        node(PlayerId, PlayerName, _),
+        node(TargetId, TargetName, _),
+	best_first(Mode, 0, N, PlayerId, TargetId, Path, Cost),
+	retractall(connection(_,_,_,_,_,_)),
+	retractall(node(_,_,_)).
+
+%======== Best First w/ Emotions (HTTP) ========%
+
+:- http_handler('/api/best-first-emotions', best_computeEmotions, []).
+
+best_computeEmotions(Request) :-
+	cors_enable(Request, [methods([get])]),
+    best_prepareEmotions(Request, Path, Cost),
+	prolog_to_json(Path, JSONObject),
+	prolog_to_json(Cost, JSONObject2),
+	reply_json([JSONObject, JSONObject2], [json_object(dict)]).
+
+best_prepareEmotions(Request, Path, Cost) :-
+    http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string]), n(N, [integer]), mode(Mode, [integer]), joy(Joy, [integer]), anguish(Anguish, [integer]), hope(Hope, [integer]), deception(Deception, [integer]), fear(Fear, [integer]), relief(Relief, [integer])]),
+	addPlayers(),
+	addConnections(),
+	getPlayerName(EmailPlayer, PlayerName),
+	getPlayerName(EmailTarget, TargetName),
+        node(PlayerId, PlayerName, _),
+        node(TargetId, TargetName, _),
+        retract(occ(PlayerId, _,_,_,_,_,_)),
+        asserta(occ(PlayerId, Joy, Anguish, Hope, Deception, Fear, Relief)),
+	best_find(Mode, 1, N, PlayerId, TargetId, Path, Cost),
+	retractall(connection(_,_,_,_,_,_)),
+	retractall(node(_,_,_)).
+
+
+%======== Best First (Core) ========%
+
+best_first(Mode, EmotionBool, N, Orig,Dest,Cam,Custo):-
+    best_firstAux(Mode, EmotionBool, 0, N, Dest,[[Orig]],Cam,Custo).
+
+best_firstAux(Mode,EmotionBool,_,_, Dest,[[Dest|T]|_],Cam,Custo):-
+    reverse([Dest|T],Cam),
+    best_costCalc(Mode,EmotionBool,Cam,Custo).
+best_firstAux(Mode, EmotionBool, M,N,Dest,[[Dest|_]|LLA2],Cam,Custo):-
+    !, best_firstAux(Mode, EmotionBool, M, N,Dest,LLA2,Cam,Custo).
+best_firstAux(_, _,M, N, _, _, _, _):-
+    M >= N, !, false.
+best_firstAux(0, EmotionBool,M, N, Dest,LLA,Cam,Custo):-
+    best_firstMember(LA,LLA,LLA1),
+    LA=[Act|_],
+    ((Act==Dest,!,
+      best_firstAux(0, EmotionBool, M, N, Dest,[LA|LLA1],Cam,Custo));
+    (findall((CX,[X|LA]),
+    ((connection(Act,X,CX,_,_,_);
+     connection(X,Act,_,CX,_,_)),
+    emotion_checkSameEmotion(EmotionBool, Act, X),
+     \+member(X,LA)),Novos),
+     Novos\==[],!,
+     sort(0,@>=,Novos,NovosOrd),
+     best_removeCosts(NovosOrd,NovosOrd1),
+     append(NovosOrd1,LLA1,LLA2),
+     M1 is M + 1,
+     best_firstAux(0, EmotionBool, M1, N, Dest,LLA2,Cam,Custo) )).
+
+best_firstAux(1, EmotionBool, M, N, Dest,LLA,Cam,Custo):-
+    best_firstMember(LA,LLA,LLA1),
+    LA=[Act|_],
+    ((Act==Dest,!,
+      best_firstAux(1, EmotionBool,M, N, Dest,[LA|LLA1],Cam,Custo));
+    (findall((CX,[X|LA]),
+    ((connection(Act,X,ConStrength,_,RelationStrength,_);
+     connection(X,Act,_,ConStrength,_,RelationStrength)),
+     emotion_checkSameEmotion(EmotionBool, Act, X),
+     getMulticriteria(ConStrength,RelationStrength, CX),
+     \+member(X,LA)),Novos),
+     Novos\==[],!,
+     sort(0,@>=,Novos,NovosOrd),
+     best_removeCosts(NovosOrd,NovosOrd1),
+     append(NovosOrd1,LLA1,LLA2),
+     M1 is M + 1,
+     best_firstAux(1, EmotionBool,M1, N, Dest,LLA2,Cam,Custo) )).
+
+best_firstMember(LA,[LA|LAA],LAA).
+best_firstMember(LA,[_|LAA],LAA1):-
+    best_firstMember(LA,LAA,LAA1).
+
+best_removeCosts([],[]).
+best_removeCosts([(_,LA)|L],[LA|L1]):-
+    best_removeCosts(L,L1).
+
+best_costCalc(0,EmotionBool,[Act,X],C):-
+    !,(connection(Act,X,C,_,_,_);
+      connection(X,Act,_,C,_,_)),
+    emotion_checkSameEmotion(EmotionBool, Act, X).
+best_costCalc(0,EmotionBool,[Act,X|L],S):-
+    best_costCalc(0,[X|L],S1),
+    (connection(Act,X,C,_,_,_);
+    connection(X,Act,_,C,_,_)),
+    emotion_checkSameEmotion(EmotionBool, Act, X),
+    S is S1+C.
+
+best_costCalc(1,EmotionBool, [Act,X],C):-
+    !,(connection(Act,X,ConStrength,_,RelationStrength,_);
+      connection(X,Act,_,ConStrength,_,RelationStrength)),
+    emotion_checkSameEmotion(EmotionBool, Act, X),
+    getMulticriteria(ConStrength,RelationStrength, C).
+best_costCalc(1,[Act,X|L],S):-
+    best_costCalc(1,EmotionBool, [X|L],S1),
+    (connection(Act,X,ConStrength,_,RelationStrength,_);
+    connection(X,Act,_,ConStrength,_,RelationStrength)),
+    emotion_checkSameEmotion(EmotionBool, Act, X),
+    getMulticriteria(ConStrength,RelationStrength, C),
+    S is S1+C.
