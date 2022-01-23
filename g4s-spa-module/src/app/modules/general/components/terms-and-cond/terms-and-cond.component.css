@@ -7,13 +7,17 @@ body {
 h1 {
     size: 130%;
     border-bottom: 1px solid #888;
+    padding-top: 2%;
+    font-weight: bold;
 }
 h2 {
     size: 120%;
     border-bottom: 1px solid #888;
+    padding-top: 1%;
 }
 h3 {
     size: 110%;
+    font-weight: bold;
 }
 h4 {
     size: 107%;
