@@ -77,37 +77,39 @@ shortest_allDfs(Player1, Player2, PathList):- get_time(T1),
     T is T2-T1,write(T),write(' seconds'),nl,
     write('Possible Path List: '),write(PathList),nl,nl.
 
-shortest_dfs(Mode, N, Orig, Dest, Strength, Path):- shortest_dfsAux(Mode, 0, N, Orig, Dest, [Orig], Strength, Path).
+shortest_dfs(Mode, EmotionBool, N, Orig, Dest, Strength, Path):- shortest_dfsAux(Mode, EmotionBool, 0, N, Orig, Dest, [Orig], Strength, Path).
 
-shortest_dfsAux(_, _, _, Dest, Dest, LA, 0, Path):- !, reverse(LA, Path).
-shortest_dfsAux(_, M, N, _, _, _, _, _):- M >= N, !, false.
-shortest_dfsAux(0, M, N, Current, Dest, LA, Strength, Path):-
+shortest_dfsAux(_, _, _, _, Dest, Dest, LA, 0, Path):- !, reverse(LA, Path).
+shortest_dfsAux(_, _, M, N, _, _, _, _, _):- M >= N, !, false.
+shortest_dfsAux(0, EmotionBool, M, N, Current, Dest, LA, Strength, Path):-
     (connection(Current, X, StrengthA, _, _, _);
     connection(X, Current, _, StrengthA, _, _)),
+    emotion_checkSameEmotion(EmotionBool, Current, X),
     \+ member(X,LA),
     M1 is M + 1,
     shortest_dfsAux(0, M1, N, X,Dest,[X|LA], Strength1, Path),
 	Strength is Strength1 + StrengthA.
-shortest_dfsAux(1, M, N, Current, Dest, LA, Strength, Path):-
+shortest_dfsAux(1, EmotionBool, M, N, Current, Dest, LA, Strength, Path):-
     (connection(Current, X, StrengthA, _, RelA, _);
     connection(X, Current, _, StrengthA, _, RelA)),
+    emotion_checkSameEmotion(EmotionBool, Current, X),
     \+ member(X,LA),
     M1 is M + 1,
     shortest_dfsAux(1, M1, N, X,Dest,[X|LA], Strength1, Path),
-	getMulticriteria(StrengthA, RelA, FinalStrength),
-	Strength is Strength1 + FinalStrength.
+    getMulticriteria(StrengthA, RelA, FinalStrength),
+    Strength is Strength1 + FinalStrength.
 
-shortest_route(Mode, N, Orig, Dest, Strength, ShortestPathList):-
+shortest_route(Mode, EmotionBool, N, Orig, Dest, Strength, ShortestPathList):-
 		get_time(Ti),
-		(shortest_findRoute(Mode, N, Orig, Dest); true),
+		(shortest_findRoute(Mode, EmotionBool, N, Orig, Dest); true),
 		retract(shortest_currentRoute(ShortestPathList, _, Strength)),
 		get_time(Tf),
 		T is Tf-Ti,
 		write('Solution generation time:'), write(T), nl.
 
-shortest_findRoute(Mode, N, Orig, Dest):-
+shortest_findRoute(Mode, EmotionBool, N, Orig, Dest):-
 		asserta(shortest_currentRoute(_,10000, _)),
-		shortest_dfs(Mode, N, Orig, Dest, Strength, PathList),
+		shortest_dfs(Mode, EmotionBool, N, Orig, Dest, Strength, PathList),
 		shortest_updateRoute(Strength, PathList),
 		fail.
 
@@ -272,18 +274,19 @@ strongest_updateRoute(Strength, PathList):-
 
 % common_tags
 
-:- dynamic common_tags_users/2.
+:- dynamic common_tags_users/3.
 
-common_tags(NTags,NUsers,TagList,List_Result):-
+common_tags(Id, NTags,NUsers,TagList,ResultTag,ResultUsers):-
     get_time(T1),
-    common_tags_get_all_tags(All_TagsT),
+    node(Id,_,All_TagsT),
 	common_tags_change_to_synonyms(All_TagsT, All_Tags),
     findall(Combination,common_tags_combination(NTags,All_Tags,Combination),CombinationsTemp),
 	common_tags_test_list(CombinationsTemp, TagList, Combinations),
     findall(UserId,node(UserId,_,_),Users),
+	asserta(common_tags_users([],[],0)),
     common_tags_users_combination(NTags,NUsers,Users,Combinations),
-    findall([Comb,ListUsers],common_tags_users(Comb,ListUsers),List_Result),
-    retractall(common_tags_users(_,_)),
+	common_tags_users(ResultTag,ResultUsers,_),
+    retractall(common_tags_users(_,_,_)),
     write('Solution found in '),
     get_time(T2),
     T is T2-T1,write(T),write(' seconds'),nl.
@@ -293,8 +296,12 @@ common_tags_users_combination(NTags,NUsers,Users,[Combination|Combinations]):-
     common_tags_users_combination_aux(NTags,Combination,Users,Users_With_Tags),
     common_tags_users_combination(NTags,NUsers,Users,Combinations),
     !,
-	comon_tags_list_length(Users_With_Tags, L),
-	( L >= NUsers-> assertz(common_tags_users(Combination,Users_With_Tags)) ; ! ).
+	length(Users_With_Tags, L),
+	( L >= NUsers->
+	common_tags_users(_,_,Size),
+	(L > Size ->
+	retract(common_tags_users(_,_,_)),
+	asserta(common_tags_users(Combination,Users_With_Tags, L)) ; ! );!).
 
 common_tags_users_combination_aux(_,_,[],[]):-!.
 common_tags_users_combination_aux(NTags,Tags,[U|Users],Result):-
@@ -323,18 +330,11 @@ common_tags_test_list([CombinationsH|CombinationsT], Tags, FinalCombinations):-
 common_tags_test_lists(List1, List2) :-
     forall(member(Element,List1), member(Element,List2)).
 
-common_tags_remove_repeated_tags([],[]).
-common_tags_remove_repeated_tags([List|All_Tags],Tags):-
-    common_tags_remove_repeated_tags(All_Tags,Tags1),!,
-    union(List,Tags1,Tags).
 
 %=== CombinaÃ§oes ===
 common_tags_combination(0,_,[]).
 common_tags_combination(N,[X|T],[X|Comb]):-N>0,N1 is N-1,common_tags_combination(N1,T,Comb).
 common_tags_combination(N,[_|T],Comb):-N>0,common_tags_combination(N,T,Comb).
-
-comon_tags_list_length([], 0).
-comon_tags_list_length([_|TAIL], N) :- comon_tags_list_length(TAIL, N1), N is N1 + 1.
 
 common_tags_change_to_synonyms([],[]).
 common_tags_change_to_synonyms([Tag|All_Tags],Tags):-
@@ -387,7 +387,7 @@ aStar_aux(0, EmotionBool, M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
     (Dest\==Act,
     (connection(Act,X,CostX, _, _, _);
     connection(X, Act, _, CostX, _, _)),
-    emotion_checkSameEmotion(EmotionBool, Act, X), !,
+    emotion_checkSameEmotion(EmotionBool, Act, X),
     \+ member(X,LA),
     CaX is CostX + Ca,
     aStar_estimate(N,M,EstX),
@@ -404,7 +404,7 @@ aStar_aux(1, EmotionBool, M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
     (Dest\==Act,
     (connection(Act,X,ConnStrength, _, RelStrength, _);
     connection(X, Act, _, ConnStrength, _, RelStrength)),
-    emotion_checkSameEmotion(EmotionBool, Act, X), !,
+    emotion_checkSameEmotion(EmotionBool, Act, X),
     \+ member(X,LA),
     getMulticriteria(ConnStrength, RelStrength, CostX),
     CaX is CostX + Ca,
@@ -487,7 +487,7 @@ emotion_relationChange(PlayerId, Value, NewJoy, NewAnguish):-
     asserta(occ(PlayerId, NewJoy, NewAnguish, Hope, Deception, Fear, Relief)).
 
 emotion_groupSuggestion(PlayerId, TagCount, PlayerCount, MandatoryTags, NewHope, NewDeception, NewFear, NewRelief):-
-    suggest_playerGroups(PlayerId, TagCount, PlayerCount, MandatoryTags, SuggestedGroup),
+    common_tags(PlayerId, TagCount, PlayerCount, MandatoryTags, _,SuggestedGroup),
     emotion_checkHope(PlayerId, SuggestedGroup, NewHope, NewDeception),
     emotion_checkFear(PlayerId, SuggestedGroup, NewFear, NewRelief),
     retract(occ(PlayerId, Joy, Anguish, _, _, _, _)),
@@ -548,8 +548,4 @@ emotion_checkSameEmotion(EmotionBool, Act, X):-
      emotion_getMax(X, _, XEmotion),
      ((ActEmotion = XEmotion,!);
      false));
-    true),
-    write('ACCEPT').
-
-suggest_playerGroups(_, _, _, _, [3,6, 4, 5]).
-
+    true).
