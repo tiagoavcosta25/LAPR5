@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Player } from 'src/shared/models/player/player.model';
 import { PlayerService } from '../../services/player.service';
 import { Validators, FormBuilder, FormControl, FormArray } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { emotionalStatusEnum } from 'src/shared/models/player/emotional-status-enum.model';
 import { DobPlayer } from '../../models/dob-player.model copy';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-update-player',
@@ -13,9 +14,17 @@ import { DobPlayer } from '../../models/dob-player.model copy';
 })
 export class UpdatePlayerComponent implements OnInit {
 
+  interval: any;
   success: any;
   successMessage: string = "Player updated sucessfully!";
   errorMessage: string = "There was an error updating a player!";
+  withdraw: boolean = false;
+  deactivate: boolean = false;
+  delete: boolean = false;
+  withdrawn: boolean = false;
+  deactivated: boolean = false;
+  deleted: boolean = false;
+
 
   playerForm = this.fb.group({
     name: ['', Validators.required],
@@ -38,9 +47,11 @@ export class UpdatePlayerComponent implements OnInit {
   constructor(
               private spinner: NgxSpinnerService,
               private service: PlayerService,
-              private fb: FormBuilder) { }
+              private fb: FormBuilder,
+              private router: Router) { }
 
   ngOnInit(): void {
+    clearInterval(this.interval);
     this.email = localStorage.getItem('currentPlayer')!.trim();
     this.p = new DobPlayer();
     this.getPlayerByEmail();
@@ -207,4 +218,52 @@ export class UpdatePlayerComponent implements OnInit {
     return emots;
   }
 
+  deactivateAccount(): void {
+    this.spinner.show();
+    this.service.deactivatePlayer(this.p.id).subscribe({ next: _data => {
+      this.deactivated = true;
+      this.deactivate = false;
+      this.spinner.hide();
+    },
+      error: _error => {
+        this.spinner.hide();
+      }
+    });
+    this.interval = setInterval(() => {
+      this.router.navigate(['login']);
+      clearInterval(this.interval);
+   }, 2500);
+  }
+
+  deleteAccount(): void {
+    this.spinner.show();
+    this.service.deactivatePlayer(this.p.id).subscribe({ next: _data => {
+      this.service.deletePlayer(this.p.id).subscribe({ next: _data => {
+        this.deleted = true;
+        this.delete = false;
+        this.spinner.hide();
+      },
+        error: _error => {
+          this.spinner.hide();
+        }
+      });
+    },
+      error: _error => {
+        this.spinner.hide();
+      }
+    });
+    this.interval = setInterval(() => {
+      this.router.navigate(['login']);
+      clearInterval(this.interval);
+   }, 2500);
+  }
+
+  withdrawAccount(): void {
+    this.withdrawn = true;
+    this.withdraw = false;
+    this.interval = setInterval(() => {
+      this.withdrawn = false;
+      clearInterval(this.interval);
+   }, 2500);
+  }
 }

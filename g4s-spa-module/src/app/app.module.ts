@@ -65,6 +65,8 @@ import { LeaderboardDimensionComponent } from './modules/leaderboard/components/
 import { LeaderboardStrengthComponent } from './modules/leaderboard/components/leaderboard-strength/leaderboard-strength.component';
 import { AipathsComponent } from './modules/ai/components/aipaths/aipaths.component';
 import { GroupSearchComponent } from './modules/ai/components/group-search/group-search.component';
+import { AboutUsComponent } from './modules/general/components/about-us/about-us.component';
+import { ContactUsComponent } from './modules/general/components/contact-us/contact-us.component';
 
 @NgModule({
   declarations: [
@@ -110,7 +112,7 @@ import { GroupSearchComponent } from './modules/ai/components/group-search/group
     ProfileTagCloudConnComponent,
     LeaderboardComponent,
     LeaderboardDimensionComponent, 
-    LeaderboardStrengthComponent, AipathsComponent, GroupSearchComponent
+    LeaderboardStrengthComponent, AipathsComponent, GroupSearchComponent, AboutUsComponent, ContactUsComponent
   ],
   imports: [
     BrowserModule,

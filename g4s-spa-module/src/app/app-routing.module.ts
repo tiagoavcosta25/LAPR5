@@ -36,6 +36,8 @@ import { LeaderboardStrengthComponent } from './modules/leaderboard/components/l
 import { LeaderboardComponent } from './modules/leaderboard/leaderboard.component';
 import { AipathsComponent } from './modules/ai/components/aipaths/aipaths.component';
 import { GroupSearchComponent } from './modules/ai/components/group-search/group-search.component';
+import { AboutUsComponent } from './modules/general/components/about-us/about-us.component';
+import { ContactUsComponent } from './modules/general/components/contact-us/contact-us.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -87,7 +89,9 @@ const routes: Routes = [
   { path: '', 
     component: GeneralComponent,
     children: [
-      { path: 'terms-and-cond',  component: TermsAndCondComponent }
+      { path: 'terms-and-cond',  component: TermsAndCondComponent },
+      { path: 'about-us',  component: AboutUsComponent },
+      { path: 'contact-us',  component: ContactUsComponent }
     ]
   },
 ];
