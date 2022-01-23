@@ -207,3 +207,39 @@ export class ProfileHeaderComponent implements OnInit{
       }
     }
   }
+
+  addTag() {
+    let el = document.getElementById('tagvalue');
+    let val = "";
+    if(el != undefined) {
+      val = ((<HTMLInputElement>el).value);
+      (<HTMLInputElement>el).value = "";
+    }
+    if(this.tags.indexOf(val) < 0) {
+      this.tags.push(val);
+    }
+  }
+
+  removeTag(tag: string) {
+    let index = this.tags.findIndex( t => t == tag);
+    if (index != -1) {
+      this.tags.splice(index, 1);
+    }
+  }
+
+  createDirectRequest() {
+    let el = document.getElementById("messageToPlayer");
+    let messageToPlayer = "";
+    let strength: number = 0;
+    if(el != undefined) {
+      messageToPlayer = ((<HTMLInputElement>el).value);
+      (<HTMLInputElement>el).value = "";
+    }
+    let el2 = document.getElementById("connectionStrength");
+    if(el2 != undefined) {
+      strength =+ ((<HTMLInputElement>el2).value);
+      (<HTMLInputElement>el2).value = "";
+    }
+
+   
+}
