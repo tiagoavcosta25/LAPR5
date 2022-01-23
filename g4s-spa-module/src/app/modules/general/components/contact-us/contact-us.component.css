@@ -1,0 +1,42 @@
+p {
+    color: #2F2F2F;
+    font-size: medium;
+    font-family: arial, verdana, tahoma, sans-serif;
+    padding-bottom: 2%;
+}
+
+
+h1 {
+    font-size: xx-large;
+    border-bottom: 1px solid #888;
+    padding-top: 2%;
+    font-weight: bold;
+}
+
+h2 {
+    font-size: large;
+    padding-top: 1%;
+}
+
+.about-body {
+    margin-left: 23%;
+    margin-right: 17%;
+    background: #eee;
+    position: relative;
+    padding: 20px 25px;
+    border-radius: 6px
+}
+
+.about-body-title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.about-body-content {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.nounderline {
+    text-decoration: none !important
+}
