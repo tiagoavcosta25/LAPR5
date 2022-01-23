@@ -90,3 +90,7 @@
     border: 2px solid #ff00ea;
     background: #ff00ea;
   }
+
+  html {
+    scroll-behavior: smooth;
+  }

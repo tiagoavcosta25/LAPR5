@@ -86,6 +86,26 @@ export class AiService {
     );
   }
 
+    /** GET: get's the desired path accounting emotions */
+    getAiPathEmotions(algo:string, emailPlayer: string, emailTarget: string, mode:number, n: number,
+      joy: number, anguish: number, hope: number, deception: number, fear: number, relief: number): Observable<string[][]> {
+      const params = new HttpParams()
+        .set('emailPlayer', emailPlayer)
+        .set('emailTarget', emailTarget)
+        .set('mode', mode)
+        .set('n', n)
+        .set('joy', joy)
+        .set('anguish', anguish)
+        .set('hope', hope)
+        .set('deception', deception)
+        .set('fear', fear)
+        .set('relief', relief);
+      const url = this.aiUrl + '/' + algo + '-emotions';
+      return this.http.get<string[][]>(url, { params: params }).pipe(
+      catchError(this.handleError)
+      );
+    }
+
   /** GET: searches for groups */
   getGroups(id:string, ntags:number, nusers: number, taglist: string): Observable<string[][]> {
     const params = new HttpParams()

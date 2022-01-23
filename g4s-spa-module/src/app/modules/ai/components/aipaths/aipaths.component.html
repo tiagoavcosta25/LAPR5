@@ -1,6 +1,6 @@
 <div class="container">
     <div *ngIf="algoPlayers==undefined; else defined">
-        <div class="row justify-content-center mt-5">
+        <div class="row justify-content-center mt-2">
             <div class="col-lg-7 col-algo">
                 <div class="row justify-content-center">
                     <div class="col-8">
@@ -26,7 +26,7 @@
     
         <div *ngIf="algo!=undefined;">
             
-            <div class="row justify-content-center mt-5">
+            <div class="row justify-content-center mt-3">
                 <div class="col-lg-7 multitext">
                     <div class="row justify-content-center">
                         <div class="col-10">
@@ -48,10 +48,35 @@
             </div>
             
         </div>
-    
+
         <div *ngIf="multicriteria!=undefined;">
             
-            <div class="row justify-content-center mt-5">
+            <div class="row justify-content-center mt-3">
+                <div class="col-lg-7 multitext">
+                    <div class="row justify-content-center">
+                        <div class="col-10">
+                            <h1>Would you like to take into account player emotions:</h1>
+                        </div>
+                        <div class="col-1">
+                            <span class="badge bg-success" style="font-size: 20px;">{{ getEmotions() }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-3">
+                        <button type ="submit" class="btn btn-primary" (click)="setEmotions(true);setEmotion()">Yes</button>
+                    </div>
+                    <div class="col-3">
+                        <button type ="submit" class="btn btn-primary" (click)="setEmotions(false);resetEmotions()">No</button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    
+        <div *ngIf="emotions!=undefined;">
+            
+            <div class="row justify-content-center mt-3">
                 <div class="col-lg-6 ntext">
                     <div class="row justify-content-center">
                         <div class="col-7">
@@ -64,7 +89,7 @@
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-lg-4">
-                        <select class="form-select form-select-lg mb-3" [(ngModel)]="tempN" aria-label=".form-select-lg example">
+                        <select class="form-select form-select-lg mb-2" [(ngModel)]="tempN" aria-label=".form-select-lg example">
                             <option selected value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -88,8 +113,8 @@
                     <h1>Choose the player to calculate the path too:</h1>
                 </div>
                 <div class="row justify-content-center">
-                    <div class="col-lg-4">
-                        <select id="form-select" [(ngModel)]="tempTarget" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                    <div class="col-lg-4" id="playerSelect">
+                        <select id="form-select" [(ngModel)]="tempTarget" class="form-select form-select-lg mb-2" aria-label=".form-select-lg example">
                             <option *ngFor="let p of networkPlayers" value="{{ p.email }}">{{ p.name + " - " + p.email }}</option>
                         </select>
                     </div>
@@ -106,7 +131,16 @@
         <div class="container my-5">
             <div *ngIf="algoPlayers?.length; else noConnections">
                 <button class="btn back btn-primary w-30 mb-4" (click)="reset()">Reset!</button>
-                <h2>Strongest path between you and {{ getLastPlayerName() }} - Cost: {{ cost }}</h2>
+                <div class="row">
+                    <div class="col-4">
+                        <h2>Path between you and {{ getLastPlayerName() }} - Cost: {{ cost }}</h2>
+                    </div>
+                    <div class="col-8">
+                        <h2 *ngIf="multicriteria && emotions">(Using multicriteria and accounting for emotions - Your current emotion: {{ currentUser.emotionalStatus }})</h2>
+                        <h2 *ngIf="multicriteria && emotions==false">(Using multicriteria)</h2>
+                        <h2 *ngIf="multicriteria==false && emotions">(Accounting for emotions - Your current emotion: {{ currentUser.emotionalStatus }})</h2>
+                    </div>
+                </div>
                 <mat-accordion class="example-headers-align">
                     <mat-expansion-panel *ngFor="let p of algoPlayers; let i = index" [expanded]="step === i" (opened)="setStep(i)" (closed)="setStep(-1)" hideToggle>
                       <mat-expansion-panel-header>
@@ -139,6 +173,9 @@
     
                     </mat-expansion-panel>              
                   </mat-accordion>
+                  <div class="col-12 mt-4" align="center">
+                  <h2>Algorithm: {{ algo }}</h2>
+                  </div>
             </div>
                 <ng-template #noConnections>
                     <h1 class="font-weight-bold my-5 mb-4 text-center">There's no possible path.</h1>

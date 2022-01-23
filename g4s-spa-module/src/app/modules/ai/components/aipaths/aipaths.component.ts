@@ -7,6 +7,7 @@ import { Connection } from 'src/shared/models/connection/connection.model';
 import { Player } from 'src/shared/models/player/player.model';
 import { AiService } from '../../services/ai.service';
 import { Location } from '@angular/common';
+import { DobPlayer } from 'src/app/modules/player/models/dob-player.model copy';
 
 @Component({
   selector: 'app-aipaths',
@@ -23,11 +24,15 @@ export class AipathsComponent implements OnInit {
 
   multicriteria: boolean | undefined;
 
+  emotions: boolean | undefined;
+
   n: number | undefined;
 
   tempN: number | undefined = 1;
 
   currentUserEmail: string;
+
+  currentUser: DobPlayer;
 
   players: Player[] = [];
 
@@ -43,6 +48,18 @@ export class AipathsComponent implements OnInit {
 
   step: number;
 
+  joy: number = 0.25;
+  
+  anguish: number = 0.25;
+  
+  hope: number = 0.25;
+  
+  deception: number = 0.25;
+  
+  fear: number = 0.25;
+  
+  relief: number = 0.25;
+
   constructor(private cService: ConnectionService,
     private pService: PlayerService,
     private aService: AiService,
@@ -50,8 +67,9 @@ export class AipathsComponent implements OnInit {
     private location: Location) { }
 
   ngOnInit(): void {
-    this.getPlayers();
     this.currentUserEmail = localStorage.getItem("currentPlayer")!;
+    this.getPlayer();
+    this.getPlayers();
   }
 
   setAlgo(algo: string) {
@@ -60,12 +78,14 @@ export class AipathsComponent implements OnInit {
     }
     this.algo = algo;
     this.multicriteria = undefined;
+    this.emotions = undefined;
     this.n = undefined;
     this.networkPlayers = undefined;
     this.targetEmail = undefined;
     this.path = undefined;
     this.algoPlayers = undefined;
     this.cost = 0;
+    this.resetEmotions();
   }
 
   setMulticriteria(multi: boolean) {
@@ -74,6 +94,21 @@ export class AipathsComponent implements OnInit {
     }
     this.multicriteria = multi;
     this.n = undefined;
+    this.emotions = undefined;
+    this.networkPlayers = undefined;
+    this.targetEmail = undefined;
+    this.path = undefined;
+    this.algoPlayers = undefined;
+    this.cost = 0;
+    this.resetEmotions();
+  }
+
+  setEmotions(emot: boolean) {
+    if(this.emotions == emot) {
+      return;
+    }
+    this.n = undefined;
+    this.emotions = emot;
     this.networkPlayers = undefined;
     this.targetEmail = undefined;
     this.path = undefined;
@@ -85,6 +120,15 @@ export class AipathsComponent implements OnInit {
     if(this.multicriteria == undefined) {
       return "";
     } else if(this.multicriteria) {
+      return "yes";
+    }
+    return "no";
+  }
+
+  getEmotions(): string {
+    if(this.emotions == undefined) {
+      return "";
+    } else if(this.emotions) {
       return "yes";
     }
     return "no";
@@ -127,6 +171,18 @@ export class AipathsComponent implements OnInit {
     });
   }
 
+  getPlayer(): void {
+    this.spinner.show();
+    this.pService.getOnlyPlayerByEmail(this.currentUserEmail).subscribe({ next: data => {
+      this.currentUser = data;
+      this.spinner.hide();
+    },
+      error: _error => {
+        this.spinner.hide();
+      }
+    });
+  }
+
   getAlgo(): void {
     this.spinner.show();
     let mode: number;
@@ -135,19 +191,33 @@ export class AipathsComponent implements OnInit {
     } else {
       mode = 0;
     }
-    if(this.algo == undefined || this.targetEmail == undefined || this.multicriteria == undefined || this.n == undefined) {
+    if(this.algo == undefined || this.targetEmail == undefined || this.multicriteria == undefined || this.emotions == undefined || this.n == undefined) {
       return;
     }
-    this.aService.getAiPath(this.algo, this.currentUserEmail, this.targetEmail, mode, this.n).subscribe({ next: data => {
-      this.path = data[0];
-      this.cost =+ data[1];
-      this.getPlayersAlgo();
-      console.log(this.path, this.cost);
-    },
-      error: _error => {
-        this.spinner.hide();
-      }
-    });
+    if(this.emotions == true) {
+      this.aService.getAiPathEmotions(this.algo, this.currentUserEmail, this.targetEmail, mode, this.n,
+        this.joy, this.anguish, this.hope, this.deception, this.fear, this.relief).subscribe({ next: data => {
+        this.path = data[0];
+        this.cost =+ data[1];
+        this.getPlayersAlgo();
+        console.log(this.path, this.cost);
+      },
+        error: _error => {
+          this.spinner.hide();
+        }
+      });
+    } else {
+      this.aService.getAiPath(this.algo, this.currentUserEmail, this.targetEmail, mode, this.n).subscribe({ next: data => {
+        this.path = data[0];
+        this.cost =+ data[1];
+        this.getPlayersAlgo();
+        console.log(this.path, this.cost);
+      },
+        error: _error => {
+          this.spinner.hide();
+        }
+      });
+    }
   }
 
   getPlayersAlgo(): void {
@@ -202,11 +272,46 @@ export class AipathsComponent implements OnInit {
   reset() {
     this.algo = undefined;
     this.multicriteria = undefined;
+    this.emotions = undefined;
     this.n = undefined;
     this.networkPlayers = undefined;
     this.targetEmail = undefined;
     this.path = undefined;
     this.algoPlayers = undefined;
     this.cost = 0;
+  }
+
+  resetEmotions() {
+    this.joy = 0.25;
+    this.anguish = 0.25;
+    this.hope = 0.25;
+    this.deception = 0.25;
+    this.fear = 0.25;
+    this.relief = 0.25;
+  }
+
+  setEmotion() {
+    let currentEmotion = this.currentUser.emotionalStatus;
+    console.log(currentEmotion);
+    switch(currentEmotion) {
+      case "joyful":
+        this.joy = 0.75;
+        break;
+      case "distressed":
+        this.anguish = 0.75;
+        break;
+      case "hopeful":
+        this.hope = 0.75;
+        break;
+      case "disappointed":  
+        this.deception = 0.75;
+        break;
+      case "fearful":
+        this.fear = 0.75;
+        break;
+      case "relieve":
+        this.relief = 0.75;
+        break;
+    }
   }
 }
