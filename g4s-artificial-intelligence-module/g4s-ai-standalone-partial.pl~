@@ -24,7 +24,7 @@ occ(5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
 occ(6, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5).
 
 
-hope(1, 3).
+hope(1, 6).
 fear(1, 6).
 fear(1, 4).
 
@@ -87,7 +87,7 @@ shortest_dfsAux(0, EmotionBool, M, N, Current, Dest, LA, Strength, Path):-
     emotion_checkSameEmotion(EmotionBool, Current, X),
     \+ member(X,LA),
     M1 is M + 1,
-    shortest_dfsAux(0, M1, N, X,Dest,[X|LA], Strength1, Path),
+    shortest_dfsAux(0, EmotionBool, M1, N, X,Dest,[X|LA], Strength1, Path),
 	Strength is Strength1 + StrengthA.
 shortest_dfsAux(1, EmotionBool, M, N, Current, Dest, LA, Strength, Path):-
     (connection(Current, X, StrengthA, _, RelA, _);
@@ -95,7 +95,7 @@ shortest_dfsAux(1, EmotionBool, M, N, Current, Dest, LA, Strength, Path):-
     emotion_checkSameEmotion(EmotionBool, Current, X),
     \+ member(X,LA),
     M1 is M + 1,
-    shortest_dfsAux(1, M1, N, X,Dest,[X|LA], Strength1, Path),
+    shortest_dfsAux(1, EmotionBool, M1, N, X,Dest,[X|LA], Strength1, Path),
     getMulticriteria(StrengthA, RelA, FinalStrength),
     Strength is Strength1 + FinalStrength.
 
@@ -497,10 +497,11 @@ emotion_checkHope(PlayerId, SuggestedGroup, NewHope, NewDeception):-
     emotion_countHope(PlayerId, SuggestedGroup, 0, Counter),
     occ(PlayerId, _, _, Hope, Deception, _, _),
     length(SuggestedGroup, Length),
-    ((Counter > 0, !,
+    Complementary is Length - Counter,
+    ((Counter > Complementary, !,
       emotion_increase(Hope, Counter, Length, NewHope),
-     emotion_decrease(Deception, Counter, Length, NewDeception));
-    (emotion_increase(Deception, Counter, Length, NewDeception),
+     emotion_decrease(Deception, Complementary, Length, NewDeception));
+    (emotion_increase(Deception, Complementary, Length, NewDeception),
     emotion_decrease(Hope, Counter, Length, NewHope))).
 
 emotion_countHope(_, [], Counter, Return):- Return is Counter.
@@ -517,10 +518,11 @@ emotion_checkFear(PlayerId, SuggestedGroup, NewFear, NewRelief):-
     emotion_countFear(PlayerId, SuggestedGroup, 0, Counter),
     occ(PlayerId, _, _, _, _, Fear, Relief),
     length(SuggestedGroup, Length),
-    ((Counter > 0, !,
+    Complementary is Length - Counter,
+    ((Counter > Complementary, !,
       emotion_increase(Fear, Counter, Length, NewFear),
-     emotion_decrease(Relief, Counter, Length, NewRelief));
-    (emotion_increase(Relief, Counter, Length, NewRelief),
+     emotion_decrease(Relief, Complementary, Length, NewRelief));
+    (emotion_increase(Relief, Complementary, Length, NewRelief),
     emotion_decrease(Fear, Counter, Length, NewFear))).
 
 emotion_countFear(_, [], Counter, Return):- Return is Counter.
