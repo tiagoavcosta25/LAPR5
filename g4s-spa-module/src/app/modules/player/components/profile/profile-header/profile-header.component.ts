@@ -241,5 +241,30 @@ export class ProfileHeaderComponent implements OnInit{
       (<HTMLInputElement>el2).value = "";
     }
 
-   
+    this.r.player = this.currentPlayerObject.id;
+    this.r.target = this.player.id;
+    this.r.playerToTargetMessage = messageToPlayer;
+    this.r.strength = strength;
+    this.r.tags = this.tags;
+  }
+
+  sendRequest(): void {
+    this.createDirectRequest();
+    this.spinner.show();
+    this.rService.sendDirectRequest(this.r)
+    .subscribe({ next: data => {
+      if(data) {
+        this.r = new CreatingDirectRequest;
+      }
+      this.sendFriendRequest = false;
+      this.spinner.hide();
+      this.ngOnInit();
+    },
+      error: _error => {
+        this.sendFriendRequest = false;
+        this.r = new CreatingDirectRequest;
+        this.spinner.hide();
+      }
+    });
+  }
 }
