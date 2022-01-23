@@ -195,7 +195,7 @@ cors_enable(Request, [methods([get])]),
 	reply_json([JSONObject, JSONObject2], [json_object(dict)]).
 
 shortest_prepareEmotion(Request, Strength, Path) :-
-http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string]),mode(Mode, [integer]) , n(N, [integer]), joy(Joy, [integer]), anguish(Anguish, [integer]), hope(Hope, [integer]), deception(Deception, [integer]), fear(Fear, [integer]), relief(Relief, [integer])]),
+http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string]),mode(Mode, [integer]) , n(N, [integer]), joy(Joy, [number]), anguish(Anguish, [number]), hope(Hope, [number]), deception(Deception, [number]), fear(Fear, [number]), relief(Relief, [number])]),
 addPlayers(),
 addConnections(),
 getPlayerName(EmailPlayer, PlayerName),
@@ -631,7 +631,7 @@ aStar_computeEmotions(Request) :-
 	reply_json([JSONObject, JSONObject2], [json_object(dict)]).
 
 aStar_prepareEmotions(Request, Path, Cost) :-
-    http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string]), n(N, [integer]), mode(Mode, [integer]), joy(Joy, [integer]), anguish(Anguish, [integer]), hope(Hope, [integer]), deception(Deception, [integer]), fear(Fear, [integer]), relief(Relief, [integer])]),
+    http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string]), n(N, [integer]), mode(Mode, [integer]), joy(Joy, [number]), anguish(Anguish, [number]), hope(Hope, [number]), deception(Deception, [number]), fear(Fear, [number]), relief(Relief, [number])]),
 	addPlayers(),
 	addConnections(),
 	getPlayerName(EmailPlayer, PlayerName),
