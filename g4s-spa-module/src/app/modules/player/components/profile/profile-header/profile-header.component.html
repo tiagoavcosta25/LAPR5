@@ -26,7 +26,33 @@
                   <ng-template #isFriendDefined>
                      <div *ngIf="requestPending==false; else hasrequestPending">
                         <div *ngIf="requestSent==false; else hasrequestSent">
-                           <button *ngIf="!ownProfile && !isFriend" type="button" class="btn btn-primary mt-2">Send friend request</button>
+                           <button *ngIf="!ownProfile && !isFriend && !sendFriendRequest" (click)="sendFriendRequest=true" type="button" class="btn btn-primary mt-2">Send friend request</button>
+                           
+                           <div *ngIf="!ownProfile && !isFriend && sendFriendRequest" class="div">
+                              <div class="d-flex flex-row inputs mt-2">
+                              <input [id]="'messageToPlayer'" type="text" class="form-control rounded-corner" style="margin-right: 0.5vw;" placeholder="Message to {{ player.name }}...">
+                              <input [id]="'connectionStrength'" type="number" class="form-control rounded-corner" style="width: 13vw;" placeholder="Connection strength">
+                              <button class="btn btn-primary f-s-12 rounded-corner btn-comment btn-share" style="margin-left: 0.5vw;" (click)="sendRequest()" type="button">Send!</button>
+
+                           </div>
+                              <div class="d-flex flex-row inputs mt-2">
+                                 <input [id]="'tagvalue'" type="text" class="form-control rounded-corner" style="width: 15vw;" placeholder="Add a tag!">
+                                 <button (click)="addTag()" class="btn btn-primary f-s-12 rounded-corner btn-comment" style="margin-right: 1vw; margin-left: 0.5vw;" type="button">Add</button>
+                                 <div class="col-8 mt-2">
+                                    <div *ngIf="tags.length == 0; else therestags">
+                                       <p style="margin-left: 5vw;">
+                                          Click on the tags if you want to remove them! 😉
+                                       </p>
+                                    </div>
+                                    
+                                    <ng-template #therestags>
+                                       <a class="badge bg-success" (click)="removeTag(tag)" *ngFor="let tag of tags" style="text-decoration: none; margin-right: 1px;"> #{{ tag }}</a>
+                                    </ng-template>
+                                 </div>
+                              </div>
+
+                           </div>
+
                         </div>
                         <ng-template #hasrequestSent>
                            <button *ngIf="!ownProfile && !isFriend" type="button" class="btn btn-primary mt-2" disabled>Friend request sent</button>
