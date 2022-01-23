@@ -229,7 +229,7 @@ namespace DDDSample1.Domain.Players
                 return 3;
             } 
             
-            if (player.Password.password.Equals(playerPassword)) {
+            if (player.Password.password.Equals(playerPassword) && player.Active) {
                 return 1;
             }
 

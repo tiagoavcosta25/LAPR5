@@ -200,8 +200,79 @@
               </div>
 
               <div class="row justify-content-center" [formGroup]="playerForm">
-                <button type ="submit" class="btn back btn-primary w-100">Delete Account</button>
-              </div>
+                <button type ="submit" class="btn back btn-primary w-100" (click)="withdraw=true;delete=false;deactivate=false">Withdraw Consent</button>
+
+                <button type ="submit" class="btn back btn-primary w-100 mt-3" (click)="deactivate=true;delete=false;withdraw=false">Deactivate Account</button>
+
+                <button type ="submit" class="btn back btn-primary w-100 mt-3" (click)="delete=true;withdraw=false;deactivate=false">Delete Account</button>
+                
+                <div *ngIf="withdraw" class="col-lg-12 mt-4">
+                    <div class="alert alert-danger" role="alert">
+                        By clicking the following button, you are withdrawing your consent. Are you sure you want to do that?
+                      </div>
+                      <div class="row justify-content-center">
+                          <div class="col-lg-6">
+                            <button type ="submit" class="btn back btn-primary" style="width: 20vw; height: 4vw;" (click)="withdrawAccount()">Yes, withdraw my consent</button>
+                          </div>
+                          <div class="col-lg-6">
+                            <button type ="submit" class="btn back btn-primary" style="width: 20vw; height: 4vw;" (click)="withdraw=false">Cancel</button>
+                          </div>
+                      </div>
+                </div>
+
+                <div *ngIf="deactivate" class="col-lg-12 mt-4">
+                    <div class="alert alert-danger" role="alert">
+                        By clicking the following button, you are deactivating your account. That means that your data and profile will not be
+                         visible to others, including suggestions, search, and other means of interaction. Your account will be permanently deleted
+                          after 60 days from now. Are you sure you want to deactivate your account?
+                      </div>
+                      <div class="row justify-content-center">
+                          <div class="col-lg-6">
+                            <button type ="submit" class="btn back btn-primary" style="width: 20vw; height: 4vw;" (click)="deactivateAccount()">Yes, deactivate my account</button>
+                          </div>
+                          <div class="col-lg-6">
+                            <button type ="submit" class="btn back btn-primary" style="width: 20vw; height: 4vw;" (click)="deactivate=false">Cancel</button>
+                          </div>
+                      </div>
+                </div>
+
+
+                <div *ngIf="delete" class="col-lg-12 mt-4">
+                    <div class="alert alert-danger" role="alert">
+                        By clicking the following button, you are giving us permission to erase all of your data from our databases
+                         and are aware that you won't be able to get your account back. 
+                         You will have to register a new one if you want to use our services again after the deletion.
+                          Are you sure you want to delete your account?
+                      </div>
+                      <div class="row justify-content-center">
+                          <div class="col-lg-6">
+                            <button type ="submit" class="btn back btn-primary" style="width: 20vw; height: 4vw;" (click)="deleteAccount()">Yes, delete my account and erase my personal data</button>
+                          </div>
+                          <div class="col-lg-6">
+                            <button type ="submit" class="btn back btn-primary" style="width: 20vw; height: 4vw;" (click)="delete=false">Cancel</button>
+                          </div>
+                      </div>
+                </div>
+
+                <div *ngIf="withdrawn" class="col-lg-12 mt-4">
+                    <div class="alert alert-success" role="alert">
+                        Account withdrawn successfuly.
+                      </div>
+                </div>
+
+                <div *ngIf="deactivated" class="col-lg-12 mt-4">
+                    <div class="alert alert-success" role="alert">
+                        Account deactivated successfuly.
+                      </div>
+                </div>
+
+                <div *ngIf="deleted" class="col-lg-12 mt-4">
+                    <div class="alert alert-success" role="alert">
+                        Account deleted successfuly.
+                      </div>
+                </div>
+
+            </div>
 
             </form>
             
