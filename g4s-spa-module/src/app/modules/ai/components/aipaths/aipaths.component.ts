@@ -292,7 +292,6 @@ export class AipathsComponent implements OnInit {
 
   setEmotion() {
     let currentEmotion = this.currentUser.emotionalStatus;
-    console.log(currentEmotion);
     switch(currentEmotion) {
       case "joyful":
         this.joy = 0.75;

@@ -42,7 +42,7 @@ export default class PostController implements IPostController /* TODO: extends 
       }
 
       const postDTO = postOrError.getValue();
-      return res.status(201).json( postDTO );
+      return res.json( postDTO ).status(201);
     }
     catch (e) {
       return next(e);
@@ -58,7 +58,7 @@ export default class PostController implements IPostController /* TODO: extends 
       }
 
       const postDTO = postOrError.getValue();
-      return res.status(201).json( postDTO );
+      return res.json( postDTO ).status(201);
     }
     catch (e) {
       return next(e);
@@ -74,7 +74,7 @@ export default class PostController implements IPostController /* TODO: extends 
       }
 
       const postDTO = postOrError.getValue();
-      return res.status(201).json( postDTO );
+      return res.json( postDTO ).status(201);
     }
     catch (e) {
       return next(e);
@@ -90,7 +90,7 @@ export default class PostController implements IPostController /* TODO: extends 
       }
 
       const postDTO = postOrError.getValue();
-      return res.status(201).json( postDTO );
+      return res.json( postDTO ).status(201);
     }
     catch (e) {
       return next(e);
@@ -106,7 +106,7 @@ export default class PostController implements IPostController /* TODO: extends 
       }
 
       const postDTO = postOrError.getValue();
-      return res.status(201).json( postDTO );
+      return res.json( postDTO ).status(201);
     }
     catch (e) {
       return next(e);
@@ -122,7 +122,7 @@ export default class PostController implements IPostController /* TODO: extends 
       }
 
       const postDTO = postOrError.getValue();
-      return res.status(201).json( postDTO );
+      return res.json( postDTO ).status(201);
     }
     catch (e) {
       return next(e);
@@ -138,7 +138,7 @@ export default class PostController implements IPostController /* TODO: extends 
       }
 
       const postDTO = postOrError.getValue();
-      return res.status(200).json( postDTO );
+      return res.json( postDTO ).status(200);
     }
     catch (e) {
       return next(e);
@@ -149,7 +149,7 @@ export default class PostController implements IPostController /* TODO: extends 
     try {
       const postOrError = await this.postServiceInstance.getPostsByUser(req.params.creatorId) as Result<IPostDTO[]>;
       if (postOrError.isFailure) {
-        return res.status(404).send();
+        return res.send().status(404);
       }
 
       let listResponse = [];
@@ -158,7 +158,7 @@ export default class PostController implements IPostController /* TODO: extends 
         listResponse.push(p);
       }
 
-      return res.status(200).json( listResponse );
+      return res.json( listResponse ).status(200);
     }
     catch (e) {
       return next(e);

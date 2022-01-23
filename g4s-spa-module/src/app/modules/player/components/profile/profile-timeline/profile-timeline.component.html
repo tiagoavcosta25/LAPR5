@@ -101,8 +101,8 @@
                    </div>
                 </div>
                 <div class="timeline-footer">
-                   <a style="text-decoration: none;cursor: pointer;" (click)="likePost(post)" class="px-2 text-inverse-lighter" ><i [ngClass]="{'active-l':checkIfLiked(post)}" [id]="'likecomment'+i" class="fa fa-thumbs-up fa-fw fa-lg mr-3"></i><span [id]="'likecommenttext'+i"> Like</span></a>
-                   <a style="text-decoration: none;cursor: pointer;" (click)="dislikePost(post)" class="px-2 text-inverse-lighter"><i [ngClass]="{'active-l':checkIfDisliked(post)}" [id]="'dislikecomment'+i" class="fa fa-thumbs-down fa-fw fa-lg mr-3"></i><span [id]="'dislikecommenttext'+i"> Dislike</span></a> 
+                   <a style="text-decoration: none;cursor: pointer;" (click)="likePost(post);getDCalc(post)" class="px-2 text-inverse-lighter" ><i [ngClass]="{'active-l':checkIfLiked(post)}" [id]="'likecomment'+i" class="fa fa-thumbs-up fa-fw fa-lg mr-3"></i><span [id]="'likecommenttext'+i"> Like</span></a>
+                   <a style="text-decoration: none;cursor: pointer;" (click)="dislikePost(post);getDCalc(post)" class="px-2 text-inverse-lighter"><i [ngClass]="{'active-l':checkIfDisliked(post)}" [id]="'dislikecomment'+i" class="fa fa-thumbs-down fa-fw fa-lg mr-3"></i><span [id]="'dislikecommenttext'+i"> Dislike</span></a> 
                 </div>
                 <div class="timeline-comment-box">
                    <div class="user"><img src="{{ currentUser.avatar }}"></div>

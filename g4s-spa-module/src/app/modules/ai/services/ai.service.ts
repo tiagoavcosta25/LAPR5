@@ -119,6 +119,23 @@ export class AiService {
     );
   }
 
+  /** GET: get emotion relation */
+  getEmotionRelation(emailPlayer: string, joy:number, anguish:number, hope:number, deception:number, fear:number, relief:number, value:number): Observable<number[]> {
+    const params = new HttpParams()
+    .set('emailPlayer', emailPlayer)  
+    .set('joy', joy)
+    .set('anguish', anguish)
+    .set('hope', hope)
+    .set('deception', deception)
+    .set('fear', fear)
+    .set('relief', relief)
+    .set('value', value)
+    const url = this.aiUrl + '/emotion-relation';
+    return this.http.get<number[]>(url, { params: params }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   private handleError(err: HttpErrorResponse) {
     console.error('An error occurred: ', err.error.errors.message);
     if (err.error instanceof ErrorEvent) {
