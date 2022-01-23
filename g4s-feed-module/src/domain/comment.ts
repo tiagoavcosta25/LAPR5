@@ -85,7 +85,7 @@ export class Comment extends Entity<CommentProps> {
     const name = commentDTO.name;
     const createdAt = commentDTO.createdAt;
 
-    if (!!postId === false || !!content === false || !!creatorId === false || content.length === 0) {
+    if (!!postId === false || !!content === false || !!creatorId === false || !!avatar === false || !!name === false || content.length === 0) {
       return Result.fail<Comment>('Must provide comment content, creator and postId')
     } else {
       const resContent = CommentContent.create(content);

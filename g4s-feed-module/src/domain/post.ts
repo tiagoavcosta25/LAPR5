@@ -128,15 +128,15 @@ export class Post extends AggregateRoot<PostProps> {
     let createdAt = postDTO.createdAt;
     let _comments = [];
 
-    if(likes === undefined){
+    if(likes === undefined || likes === null){
       likes = [];
     }
 
-    if(dislikes === undefined){
+    if(dislikes === undefined || dislikes === null){
       dislikes = [];
     }
 
-    if(comments === undefined) {
+    if(comments === undefined || comments === null) {
       comments = [];
     } else {
       for(let comment of comments) {
@@ -159,7 +159,7 @@ export class Post extends AggregateRoot<PostProps> {
       }
     }
 
-    if (!!content === false || !!creatorId === false || !!creatorEmail === false || content.length === 0) {
+    if (!!content === false || !!creatorId === false || !!creatorEmail === false || !!name === false || !!avatar === false || content.length === 0) {
       return Result.fail<Post>('Must provide a post content and creator')
     } else {
       const resContent = PostContent.create(content);
