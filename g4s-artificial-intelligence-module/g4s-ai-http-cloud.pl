@@ -21,6 +21,7 @@
 :- dynamic node/3.
 :- dynamic connectionTemp/3.
 :- dynamic connection/6.
+:- dynamic occ/7.
 :- dynamic shortest_currentRoute/3.
 :- dynamic safest_currentRoute/2.
 :- dynamic strongest_currentRoute/2.
@@ -110,6 +111,7 @@ getPlayerName(Email, PlayerName) :-
 parse_players([]).
 parse_players([H|List]):-
     asserta(node(H.get(id),H.get(name),H.get(tags))),
+    asserta(occ(H.get(id), 0.5, 0.5, 0.5, 0.5, 0.5, 0.5)),
     parse_players(List).
 
 parse_connections([]):-
@@ -157,6 +159,7 @@ getMulticriteria(ConnectionStrength, RelationStrength, Output):-
     MultiRelation is ((RelationStrength + 200) / 4) / 2,
     Output is MultiConnection + MultiRelation.
 
+
 %======== Shortest route between two players (HTTP) ========%
 
 :- http_handler('/api/shortest-route', shortest_compute, []).
@@ -176,7 +179,32 @@ getPlayerName(EmailPlayer, PlayerName),
 getPlayerName(EmailTarget, TargetName),
     node(PlayerId, PlayerName, _),
     node(TargetId, TargetName, _),
-shortest_route(Mode, N, PlayerId, TargetId, Strength, Path),
+shortest_route(Mode, 0, N, PlayerId, TargetId, Strength, Path),
+retractall(connection(_,_,_,_,_,_)),
+retractall(node(_,_,_)).
+
+% ======== Shortest route w/ emotion (HTTP) % ========%
+
+:- http_handler('/api/shortest-route-emotions', shortest_computeEmotion, []).
+
+shortest_computeEmotion(Request) :-
+cors_enable(Request, [methods([get])]),
+	shortest_prepareEmotion(Request, Strength, Path),
+	prolog_to_json(Path, JSONObject),
+	prolog_to_json(Strength, JSONObject2),
+	reply_json([JSONObject, JSONObject2], [json_object(dict)]).
+
+shortest_prepareEmotion(Request, Strength, Path) :-
+http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string]),mode(Mode, [integer]) , n(N, [integer]), joy(Joy, [integer]), anguish(Anguish, [integer]), hope(Hope, [integer]), deception(Deception, [integer]), fear(Fear, [integer]), relief(Relief, [integer])]),
+addPlayers(),
+addConnections(),
+getPlayerName(EmailPlayer, PlayerName),
+getPlayerName(EmailTarget, TargetName),
+    node(PlayerId, PlayerName, _),
+    node(TargetId, TargetName, _),
+    retract(occ(PlayerId, _,_,_,_,_,_)),
+    asserta(occ(PlayerId, Joy, Anguish, Hope, Deception, Fear, Relief)),
+shortest_route(Mode, 1, N, PlayerId, TargetId, Strength, Path),
 retractall(connection(_,_,_,_,_,_)),
 retractall(node(_,_,_)).
 
@@ -184,40 +212,46 @@ retractall(node(_,_,_)).
 %======== Shortest route between two players (Core) ========%
 
 shortest_allDfs(Player1, Player2, PathList):- get_time(T1),
-    findall(Path, shortest_dfs(Player1, Player2, Path), PathList),
+    findall(Path, shortest_dfs(0, 0, 100, Player1, Player2, _, Path), PathList),
     length(PathList, PathLength),
     get_time(T2),
     write(PathLength),write(' paths found in '),
     T is T2-T1,write(T),write(' seconds'),nl,
     write('Possible Path List: '),write(PathList),nl,nl.
 
-shortest_dfs(Mode, N, Orig, Dest, Strength, Path):- shortest_dfsAux(Mode, 0, N, Orig, Dest, [Orig], Strength, Path).
+shortest_dfs(Mode, EmotionBool, N, Orig, Dest, Strength, Path):- shortest_dfsAux(Mode, EmotionBool, 0, N, Orig, Dest, [Orig], Strength, Path).
 
-shortest_dfsAux(_, _, _, Dest, Dest, LA, 0, Path):- !, reverse(LA, Path).
-shortest_dfsAux(_, M, N, _, _, _, _, _):- M >= N, !, false.
-shortest_dfsAux(0, M, N, Current, Dest, LA, Strength, Path):-
+shortest_dfsAux(_, _, _, _, Dest, Dest, LA, 0, Path):- !, reverse(LA, Path).
+shortest_dfsAux(_, _, M, N, _, _, _, _, _):- M >= N, !, false.
+shortest_dfsAux(0, EmotionBool, M, N, Current, Dest, LA, Strength, Path):-
     (connection(Current, X, StrengthA, _, _, _);
     connection(X, Current, _, StrengthA, _, _)),
+    emotion_checkSameEmotion(EmotionBool, Current, X),
     \+ member(X,LA),
     M1 is M + 1,
-    shortest_dfsAux(0, M1, N, X,Dest,[X|LA], Strength1, Path),
+    shortest_dfsAux(0, EmotionBool, M1, N, X,Dest,[X|LA], Strength1, Path),
 	Strength is Strength1 + StrengthA.
-shortest_dfsAux(1, M, N, Current, Dest, LA, Strength, Path):-
+shortest_dfsAux(1, EmotionBool, M, N, Current, Dest, LA, Strength, Path):-
     (connection(Current, X, StrengthA, _, RelA, _);
     connection(X, Current, _, StrengthA, _, RelA)),
+    emotion_checkSameEmotion(EmotionBool, Current, X),
     \+ member(X,LA),
     M1 is M + 1,
-    shortest_dfsAux(1, M1, N, X,Dest,[X|LA], Strength1, Path),
-	getMulticriteria(StrengthA, RelA, FinalStrength),
-	Strength is Strength1 + FinalStrength.
+    shortest_dfsAux(1, EmotionBool, M1, N, X,Dest,[X|LA], Strength1, Path),
+    getMulticriteria(StrengthA, RelA, FinalStrength),
+    Strength is Strength1 + FinalStrength.
 
-shortest_route(Mode, N, Orig, Dest, Strength, ShortestPathList):-
-		(shortest_findRoute(Mode, N, Orig, Dest); true),
-		retract(shortest_currentRoute(ShortestPathList, _, Strength)).
+shortest_route(Mode, EmotionBool, N, Orig, Dest, Strength, ShortestPathList):-
+		get_time(Ti),
+		(shortest_findRoute(Mode, EmotionBool, N, Orig, Dest); true),
+		retract(shortest_currentRoute(ShortestPathList, _, Strength)),
+		get_time(Tf),
+		T is Tf-Ti,
+		write('Solution generation time:'), write(T), nl.
 
-shortest_findRoute(Mode, N, Orig, Dest):-
+shortest_findRoute(Mode, EmotionBool, N, Orig, Dest):-
 		asserta(shortest_currentRoute(_,10000, _)),
-		shortest_dfs(Mode, N, Orig, Dest, Strength, PathList),
+		shortest_dfs(Mode, EmotionBool, N, Orig, Dest, Strength, PathList),
 		shortest_updateRoute(Strength, PathList),
 		fail.
 
@@ -495,7 +529,7 @@ common_tags_users_combination_aux(NTags,Tags,[U|Users],Result):-
 common_tags_users_combination_aux(NTags,Tags,[_|Users],Result):-
     !,
     common_tags_users_combination_aux(NTags,Tags,Users,Result).
-	
+
 common_tags_test_list([],_,[]):-!.
 common_tags_test_list([CombinationsH|CombinationsT], Tags, FinalCombinations):-
 	common_tags_test_list(CombinationsT, Tags, FinalCombinations1),
@@ -569,7 +603,6 @@ dfs2(Act,Level,LA):-
     dfs2(X,Level1,[X|LA]).
 
 
-
 %======== A-Star (HTTP) ========%
 
 :- http_handler('/api/a-star', aStar_compute, []).
@@ -581,34 +614,60 @@ aStar_compute(Request) :-
 	prolog_to_json(Cost, JSONObject2),
 	reply_json([JSONObject, JSONObject2], [json_object(dict)]).
 
-
 aStar_prepare(Request, Path, Cost) :-
-	http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string]),
-	n(N, [integer]), mode(Mode, [integer])]),
+    http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string]),
+    n(N, [integer]), mode(Mode, [integer])]),
 	addPlayers(),
 	addConnections(),
 	getPlayerName(EmailPlayer, PlayerName),
 	getPlayerName(EmailTarget, TargetName),
         node(PlayerId, PlayerName, _),
         node(TargetId, TargetName, _),
-	aStar_find(Mode, N, PlayerId, TargetId, Path, Cost),
+	aStar_find(Mode, 0, N, PlayerId, TargetId, Path, Cost),
 	retractall(connection(_,_,_,_,_,_)),
 	retractall(node(_,_,_)).
 
+%======== A-Star w/ Emotions (HTTP) ========%
+
+:- http_handler('/api/a-star-emotions', aStar_computeEmotions, []).
+
+aStar_computeEmotions(Request) :-
+	cors_enable(Request, [methods([get])]),
+    aStar_prepareEmotions(Request, Path, Cost),
+	prolog_to_json(Path, JSONObject),
+	prolog_to_json(Cost, JSONObject2),
+	reply_json([JSONObject, JSONObject2], [json_object(dict)]).
+
+aStar_prepareEmotions(Request, Path, Cost) :-
+    http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string]), n(N, [integer]), mode(Mode, [integer]), joy(Joy, [integer]), anguish(Anguish, [integer]), hope(Hope, [integer]), deception(Deception, [integer]), fear(Fear, [integer]), relief(Relief, [integer])]),
+	addPlayers(),
+	addConnections(),
+	getPlayerName(EmailPlayer, PlayerName),
+	getPlayerName(EmailTarget, TargetName),
+        node(PlayerId, PlayerName, _),
+        node(TargetId, TargetName, _),
+        retract(occ(PlayerId, _,_,_,_,_,_)),
+        asserta(occ(PlayerId, Joy, Anguish, Hope, Deception, Fear, Relief)),
+	aStar_find(Mode, 1, N, PlayerId, TargetId, Path, Cost),
+	retractall(connection(_,_,_,_,_,_)),
+	retractall(node(_,_,_)).
+
+
 %======== A-Star (Core) ========%
 
-aStar_find(Mode, Threshold, Orig, Dest, Path, Cost):-
+aStar_find(Mode, EmotionBool, Threshold, Orig, Dest, Path, Cost):-
     (retract(aStar_orderedList(_));true),
     aStar_getStrengthListByPlayer(Mode, Threshold, Orig, StrengthList),
     asserta(aStar_orderedList(StrengthList)),
-    aStar_aux(Mode, 0, Threshold, Dest,[(_,0,[Orig])],Path,Cost).
-aStar_aux(_, M, N, Dest,[(_,Cost,[Dest|T])|_],Path,Cost):- M >= N,reverse([Dest|T],Path).
-aStar_aux(0, M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
+    aStar_aux(Mode, EmotionBool, 0, Threshold, Dest,[(_,0,[Orig])],Path,Cost).
+aStar_aux(_, _, M, N, Dest,[(_,Cost,[Dest|T])|_],Path,Cost):- M >= N,reverse([Dest|T],Path).
+aStar_aux(0, EmotionBool, M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
     LA=[Act|_],
     findall((CEX,CaX,[X|LA]),
     (Dest\==Act,
     (connection(Act,X,CostX, _, _, _);
     connection(X, Act, _, CostX, _, _)),
+    emotion_checkSameEmotion(EmotionBool, Act, X),
     \+ member(X,LA),
     CaX is CostX + Ca,
     aStar_estimate(N,M,EstX),
@@ -617,14 +676,15 @@ aStar_aux(0, M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
     append(Others,New,All),
     sort(All,AllOrd),
     M1 is M + 1,
-    aStar_aux(0, M1, N, Dest,AllOrd,Path,Cost).
+    aStar_aux(0, EmotionBool, M1, N, Dest,AllOrd,Path,Cost).
 
-aStar_aux(1, M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
+aStar_aux(1, EmotionBool, M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
     LA=[Act|_],
     findall((CEX,CaX,[X|LA]),
     (Dest\==Act,
     (connection(Act,X,ConnStrength, _, RelStrength, _);
     connection(X, Act, _, ConnStrength, _, RelStrength)),
+    emotion_checkSameEmotion(EmotionBool, Act, X),
     \+ member(X,LA),
     getMulticriteria(ConnStrength, RelStrength, CostX),
     CaX is CostX + Ca,
@@ -634,7 +694,7 @@ aStar_aux(1, M, N, Dest,[(_,Ca,LA)|Others],Path,Cost):-
     append(Others,New,All),
     sort(All,AllOrd),
     M1 is M + 1,
-    aStar_aux(1, M1, N, Dest,AllOrd,Path,Cost).
+    aStar_aux(1, EmotionBool, M1, N, Dest,AllOrd,Path,Cost).
 
 
 aStar_estimate(N,M, Est):-
@@ -688,18 +748,23 @@ aStar_getStrengthListByFriendsList(1, PlayerId, [FriendId|FriendList], [FirstMul
 
 emotion_relationCompute(Request) :-
 	cors_enable(Request, [methods([get])]),
-    emotion_relationPrepare(Request, NewJoy, NewAnguish),
+    emotion_relationPrepare(Request, NewJoy, NewAnguish, Hope, Deception, Fear, Relief),
 	prolog_to_json(NewJoy, JSONObject),
 	prolog_to_json(NewAnguish, JSONObject2),
-	reply_json([JSONObject, JSONObject2], [json_object(dict)]).
+        prolog_to_json(Hope, JSONObject3),
+	prolog_to_json(Deception, JSONObject4),
+	prolog_to_json(Fear, JSONObject5),
+	prolog_to_json(Relief, JSONObject6),
+	reply_json([JSONObject, JSONObject2, JSONObject3, JSONObject4, JSONObject5, JSONObject6], [json_object(dict)]).
 
-
-emotion_relationPrepare(Request, NewJoy, NewAnguish) :-
-    http_parameters(Request, [emailPlayer(EmailPlayer, [string]), value(Value, [integer])]),
+emotion_relationPrepare(Request, NewJoy, NewAnguish, Hope, Deception, Fear, Relief) :-
+    http_parameters(Request, [emailPlayer(EmailPlayer, [string]), value(Value, [integer]),joy(Joy, [number]),anguish(Anguish, [number]),hope(Hope, [number]),deception(Deception, [number]),fear(Fear, [number]),relief(Relief, [number])]),
 	addPlayers(),
 	addConnections(),
 	getPlayerName(EmailPlayer, PlayerName),
         node(PlayerId, PlayerName, _),
+        retract(occ(PlayerId, _,_,_,_,_,_)),
+        asserta(occ(PlayerId, Joy, Anguish, Hope, Deception, Fear, Relief)),
 	emotion_relationChange(PlayerId, Value, NewJoy, NewAnguish),
 	retractall(connection(_,_,_,_,_,_)),
 	retractall(node(_,_,_)).
@@ -710,22 +775,27 @@ emotion_relationPrepare(Request, NewJoy, NewAnguish) :-
 
 emotion_suggestedCompute(Request) :-
 	cors_enable(Request, [methods([get])]),
-    emotion_suggestedPrepare(Request, NewHope, NewDeception, NewFear, NewRelief),
-	prolog_to_json(NewHope, JSONObject),
-	prolog_to_json(NewDeception, JSONObject2),
-	prolog_to_json(NewFear, JSONObject3),
-	prolog_to_json(NewRelief, JSONObject4),
-	reply_json([JSONObject, JSONObject2, JSONObject3, JSONObject4], [json_object(dict)]).
+    emotion_suggestedPrepare(Request, Joy, Anguish, NewHope, NewDeception, NewFear, NewRelief),
+	prolog_to_json(Joy, JSONObject),
+        prolog_to_json(Anguish, JSONObject2),
+        prolog_to_json(NewHope, JSONObject3),
+	prolog_to_json(NewDeception, JSONObject4),
+	prolog_to_json(NewFear, JSONObject5),
+	prolog_to_json(NewRelief, JSONObject6),
+	reply_json([JSONObject, JSONObject2, JSONObject3, JSONObject4, JSONObject5, JSONObject6], [json_object(dict)]).
 
-emotion_suggestedPrepare(Request, NewHope, NewDeception, NewFear, NewRelief) :-
-    http_parameters(Request, [emailPlayer(EmailPlayer, [string]), tags(Tags, [string])]),
+emotion_suggestedPrepare(Request, Joy, Anguish,NewHope, NewDeception, NewFear, NewRelief) :-
+    http_parameters(Request, [emailPlayer(EmailPlayer, [string]),ntags(TagCount, [number]),nusers(PlayerCount, [number]),taglist(MandatoryTags, [string]),joy(Joy, [number]),anguish(Anguish, [number]),hope(Hope, [number]),deception(Deception, [number]),fear(Fear, [number]),relief(Relief, [number])]),
 	addPlayers(),
 	addConnections(),
 	getPlayerName(EmailPlayer, PlayerName),
         node(PlayerId, PlayerName, _),
-	emotion_groupSuggestion(PlayerId, Tags, NewHope, NewDeception, NewFear, NewRelief),
+        retract(occ(PlayerId, _,_,_,_,_,_)),
+        asserta(occ(PlayerId, Joy, Anguish, Hope, Deception, Fear, Relief)),
+	emotion_groupSuggestion(PlayerId, TagCount, PlayerCount, MandatoryTags, NewHope, NewDeception, NewFear, NewRelief),
 	retractall(connection(_,_,_,_,_,_)),
 	retractall(node(_,_,_)).
+
 
 %======== Emotion Variation (Core) ========%
 
@@ -752,8 +822,8 @@ emotion_relationChange(PlayerId, Value, NewJoy, NewAnguish):-
     retract(occ(PlayerId, Joy, Anguish, Hope, Deception, Fear, Relief)),
     asserta(occ(PlayerId, NewJoy, NewAnguish, Hope, Deception, Fear, Relief)).
 
-emotion_groupSuggestion(PlayerId, TagList, NewHope, NewDeception, NewFear, NewRelief):-
-    suggest_playerGroups(PlayerId, TagList, SuggestedGroup),
+emotion_groupSuggestion(PlayerId, TagCount, PlayerCount, MandatoryTags, NewHope, NewDeception, NewFear, NewRelief):-
+    common_tags(PlayerId, TagCount, PlayerCount, MandatoryTags, _,SuggestedGroup),
     emotion_checkHope(PlayerId, SuggestedGroup, NewHope, NewDeception),
     emotion_checkFear(PlayerId, SuggestedGroup, NewFear, NewRelief),
     retract(occ(PlayerId, Joy, Anguish, _, _, _, _)),
@@ -797,4 +867,21 @@ emotion_countFear(PlayerId, [H | Group], Counter, Return):-
 emotion_countFear(PlayerId, [_ | Group], Counter, Return):-
     !,emotion_countFear(PlayerId, Group, Counter, Return).
 
-suggest_playerGroups(_, _, [3,6, 4, 5]).
+emotion_getMax(PlayerId, MaxValue, MaxEmotion):-
+    occ(PlayerId, Joy, Anguish, Hope,Deception, Fear, Relief),
+    emotion_maxEmotion([Joy, Anguish, Hope, Deception, Fear, Relief], [joy, anguish, hope, deception, fear, relief],-100, emotion, MaxValue, MaxEmotion).
+
+emotion_maxEmotion([], [], MaxAuxValue, MaxAuxEmotion, MaxReturnValue, MaxReturnEmotion):- !, MaxReturnValue is MaxAuxValue, MaxReturnEmotion = MaxAuxEmotion.
+emotion_maxEmotion([HV|TV], [HE|TE], MaxAuxValue, _, MaxReturnValue, MaxReturnEmotion):-
+    HV >= MaxAuxValue, !,
+    emotion_maxEmotion(TV, TE, HV, HE, MaxReturnValue, MaxReturnEmotion).
+emotion_maxEmotion([_|TV], [_|TE], MaxAuxValue, MaxAuxEmotion, MaxReturnValue, MaxReturnEmotion):-
+    !, emotion_maxEmotion(TV, TE, MaxAuxValue, MaxAuxEmotion, MaxReturnValue, MaxReturnEmotion).
+
+emotion_checkSameEmotion(EmotionBool, Act, X):-
+    ((EmotionBool =:= 1, !,
+     emotion_getMax(Act, _, ActEmotion),
+     emotion_getMax(X, _, XEmotion),
+     ((ActEmotion = XEmotion,!);
+     false));
+    true).
