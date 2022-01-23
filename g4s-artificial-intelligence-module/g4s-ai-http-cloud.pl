@@ -242,12 +242,8 @@ shortest_dfsAux(1, EmotionBool, M, N, Current, Dest, LA, Strength, Path):-
     Strength is Strength1 + FinalStrength.
 
 shortest_route(Mode, EmotionBool, N, Orig, Dest, Strength, ShortestPathList):-
-		get_time(Ti),
 		(shortest_findRoute(Mode, EmotionBool, N, Orig, Dest); true),
-		retract(shortest_currentRoute(ShortestPathList, _, Strength)),
-		get_time(Tf),
-		T is Tf-Ti,
-		write('Solution generation time:'), write(T), nl.
+		retract(shortest_currentRoute(ShortestPathList, _, Strength)).
 
 shortest_findRoute(Mode, EmotionBool, N, Orig, Dest):-
 		asserta(shortest_currentRoute(_,10000, _)),
@@ -300,14 +296,10 @@ safest_dfsAux(Current, Dest, AuxList, Threshold, Strength, ReturnStrength, Path)
 
 
 safest_route(Orig, Dest, Threshold, SafestPath):-
-		get_time(Initial_Time),
 		(safest_findRoute(Orig,Dest, Threshold);true),
 		retract(safest_currentRoute(SafestPath,Strength)),
-		((Strength >= 0, !, get_time(End_Time),
-		T is End_Time - Initial_Time,
-		write('Time:'),write(T),nl,
-		write('Strength: '), write(Strength),nl);
-		write('No path found.'),false).
+		((Strength >= 0, !);
+		false).
 
 safest_findRoute(Orig, Dest, Threshold):-
 		asserta(safest_currentRoute(_,-10000)),
