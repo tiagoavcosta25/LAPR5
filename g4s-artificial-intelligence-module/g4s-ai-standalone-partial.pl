@@ -616,7 +616,7 @@ best_costCalc(0,EmotionBool,[Act,X],C):-
       connection(X,Act,_,C,_,_)),
     emotion_checkSameEmotion(EmotionBool, Act, X).
 best_costCalc(0,EmotionBool,[Act,X|L],S):-
-    best_costCalc(0,[X|L],S1),
+    best_costCalc(0, EmotionBool,[X|L],S1),
     (connection(Act,X,C,_,_,_);
     connection(X,Act,_,C,_,_)),
     emotion_checkSameEmotion(EmotionBool, Act, X),
@@ -627,13 +627,10 @@ best_costCalc(1,EmotionBool, [Act,X],C):-
       connection(X,Act,_,ConStrength,_,RelationStrength)),
     emotion_checkSameEmotion(EmotionBool, Act, X),
     getMulticriteria(ConStrength,RelationStrength, C).
-best_costCalc(1,[Act,X|L],S):-
+best_costCalc(1,EmotionBool, [Act,X|L],S):-
     best_costCalc(1,EmotionBool, [X|L],S1),
     (connection(Act,X,ConStrength,_,RelationStrength,_);
     connection(X,Act,_,ConStrength,_,RelationStrength)),
     emotion_checkSameEmotion(EmotionBool, Act, X),
     getMulticriteria(ConStrength,RelationStrength, C),
     S is S1+C.
-
-
-

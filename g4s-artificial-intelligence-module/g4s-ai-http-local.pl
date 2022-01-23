@@ -908,7 +908,7 @@ best_computeEmotions(Request) :-
 	reply_json([JSONObject, JSONObject2], [json_object(dict)]).
 
 best_prepareEmotions(Request, Path, Cost) :-
-    http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string]), n(N, [integer]), mode(Mode, [integer]), joy(Joy, [integer]), anguish(Anguish, [integer]), hope(Hope, [integer]), deception(Deception, [integer]), fear(Fear, [integer]), relief(Relief, [integer])]),
+    http_parameters(Request, [emailPlayer(EmailPlayer, [string]), emailTarget(EmailTarget, [string]), n(N, [integer]), mode(Mode, [number]), joy(Joy, [number]), anguish(Anguish, [number]), hope(Hope, [number]), deception(Deception, [number]), fear(Fear, [number]), relief(Relief, [number])]),
 	addPlayers(),
 	addConnections(),
 	getPlayerName(EmailPlayer, PlayerName),
@@ -917,7 +917,7 @@ best_prepareEmotions(Request, Path, Cost) :-
         node(TargetId, TargetName, _),
         retract(occ(PlayerId, _,_,_,_,_,_)),
         asserta(occ(PlayerId, Joy, Anguish, Hope, Deception, Fear, Relief)),
-	best_find(Mode, 1, N, PlayerId, TargetId, Path, Cost),
+	best_first(Mode, 1, N, PlayerId, TargetId, Path, Cost),
 	retractall(connection(_,_,_,_,_,_)),
 	retractall(node(_,_,_)).
 
@@ -982,7 +982,7 @@ best_costCalc(0,EmotionBool,[Act,X],C):-
       connection(X,Act,_,C,_,_)),
     emotion_checkSameEmotion(EmotionBool, Act, X).
 best_costCalc(0,EmotionBool,[Act,X|L],S):-
-    best_costCalc(0,[X|L],S1),
+    best_costCalc(0, EmotionBool,[X|L],S1),
     (connection(Act,X,C,_,_,_);
     connection(X,Act,_,C,_,_)),
     emotion_checkSameEmotion(EmotionBool, Act, X),
@@ -993,7 +993,7 @@ best_costCalc(1,EmotionBool, [Act,X],C):-
       connection(X,Act,_,ConStrength,_,RelationStrength)),
     emotion_checkSameEmotion(EmotionBool, Act, X),
     getMulticriteria(ConStrength,RelationStrength, C).
-best_costCalc(1,[Act,X|L],S):-
+best_costCalc(1,EmotionBool, [Act,X|L],S):-
     best_costCalc(1,EmotionBool, [X|L],S1),
     (connection(Act,X,ConStrength,_,RelationStrength,_);
     connection(X,Act,_,ConStrength,_,RelationStrength)),
